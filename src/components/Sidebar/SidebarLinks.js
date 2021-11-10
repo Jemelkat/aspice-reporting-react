@@ -3,14 +3,14 @@ import SidebarLinkItem from "./SidebarLinkItem";
 const SidebarLinks = () => {
 	return (
 		<>
-			<div class='flex items-center justify-center pt-6'>LOGO</div>
-			<nav class='mt-6'>
+			<div className='flex items-center justify-center pt-6'>LOGO</div>
+			<nav className='mt-6'>
 				<SidebarLinkItem link='#' text='Users'>
 					<svg
 						width='20'
 						height='20'
 						fill='currentColor'
-						class='m-auto'
+						className='m-auto'
 						viewBox='0 0 2048 1792'
 						xmlns='http://www.w3.org/2000/svg'
 					>
@@ -22,7 +22,7 @@ const SidebarLinks = () => {
 						width='20'
 						height='20'
 						fill='currentColor'
-						class='m-auto'
+						className='m-auto'
 						viewBox='0 0 2048 1792'
 						xmlns='http://www.w3.org/2000/svg'
 					>

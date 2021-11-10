@@ -10,13 +10,11 @@ import Nav from "./components/Nav/Nav";
 import PageContainer from "./components/UI/PageContainer";
 import { logout } from "./helpers/AuthHelper";
 import AuthVerify from "./helpers/AuthVerify";
-import { FullScreenContext } from "./context/FullScreenContext";
 import { AuthContext } from "./context/AuthContext";
 import AdminRoute from "./routes/AdminRoute";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
 
 function App() {
-	const { navbar } = useContext(FullScreenContext);
 	const { loggedUser, removeLoggedUser } = useContext(AuthContext);
 
 	const logoutHandler = () => {
@@ -26,34 +24,48 @@ function App() {
 
 	return (
 		<>
-			{navbar && <Nav></Nav>}
-			<PageContainer>
-				<Switch>
+			<Nav></Nav>
+
+			<Switch>
+				<>
 					<Route exact path='/'>
-						<Home />
+						<PageContainer>
+							<Home />
+						</PageContainer>
 					</Route>
+					{/*When user is not logged in*/}
 					{!loggedUser.user && (
 						<>
-							<Route path='/signin'>
-								<Login isLogin={true} />
+							<Route exact path='/signin'>
+								<PageContainer>
+									<Login isLogin={true} />
+								</PageContainer>
 							</Route>
-							<Route path='/signup'>
-								<Login isLogin={false} />
+							<Route exact path='/signup'>
+								<PageContainer>
+									<Login isLogin={false} />
+								</PageContainer>
 							</Route>
 						</>
 					)}
+					{/*When user is logged in*/}
 					{loggedUser.user && (
 						<>
-							<PrivateRoute path='/profile'>
-								<Profile />
+							<PrivateRoute exact path='/profile'>
+								<PageContainer>
+									<Profile />
+								</PageContainer>
 							</PrivateRoute>
-							<AdminRoute path='/admin'>
-								<AdminPanel></AdminPanel>
-							</AdminRoute>
 						</>
 					)}
-				</Switch>
-			</PageContainer>
+
+					{/*Fullscreen content*/}
+					<AdminRoute path='/admin'>
+						<AdminPanel></AdminPanel>
+					</AdminRoute>
+				</>
+			</Switch>
+
 			<AuthVerify logOut={logoutHandler} />
 		</>
 	);

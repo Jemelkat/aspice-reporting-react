@@ -11,6 +11,7 @@ export const login = (username, password) => {
 		})
 		.then((response) => {
 			if (response.data.token) {
+				console.log("Storing token");
 				localStorage.setItem("user", JSON.stringify(response.data));
 			}
 			return response.data;
@@ -31,9 +32,8 @@ export const register = (username, email, password) => {
 
 export const getAuthHeaderToken = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
-
-	if (user && user.accessToken) {
-		return { Authorization: "Bearer " + user.accessToken };
+	if (user && user.token) {
+		return { Authorization: "Bearer " + user.token };
 	} else {
 		return {};
 	}

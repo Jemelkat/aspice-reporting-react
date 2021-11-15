@@ -3,19 +3,19 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { FullScreenContextProvider } from "./context/FullScreenContext";
 import { AuthContextProvider } from "./context/AuthContext";
 import { BrowserRouter } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<BrowserRouter>
-			<AuthContextProvider>
-				<FullScreenContextProvider>
+		<ChakraProvider>
+			<BrowserRouter>
+				<AuthContextProvider>
 					<App />
-				</FullScreenContextProvider>
-			</AuthContextProvider>
-		</BrowserRouter>
+				</AuthContextProvider>
+			</BrowserRouter>
+		</ChakraProvider>
 	</React.StrictMode>,
 	document.getElementById("root")
 );

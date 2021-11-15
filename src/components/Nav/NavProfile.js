@@ -52,7 +52,7 @@ function NavProfile() {
 			>
 				<Menu.Items className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-xl py-1 bg-white'>
 					<NavProfileItem link='/profile' text='Profile'></NavProfileItem>
-					<NavProfileItem link='/admin' text='Admin'></NavProfileItem>
+					<NavProfileItem link='/admin/users' text='Admin'></NavProfileItem>
 					<NavProfileItem
 						link='#'
 						text='Sign out'

@@ -5,24 +5,14 @@ import NavColapsed from "./NavColapsed";
 import NavColapsedItem from "./NavColapsedItem";
 import NavPrimaryItem from "./NavPrimaryItem";
 import NavProfile from "./NavProfile";
-import { logout } from "../../helpers/AuthHelper";
-import { useHistory } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
 
 function Nav() {
 	const [isOpen, setIsOpen] = useState(false);
-	const { loggedUser, removeLoggedUser } = useContext(AuthContext);
-	let history = useHistory();
+	const { loggedUser } = useContext(AuthContext);
 
 	const navButtonHandler = () => {
 		setIsOpen(!isOpen);
-	};
-
-	const logoutHandler = () => {
-		logout();
-		removeLoggedUser();
-		history.push("/home");
 	};
 
 	return (

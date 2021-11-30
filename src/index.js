@@ -5,17 +5,14 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthContextProvider } from "./context/AuthContext";
 import { BrowserRouter } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/react";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<ChakraProvider>
-			<BrowserRouter>
-				<AuthContextProvider>
-					<App />
-				</AuthContextProvider>
-			</BrowserRouter>
-		</ChakraProvider>
+		<BrowserRouter>
+			<AuthContextProvider>
+				<App />
+			</AuthContextProvider>
+		</BrowserRouter>
 	</React.StrictMode>,
 	document.getElementById("root")
 );

@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import Sidebar from "../Sidebar/Sidebar";
-import SidebarLinks from "../Sidebar/SidebarLinks";
-import SidebarLinkItem from "../Sidebar/SidebarLinkItem";
+import Sidebar from "../../UI/Sidebar/Sidebar";
+import SidebarLinks from "../../UI/Sidebar/SidebarLinks";
+import SidebarLinkItem from "../../UI/Sidebar/SidebarLinkItem";
 import AdminPanelUsers from "./AdminPanelUsers";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import AdminPanelGroups from "./AdminPanelGroups";
@@ -12,7 +11,7 @@ const AdminPanel = () => {
 	return (
 		<div className='flex'>
 			<Sidebar>
-				<SidebarLinks>
+				<SidebarLinks sidebarName='Admin panel'>
 					<SidebarLinkItem link={`${url}/users`} text='Users'>
 						{/*TODO import react icons library*/}
 						<svg

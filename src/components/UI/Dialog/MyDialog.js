@@ -12,7 +12,7 @@ function MyDialog(props) {
 				<Dialog.Overlay className='fixed inset-0 bg-gray-800 opacity-30' />
 
 				<div className='relative flex flex-col bg-white shadow-2xl rounded-xl px-2 py-4 max-w-sm md:max-w-md'>
-					<Dialog.Title className='font-semibold text-2xl flex justify-center pb-4'>
+					<Dialog.Title className='font-semibold text-sm sm:text-lg flex justify-center pb-4'>
 						{props.title}
 					</Dialog.Title>
 					<Dialog.Description className=''>

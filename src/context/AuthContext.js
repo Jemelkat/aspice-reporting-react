@@ -7,6 +7,7 @@ export const AuthContextProvider = ({ children }) => {
 	const [loggedUser, setLoggedUser] = useState({
 		user: null,
 		isAdmin: false,
+		isLoading: true,
 	});
 
 	const removeLoggedUser = () => {
@@ -24,12 +25,12 @@ export const AuthContextProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
-		console.log(getLoggedUser());
 		setLoggedUser({
 			user: getLoggedUser(),
 			isAdmin: getLoggedUser()
 				? getLoggedUser().roles.includes("ROLE_ADMIN")
 				: false,
+			isLoading: false,
 		});
 	}, []);
 

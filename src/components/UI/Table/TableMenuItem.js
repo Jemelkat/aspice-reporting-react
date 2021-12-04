@@ -9,9 +9,7 @@ const TableMenuItem = (props) => {
 					className={`${active ? "bg-gray-800 text-white" : "text-gray-800"} ${
 						props.addClasses
 					} group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-					onClick={(e) => {
-						props.onClickAction(e);
-					}}
+					onClick={props.onClickAction}
 				>
 					{props.itemText}
 				</button>

@@ -3,7 +3,6 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@chakra-ui/react": "^1.7.1",
 		"@craco/craco": "^6.4.0",
 		"@emotion/react": "^11.6.0",
 		"@emotion/styled": "^11.6.0",
@@ -13,6 +12,7 @@
 		"@testing-library/user-event": "^12.8.3",
 		"axios": "^0.24.0",
 		"axios-hooks": "^3.0.0",
+		"formik": "^2.2.9",
 		"framer-motion": "^4.1.17",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
@@ -22,7 +22,8 @@
 		"react-router-dom": "^5.3.0",
 		"react-scripts": "4.0.3",
 		"react-table": "^7.7.0",
-		"web-vitals": "^1.1.2"
+		"web-vitals": "^1.1.2",
+		"yup": "^0.32.11"
 	},
 	"scripts": {
 		"start": "craco start",
@@ -34,7 +35,11 @@
 		"extends": [
 			"react-app",
 			"react-app/jest"
-		]
+		],
+		"rules": {
+			"react/jsx-uses-react": "off",
+			"react/react-in-jsx-scope": "off"
+		}
 	},
 	"browserslist": {
 		"production": [

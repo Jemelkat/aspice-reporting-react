@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import Table from "../../UI/Table/Table";
 import useAxios from "axios-hooks";
-import MyDialog from "../../UI/Dialog/MyDialog";
 import TableMenuButton from "../../UI/Table/TableMenuButton";
 import TableMenuItem from "../../UI/Table/TableMenuItem";
+import FormEditUser from "./FormEditUser";
+import MyDialog from "../../UI/Dialog/MyDialog";
 
 const API_URL = "http://localhost:8080/admin/getAllUsers";
 
@@ -23,15 +24,18 @@ class User {
 
 const ACTIONS = {
 	EDIT: "edit",
-	ADD: "add",
 	REMOVE: "delete",
 	NONE: "none",
 };
 
 const AdminPanelUsers = () => {
-	const [{ data, loading, error }, refetch] = useAxios(API_URL);
+	const [{ data, loading, error }, refetch] = useAxios(API_URL, {
+		useCache: false,
+	});
 	const [isOpen, setIsOpen] = useState(false);
 	const [action, setAction] = useState(ACTIONS.NONE);
+	const [showForm, setShowForm] = useState(false);
+	const [selectedUser, setSelectedUser] = useState(null);
 
 	const columns = useMemo(
 		() => [
@@ -53,29 +57,40 @@ const AdminPanelUsers = () => {
 			},
 			{
 				Header: "Actions",
-				Cell: ({ cell }) => (
-					<TableMenuButton buttonText='Actions'>
-						<TableMenuItem
-							key='1'
-							id='addUserToGroupButton'
-							onClickAction={handleActions}
-							itemText='Add to group'
-						></TableMenuItem>
-						<TableMenuItem
-							key='2'
-							id='userEditButton'
-							onClickAction={handleActions}
-							itemText='Edit'
-						></TableMenuItem>
-						<TableMenuItem
-							key='3'
-							id='userDeleteButton'
-							addClasses='text-red-800'
-							onClickAction={handleActions}
-							itemText='Delete'
-						></TableMenuItem>
-					</TableMenuButton>
-				),
+				Cell: ({ row }) => {
+					return (
+						<TableMenuButton key='1' buttonText='Actions'>
+							<TableMenuItem
+								key='1'
+								id='addUserToGroupButton'
+								onClickAction={(e) => {
+									handleActions(e);
+									setSelectedUser(row.original);
+								}}
+								itemText='Add to group'
+							></TableMenuItem>
+							<TableMenuItem
+								key='2'
+								id='userEditButton'
+								onClickAction={(e) => {
+									handleActions(e);
+									setSelectedUser(row.original);
+								}}
+								itemText='Edit'
+							></TableMenuItem>
+							<TableMenuItem
+								key='3'
+								id='userDeleteButton'
+								addClasses='text-red-800'
+								onClickAction={(e) => {
+									handleActions(e);
+									setSelectedUser(row.original);
+								}}
+								itemText='Delete'
+							></TableMenuItem>
+						</TableMenuButton>
+					);
+				},
 			},
 		],
 		[]
@@ -84,7 +99,6 @@ const AdminPanelUsers = () => {
 	//Check what kind of button was clicked to create correct modal form
 	const handleActions = (e) => {
 		e.preventDefault();
-		console.log(e.target.id);
 		switch (e.target.id) {
 			case "addUserToGroupButton":
 				setAction(ACTIONS.ADD);
@@ -99,6 +113,7 @@ const AdminPanelUsers = () => {
 				break;
 		}
 		setIsOpen(true);
+		setShowForm(true);
 	};
 
 	const parseUserData = (userData) => {
@@ -107,13 +122,17 @@ const AdminPanelUsers = () => {
 		return userArray;
 	};
 
-	//Renders different forms in modal
-	const renderModalHandler = () => {
+	const renderForms = (action) => {
 		switch (action) {
 			case ACTIONS.EDIT:
-				return <form>EDIT FORM</form>;
-			case ACTIONS.ADD:
-				return <form>ADD FORM</form>;
+				return (
+					<MyDialog isOpen={isOpen} setIsOpen={setIsOpen}>
+						<FormEditUser
+							data={selectedUser}
+							onCancel={formCancelHandler}
+						></FormEditUser>
+					</MyDialog>
+				);
 			case ACTIONS.REMOVE:
 				return <form>DELETE FORM</form>;
 			default:
@@ -121,9 +140,14 @@ const AdminPanelUsers = () => {
 		}
 	};
 
+	const formCancelHandler = () => {
+		setShowForm(false);
+	};
+
 	return (
 		<div className='flex-grow py-10 px-10 min-w-min flex items-start'>
 			<Table columns={columns} data={parseUserData(data)} isLoading={loading} />
+			{showForm && renderForms(action)}
 		</div>
 	);
 };

@@ -15,3 +15,18 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
 		monospace;
 }
+
+@layer utilities {
+	.animation-delay-250 {
+		-webkit-animation-delay: 250ms;
+		animation-delay: 250ms;
+	}
+	.animation-delay-500 {
+		-webkit-animation-delay: 500ms;
+		animation-delay: 500ms;
+	}
+	.animation-delay-500 {
+		-webkit-animation-delay: 750ms;
+		animation-delay: 750ms;
+	}
+}

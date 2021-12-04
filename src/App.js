@@ -1,3 +1,4 @@
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { useContext } from "react";
 import "./App.css";
@@ -16,6 +17,7 @@ import AdminPanel from "./components/Pages/AdminPanel/AdminPanel";
 import Profile from "./components/Pages/Profile/Profile";
 import axiosAuthInterceptor from "./helpers/AxiosHelper";
 import Template from "./components/Pages/Template/Template";
+import MyDialog from "./components/UI/Dialog/MyDialog";
 
 function App() {
 	const { loggedUser, removeLoggedUser } = useContext(AuthContext);
@@ -27,59 +29,68 @@ function App() {
 
 	return (
 		<>
-			<Nav></Nav>
-
-			<Switch>
+			{!loggedUser.isLoading ? (
 				<>
-					<Route exact path='/'>
-						<PageContainer>
-							<Home />
-						</PageContainer>
-					</Route>
-					{/*When user is not logged in*/}
-					{!loggedUser.user && (
+					<Nav></Nav>
+					<Switch>
 						<>
-							<Route exact path='/signin'>
+							<Route exact path='/'>
 								<PageContainer>
-									<Login isLogin={true} />
+									<Home />
 								</PageContainer>
 							</Route>
-							<Route exact path='/signup'>
-								<PageContainer>
-									<Login isLogin={false} />
-								</PageContainer>
-							</Route>
-						</>
-					)}
-					{/*When user is logged in*/}
-					{loggedUser.user && (
-						<>
-							<PrivateRoute exact path='/profile'>
-								<PageContainer>
-									<Profile />
-								</PageContainer>
-							</PrivateRoute>
-							<PrivateRoute exact path='/source'>
-								<PageContainer>
-									<Source />
-								</PageContainer>
-							</PrivateRoute>
-							<PrivateRoute exact path='/template'>
-								<PageContainer>
-									<Template />
-								</PageContainer>
-							</PrivateRoute>
-						</>
-					)}
+							{/*When user is not logged in*/}
+							{!loggedUser.user && (
+								<>
+									<Route exact path='/signin'>
+										<PageContainer>
+											<Login isLogin={true} />
+										</PageContainer>
+									</Route>
+									<Route exact path='/signup'>
+										<PageContainer>
+											<Login isLogin={false} />
+										</PageContainer>
+									</Route>
+								</>
+							)}
+							{/*When user is logged in*/}
+							{loggedUser.user && (
+								<>
+									<PrivateRoute exact path='/profile'>
+										<PageContainer>
+											<Profile />
+										</PageContainer>
+									</PrivateRoute>
+									<PrivateRoute exact path='/source'>
+										<PageContainer>
+											<Source />
+										</PageContainer>
+									</PrivateRoute>
+									<PrivateRoute exact path='/template'>
+										<PageContainer>
+											<Template />
+										</PageContainer>
+									</PrivateRoute>
+								</>
+							)}
 
-					{/*Fullscreen content*/}
-					<AdminRoute path='/admin'>
-						<AdminPanel></AdminPanel>
-					</AdminRoute>
+							{/*Fullscreen content*/}
+							<AdminRoute path='/admin'>
+								<AdminPanel></AdminPanel>
+							</AdminRoute>
+						</>
+					</Switch>
+
+					<AuthVerify logOut={logoutHandler} />
 				</>
-			</Switch>
-
-			<AuthVerify logOut={logoutHandler} />
+			) : (
+				<div className='min-h-screen min-w-full bg-gray-800 flex justify-center items-center space-x-3'>
+					<div className='w-8 h-8 bg-white rounded-full animate-bounce'></div>
+					<div className='w-8 h-8 bg-white rounded-full animate-bounce animation-delay-500'></div>
+					<div className='w-8 h-8 bg-white rounded-full animate-bounce animation-delay-750'></div>
+				</div>
+			)}
 		</>
 	);
 }

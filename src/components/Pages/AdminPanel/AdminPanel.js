@@ -13,7 +13,6 @@ const AdminPanel = () => {
 			<Sidebar>
 				<SidebarLinks sidebarName='Admin panel'>
 					<SidebarLinkItem link={`${url}/users`} text='Users'>
-						{/*TODO import react icons library*/}
 						<svg
 							width='20'
 							height='20'
@@ -40,11 +39,11 @@ const AdminPanel = () => {
 				</SidebarLinks>
 			</Sidebar>
 			<Switch>
-				<Route path={`${path}/users`}>
-					<AdminPanelUsers></AdminPanelUsers>
-				</Route>
-				<Route path={`${path}/groups`}>
+				<Route exact path={`${path}/groups`}>
 					<AdminPanelGroups></AdminPanelGroups>
+				</Route>
+				<Route exact path={`${path}/users`}>
+					<AdminPanelUsers></AdminPanelUsers>
 				</Route>
 			</Switch>
 		</div>

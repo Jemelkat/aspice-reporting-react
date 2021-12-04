@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import Button from "../../UI/Button";
 import Table from "../../UI/Table/Table";
 import Title from "../../UI/Title";
@@ -31,8 +31,16 @@ const Source = () => {
 				accessor: "sourceName",
 			},
 			{
+				Header: "Created at",
+				accessor: "sourceCreated",
+			},
+			{
+				Header: "Last updated",
+				accessor: "sourceLastUpdated",
+			},
+			{
 				Header: "Actions",
-				Cell: ({ cell }) => <Button text='Actions'></Button>,
+				Cell: ({ row }) => <Button text='Actions'></Button>,
 			},
 		],
 		[]
@@ -48,8 +56,6 @@ const Source = () => {
 	};
 
 	const onDrop = useCallback((acceptedFiles) => {
-		console.log("Updating");
-		console.log(acceptedFiles);
 		upload(acceptedFiles);
 	}, []);
 
@@ -68,10 +74,13 @@ const Source = () => {
 		setProgress(0);
 
 		uploadSource(acceptedFiles, (event) => {
+			//TODO: ADD LOADER
 			setProgress(Math.round((100 * event.loaded) / event.total));
 		})
 			.then((response) => {
+				//Get all sources after upload
 				refetch();
+				//Close dropwindow
 				setIsOpen(false);
 			})
 
@@ -105,11 +114,6 @@ const Source = () => {
 					<p>Drag 'n' drop file here,</p>
 					<p>or click to select file</p>
 				</div>
-				<aside>
-					<h4>Files</h4>
-					<ul>{files}</ul>
-				</aside>
-				<p>Progress: {progress}</p>
 			</MyDialog>
 		</>
 	);

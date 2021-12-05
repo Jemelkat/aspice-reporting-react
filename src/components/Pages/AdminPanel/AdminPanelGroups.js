@@ -7,34 +7,45 @@ import TableMenuItem from "../../UI/Table/TableMenuItem";
 import MyDialog from "../../UI/Dialog/MyDialog";
 import FormGroups from "./FormGroups";
 
-const API_URL = "http://localhost:8080/admin/getAllGroups";
+const API_URL = "http://localhost:8080";
 
 class Group {
 	constructor(groupData) {
 		this.id = groupData.id;
 		this.name = groupData.groupName;
+		this.users = groupData.users;
 		this.numberOfUsers = groupData.users.length;
 	}
 }
 
 const ACTIONS = {
 	EDIT: "edit",
-	ADD: "add",
 	REMOVE: "delete",
 	NONE: "none",
 };
 
 const AdminPanelGroups = () => {
-	const [{ data, loading, error }, refetch] = useAxios(API_URL, {
-		useCache: false,
-	});
-	const [isOpen, setIsOpen] = useState(false);
+	//Fetch group data
+	const [{ data, loading, error }, refetch] = useAxios(
+		API_URL + "/admin/getAllGroups",
+		{
+			useCache: false,
+		}
+	);
+	//Delete
+	const [{ deleteData, deleteLoading, deleteError }, executeDelete] = useAxios(
+		{
+			url: API_URL + "/group/delete",
+			method: "POST",
+		},
+		{ manual: true }
+	);
+
 	const [action, setAction] = useState(ACTIONS.NONE);
 	const [showForm, setShowForm] = useState(false);
 	const [selectedGroup, setSelectedGroup] = useState({});
 
-	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-
+	//Create columns
 	const columns = useMemo(
 		() => [
 			{
@@ -53,15 +64,6 @@ const AdminPanelGroups = () => {
 				Header: "Actions",
 				Cell: ({ row }) => (
 					<TableMenuButton buttonText='Action'>
-						<TableMenuItem
-							key='1'
-							id='addUserToGroupButton'
-							onClickAction={(e) => {
-								handleActions(e);
-								setSelectedGroup(row.original);
-							}}
-							itemText='Add to group'
-						></TableMenuItem>
 						<TableMenuItem
 							key='2'
 							id='userEditButton'
@@ -88,6 +90,7 @@ const AdminPanelGroups = () => {
 		[]
 	);
 
+	//Format loaded data for table
 	const parseGroupData = (groupData) => {
 		let groupArray = [];
 		if (groupData)
@@ -95,7 +98,7 @@ const AdminPanelGroups = () => {
 		return groupArray;
 	};
 
-	//Check what kind of button was clicked to create correct modal form
+	//Check what kind of button was clicked
 	const handleActions = (e) => {
 		e.preventDefault();
 		switch (e.target.id) {
@@ -111,38 +114,15 @@ const AdminPanelGroups = () => {
 			default:
 				break;
 		}
-		setIsOpen(true);
 		setShowForm(true);
 	};
 
-	//Renders different forms in modal
-	const renderModalHandler = () => {
-		switch (action) {
-			case ACTIONS.EDIT:
-				return (
-					<form>
-						EDIT FORM
-						<Button text='Save' onClick={() => setIsConfirmOpen(true)}></Button>
-					</form>
-				);
-			case ACTIONS.ADD:
-				return <form>ADD FORM</form>;
-			case ACTIONS.REMOVE:
-				return <form>DELETE FORM</form>;
-			default:
-				return <>NIC</>;
-		}
-	};
-
-	const formCancelHandler = () => {
-		setShowForm(false);
-	};
-
+	//Render form based on action
 	const renderForms = (action) => {
 		switch (action) {
 			case ACTIONS.EDIT:
 				return (
-					<MyDialog isOpen={isOpen} setIsOpen={setIsOpen}>
+					<MyDialog isOpen={showForm} setIsOpen={setShowForm}>
 						<FormGroups
 							data={selectedGroup}
 							onCancel={formCancelHandler}
@@ -150,10 +130,35 @@ const AdminPanelGroups = () => {
 					</MyDialog>
 				);
 			case ACTIONS.REMOVE:
-				return <form>DELETE FORM</form>;
+				return (
+					<MyDialog
+						title='Do you want to delete group?'
+						isOpen={showForm}
+						setIsOpen={setShowForm}
+					>
+						<div className='flex flex-row items-center justify-evenly'>
+							<Button text='Yes' onClick={() => groupDeleteHandler()}></Button>
+							<Button text='Cancel' onClick={() => setShowForm(false)}></Button>
+						</div>
+					</MyDialog>
+				);
 			default:
-				return <>NIC</>;
+				return <></>;
 		}
+	};
+
+	//Hide form handler
+	const formCancelHandler = () => {
+		setShowForm(false);
+	};
+
+	const groupDeleteHandler = () => {
+		debugger;
+		executeDelete({
+			params: {
+				id: selectedGroup.id,
+			},
+		}).then(refetch());
 	};
 
 	return (
@@ -163,23 +168,7 @@ const AdminPanelGroups = () => {
 				data={parseGroupData(data)}
 				isLoading={loading}
 			/>
-			{/*<MyDialog isOpen={isOpen} setIsOpen={setIsOpen}>
-				{isOpen ? renderModalHandler() : <></>}
-				<MyDialog
-					title='Do you want to save changes?'
-					isOpen={isConfirmOpen}
-					setIsOpen={setIsConfirmOpen}
-				>
-					<div className='flex flex-row items-center justify-evenly'>
-						<Button text='Yes'></Button>
-						<Button
-							text='Cancel'
-							onClick={() => setIsConfirmOpen(false)}
-						></Button>
-					</div>
-				</MyDialog>
-			</MyDialog>
-*/}
+			{/*Render forms if they need to be shown */}
 			{showForm && renderForms(action)}
 		</div>
 	);

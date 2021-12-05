@@ -1,15 +1,41 @@
-import { useField } from "formik";
+import React from "react";
+import Select from "react-select";
 
-const FormSelect = ({ label, ...props }) => {
-	// useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
-	// which we can spread on <input> and alse replace ErrorMessage entirely.
-	const [field, meta] = useField(props);
+export const FormSelect = ({
+	className,
+	placeholder,
+	field,
+	form,
+	options,
+	isMulti = false,
+}) => {
+	const onChange = (option) => {
+		form.setFieldValue(
+			field.name,
+			isMulti ? option.map((item) => item.value) : option.value
+		);
+	};
+
+	const getValue = () => {
+		if (options) {
+			return isMulti
+				? options.filter((option) => field.value.indexOf(option.value) >= 0)
+				: options.find((option) => option.value === field.value);
+		} else {
+			return isMulti ? [] : "";
+		}
+	};
+
 	return (
-		<>
-			<label htmlFor={props.id || props.name}>{label}</label>
-			<select className='border-2' {...field} {...props} />
-			{meta.touched && meta.error ? <span>{meta.error}</span> : null}
-		</>
+		<Select
+			className={className}
+			name={field.name}
+			value={getValue()}
+			onChange={onChange}
+			placeholder={placeholder}
+			options={options}
+			isMulti={isMulti}
+		/>
 	);
 };
 

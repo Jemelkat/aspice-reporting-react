@@ -18,6 +18,7 @@ import Profile from "./components/Pages/Profile/Profile";
 import axiosAuthInterceptor from "./helpers/AxiosHelper";
 import Template from "./components/Pages/Template/Template";
 import MyDialog from "./components/UI/Dialog/MyDialog";
+import Report from "./components/Pages/Report/Report";
 
 function App() {
 	const { loggedUser, removeLoggedUser } = useContext(AuthContext);
@@ -70,6 +71,11 @@ function App() {
 									<PrivateRoute exact path='/template'>
 										<PageContainer>
 											<Template />
+										</PageContainer>
+									</PrivateRoute>
+									<PrivateRoute exact path='/report'>
+										<PageContainer>
+											<Report />
 										</PageContainer>
 									</PrivateRoute>
 								</>

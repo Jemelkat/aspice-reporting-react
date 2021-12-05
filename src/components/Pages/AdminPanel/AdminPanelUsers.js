@@ -6,8 +6,9 @@ import TableMenuButton from "../../UI/Table/TableMenuButton";
 import TableMenuItem from "../../UI/Table/TableMenuItem";
 import FormEditUser from "./FormEditUser";
 import MyDialog from "../../UI/Dialog/MyDialog";
+import Button from "../../UI/Button";
 
-const API_URL = "http://localhost:8080/admin/getAllUsers";
+const API_URL = "http://localhost:8080";
 
 class User {
 	constructor(userData) {
@@ -29,9 +30,21 @@ const ACTIONS = {
 };
 
 const AdminPanelUsers = () => {
-	const [{ data, loading, error }, refetch] = useAxios(API_URL, {
-		useCache: false,
-	});
+	const [{ data, loading, error }, refetch] = useAxios(
+		API_URL + "/admin/getAllUsers",
+		{
+			useCache: false,
+		}
+	);
+
+	//Delete
+	const [{ deleteData, deleteLoading, deleteError }, executeDelete] = useAxios(
+		{
+			url: API_URL + "/user/delete",
+			method: "POST",
+		},
+		{ manual: true }
+	);
 	const [isOpen, setIsOpen] = useState(false);
 	const [action, setAction] = useState(ACTIONS.NONE);
 	const [showForm, setShowForm] = useState(false);
@@ -60,15 +73,6 @@ const AdminPanelUsers = () => {
 				Cell: ({ row }) => {
 					return (
 						<TableMenuButton key='1' buttonText='Actions'>
-							<TableMenuItem
-								key='1'
-								id='addUserToGroupButton'
-								onClickAction={(e) => {
-									handleActions(e);
-									setSelectedUser(row.original);
-								}}
-								itemText='Add to group'
-							></TableMenuItem>
 							<TableMenuItem
 								key='2'
 								id='userEditButton'
@@ -100,9 +104,6 @@ const AdminPanelUsers = () => {
 	const handleActions = (e) => {
 		e.preventDefault();
 		switch (e.target.id) {
-			case "addUserToGroupButton":
-				setAction(ACTIONS.ADD);
-				break;
 			case "userDeleteButton":
 				setAction(ACTIONS.REMOVE);
 				break;
@@ -134,7 +135,18 @@ const AdminPanelUsers = () => {
 					</MyDialog>
 				);
 			case ACTIONS.REMOVE:
-				return <form>DELETE FORM</form>;
+				return (
+					<MyDialog
+						title={`Do you really want to remove user ${selectedUser.username}?`}
+						isOpen={showForm}
+						setIsOpen={setShowForm}
+					>
+						<div className='flex flex-row items-center justify-evenly'>
+							<Button text='Yes' onClick={() => userDeleteHandler()}></Button>
+							<Button text='Cancel' onClick={() => setShowForm(false)}></Button>
+						</div>
+					</MyDialog>
+				);
 			default:
 				return <>NIC</>;
 		}
@@ -142,6 +154,18 @@ const AdminPanelUsers = () => {
 
 	const formCancelHandler = () => {
 		setShowForm(false);
+	};
+
+	const userDeleteHandler = () => {
+		executeDelete({
+			params: {
+				id: selectedUser.id,
+			},
+		}).then((e) => {
+			console.log(e);
+			setShowForm(false);
+			refetch();
+		});
 	};
 
 	return (

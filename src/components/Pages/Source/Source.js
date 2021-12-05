@@ -19,7 +19,9 @@ class SourceObject {
 const Source = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [progress, setProgress] = useState(0);
-	const [{ data, loading, error }, refetch] = useAxios(API_URL);
+	const [{ data, loading, error }, refetch] = useAxios(API_URL, {
+		useCache: false,
+	});
 	const columns = useMemo(
 		() => [
 			{

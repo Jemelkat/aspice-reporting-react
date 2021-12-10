@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
 import Button from "../../UI/Button";
 import Table from "../../UI/Table/Table";
-import useAxios from "axios-hooks";
 import TableMenuButton from "../../UI/Table/TableMenuButton";
 import TableMenuItem from "../../UI/Table/TableMenuItem";
 import MyDialog from "../../UI/Dialog/MyDialog";
 import FormGroups from "./FormGroups";
+import { useAxios } from "../../../helpers/AxiosHelper";
 
 const API_URL = "http://localhost:8080";
 
@@ -63,26 +63,28 @@ const AdminPanelGroups = () => {
 			{
 				Header: "Actions",
 				Cell: ({ row }) => (
-					<TableMenuButton buttonText='Action'>
+					<TableMenuButton buttonText='Actions'>
 						<TableMenuItem
-							key='2'
+							key='1'
 							id='userEditButton'
 							onClickAction={(e) => {
 								handleActions(e);
 								setSelectedGroup(row.original);
 							}}
-							itemText='Edit'
-						></TableMenuItem>
+						>
+							Edit
+						</TableMenuItem>
 						<TableMenuItem
-							key='3'
+							key='2'
 							id='userDeleteButton'
 							addClasses='text-red-800'
 							onClickAction={(e) => {
 								handleActions(e);
 								setSelectedGroup(row.original);
 							}}
-							itemText='Delete'
-						></TableMenuItem>
+						>
+							Delete
+						</TableMenuItem>
 					</TableMenuButton>
 				),
 			},
@@ -126,6 +128,7 @@ const AdminPanelGroups = () => {
 						<FormGroups
 							data={selectedGroup}
 							onCancel={formCancelHandler}
+							onSuccess={refetch}
 						></FormGroups>
 					</MyDialog>
 				);
@@ -137,8 +140,8 @@ const AdminPanelGroups = () => {
 						setIsOpen={setShowForm}
 					>
 						<div className='flex flex-row items-center justify-evenly'>
-							<Button text='Yes' onClick={() => groupDeleteHandler()}></Button>
-							<Button text='Cancel' onClick={() => setShowForm(false)}></Button>
+							<Button onClick={() => groupDeleteHandler()}>Yes</Button>
+							<Button onClick={() => setShowForm(false)}>Cancel</Button>
 						</div>
 					</MyDialog>
 				);
@@ -153,12 +156,14 @@ const AdminPanelGroups = () => {
 	};
 
 	const groupDeleteHandler = () => {
-		debugger;
 		executeDelete({
 			params: {
 				id: selectedGroup.id,
 			},
-		}).then(refetch());
+		}).then(() => {
+			refetch();
+			setShowForm(false);
+		});
 	};
 
 	return (

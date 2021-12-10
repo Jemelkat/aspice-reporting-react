@@ -2,22 +2,19 @@ import { Formik, Form, Field } from "formik";
 import FormInput from "../../UI/Form/FormInput";
 import FormSelect from "../../UI/Form/FormSelect";
 import * as Yup from "yup";
-import useAxios from "axios-hooks";
-import axios from "axios";
 import FormHidden from "../../UI/Form/FormHidden";
 import { useEffect } from "react/cjs/react.development";
 import Select from "react-select";
 import CustomSelect from "../../UI/Form/FormSelect";
 import { useState } from "react";
-
-const API_URL = "http://localhost:8080";
+import { useAxios } from "../../../helpers/AxiosHelper";
 
 const FormGroups = (props) => {
 	const [usersDataSelect, setUsersDataSelect] = useState([]);
 	//Get select users values
 	const [{ usersData, usersLoading, usersError }, refetchUsers] = useAxios(
 		{
-			url: API_URL + "/admin/getAllUsers",
+			url: "/admin/getAllUsers",
 			method: "GET",
 		},
 		{
@@ -32,7 +29,7 @@ const FormGroups = (props) => {
 		executePost,
 	] = useAxios(
 		{
-			url: API_URL + "/group/create",
+			url: "/group/create",
 			method: "POST",
 		},
 		{ manual: true }
@@ -54,7 +51,10 @@ const FormGroups = (props) => {
 				groupName: data.groupName,
 				users: usersData,
 			},
-		}).then(props.onCancel);
+		}).then(() => {
+			props.onCancel();
+			props.onSuccess();
+		});
 	}
 
 	//Parse users to value:"", label:""

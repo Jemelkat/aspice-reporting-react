@@ -11,7 +11,7 @@ const TableMenuItem = (props) => {
 					} group flex rounded-md items-center w-full px-2 py-2 text-sm`}
 					onClick={props.onClickAction}
 				>
-					{props.itemText}
+					{props.children}
 				</button>
 			)}
 		</Menu.Item>

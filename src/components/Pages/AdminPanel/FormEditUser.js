@@ -2,12 +2,9 @@ import { Formik, Form } from "formik";
 import FormInput from "../../UI/Form/FormInput";
 import FormSelect from "../../UI/Form/FormSelect";
 import * as Yup from "yup";
-import useAxios from "axios-hooks";
-import axios from "axios";
 import FormHidden from "../../UI/Form/FormHidden";
 import { useEffect } from "react/cjs/react.development";
-
-const API_URL = "http://localhost:8080/user/edit";
+import { useAxios } from "../../../helpers/AxiosHelper";
 
 const FormEditUser = (props) => {
 	const [
@@ -15,7 +12,7 @@ const FormEditUser = (props) => {
 		executePost,
 	] = useAxios(
 		{
-			url: API_URL,
+			url: "/user/edit",
 			method: "POST",
 		},
 		{ manual: true }

@@ -15,9 +15,7 @@ import AdminRoute from "./routes/AdminRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import AdminPanel from "./components/Pages/AdminPanel/AdminPanel";
 import Profile from "./components/Pages/Profile/Profile";
-import axiosAuthInterceptor from "./helpers/AxiosHelper";
 import Template from "./components/Pages/Template/Template";
-import MyDialog from "./components/UI/Dialog/MyDialog";
 import Report from "./components/Pages/Report/Report";
 
 function App() {
@@ -43,40 +41,32 @@ function App() {
 							{/*When user is not logged in*/}
 							{!loggedUser.user && (
 								<>
-									<Route exact path='/signin'>
-										<PageContainer>
-											<Login isLogin={true} />
-										</PageContainer>
+									<Route path='/signin'>
+										<Login isLogin={true} />
 									</Route>
-									<Route exact path='/signup'>
-										<PageContainer>
-											<Login isLogin={false} />
-										</PageContainer>
+									<Route path='/signup'>
+										<Login isLogin={false} />
 									</Route>
 								</>
 							)}
 							{/*When user is logged in*/}
 							{loggedUser.user && (
 								<>
-									<PrivateRoute exact path='/profile'>
+									<PrivateRoute path='/profile'>
 										<PageContainer>
 											<Profile />
 										</PageContainer>
 									</PrivateRoute>
-									<PrivateRoute exact path='/source'>
+									<PrivateRoute path='/source'>
 										<PageContainer>
 											<Source />
 										</PageContainer>
 									</PrivateRoute>
-									<PrivateRoute exact path='/template'>
-										<PageContainer>
-											<Template />
-										</PageContainer>
+									<PrivateRoute path='/template'>
+										<Template />
 									</PrivateRoute>
-									<PrivateRoute exact path='/report'>
-										<PageContainer>
-											<Report />
-										</PageContainer>
+									<PrivateRoute path='/report'>
+										<Report />
 									</PrivateRoute>
 								</>
 							)}

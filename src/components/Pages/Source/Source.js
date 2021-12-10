@@ -4,22 +4,22 @@ import Table from "../../UI/Table/Table";
 import Title from "../../UI/Title";
 import { uploadSource } from "../../../helpers/UploadHelper";
 import { useDropzone } from "react-dropzone";
-import useAxios from "axios-hooks";
 import MyDialog from "../../UI/Dialog/MyDialog";
-
-const API_URL = "http://localhost:8080/source/getAll";
+import { useAxios } from "../../../helpers/AxiosHelper";
 
 class SourceObject {
 	constructor(source) {
-		this.id = source.id;
+		this.id = source.sourceId;
 		this.sourceName = source.sourceName;
+		this.sourceCreated = source.sourceCreated;
+		this.sourceLastUpdated = source.sourceLastUpdated;
 	}
 }
 
 const Source = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [progress, setProgress] = useState(0);
-	const [{ data, loading, error }, refetch] = useAxios(API_URL, {
+	const [{ data, loading, error }, refetch] = useAxios("/source/getAll", {
 		useCache: false,
 	});
 	const columns = useMemo(
@@ -42,7 +42,7 @@ const Source = () => {
 			},
 			{
 				Header: "Actions",
-				Cell: ({ row }) => <Button text='Actions'></Button>,
+				Cell: ({ row }) => <Button>Actions</Button>,
 			},
 		],
 		[]
@@ -95,8 +95,10 @@ const Source = () => {
 		<>
 			<Title text='Sources'></Title>
 			<div className='flex justify-end px-2 py-4'>
-				<Button text='Add source' onClick={() => setIsOpen(true)}></Button>
-				<Button text='Refresh data' onClick={refetch}></Button>
+				<Button className='mr-2' onClick={() => setIsOpen(true)}>
+					Add source
+				</Button>
+				<Button onClick={refetch}>Refresh data</Button>
 			</div>
 			<div className='flex-grow py-2 px-2 min-w-min flex items-start'>
 				<Table

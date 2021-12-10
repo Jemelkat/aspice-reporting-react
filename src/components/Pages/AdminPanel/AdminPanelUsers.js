@@ -1,14 +1,12 @@
 import { useMemo, useState } from "react";
 
 import Table from "../../UI/Table/Table";
-import useAxios from "axios-hooks";
 import TableMenuButton from "../../UI/Table/TableMenuButton";
 import TableMenuItem from "../../UI/Table/TableMenuItem";
 import FormEditUser from "./FormEditUser";
 import MyDialog from "../../UI/Dialog/MyDialog";
 import Button from "../../UI/Button";
-
-const API_URL = "http://localhost:8080";
+import { useAxios } from "../../../helpers/AxiosHelper";
 
 class User {
 	constructor(userData) {
@@ -30,17 +28,14 @@ const ACTIONS = {
 };
 
 const AdminPanelUsers = () => {
-	const [{ data, loading, error }, refetch] = useAxios(
-		API_URL + "/admin/getAllUsers",
-		{
-			useCache: false,
-		}
-	);
+	const [{ data, loading, error }, refetch] = useAxios("/admin/getAllUsers", {
+		useCache: false,
+	});
 
 	//Delete
 	const [{ deleteData, deleteLoading, deleteError }, executeDelete] = useAxios(
 		{
-			url: API_URL + "/user/delete",
+			url: "/user/delete",
 			method: "POST",
 		},
 		{ manual: true }
@@ -80,8 +75,9 @@ const AdminPanelUsers = () => {
 									handleActions(e);
 									setSelectedUser(row.original);
 								}}
-								itemText='Edit'
-							></TableMenuItem>
+							>
+								Edit
+							</TableMenuItem>
 							<TableMenuItem
 								key='3'
 								id='userDeleteButton'
@@ -90,8 +86,9 @@ const AdminPanelUsers = () => {
 									handleActions(e);
 									setSelectedUser(row.original);
 								}}
-								itemText='Delete'
-							></TableMenuItem>
+							>
+								Delete
+							</TableMenuItem>
 						</TableMenuButton>
 					);
 				},

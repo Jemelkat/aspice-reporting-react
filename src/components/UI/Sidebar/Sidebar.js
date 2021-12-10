@@ -1,7 +1,9 @@
 const Sidebar = (props) => {
 	return (
-		<div className='h-screen min-h-screen block shadow-lg w-64'>
-			<div className='bg-white h-full'>{props.children}</div>
+		<div
+			className={`${props.className} h-screen min-h-screen shadow-lg w-64 hidden lg:block`}
+		>
+			<div>{props.children}</div>
 		</div>
 	);
 };

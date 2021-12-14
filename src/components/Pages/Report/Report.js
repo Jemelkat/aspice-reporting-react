@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Route, Switch, useRouteMatch } from "react-router";
 import PageContainer from "../../UI/PageContainer";
 import ReportCreate from "./ReportCreate";
@@ -5,17 +6,24 @@ import ReportTable from "./ReportTable";
 
 const Report = () => {
 	const { url, path } = useRouteMatch();
+	const [mode, setMode] = useState("create");
+	const [selectedId, setSelectedId] = useState(null);
+
+	const changeModeHandler = (value, id) => {
+		setMode(value);
+		setSelectedId(id);
+	};
 
 	return (
 		<>
 			<Switch>
 				<Route exact path={path}>
 					<PageContainer>
-						<ReportTable></ReportTable>
+						<ReportTable onModeChange={changeModeHandler}></ReportTable>
 					</PageContainer>
 				</Route>
 				<Route path={`${path}/create`}>
-					<ReportCreate></ReportCreate>
+					<ReportCreate mode={mode} reportId={selectedId}></ReportCreate>
 				</Route>
 			</Switch>
 		</>

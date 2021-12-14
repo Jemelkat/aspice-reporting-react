@@ -9,6 +9,7 @@ import FormHidden from "../../UI/Form/FormHidden";
 import FormInput from "../../UI/Form/FormInput";
 import { axiosInstance, useAxios } from "../../../helpers/AxiosHelper";
 import { useHistory } from "react-router";
+import Loader from "../../UI/Loader/Loader";
 
 const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
@@ -30,6 +31,7 @@ class Item {
 const TemplateCreate = (props) => {
 	//Stores all components currently on canvas
 	const [components, setComponents] = useState([]);
+	const [selectedComponent, setSelectedComponent] = useState(null);
 	const history = useHistory();
 	const [{ data, loading, error }, fetchData] = useAxios(
 		{
@@ -101,6 +103,11 @@ const TemplateCreate = (props) => {
 			components.find((item) => item.itemId === id),
 			{ x: x, y: y }
 		);
+	};
+
+	const selectComponentHandler = (id) => {
+		debugger;
+		setSelectedComponent(id);
 	};
 
 	useEffect(() => {
@@ -191,6 +198,7 @@ const TemplateCreate = (props) => {
 										key={i.itemId}
 										item={i}
 										onMove={moveItemHandler}
+										onSelect={selectComponentHandler}
 									></RndCanvasItem>
 								);
 							})}
@@ -201,6 +209,12 @@ const TemplateCreate = (props) => {
 						<div className='flex justify-end h-screen sticky top-0'>
 							<Sidebar className='bg-gray-300'>
 								<SidebarLinks sidebarName='Edit selected component'></SidebarLinks>
+								{selectedComponent &&
+									Object.keys(selectedComponent).map((visit, index) => (
+										<div key={index}>
+											{visit} : {selectedComponent[visit]}
+										</div>
+									))}
 							</Sidebar>
 						</div>
 					</div>

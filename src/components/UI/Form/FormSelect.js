@@ -8,6 +8,7 @@ export const FormSelect = ({
 	form,
 	options,
 	isMulti = false,
+	isLoading = false,
 }) => {
 	const onChange = (option) => {
 		form.setFieldValue(
@@ -35,6 +36,7 @@ export const FormSelect = ({
 			placeholder={placeholder}
 			options={options}
 			isMulti={isMulti}
+			isLoading={isLoading}
 		/>
 	);
 };

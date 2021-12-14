@@ -33,6 +33,7 @@ const RndCanvasItem = (props) => {
 				setItem({ ...item, x: data.x, y: data.y });
 				props.onMove(item.id, data.x, data.y);
 			}}
+			onClick={() => props.onSelect(item)}
 		>
 			<div className='flex w-full h-full justify-center items-center bg-gray-100 border-2 shadow-lg rounded-sm border-gray-300'>
 				{item.type}

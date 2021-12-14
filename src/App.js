@@ -17,6 +17,8 @@ import AdminPanel from "./components/Pages/AdminPanel/AdminPanel";
 import Profile from "./components/Pages/Profile/Profile";
 import Template from "./components/Pages/Template/Template";
 import Report from "./components/Pages/Report/Report";
+import DashBoard from "./components/Pages/DashBoard/Dashboard";
+import Loader from "./components/UI/Loader/Loader";
 
 function App() {
 	const { loggedUser, removeLoggedUser } = useContext(AuthContext);
@@ -52,6 +54,11 @@ function App() {
 							{/*When user is logged in*/}
 							{loggedUser.user && (
 								<>
+									<PrivateRoute path='/dashboard'>
+										<PageContainer>
+											<DashBoard />
+										</PageContainer>
+									</PrivateRoute>
 									<PrivateRoute path='/profile'>
 										<PageContainer>
 											<Profile />

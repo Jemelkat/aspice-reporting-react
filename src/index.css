@@ -18,15 +18,15 @@ code {
 
 @layer utilities {
 	.animation-delay-250 {
-		-webkit-animation-delay: 250ms;
-		animation-delay: 250ms;
+		-webkit-animation-delay: 250ms !important;
+		animation-delay: 250ms !important;
 	}
 	.animation-delay-500 {
-		-webkit-animation-delay: 500ms;
-		animation-delay: 500ms;
+		-webkit-animation-delay: 500ms !important;
+		animation-delay: 500ms !important;
 	}
-	.animation-delay-500 {
-		-webkit-animation-delay: 750ms;
-		animation-delay: 750ms;
+	.animation-delay-750 {
+		-webkit-animation-delay: 750ms !important;
+		animation-delay: 750ms !important;
 	}
 }

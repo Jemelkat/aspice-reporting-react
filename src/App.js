@@ -88,11 +88,7 @@ function App() {
 					<AuthVerify logOut={logoutHandler} />
 				</>
 			) : (
-				<div className='min-h-screen min-w-full bg-gray-800 flex justify-center items-center space-x-3'>
-					<div className='w-8 h-8 bg-white rounded-full animate-bounce'></div>
-					<div className='w-8 h-8 bg-white rounded-full animate-bounce animation-delay-500'></div>
-					<div className='w-8 h-8 bg-white rounded-full animate-bounce animation-delay-750'></div>
-				</div>
+				<Loader fullscreen={true} dark={true}></Loader>
 			)}
 		</>
 	);

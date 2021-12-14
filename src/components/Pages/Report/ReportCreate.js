@@ -170,6 +170,7 @@ const ReportCreate = ({ mode, reportId }) => {
 			{reportLoading && mode === "edit" ? (
 				/**TODO ADJUST TO MIDDLE */
 				<div className='flex items-center justify-center flex-grow'>
+					<Loader fullscreen={false} dark={false}></Loader>
 				</div>
 			) : (
 				<div className='flex'>

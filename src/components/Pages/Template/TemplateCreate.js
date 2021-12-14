@@ -126,7 +126,10 @@ const TemplateCreate = (props) => {
 	return (
 		<>
 			{loading && props.mode === "edit" ? (
-				<div>LOADING...</div>
+				/**TODO ADJUST TO MIDDLE */
+				<div className='flex flex-grow justify-center items-center'>
+					<Loader fullscreen={false} dark={false}></Loader>
+				</div>
 			) : (
 				<div className='flex'>
 					{/*Left sidebar */}

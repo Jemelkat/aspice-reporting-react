@@ -34,6 +34,7 @@ function Nav() {
 							<NavPrimaryItem text='Home' link='/' />
 							{loggedUser.user && (
 								<>
+									<NavPrimaryItem text='Dashboard' link='/dashboard' />
 									<NavPrimaryItem text='Source' link='/source' />
 									<NavPrimaryItem text='Template' link='/template' />
 									<NavPrimaryItem text='Report' link='/report' />
@@ -86,6 +87,7 @@ function Nav() {
 				)}
 				{loggedUser.user && (
 					<>
+						<NavColapsedItem text='Dashboard' link='/dashboard' />
 						<NavColapsedItem text='Source' link='/source' />
 						<NavColapsedItem text='Template' link='/template' />
 						<NavColapsedItem text='Report' link='/report' />

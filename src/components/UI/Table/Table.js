@@ -1,26 +1,40 @@
-import { useTable } from "react-table";
+import { useSortBy, useTable } from "react-table";
 
-function Table({ columns, data, isLoading }) {
+function Table({ columns, data, isLoading, initSortColumn }) {
 	// Use the state and functions returned from useTable to build your UI
 	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-		useTable({
-			columns,
-			data,
-		});
+		useTable(
+			{
+				columns,
+				data,
+				initialState: {
+					sortBy: [
+						{
+							id: initSortColumn,
+							desc: false,
+						},
+					],
+				},
+			},
+			useSortBy
+		);
 
 	// Render the UI for your table
 	return (
-		<table {...getTableProps()} className='shadow-xl rounded-lg flex-grow'>
+		<table {...getTableProps()} className='flex-grow rounded-lg shadow-xl'>
 			<thead className='bg-gray-800'>
 				{headerGroups.map((headerGroup) => (
 					<tr key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
 						{headerGroup.headers.map((column) => (
 							<th
-								{...column.getHeaderProps()}
+								{...column.getHeaderProps(column.getSortByToggleProps())}
 								scope='col'
-								className=' text-white px-2 py-4 text-left text-xs font-medium uppercase tracking-wider'
+								className='px-2 py-4 text-xs font-medium tracking-wider text-left text-white uppercase '
 							>
 								{column.render("Header")}
+								<span>
+									{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
+								</span>
 							</th>
 						))}
 					</tr>
@@ -34,11 +48,11 @@ function Table({ columns, data, isLoading }) {
 					? [...Array(4)].map((e, i) => (
 							<tr
 								key={i}
-								className='ease-in-out transform transition duration-1000'
+								className='transition duration-1000 ease-in-out transform'
 							>
 								{headerGroups[0].headers.map((cell) => (
-									<td className='py-2 px-2'>
-										<span className='rounded-lg flex  py-5 bg-gray-300 animate-pulse'></span>
+									<td className='px-2 py-2'>
+										<span className='flex py-5 bg-gray-300 rounded-lg animate-pulse'></span>
 									</td>
 								))}
 							</tr>

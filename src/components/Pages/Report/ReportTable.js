@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAxios } from "../../../helpers/AxiosHelper";
 import Button from "../../UI/Button";
@@ -13,6 +13,7 @@ class ReportObject {
 		this.id = data.reportId;
 		this.reportName = data.reportName;
 		this.reportCreated = data.reportCreated;
+		this.reportUpdated = data.reportLastUpdated;
 		this.reportTemplateName = data.reportTemplateName;
 		this.reportShared = data.reportShared;
 	}
@@ -44,6 +45,10 @@ const ReportTable = (props) => {
 				accessor: "reportCreated",
 			},
 			{
+				Header: "Last updated",
+				accessor: "reportUpdated",
+			},
+			{
 				Header: "Shared with group",
 				accessor: "reportShared",
 			},
@@ -54,7 +59,6 @@ const ReportTable = (props) => {
 						<Link
 							to={`${url}/create`}
 							onClick={() => {
-								debugger;
 								props.onModeChange("edit", row.original.id);
 							}}
 						>
@@ -80,23 +84,50 @@ const ReportTable = (props) => {
 		[]
 	);
 
+	const initialState = useMemo(
+		() => [
+			{
+				sortBy: [
+					{
+						id: "reportCreated",
+						desc: false,
+					},
+				],
+			},
+		],
+		[]
+	);
+
 	const parseData = (data) => {
 		let objectArray = [];
 		if (data) data.forEach((item) => objectArray.push(new ReportObject(item)));
 		return objectArray;
 	};
 
+	useEffect(() => {
+		props.onModeChange("create", null);
+	}, []);
+
 	return (
 		<>
 			<Title text='Reports'></Title>
 			<div className='flex justify-end px-2 py-4'>
 				<Link to={`${url}/create`}>
-					<Button className='mr-2'>Create new report</Button>
+					<Button className='mr-2' dark={true}>
+						Create new report
+					</Button>
 				</Link>
-				<Button onClick={refetch}>Refresh data</Button>
+				<Button onClick={refetch} dark={true}>
+					Refresh data
+				</Button>
 			</div>
 			<div className='flex items-start flex-grow px-2 py-2 min-w-min'>
-				<Table columns={columns} data={parseData(data)} isLoading={loading} />
+				<Table
+					columns={columns}
+					data={parseData(data)}
+					isLoading={loading}
+					initSortColumn={"id"}
+				/>
 			</div>
 		</>
 	);

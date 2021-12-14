@@ -42,7 +42,7 @@ const Source = () => {
 			},
 			{
 				Header: "Actions",
-				Cell: ({ row }) => <Button>Actions</Button>,
+				Cell: ({ row }) => <Button dark={true}>Actions</Button>,
 			},
 		],
 		[]
@@ -95,16 +95,19 @@ const Source = () => {
 		<>
 			<Title text='Sources'></Title>
 			<div className='flex justify-end px-2 py-4'>
-				<Button className='mr-2' onClick={() => setIsOpen(true)}>
+				<Button className='mr-2' onClick={() => setIsOpen(true)} dark={true}>
 					Add source
 				</Button>
-				<Button onClick={refetch}>Refresh data</Button>
+				<Button onClick={refetch} dark={true}>
+					Refresh data
+				</Button>
 			</div>
-			<div className='flex-grow py-2 px-2 min-w-min flex items-start'>
+			<div className='flex items-start flex-grow px-2 py-2 min-w-min'>
 				<Table
 					columns={columns}
 					data={parseSourceData(data)}
 					isLoading={loading}
+					initSortColumn={"id"}
 				/>
 			</div>
 			<MyDialog isOpen={isOpen} setIsOpen={setIsOpen} title='Upload new source'>

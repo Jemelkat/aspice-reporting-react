@@ -106,7 +106,6 @@ const TemplateCreate = (props) => {
 	};
 
 	const selectComponentHandler = (id) => {
-		debugger;
 		setSelectedComponent(id);
 	};
 
@@ -127,15 +126,15 @@ const TemplateCreate = (props) => {
 		<>
 			{loading && props.mode === "edit" ? (
 				/**TODO ADJUST TO MIDDLE */
-				<div className='flex flex-grow justify-center items-center'>
+				<div className='flex items-center justify-center flex-grow'>
 					<Loader fullscreen={false} dark={false}></Loader>
 				</div>
 			) : (
 				<div className='flex'>
 					{/*Left sidebar */}
 					<div className='flex-1 mr-2 xl:mr-4'>
-						<div className='flex justify-start h-screen sticky top-0'>
-							<Sidebar className='bg-gray-300 overflow-y-auto'>
+						<div className='sticky top-0 flex justify-start h-screen'>
+							<Sidebar className='overflow-y-auto bg-gray-300'>
 								<SidebarLinks sidebarName='Report'>
 									<Formik
 										initialValues={{
@@ -159,7 +158,7 @@ const TemplateCreate = (props) => {
 													type='text'
 													placeholder='Template name...'
 												/>
-												<Button type='submit' className='mt-4'>
+												<Button dark={true} type='submit' className='mt-4'>
 													Save
 												</Button>
 											</Form>
@@ -168,19 +167,19 @@ const TemplateCreate = (props) => {
 								</SidebarLinks>
 								<SidebarLinks sidebarName='Template components'></SidebarLinks>
 								<div
-									className='bg-gray-200 p-2 m-2'
+									className='p-2 m-2 bg-gray-200'
 									onClick={() => addComponentHandler(typeEnum.TEXT)}
 								>
 									TEXT
 								</div>
 								<div
-									className='bg-gray-200 p-2 m-2'
+									className='p-2 m-2 bg-gray-200'
 									onClick={() => addComponentHandler(typeEnum.GRAPH)}
 								>
 									GRAPH
 								</div>
 								<div
-									className='bg-gray-200 p-2 m-2'
+									className='p-2 m-2 bg-gray-200'
 									onClick={() => addComponentHandler(typeEnum.TABLE)}
 								>
 									TABLE
@@ -191,7 +190,7 @@ const TemplateCreate = (props) => {
 					{/*Canvas*/}
 					<div className='mt-10 mb-10 overflow-x-auto overflow-y-hidden'>
 						<div
-							className='border-2 shadow-xl relative m-auto'
+							className='relative m-auto border-2 shadow-xl'
 							style={{ width: "210mm", height: "297mm" }}
 						>
 							{/*Generate stored components to canvas */}
@@ -209,7 +208,7 @@ const TemplateCreate = (props) => {
 					</div>
 					{/*Right sidebar */}
 					<div className='flex-1 ml-2 xl:ml-4'>
-						<div className='flex justify-end h-screen sticky top-0'>
+						<div className='sticky top-0 flex justify-end h-screen'>
 							<Sidebar className='bg-gray-300'>
 								<SidebarLinks sidebarName='Edit selected component'></SidebarLinks>
 								{selectedComponent &&

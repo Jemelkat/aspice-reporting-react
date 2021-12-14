@@ -88,14 +88,22 @@ const TemplateTable = (props) => {
 					<Button
 						className='mr-2'
 						onClick={() => props.onModeChange("create", null)}
+						dark={true}
 					>
 						Create new template
 					</Button>
 				</Link>
-				<Button onClick={refetch}>Refresh data</Button>
+				<Button onClick={refetch} dark={true}>
+					Refresh data
+				</Button>
 			</div>
-			<div className='flex-grow py-2 px-2 min-w-min flex items-start'>
-				<Table columns={columns} data={parseData(data)} isLoading={loading} />
+			<div className='flex items-start flex-grow px-2 py-2 min-w-min'>
+				<Table
+					columns={columns}
+					data={parseData(data)}
+					isLoading={loading}
+					initSortColumn={"id"}
+				/>
 			</div>
 		</>
 	);

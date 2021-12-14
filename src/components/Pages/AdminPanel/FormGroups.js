@@ -8,6 +8,7 @@ import Select from "react-select";
 import CustomSelect from "../../UI/Form/FormSelect";
 import { useState } from "react";
 import { useAxios } from "../../../helpers/AxiosHelper";
+import Button from "../../UI/Button";
 
 const FormGroups = (props) => {
 	const [usersDataSelect, setUsersDataSelect] = useState([]);
@@ -75,45 +76,49 @@ const FormGroups = (props) => {
 	}, []);
 
 	return (
-		<Formik
-			initialValues={{
-				id: props.data.id,
-				groupName: props.data.name,
-				users: [],
-			}}
-			validationSchema={Yup.object({
-				groupName: Yup.string().required("Required"),
-			})}
-			onSubmit={(values, { setSubmitting }) => {
-				updateData(values);
-				setSubmitting(false);
-			}}
-		>
-			<Form className='flex flex-col border-2 p-4'>
-				<FormHidden name='id'></FormHidden>
-				<FormInput
-					label='Group name'
-					name='groupName'
-					type='text'
-					placeholder='Group name...'
-				/>
-				<label>Select users</label>
-				<Field
-					className='custom-select'
-					name='users'
-					options={usersDataSelect}
-					component={CustomSelect}
-					placeholder='Select multi languages...'
-					isMulti={true}
-				/>
-				<button type='submit' className='mt-4'>
-					Submit
-				</button>
-				<button className='mt-4' onClick={props.onCancel}>
-					Cancel
-				</button>
-			</Form>
-		</Formik>
+		<>
+			<div className='text-xl font-bold text-center'>Edit group from</div>
+			<Formik
+				initialValues={{
+					id: props.data.id,
+					groupName: props.data.name,
+					users: props.data.users.map((u) => u.id),
+				}}
+				validationSchema={Yup.object({
+					groupName: Yup.string().required("Required"),
+				})}
+				onSubmit={(values, { setSubmitting }) => {
+					updateData(values);
+					setSubmitting(false);
+				}}
+			>
+				<Form className='flex flex-col sm:w-96 w-80'>
+					<FormHidden name='id'></FormHidden>
+					<FormInput
+						label='Group name'
+						name='groupName'
+						type='text'
+						placeholder='Group name...'
+					/>
+					<label>Select users</label>
+					<Field
+						name='users'
+						options={usersDataSelect}
+						component={CustomSelect}
+						placeholder='Select multi languages...'
+						isMulti={true}
+					/>
+					<div className='flex justify-center mt-6 space-x-2 space'>
+						<Button type='submit' className='mt-2' dark={true}>
+							Save
+						</Button>
+						<Button className='mt-2' onClick={props.onCancel}>
+							Cancel
+						</Button>
+					</div>
+				</Form>
+			</Formik>
+		</>
 	);
 };
 

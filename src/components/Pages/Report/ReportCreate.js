@@ -45,7 +45,6 @@ const ReportCreate = ({ mode, reportId }) => {
 		{
 			url: "/template/get",
 			method: "GET",
-			params: { reportId: reportId },
 		},
 		{ manual: true }
 	);
@@ -84,6 +83,15 @@ const ReportCreate = ({ mode, reportId }) => {
 		}
 	};
 
+	const parseNewComponents = (components) => {
+		if (components) {
+			const newComponents = components.map(
+				(i) => new Item(i.itemId, i.x, i.y, i.width, i.height, i.type)
+			);
+			setComponents(newComponents);
+		}
+	};
+
 	//Parse templates to value:"", label:""
 	const parseTemplates = (templates) => {
 		let array = [];
@@ -91,6 +99,7 @@ const ReportCreate = ({ mode, reportId }) => {
 			templates.forEach((template) =>
 				array.push({ value: template.templateId, label: template.templateName })
 			);
+		array.push({ value: "", label: "None" });
 		return array;
 	};
 
@@ -115,6 +124,7 @@ const ReportCreate = ({ mode, reportId }) => {
 
 	//Saves template to DB
 	const saveTemplateHandler = (formValues) => {
+		debugger;
 		axiosInstance
 			.post("/report/save", {
 				reportId: formValues.id,
@@ -124,9 +134,12 @@ const ReportCreate = ({ mode, reportId }) => {
 					mode === "create"
 						? components.map((e) => ({ ...e, itemId: null }))
 						: components.map((e) => ({ ...e, itemId: null })),
-				reportTemplate: {
-					templateId: formValues.templateId,
-				},
+				reportTemplate:
+					formValues.templateId !== ""
+						? {
+								templateId: formValues.templateId,
+						  }
+						: null,
 			})
 			.then(function (response) {
 				history.push("/report");
@@ -145,8 +158,14 @@ const ReportCreate = ({ mode, reportId }) => {
 		);
 	};
 
-	const selectComponentHandler = (id) => {
-		setSelectedComponent(id);
+	const applyTemplateHandler = (templateId) => {
+		if (templateId !== "")
+			getTemplate({ params: { templateId: templateId } }).then((response) =>
+				parseNewComponents(response.data.templateItems)
+			);
+		else {
+			setComponents([]);
+		}
 	};
 
 	useEffect(() => {
@@ -158,10 +177,7 @@ const ReportCreate = ({ mode, reportId }) => {
 
 	useEffect(() => {
 		if (reportData) {
-			const newComponents = reportData.reportItems.map(
-				(i) => new Item(i.itemId, i.x, i.y, i.width, i.height, i.type)
-			);
-			setComponents(newComponents);
+			parseNewComponents(reportData.reportItems);
 		}
 	}, [reportData]);
 
@@ -221,7 +237,17 @@ const ReportCreate = ({ mode, reportId }) => {
 													isMulti={false}
 													isLoading={selectLoading}
 												/>
-												<Button type='submit' className='mt-4'>
+												<Button
+													type='button'
+													onClick={() => {
+														if (window.confirm("Delete the item?")) {
+															applyTemplateHandler(values.templateId);
+														}
+													}}
+												>
+													Apply template
+												</Button>
+												<Button type='submit' className='mt-4' dark={true}>
 													Save
 												</Button>
 											</Form>
@@ -263,7 +289,7 @@ const ReportCreate = ({ mode, reportId }) => {
 										key={i.itemId}
 										item={i}
 										onMove={moveItemHandler}
-										onSelect={selectComponentHandler}
+										onSelect={setSelectedComponent}
 									></RndCanvasItem>
 								);
 							})}

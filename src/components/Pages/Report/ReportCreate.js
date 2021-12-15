@@ -193,7 +193,7 @@ const ReportCreate = ({ mode, reportId }) => {
 					{/*Left sidebar */}
 					<div className='flex-1 mr-2 xl:mr-4'>
 						<div className='sticky top-0 flex justify-start h-screen'>
-							<Sidebar className='overflow-y-auto bg-gray-300'>
+							<Sidebar className='overflow-y-auto bg-white border-2 shadow-xl'>
 								<SidebarLinks sidebarName='Report'>
 									<Formik
 										initialValues={{
@@ -220,7 +220,7 @@ const ReportCreate = ({ mode, reportId }) => {
 													label='Report name'
 													name='reportName'
 													type='text'
-													placeholder='Template name...'
+													placeholder='Report name...'
 												/>
 												<label className='mt-2' htmlFor='template'>
 													Based on template
@@ -240,7 +240,11 @@ const ReportCreate = ({ mode, reportId }) => {
 												<Button
 													type='button'
 													onClick={() => {
-														if (window.confirm("Delete the item?")) {
+														if (
+															window.confirm(
+																"Applying template will reset canvas layout. Do you really want to reset this report?"
+															)
+														) {
 															applyTemplateHandler(values.templateId);
 														}
 													}}
@@ -298,7 +302,7 @@ const ReportCreate = ({ mode, reportId }) => {
 					{/*Right sidebar */}
 					<div className='flex-1 ml-2 xl:ml-4'>
 						<div className='sticky top-0 flex justify-end h-screen'>
-							<Sidebar className='bg-gray-300'>
+							<Sidebar className='bg-white border-2 shadow-xl'>
 								<SidebarLinks sidebarName='Edit selected component'></SidebarLinks>
 								{selectedComponent &&
 									Object.keys(selectedComponent).map((visit, index) => (

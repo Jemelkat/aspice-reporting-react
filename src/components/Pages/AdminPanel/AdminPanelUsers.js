@@ -128,6 +128,7 @@ const AdminPanelUsers = () => {
 						<FormEditUser
 							data={selectedUser}
 							onCancel={formCancelHandler}
+							onSuccess={refetch}
 						></FormEditUser>
 					</MyDialog>
 				);
@@ -166,8 +167,13 @@ const AdminPanelUsers = () => {
 	};
 
 	return (
-		<div className='flex-grow py-10 px-10 min-w-min flex items-start'>
-			<Table columns={columns} data={parseUserData(data)} isLoading={loading} />
+		<div className='flex items-start flex-grow px-10 py-10 min-w-min'>
+			<Table
+				columns={columns}
+				data={parseUserData(data)}
+				isLoading={loading}
+				initSortColumn={"id"}
+			/>
 			{showForm && renderForms(action)}
 		</div>
 	);

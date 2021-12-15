@@ -167,11 +167,12 @@ const AdminPanelGroups = () => {
 	};
 
 	return (
-		<div className='flex-grow py-10 px-10 min-w-min flex items-start'>
+		<div className='flex items-start flex-grow px-10 py-10 min-w-min'>
 			<Table
 				columns={columns}
 				data={parseGroupData(data)}
 				isLoading={loading}
+				initSortColumn={"id"}
 			/>
 			{/*Render forms if they need to be shown */}
 			{showForm && renderForms(action)}

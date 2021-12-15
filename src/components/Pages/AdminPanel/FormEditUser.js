@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import FormHidden from "../../UI/Form/FormHidden";
 import { useEffect } from "react/cjs/react.development";
 import { useAxios } from "../../../helpers/AxiosHelper";
+import Button from "../../UI/Button";
 
 const FormEditUser = (props) => {
 	const [
@@ -26,7 +27,10 @@ const FormEditUser = (props) => {
 				email: data.email,
 				roles: [],
 			},
-		}).then(props.onCancel);
+		}).then(() => {
+			props.onCancel();
+			props.onSuccess();
+		});
 	}
 
 	return (
@@ -45,7 +49,7 @@ const FormEditUser = (props) => {
 				setSubmitting(false);
 			}}
 		>
-			<Form className='flex flex-col border-2 p-4'>
+			<Form className='flex flex-col p-4 sm:w-96 w-80'>
 				<FormHidden name='id'></FormHidden>
 				<FormInput
 					label='Username'
@@ -60,12 +64,14 @@ const FormEditUser = (props) => {
 					placeholder='Email...'
 				/>
 				<span>Current roles: {props.data.roles}</span>
-				<button type='submit' className='mt-4'>
-					Submit
-				</button>
-				<button className='mt-4' onClick={props.onCancel}>
-					Cancel
-				</button>
+				<div className='flex justify-center mt-6 space-x-2 space'>
+					<Button type='submit' className='mt-2' dark={true}>
+						Save
+					</Button>
+					<Button className='mt-2' onClick={props.onCancel}>
+						Cancel
+					</Button>
+				</div>
 			</Form>
 		</Formik>
 	);

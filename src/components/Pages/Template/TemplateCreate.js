@@ -135,7 +135,7 @@ const TemplateCreate = (props) => {
 					<div className='flex-1 mr-2 xl:mr-4'>
 						<div className='sticky top-0 flex justify-start h-screen'>
 							<Sidebar className='overflow-y-auto bg-gray-300'>
-								<SidebarLinks sidebarName='Report'>
+								<SidebarLinks sidebarName='Template'>
 									<Formik
 										initialValues={{
 											id: data ? data.templateId : null,

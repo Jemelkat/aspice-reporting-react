@@ -7,13 +7,16 @@ import Title from "../../UI/Title";
 import { useRouteMatch } from "react-router";
 import TableMenuItem from "../../UI/Table/TableMenuItem";
 import TableMenuButton from "../../UI/Table/TableMenuButton";
+import ConfirmDialog from "../../UI/Dialog/ConfirmDialog";
+import MyDialog from "../../UI/Dialog/MyDialog";
 
 class TemplateObject {
 	constructor(data) {
 		this.id = data.templateId;
 		this.templateName = data.templateName;
 		this.templateCreated = data.templateCreated;
-		this.templateShared = data.templateShared;
+		this.templateUpdated = data.templateLastUpdated;
+		this.templateShared = data.templateGroup ? "Yes" : "No";
 	}
 }
 
@@ -22,6 +25,15 @@ const TemplateTable = (props) => {
 	const [{ data, loading, error }, refetch] = useAxios("/template/getAll", {
 		useCache: false,
 	});
+	const [{}, postShare] = useAxios(
+		{ url: "/template/share", method: "POST" },
+		{
+			useCache: false,
+			manual: true,
+		}
+	);
+
+	const [showDialog, setShowDialog] = useState(false);
 
 	const [selectedRow, setSelectedRow] = useState(null);
 
@@ -40,29 +52,39 @@ const TemplateTable = (props) => {
 				accessor: "templateCreated",
 			},
 			{
-				Header: "Shared with group",
-				accessor: "shared",
+				Header: "Last updated",
+				accessor: "templateUpdated",
+			},
+			{
+				Header: "Shared",
+				accessor: "templateShared",
 			},
 			{
 				Header: "Actions",
 				Cell: ({ row }) => (
 					<TableMenuButton buttonText='Actions'>
+						<TableMenuItem
+							key='1'
+							onClickAction={() => {
+								setSelectedRow(row.original);
+								setShowDialog(true);
+							}}
+						>
+							Share
+						</TableMenuItem>
 						<Link
 							to={`${url}/create`}
 							onClick={() => props.onModeChange("edit", row.original.id)}
 						>
-							<TableMenuItem key='1' itemText='Edit'>
-								Edit
-							</TableMenuItem>
+							<TableMenuItem key='2'>Edit</TableMenuItem>
 						</Link>
 						<TableMenuItem
-							key='2'
+							key='3'
 							id='userDeleteButton'
 							addClasses='text-red-800'
 							onClickAction={(e) => {
 								setSelectedRow(row.original);
 							}}
-							itemText='Delete'
 						>
 							Delete
 						</TableMenuItem>
@@ -78,6 +100,14 @@ const TemplateTable = (props) => {
 		if (data)
 			data.forEach((item) => objectArray.push(new TemplateObject(item)));
 		return objectArray;
+	};
+
+	//Share selected template with group
+	const shareTemplateHandler = () => {
+		postShare({ params: { templateId: selectedRow.id } }).then(() => {
+			setShowDialog(false);
+			refetch();
+		});
 	};
 
 	return (
@@ -105,6 +135,15 @@ const TemplateTable = (props) => {
 					initSortColumn={"id"}
 				/>
 			</div>
+			<ConfirmDialog
+				title='Do you really want to share this template with your group?'
+				isOpen={showDialog}
+				setIsOpen={setShowDialog}
+				onOk={() => {
+					shareTemplateHandler();
+				}}
+				onCancel={() => setShowDialog(false)}
+			></ConfirmDialog>
 		</>
 	);
 };

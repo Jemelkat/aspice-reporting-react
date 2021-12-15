@@ -1,9 +1,12 @@
 import { Dialog } from "@headlessui/react";
+import { useRef } from "react";
 import Button from "../Button";
 
 const ConfirmDialog = (props) => {
+	let completeButtonRef = useRef(null);
 	return (
 		<Dialog
+			initialFocus={completeButtonRef}
 			open={props.isOpen}
 			onClose={props.setIsOpen}
 			as='div'
@@ -17,7 +20,7 @@ const ConfirmDialog = (props) => {
 						{props.title}
 					</Dialog.Title>
 					<div className='flex flex-row justify-center space-x-4'>
-						<Button onClick={props.onOk} dark={true}>
+						<Button onClick={props.onOk} dark={true} addRef={completeButtonRef}>
 							Yes
 						</Button>
 						<Button onClick={props.onCancel}>Cancel</Button>

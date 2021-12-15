@@ -122,9 +122,8 @@ const ReportCreate = ({ mode, reportId }) => {
 		setComponents([...components, item]);
 	};
 
-	//Saves template to DB
-	const saveTemplateHandler = (formValues) => {
-		debugger;
+	//Saves report to DB
+	const saveReportHandler = (formValues) => {
 		axiosInstance
 			.post("/report/save", {
 				reportId: formValues.id,
@@ -152,10 +151,22 @@ const ReportCreate = ({ mode, reportId }) => {
 
 	//Change state list item x, y on each item move
 	const moveItemHandler = (id, x, y) => {
-		Object.assign(
-			components.find((item) => item.itemId === id),
-			{ x: x, y: y }
+		let updatedComponents = components.map((i) =>
+			i.itemId === id ? { ...i, x: x, y: y } : i
 		);
+		setSelectedComponent(updatedComponents.find((i) => i.itemId === id));
+		setComponents(updatedComponents);
+	};
+
+	//Change height, width state of item on resize
+	const resizeItemHandler = (id, x, y, height, width) => {
+		let updatedComponents = components.map((i) => {
+			return i.itemId === id
+				? { ...i, x: x, y: y, height: height, width: width }
+				: i;
+		});
+		setSelectedComponent(updatedComponents.find((i) => i.itemId === id));
+		setComponents(updatedComponents);
 	};
 
 	const applyTemplateHandler = (templateId) => {
@@ -166,6 +177,10 @@ const ReportCreate = ({ mode, reportId }) => {
 		else {
 			setComponents([]);
 		}
+	};
+
+	const selectComponentHandler = (id) => {
+		setSelectedComponent(components.find((i) => i.itemId === id));
 	};
 
 	useEffect(() => {
@@ -209,7 +224,7 @@ const ReportCreate = ({ mode, reportId }) => {
 											reportName: Yup.string().required("Required"),
 										})}
 										onSubmit={(values, { setSubmitting }) => {
-											saveTemplateHandler(values);
+											saveReportHandler(values);
 											setSubmitting(false);
 										}}
 									>
@@ -293,7 +308,8 @@ const ReportCreate = ({ mode, reportId }) => {
 										key={i.itemId}
 										item={i}
 										onMove={moveItemHandler}
-										onSelect={setSelectedComponent}
+										onResize={resizeItemHandler}
+										onSelect={selectComponentHandler}
 									></RndCanvasItem>
 								);
 							})}

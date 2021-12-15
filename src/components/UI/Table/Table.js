@@ -27,6 +27,7 @@ function Table({ columns, data, isLoading, initSortColumn }) {
 					<tr key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
 						{headerGroup.headers.map((column) => (
 							<th
+								key={column}
 								{...column.getHeaderProps(column.getSortByToggleProps())}
 								scope='col'
 								className='px-2 py-4 text-xs font-medium tracking-wider text-left text-white uppercase '

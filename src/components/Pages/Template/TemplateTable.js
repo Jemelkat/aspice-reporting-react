@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAxios } from "../../../helpers/AxiosHelper";
+import { axiosInstance, useAxios } from "../../../helpers/AxiosHelper";
 import Button from "../../UI/Button";
 import Table from "../../UI/Table/Table";
 import Title from "../../UI/Title";
@@ -33,7 +33,8 @@ const TemplateTable = (props) => {
 		}
 	);
 
-	const [showDialog, setShowDialog] = useState(false);
+	const [showShareDialog, setShowShareDialog] = useState(false);
+	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
 	const [selectedRow, setSelectedRow] = useState(null);
 
@@ -67,7 +68,7 @@ const TemplateTable = (props) => {
 							key='1'
 							onClickAction={() => {
 								setSelectedRow(row.original);
-								setShowDialog(true);
+								setShowShareDialog(true);
 							}}
 						>
 							Share
@@ -80,10 +81,10 @@ const TemplateTable = (props) => {
 						</Link>
 						<TableMenuItem
 							key='3'
-							id='userDeleteButton'
 							addClasses='text-red-800'
 							onClickAction={(e) => {
 								setSelectedRow(row.original);
+								setShowDeleteDialog(true);
 							}}
 						>
 							Delete
@@ -105,8 +106,14 @@ const TemplateTable = (props) => {
 	//Share selected template with group
 	const shareTemplateHandler = () => {
 		postShare({ params: { templateId: selectedRow.id } }).then(() => {
-			setShowDialog(false);
+			setShowShareDialog(false);
 			refetch();
+		});
+	};
+
+	const deleteTemplateHandler = () => {
+		axiosInstance.delete("/template/delete", {
+			params: { templateId: selectedRow.id },
 		});
 	};
 
@@ -135,14 +142,31 @@ const TemplateTable = (props) => {
 					initSortColumn={"id"}
 				/>
 			</div>
+
+			{/*Share dialog*/}
 			<ConfirmDialog
-				title='Do you really want to share this template with your group?'
-				isOpen={showDialog}
-				setIsOpen={setShowDialog}
+				title={`Do you want to share ${
+					selectedRow ? selectedRow.templateName : ""
+				} with your group?`}
+				isOpen={showShareDialog}
+				setIsOpen={setShowShareDialog}
 				onOk={() => {
 					shareTemplateHandler();
 				}}
-				onCancel={() => setShowDialog(false)}
+				onCancel={() => setShowShareDialog(false)}
+			></ConfirmDialog>
+
+			{/*Delete dialog */}
+			<ConfirmDialog
+				title={`Do you really want to delete template ${
+					selectedRow ? selectedRow.templateName : ""
+				}?`}
+				isOpen={showDeleteDialog}
+				setIsOpen={setShowDeleteDialog}
+				onOk={() => {
+					deleteTemplateHandler();
+				}}
+				onCancel={() => setShowDeleteDialog(false)}
 			></ConfirmDialog>
 		</>
 	);

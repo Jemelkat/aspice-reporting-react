@@ -23,19 +23,27 @@ const RndCanvasItem = (props) => {
 			resizeGrid={[5, 5]}
 			bounds='parent'
 			onResize={(e, direction, ref, delta, position) => {
+				const x = position.x < 0 ? 0 : position.x;
+				const y = position.y < 0 ? 0 : position.y;
 				setItem({
 					...item,
+					x: x,
+					y: y,
 					height: ref.offsetHeight,
 					width: ref.offsetWidth,
 				});
+				props.onResize(item.id, x, y, ref.offsetHeight, ref.offsetWidth);
 			}}
 			onDragStop={(event, data) => {
-				setItem({ ...item, x: data.x, y: data.y });
-				props.onMove(item.id, data.x, data.y);
+				//Prevent -x and -y
+				const x = data.x < 0 ? 0 : data.x;
+				const y = data.y < 0 ? 0 : data.y;
+				setItem({ ...item, x: x, y: y });
+				props.onMove(item.id, x, y);
 			}}
-			onClick={() => props.onSelect(item)}
+			onClick={() => props.onSelect(item.id)}
 		>
-			<div className='flex w-full h-full justify-center items-center bg-gray-100 border-2 shadow-lg rounded-sm border-gray-300'>
+			<div className='flex items-center justify-center w-full h-full p-2 bg-gray-100 border-2 border-gray-300 rounded-sm shadow-lg'>
 				{item.type}
 			</div>
 		</Rnd>

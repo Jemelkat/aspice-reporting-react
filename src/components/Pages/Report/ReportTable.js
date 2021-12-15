@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAxios } from "../../../helpers/AxiosHelper";
+import { axiosInstance, useAxios } from "../../../helpers/AxiosHelper";
 import Button from "../../UI/Button";
 import Table from "../../UI/Table/Table";
 import Title from "../../UI/Title";
 import { useRouteMatch } from "react-router";
 import TableMenuButton from "../../UI/Table/TableMenuButton";
 import TableMenuItem from "../../UI/Table/TableMenuItem";
+import ConfirmDialog from "../../UI/Dialog/ConfirmDialog";
 
 class ReportObject {
 	constructor(data) {
@@ -15,7 +16,7 @@ class ReportObject {
 		this.reportCreated = data.reportCreated;
 		this.reportUpdated = data.reportLastUpdated;
 		this.reportTemplateName = data.reportTemplateName;
-		this.reportShared = data.reportShared;
+		this.reportShared = data.reportGroup ? "Yes" : "No";
 	}
 }
 const ReportTable = (props) => {
@@ -25,6 +26,8 @@ const ReportTable = (props) => {
 	});
 
 	const [selectedRow, setSelectedRow] = useState(null);
+	const [showShareDialog, setShowShareDialog] = useState(false);
+	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
 	const columns = useMemo(
 		() => [
@@ -49,31 +52,35 @@ const ReportTable = (props) => {
 				accessor: "reportUpdated",
 			},
 			{
-				Header: "Shared with group",
+				Header: "Shared",
 				accessor: "reportShared",
 			},
 			{
 				Header: "Actions",
 				Cell: ({ row }) => (
 					<TableMenuButton buttonText='Actions'>
-						<Link
-							to={`${url}/create`}
-							onClick={() => {
-								props.onModeChange("edit", row.original.id);
+						<TableMenuItem
+							key='1'
+							onClickAction={() => {
+								setSelectedRow(row.original);
+								setShowShareDialog(true);
 							}}
 						>
-							<TableMenuItem key='1' itemText='Edit'>
-								Edit
-							</TableMenuItem>
+							Share
+						</TableMenuItem>
+						<Link
+							to={`${url}/create`}
+							onClick={() => props.onModeChange("edit", row.original.id)}
+						>
+							<TableMenuItem key='2'>Edit</TableMenuItem>
 						</Link>
 						<TableMenuItem
-							key='2'
-							id='reportDeleteButton'
+							key='3'
 							addClasses='text-red-800'
 							onClickAction={(e) => {
 								setSelectedRow(row.original);
+								setShowDeleteDialog(true);
 							}}
-							itemText='Delete'
 						>
 							Delete
 						</TableMenuItem>
@@ -104,6 +111,27 @@ const ReportTable = (props) => {
 		return objectArray;
 	};
 
+	//Share selected template with group
+	const shareReportHandler = () => {
+		axiosInstance
+			.post("/report/share", { params: { reportId: selectedRow.id } })
+			.then((response) => {
+				setShowShareDialog(false);
+				refetch();
+			});
+	};
+
+	const deleteReportHandler = () => {
+		axiosInstance
+			.delete("/report/delete", {
+				params: { reportId: selectedRow.id },
+			})
+			.then((response) => {
+				setShowDeleteDialog(false);
+				refetch();
+			});
+	};
+
 	useEffect(() => {
 		props.onModeChange("create", null);
 	}, []);
@@ -129,6 +157,31 @@ const ReportTable = (props) => {
 					initSortColumn={"id"}
 				/>
 			</div>
+			{/*Share dialog*/}
+			<ConfirmDialog
+				title={`Do you want to share ${
+					selectedRow ? selectedRow.templateName : ""
+				} with your group?`}
+				isOpen={showShareDialog}
+				setIsOpen={setShowShareDialog}
+				onOk={() => {
+					shareReportHandler();
+				}}
+				onCancel={() => setShowShareDialog(false)}
+			></ConfirmDialog>
+
+			{/*Delete dialog */}
+			<ConfirmDialog
+				title={`Do you really want to delete report ${
+					selectedRow ? selectedRow.reportName : ""
+				}?`}
+				isOpen={showDeleteDialog}
+				setIsOpen={setShowDeleteDialog}
+				onOk={() => {
+					deleteReportHandler();
+				}}
+				onCancel={() => setShowDeleteDialog(false)}
+			></ConfirmDialog>
 		</>
 	);
 };

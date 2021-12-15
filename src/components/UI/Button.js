@@ -8,6 +8,7 @@ const Button = (props) => {
 			}  py-1 px-3 rounded-md `}
 			type={props.type ? props.type : "button"}
 			onClick={props.onClick}
+			ref={props.addRef}
 		>
 			{props.children}
 		</button>

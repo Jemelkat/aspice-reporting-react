@@ -99,14 +99,26 @@ const TemplateCreate = (props) => {
 
 	//Change state list item x, y on each item move
 	const moveItemHandler = (id, x, y) => {
-		Object.assign(
-			components.find((item) => item.itemId === id),
-			{ x: x, y: y }
+		let updatedComponents = components.map((i) =>
+			i.itemId === id ? { ...i, x: x, y: y } : i
 		);
+		setSelectedComponent(updatedComponents.find((i) => i.itemId === id));
+		setComponents(updatedComponents);
+	};
+
+	//Change height, width state of item on resize
+	const resizeItemHandler = (id, x, y, height, width) => {
+		let updatedComponents = components.map((i) => {
+			return i.itemId === id
+				? { ...i, x: x, y: y, height: height, width: width }
+				: i;
+		});
+		setSelectedComponent(updatedComponents.find((i) => i.itemId === id));
+		setComponents(updatedComponents);
 	};
 
 	const selectComponentHandler = (id) => {
-		setSelectedComponent(id);
+		setSelectedComponent(components.find((i) => i.itemId === id));
 	};
 
 	useEffect(() => {
@@ -188,9 +200,9 @@ const TemplateCreate = (props) => {
 						</div>
 					</div>
 					{/*Canvas*/}
-					<div className='mt-10 mb-10 overflow-x-auto overflow-y-hidden'>
+					<div className='mt-10 mb-10 overflow-x-auto overflow-y-hidden border-2'>
 						<div
-							className='relative m-auto border-2 shadow-xl'
+							className='relative p-2'
 							style={{ width: "210mm", height: "297mm" }}
 						>
 							{/*Generate stored components to canvas */}
@@ -200,6 +212,7 @@ const TemplateCreate = (props) => {
 										key={i.itemId}
 										item={i}
 										onMove={moveItemHandler}
+										onResize={resizeItemHandler}
 										onSelect={selectComponentHandler}
 									></RndCanvasItem>
 								);

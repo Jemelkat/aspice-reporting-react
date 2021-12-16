@@ -91,7 +91,6 @@ const TemplateTable = (props) => {
 	);
 
 	const parseData = (data) => {
-		debugger;
 		let objectArray = [];
 		if (data)
 			data.forEach((item) => objectArray.push(new TemplateObject(item)));

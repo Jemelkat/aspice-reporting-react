@@ -10,8 +10,13 @@ import FormInput from "../UI/Form/FormInput";
 import { axiosInstance, useAxios } from "../../helpers/AxiosHelper";
 import { useHistory } from "react-router";
 import Loader from "../UI/Loader/Loader";
+import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
+import TemplateCanvasRight from "../Template/TemplateCanvasRight";
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/solid";
+import TemplateCanvasLeft from "./TemplateCanvasLeft";
 
-const typeEnum = Object.freeze({
+export const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
 	STATIC_TEXT: "STATIC_TEXT",
 	TABLE: "TABLE",
@@ -131,6 +136,10 @@ const TemplateCreate = (props) => {
 		setComponents(newComponents);
 	};
 
+	const componentFormHandler = (component) => {
+		console.log(component);
+	};
+
 	useEffect(() => {
 		if (props.mode === "edit")
 			fetchData().then((response) => {
@@ -148,65 +157,15 @@ const TemplateCreate = (props) => {
 			) : (
 				<div className='flex'>
 					{/*Left sidebar */}
-					<div className='flex-1 mr-2 xl:mr-4'>
-						<div className='sticky top-0 flex justify-start h-screen'>
-							<Sidebar className='overflow-y-auto bg-gray-300'>
-								<SidebarLinks sidebarName='Template'>
-									<Formik
-										initialValues={{
-											id: data ? data.templateId : null,
-											templateName: data ? data.templateName : "",
-										}}
-										validationSchema={Yup.object({
-											templateName: Yup.string().required("Required"),
-										})}
-										onSubmit={(values, { setSubmitting }) => {
-											saveTemplateHandler(values);
-											setSubmitting(false);
-										}}
-									>
-										{({ handleChange, values }) => (
-											<Form className='flex flex-col p-4'>
-												<FormHidden name='id'></FormHidden>
-												<FormInput
-													label='Template name'
-													name='templateName'
-													type='text'
-													placeholder='Template name...'
-												/>
-												<Button dark={true} type='submit' className='mt-4'>
-													Save
-												</Button>
-											</Form>
-										)}
-									</Formik>
-								</SidebarLinks>
-								<SidebarLinks sidebarName='Template components'></SidebarLinks>
-								<div
-									className='p-2 m-2 bg-gray-200'
-									onClick={() => addComponentHandler(typeEnum.TEXT)}
-								>
-									TEXT
-								</div>
-								<div
-									className='p-2 m-2 bg-gray-200'
-									onClick={() => addComponentHandler(typeEnum.GRAPH)}
-								>
-									GRAPH
-								</div>
-								<div
-									className='p-2 m-2 bg-gray-200'
-									onClick={() => addComponentHandler(typeEnum.TABLE)}
-								>
-									TABLE
-								</div>
-							</Sidebar>
-						</div>
-					</div>
+					<TemplateCanvasLeft
+						data={data}
+						onSave={saveTemplateHandler}
+						onAddComponent={addComponentHandler}
+					></TemplateCanvasLeft>
 					{/*Canvas*/}
 					<div className='mt-10 mb-10 overflow-x-auto overflow-y-hidden border-2'>
 						<div
-							className='relative p-2'
+							className='relative'
 							style={{ width: "210mm", height: "297mm" }}
 						>
 							{/*Generate stored components to canvas */}
@@ -224,19 +183,10 @@ const TemplateCreate = (props) => {
 						</div>
 					</div>
 					{/*Right sidebar */}
-					<div className='flex-1 ml-2 xl:ml-4'>
-						<div className='sticky top-0 flex justify-end h-screen'>
-							<Sidebar className='bg-gray-300'>
-								<SidebarLinks sidebarName='Edit selected component'></SidebarLinks>
-								{selectedComponent &&
-									Object.keys(selectedComponent).map((visit, index) => (
-										<div key={index}>
-											{visit} : {selectedComponent[visit]}
-										</div>
-									))}
-							</Sidebar>
-						</div>
-					</div>
+					<TemplateCanvasRight
+						selectedComponent={selectedComponent}
+						formChangeHandler={componentFormHandler}
+					></TemplateCanvasRight>
 				</div>
 			)}
 		</>

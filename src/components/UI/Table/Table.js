@@ -1,3 +1,4 @@
+import { ChevronDoubleUpIcon } from "@heroicons/react/solid";
 import { useSortBy, useTable } from "react-table";
 
 function Table({ columns, data, isLoading, initSortColumn }) {
@@ -32,10 +33,19 @@ function Table({ columns, data, isLoading, initSortColumn }) {
 								scope='col'
 								className='px-2 py-4 text-xs font-medium tracking-wider text-left text-white uppercase '
 							>
-								{column.render("Header")}
-								<span>
-									{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
-								</span>
+								<div className='flex flex-row'>
+									{column.render("Header")}
+
+									{column.isSorted ? (
+										<ChevronDoubleUpIcon
+											className={`${
+												column.isSortedDesc ? "transform rotate-180" : ""
+											} w-4 h-4 text-white`}
+										/>
+									) : (
+										""
+									)}
+								</div>
 							</th>
 						))}
 					</tr>

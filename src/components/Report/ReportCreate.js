@@ -12,6 +12,7 @@ import Button from "../UI/Button";
 import RndCanvasItem from "../UI/Canvas/RndCanvasItem";
 import FormSelect from "../UI/Form/FormSelect";
 import { useHistory } from "react-router";
+import TemplateCanvasRight from "../Template/TemplateCanvasRight";
 
 const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
@@ -327,19 +328,9 @@ const ReportCreate = ({ mode, reportId }) => {
 						</div>
 					</div>
 					{/*Right sidebar */}
-					<div className='flex-1 ml-2 xl:ml-4'>
-						<div className='sticky top-0 flex justify-end h-screen'>
-							<Sidebar className='bg-white border-2 shadow-xl'>
-								<SidebarLinks sidebarName='Edit selected component'></SidebarLinks>
-								{selectedComponent &&
-									Object.keys(selectedComponent).map((visit, index) => (
-										<div key={index}>
-											{visit} : {selectedComponent[visit]}
-										</div>
-									))}
-							</Sidebar>
-						</div>
-					</div>
+					<TemplateCanvasRight
+						selectedComponent={selectedComponent}
+					></TemplateCanvasRight>
 				</div>
 			)}
 		</>

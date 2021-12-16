@@ -43,7 +43,7 @@ const RndCanvasItem = (props) => {
 			}}
 			onClick={() => props.onSelect(item.id)}
 		>
-			<div className='flex items-center justify-center w-full h-full p-2 bg-gray-100 border-2 border-gray-300 rounded-sm shadow-lg'>
+			<div className='flex items-center justify-center w-full h-full bg-gray-100 border-2 border-gray-300 rounded-sm shadow-lg'>
 				{item.type}
 			</div>
 		</Rnd>

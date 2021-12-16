@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
 
-import Table from "../../UI/Table/Table";
-import TableMenuButton from "../../UI/Table/TableMenuButton";
-import TableMenuItem from "../../UI/Table/TableMenuItem";
-import FormEditUser from "./FormEditUser";
-import MyDialog from "../../UI/Dialog/MyDialog";
-import Button from "../../UI/Button";
-import { useAxios } from "../../../helpers/AxiosHelper";
+import Table from "../UI/Table/Table";
+import TableMenuButton from "../UI/Table/TableMenuButton";
+import TableMenuItem from "../UI/Table/TableMenuItem";
+import AdminUserForm from "./AdminUserForm";
+import MyDialog from "../UI/Dialog/MyDialog";
+import Button from "../UI/Button";
+import { useAxios } from "../../helpers/AxiosHelper";
 
 class User {
 	constructor(userData) {
@@ -27,7 +27,7 @@ const ACTIONS = {
 	NONE: "none",
 };
 
-const AdminPanelUsers = () => {
+const AdminUser = () => {
 	const [{ data, loading, error }, refetch] = useAxios("/admin/getAllUsers", {
 		useCache: false,
 	});
@@ -125,11 +125,11 @@ const AdminPanelUsers = () => {
 			case ACTIONS.EDIT:
 				return (
 					<MyDialog isOpen={isOpen} onClose={() => setShowForm(false)}>
-						<FormEditUser
+						<AdminUserForm
 							data={selectedUser}
 							onCancel={formCancelHandler}
 							onSuccess={refetch}
-						></FormEditUser>
+						></AdminUserForm>
 					</MyDialog>
 				);
 			case ACTIONS.REMOVE:
@@ -179,4 +179,4 @@ const AdminPanelUsers = () => {
 	);
 };
 
-export default AdminPanelUsers;
+export default AdminUser;

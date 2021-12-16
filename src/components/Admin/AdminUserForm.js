@@ -1,13 +1,13 @@
 import { Formik, Form } from "formik";
-import FormInput from "../../UI/Form/FormInput";
-import FormSelect from "../../UI/Form/FormSelect";
+import FormInput from "../UI/Form/FormInput";
+import FormSelect from "../UI/Form/FormSelect";
 import * as Yup from "yup";
-import FormHidden from "../../UI/Form/FormHidden";
+import FormHidden from "../UI/Form/FormHidden";
 import { useEffect } from "react/cjs/react.development";
-import { useAxios } from "../../../helpers/AxiosHelper";
-import Button from "../../UI/Button";
+import { useAxios } from "../../helpers/AxiosHelper";
+import Button from "../UI/Button";
 
-const FormEditUser = (props) => {
+const AdminUserForm = (props) => {
 	const [
 		{ data: postData, loading: postLoading, error: postError },
 		executePost,
@@ -81,4 +81,4 @@ const FormEditUser = (props) => {
 	);
 };
 
-export default FormEditUser;
+export default AdminUserForm;

@@ -1,7 +1,7 @@
-import TemplateTable from "./TemplateTable";
+import TemplateTable from "../../components/Template/TemplateTable";
 import { Route, Switch, useRouteMatch } from "react-router";
-import TemplateCreate from "./TemplateCreate";
-import PageContainer from "../../UI/PageContainer";
+import TemplateCreate from "../../components/Template/TemplateCreate";
+import PageContainer from "../../components/UI/PageContainer";
 import { useState } from "react";
 
 const Template = () => {

@@ -1,9 +1,9 @@
-import Sidebar from "../../UI/Sidebar/Sidebar";
-import SidebarLinks from "../../UI/Sidebar/SidebarLinks";
-import SidebarLinkItem from "../../UI/Sidebar/SidebarLinkItem";
-import AdminPanelUsers from "./AdminPanelUsers";
+import Sidebar from "../../components/UI/Sidebar/Sidebar";
+import SidebarLinks from "../../components/UI/Sidebar/SidebarLinks";
+import SidebarLinkItem from "../../components/UI/Sidebar/SidebarLinkItem";
+import AdminUser from "../../components/Admin/AdminUser";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import AdminPanelGroups from "./AdminPanelGroups";
+import AdminGroup from "../../components/Admin/AdminGroup";
 
 const AdminPanel = () => {
 	const { url, path } = useRouteMatch();
@@ -40,10 +40,10 @@ const AdminPanel = () => {
 			</Sidebar>
 			<Switch>
 				<Route exact path={`${path}/groups`}>
-					<AdminPanelGroups></AdminPanelGroups>
+					<AdminGroup></AdminGroup>
 				</Route>
 				<Route exact path={`${path}/users`}>
-					<AdminPanelUsers></AdminPanelUsers>
+					<AdminUser></AdminUser>
 				</Route>
 			</Switch>
 		</div>

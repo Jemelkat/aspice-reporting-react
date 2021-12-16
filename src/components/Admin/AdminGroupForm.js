@@ -1,16 +1,16 @@
 import { Formik, Form, Field } from "formik";
-import FormInput from "../../UI/Form/FormInput";
-import FormSelect from "../../UI/Form/FormSelect";
+import FormInput from "../UI/Form/FormInput";
+import FormSelect from "../UI/Form/FormSelect";
 import * as Yup from "yup";
-import FormHidden from "../../UI/Form/FormHidden";
+import FormHidden from "../UI/Form/FormHidden";
 import { useEffect } from "react/cjs/react.development";
 import Select from "react-select";
-import CustomSelect from "../../UI/Form/FormSelect";
+import CustomSelect from "../UI/Form/FormSelect";
 import { useState } from "react";
-import { useAxios } from "../../../helpers/AxiosHelper";
-import Button from "../../UI/Button";
+import { useAxios } from "../../helpers/AxiosHelper";
+import Button from "../UI/Button";
 
-const FormGroups = (props) => {
+const AdminGroupForm = (props) => {
 	const [usersDataSelect, setUsersDataSelect] = useState([]);
 	//Get select users values
 	const [{ usersData, usersLoading, usersError }, refetchUsers] = useAxios(
@@ -126,4 +126,4 @@ const FormGroups = (props) => {
 	);
 };
 
-export default FormGroups;
+export default AdminGroupForm;

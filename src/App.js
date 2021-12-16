@@ -2,21 +2,21 @@ import { Switch, Route } from "react-router-dom";
 import { useContext } from "react";
 import "./App.css";
 
-import Home from "./components/Pages/Home/Home";
-import Login from "./components/Login/Login";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
 import Nav from "./components/Nav/Nav";
 import PageContainer from "./components/UI/PageContainer";
 import { logout } from "./helpers/AuthHelper";
-import Source from "./components/Pages/Source/Source";
+import Source from "./pages/Source/Source";
 import AuthVerify from "./helpers/AuthVerify";
 import { AuthContext } from "./context/AuthContext";
 import AdminRoute from "./routes/AdminRoute";
 import PrivateRoute from "./routes/PrivateRoute";
-import AdminPanel from "./components/Pages/AdminPanel/AdminPanel";
-import Profile from "./components/Pages/Profile/Profile";
-import Template from "./components/Pages/Template/Template";
-import Report from "./components/Pages/Report/Report";
-import DashBoard from "./components/Pages/DashBoard/Dashboard";
+import AdminPanel from "./pages/Admin/AdminPanel";
+import Profile from "./pages/Profile/Profile";
+import Template from "./pages/Template/Template";
+import Report from "./pages/Report/Report";
+import DashBoard from "./pages/DashBoard/Dashboard";
 import Loader from "./components/UI/Loader/Loader";
 
 function App() {

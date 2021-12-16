@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AuthContext } from "../../../context/AuthContext";
-import Title from "../../UI/Title";
+import { AuthContext } from "../../context/AuthContext";
+import Title from "../../components/UI/Title";
 
 function Profile() {
 	const { loggedUser } = useContext(AuthContext);

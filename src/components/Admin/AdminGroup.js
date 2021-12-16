@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
-import Button from "../../UI/Button";
-import Table from "../../UI/Table/Table";
-import TableMenuButton from "../../UI/Table/TableMenuButton";
-import TableMenuItem from "../../UI/Table/TableMenuItem";
-import MyDialog from "../../UI/Dialog/MyDialog";
-import FormGroups from "./FormGroups";
-import { useAxios } from "../../../helpers/AxiosHelper";
+import Button from "../UI/Button";
+import Table from "../UI/Table/Table";
+import TableMenuButton from "../UI/Table/TableMenuButton";
+import TableMenuItem from "../UI/Table/TableMenuItem";
+import MyDialog from "../UI/Dialog/MyDialog";
+import AdminGroupForm from "./AdminGroupForm";
+import { useAxios } from "../../helpers/AxiosHelper";
 
 const API_URL = "http://localhost:8080";
 
@@ -24,7 +24,7 @@ const ACTIONS = {
 	NONE: "none",
 };
 
-const AdminPanelGroups = () => {
+const AdminGroup = () => {
 	//Fetch group data
 	const [{ data, loading, error }, refetch] = useAxios(
 		API_URL + "/admin/getAllGroups",
@@ -125,11 +125,11 @@ const AdminPanelGroups = () => {
 			case ACTIONS.EDIT:
 				return (
 					<MyDialog isOpen={showForm} onClose={() => setShowForm(false)}>
-						<FormGroups
+						<AdminGroupForm
 							data={selectedGroup}
 							onCancel={formCancelHandler}
 							onSuccess={refetch}
-						></FormGroups>
+						></AdminGroupForm>
 					</MyDialog>
 				);
 			case ACTIONS.REMOVE:
@@ -180,4 +180,4 @@ const AdminPanelGroups = () => {
 	);
 };
 
-export default AdminPanelGroups;
+export default AdminGroup;

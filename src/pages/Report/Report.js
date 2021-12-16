@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Route, Switch, useRouteMatch } from "react-router";
-import PageContainer from "../../UI/PageContainer";
-import ReportCreate from "./ReportCreate";
-import ReportTable from "./ReportTable";
+import PageContainer from "../../components/UI/PageContainer";
+import ReportCreate from "../../components/Report/ReportCreate";
+import ReportTable from "../../components/Report/ReportTable";
 
 const Report = () => {
 	const { url, path } = useRouteMatch();

@@ -1,4 +1,4 @@
-import Title from "../../UI/Title";
+import Title from "../../components/UI/Title";
 
 function Home() {
 	return (

@@ -1,11 +1,11 @@
 import { useState, useCallback, useMemo } from "react";
-import Button from "../../UI/Button";
-import Table from "../../UI/Table/Table";
-import Title from "../../UI/Title";
-import { uploadSource } from "../../../helpers/UploadHelper";
+import Button from "../../components/UI/Button";
+import Table from "../../components/UI/Table/Table";
+import Title from "../../components/UI/Title";
+import { uploadSource } from "../../helpers/UploadHelper";
 import { useDropzone } from "react-dropzone";
-import MyDialog from "../../UI/Dialog/MyDialog";
-import { useAxios } from "../../../helpers/AxiosHelper";
+import MyDialog from "../../components/UI/Dialog/MyDialog";
+import { useAxios } from "../../helpers/AxiosHelper";
 
 class SourceObject {
 	constructor(source) {

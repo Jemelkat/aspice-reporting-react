@@ -1,37 +1,36 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { axiosInstance, useAxios } from "../../../helpers/AxiosHelper";
-import Button from "../../UI/Button";
-import Table from "../../UI/Table/Table";
-import Title from "../../UI/Title";
+import { axiosInstance, useAxios } from "../../helpers/AxiosHelper";
+import Button from "../UI/Button";
+import Table from "../UI/Table/Table";
+import Title from "../UI/Title";
 import { useRouteMatch } from "react-router";
-import TableMenuButton from "../../UI/Table/TableMenuButton";
-import TableMenuItem from "../../UI/Table/TableMenuItem";
-import ConfirmDialog from "../../UI/Dialog/ConfirmDialog";
+import TableMenuItem from "../UI/Table/TableMenuItem";
+import TableMenuButton from "../UI/Table/TableMenuButton";
+import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
 import { useAlert } from "react-alert";
 
-class ReportObject {
+class TemplateObject {
 	constructor(data) {
-		this.id = data.reportId;
-		this.reportName = data.reportName;
-		this.reportCreated = data.reportCreated;
-		this.reportUpdated = data.reportLastUpdated;
-		this.reportTemplateName = data.reportTemplate
-			? data.reportTemplate.templateName
-			: "";
-		this.reportShared = data.reportGroup ? "Yes" : "No";
+		this.id = data.templateId;
+		this.templateName = data.templateName;
+		this.templateCreated = data.templateCreated;
+		this.templateUpdated = data.templateLastUpdated;
+		this.templateShared = data.templateGroup ? "Yes" : "No";
 	}
 }
-const ReportTable = (props) => {
-	const [selectedRow, setSelectedRow] = useState(null);
+
+const TemplateTable = (props) => {
 	const [showShareDialog, setShowShareDialog] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-
 	const { url } = useRouteMatch();
 	const alert = useAlert();
-	const [{ data, loading, error }, refetch] = useAxios("/report/getAll", {
+
+	const [{ data, loading, error }, refetch] = useAxios("/template/getAll", {
 		useCache: false,
 	});
+
+	const [selectedRow, setSelectedRow] = useState(null);
 
 	const columns = useMemo(
 		() => [
@@ -40,24 +39,20 @@ const ReportTable = (props) => {
 				accessor: "id",
 			},
 			{
-				Header: "Report name",
-				accessor: "reportName",
-			},
-			{
-				Header: "Based on template",
-				accessor: "reportTemplateName",
+				Header: "Template name",
+				accessor: "templateName",
 			},
 			{
 				Header: "Created at",
-				accessor: "reportCreated",
+				accessor: "templateCreated",
 			},
 			{
 				Header: "Last updated",
-				accessor: "reportUpdated",
+				accessor: "templateUpdated",
 			},
 			{
 				Header: "Shared",
-				accessor: "reportShared",
+				accessor: "templateShared",
 			},
 			{
 				Header: "Actions",
@@ -70,14 +65,13 @@ const ReportTable = (props) => {
 								setShowShareDialog(true);
 							}}
 						>
-							{row.original.reportShared === "Yes" ? "Unshare" : "Share"}
+							Share
 						</TableMenuItem>
 						<Link
-							key='2'
 							to={`${url}/create`}
 							onClick={() => props.onModeChange("edit", row.original.id)}
 						>
-							<TableMenuItem>Edit</TableMenuItem>
+							<TableMenuItem key='2'>Edit</TableMenuItem>
 						</Link>
 						<TableMenuItem
 							key='3'
@@ -96,45 +90,35 @@ const ReportTable = (props) => {
 		[]
 	);
 
-	const initialState = useMemo(
-		() => [
-			{
-				sortBy: [
-					{
-						id: "reportCreated",
-						desc: false,
-					},
-				],
-			},
-		],
-		[]
-	);
-
 	const parseData = (data) => {
+		debugger;
 		let objectArray = [];
-		if (data) data.forEach((item) => objectArray.push(new ReportObject(item)));
+		if (data)
+			data.forEach((item) => objectArray.push(new TemplateObject(item)));
 		return objectArray;
 	};
 
 	//Share selected template with group
-	const shareReportHandler = () => {
+	const shareTemplateHandler = () => {
 		axiosInstance
-			.post("/report/share", null, { params: { reportId: selectedRow.id } })
+			.post("/template/share", null, {
+				params: { templateId: selectedRow.id },
+			})
 			.then((response) => {
 				alert.info(response.data.message);
 				setShowShareDialog(false);
 				refetch();
 			})
 			.catch(() => {
-				alert.error("There was error sharing report!");
+				alert.error("There was error sharing template!");
 				setShowShareDialog(false);
 			});
 	};
 
-	const deleteReportHandler = () => {
+	const deleteTemplateHandler = () => {
 		axiosInstance
-			.delete("/report/delete", {
-				params: { reportId: selectedRow.id },
+			.delete("/template/delete", {
+				params: { templateId: selectedRow.id },
 			})
 			.then((response) => {
 				alert.info(response.data.message);
@@ -142,22 +126,22 @@ const ReportTable = (props) => {
 				refetch();
 			})
 			.catch(() => {
-				alert.error("There was error deleting report!");
-				setShowDeleteDialog(false);
+				alert.error("There was error deleting template!");
+				setShowShareDialog(false);
 			});
 	};
-
-	useEffect(() => {
-		props.onModeChange("create", null);
-	}, []);
 
 	return (
 		<>
-			<Title text='Reports'></Title>
+			<Title text='Templates'></Title>
 			<div className='flex justify-end px-2 py-4'>
 				<Link to={`${url}/create`}>
-					<Button className='mr-2' dark={true}>
-						Create new report
+					<Button
+						className='mr-2'
+						onClick={() => props.onModeChange("create", null)}
+						dark={true}
+					>
+						Create new template
 					</Button>
 				</Link>
 				<Button onClick={refetch} dark={true}>
@@ -176,25 +160,25 @@ const ReportTable = (props) => {
 			{/*Share dialog*/}
 			<ConfirmDialog
 				title={`Do you want to share ${
-					selectedRow ? selectedRow.reportName : ""
+					selectedRow ? selectedRow.templateName : ""
 				} with your group?`}
 				isOpen={showShareDialog}
 				onClose={() => setShowShareDialog(false)}
 				onOk={() => {
-					shareReportHandler();
+					shareTemplateHandler();
 				}}
 				onCancel={() => setShowShareDialog(false)}
 			></ConfirmDialog>
 
 			{/*Delete dialog */}
 			<ConfirmDialog
-				title={`Do you really want to delete report ${
-					selectedRow ? selectedRow.reportName : ""
+				title={`Do you really want to delete template ${
+					selectedRow ? selectedRow.templateName : ""
 				}?`}
 				isOpen={showDeleteDialog}
 				onClose={() => setShowDeleteDialog(false)}
 				onOk={() => {
-					deleteReportHandler();
+					deleteTemplateHandler();
 				}}
 				onCancel={() => setShowDeleteDialog(false)}
 			></ConfirmDialog>
@@ -202,4 +186,4 @@ const ReportTable = (props) => {
 	);
 };
 
-export default ReportTable;
+export default TemplateTable;

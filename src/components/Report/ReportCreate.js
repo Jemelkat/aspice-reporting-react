@@ -1,15 +1,17 @@
-import Sidebar from "../../UI/Sidebar/Sidebar";
-import SidebarLinks from "../../UI/Sidebar/SidebarLinks";
-import { useEffect, useState } from "react";
-import RndCanvasItem from "../../UI/CanvasItem/RndCanvasItem";
-import Button from "../../UI/Button";
+import Sidebar from "../UI/Sidebar/Sidebar";
+import SidebarLinks from "../UI/Sidebar/SidebarLinks";
 import * as Yup from "yup";
-import { Form, Formik } from "formik";
-import FormHidden from "../../UI/Form/FormHidden";
-import FormInput from "../../UI/Form/FormInput";
-import { axiosInstance, useAxios } from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "../../helpers/AxiosHelper";
+import { useAxios } from "../../helpers/AxiosHelper";
+import Loader from "../UI/Loader/Loader";
+import FormHidden from "../UI/Form/FormHidden";
+import FormInput from "../UI/Form/FormInput";
+import Button from "../UI/Button";
+import RndCanvasItem from "../UI/Canvas/RndCanvasItem";
+import FormSelect from "../UI/Form/FormSelect";
 import { useHistory } from "react-router";
-import Loader from "../../UI/Loader/Loader";
 
 const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
@@ -28,16 +30,40 @@ class Item {
 	}
 }
 
-const TemplateCreate = (props) => {
+const ReportCreate = ({ mode, reportId }) => {
 	//Stores all components currently on canvas
 	const [components, setComponents] = useState([]);
 	const [selectedComponent, setSelectedComponent] = useState(null);
-	const history = useHistory();
-	const [{ data, loading, error }, fetchData] = useAxios(
+	const [selectTemplates, setSelectTemplates] = useState([]);
+	let history = useHistory();
+
+	//Get current template - used for reseting of data
+	const [
+		{ data: templateData, loading: templateLoading, error: templateError },
+		getTemplate,
+	] = useAxios(
 		{
 			url: "/template/get",
 			method: "GET",
-			params: { templateId: props.templateId },
+		},
+		{ manual: true }
+	);
+
+	//Get all templates for select form input
+	const [
+		{ data: selectData, loading: selectLoading, error: selectError },
+		getSelectData,
+	] = useAxios("/template/getAll", { useCache: false, manual: true });
+
+	//Get current report for edit mode
+	const [
+		{ data: reportData, loading: reportLoading, error: reportError },
+		getReport,
+	] = useAxios(
+		{
+			url: "/report/get",
+			method: "GET",
+			params: { reportId: reportId },
 		},
 		{ useCache: false, manual: true }
 	);
@@ -55,6 +81,28 @@ const TemplateCreate = (props) => {
 				) + 1
 			);
 		}
+	};
+
+	const parseAndSetComponents = (components) => {
+		let newComponents = [];
+		setComponents([]);
+		if (components) {
+			newComponents = components.map(
+				(i) => new Item(i.itemId, i.x, i.y, i.width, i.height, i.type)
+			);
+			setComponents(newComponents);
+		}
+	};
+
+	//Parse templates to value:"", label:""
+	const parseTemplates = (templates) => {
+		let array = [];
+		if (templates)
+			templates.forEach((template) =>
+				array.push({ value: template.templateId, label: template.templateName })
+			);
+		array.push({ value: "", label: "None" });
+		return array;
 	};
 
 	//Add new component to canvas
@@ -76,20 +124,26 @@ const TemplateCreate = (props) => {
 		setComponents([...components, item]);
 	};
 
-	//Saves template to DB
-	const saveTemplateHandler = (formValues) => {
+	//Saves report to DB
+	const saveReportHandler = (formValues) => {
 		axiosInstance
-			.post("/template/save", {
-				templateId: formValues.id,
-				templateName: formValues.templateName,
-				templateItems:
+			.post("/report/save", {
+				reportId: formValues.id,
+				reportName: formValues.reportName,
+				reportItems:
 					//TODO REMOVE LINE AFTER : - new items are created every time
-					props.mode === "create"
+					mode === "create"
 						? components.map((e) => ({ ...e, itemId: null }))
 						: components.map((e) => ({ ...e, itemId: null })),
+				reportTemplate:
+					formValues.templateId !== ""
+						? {
+								templateId: formValues.templateId,
+						  }
+						: null,
 			})
 			.then(function (response) {
-				history.push("/template");
+				history.push("/report");
 			})
 			.catch(function (error) {
 				//TODO ADD ALERT
@@ -117,30 +171,44 @@ const TemplateCreate = (props) => {
 		setComponents(updatedComponents);
 	};
 
+	const applyTemplateHandler = (templateId) => {
+		console.log("applying template ", templateId);
+		if (templateId !== "")
+			getTemplate({ params: { templateId: templateId } }).then((response) => {
+				parseAndSetComponents(response.data.templateItems);
+				setSelectedComponent(null);
+			});
+		else {
+			setComponents([]);
+			setSelectedComponent(null);
+		}
+	};
+
 	const selectComponentHandler = (id) => {
 		setSelectedComponent(components.find((i) => i.itemId === id));
 	};
 
-	const parseAndSetComponents = (components) => {
-		let newComponents = [];
-		if (components) {
-			newComponents = components.map(
-				(i) => new Item(i.itemId, i.x, i.y, i.width, i.height, i.type)
-			);
-		}
-		setComponents(newComponents);
-	};
+	useEffect(() => {
+		if (mode === "edit") getReport();
+		getSelectData().then((response) => {
+			setSelectTemplates(parseTemplates(response.data));
+		});
+	}, []);
 
 	useEffect(() => {
-		if (props.mode === "edit")
-			fetchData().then((response) => {
-				parseAndSetComponents(response.data.templateItems);
-			});
-	}, []);
+		console.log("report data change ", reportData);
+		if (reportData) {
+			parseAndSetComponents(reportData.reportItems);
+		}
+	}, [reportData]);
+
+	useEffect(() => {
+		console.log(components);
+	}, [components]);
 
 	return (
 		<>
-			{loading && props.mode === "edit" ? (
+			{reportLoading && mode === "edit" ? (
 				/**TODO ADJUST TO MIDDLE */
 				<div className='flex items-center justify-center flex-grow'>
 					<Loader fullscreen={false} dark={false}></Loader>
@@ -150,18 +218,23 @@ const TemplateCreate = (props) => {
 					{/*Left sidebar */}
 					<div className='flex-1 mr-2 xl:mr-4'>
 						<div className='sticky top-0 flex justify-start h-screen'>
-							<Sidebar className='overflow-y-auto bg-gray-300'>
-								<SidebarLinks sidebarName='Template'>
+							<Sidebar className='overflow-y-auto bg-white border-2 shadow-xl'>
+								<SidebarLinks sidebarName='Report'>
 									<Formik
 										initialValues={{
-											id: data ? data.templateId : null,
-											templateName: data ? data.templateName : "",
+											id: reportData ? reportData.reportId : null,
+											reportName: reportData ? reportData.reportName : "",
+											templateId: reportData
+												? reportData.reportTemplate
+													? reportData.reportTemplate.templateId
+													: ""
+												: "",
 										}}
 										validationSchema={Yup.object({
-											templateName: Yup.string().required("Required"),
+											reportName: Yup.string().required("Required"),
 										})}
 										onSubmit={(values, { setSubmitting }) => {
-											saveTemplateHandler(values);
+											saveReportHandler(values);
 											setSubmitting(false);
 										}}
 									>
@@ -169,12 +242,41 @@ const TemplateCreate = (props) => {
 											<Form className='flex flex-col p-4'>
 												<FormHidden name='id'></FormHidden>
 												<FormInput
-													label='Template name'
-													name='templateName'
+													label='Report name'
+													name='reportName'
 													type='text'
-													placeholder='Template name...'
+													placeholder='Report name...'
 												/>
-												<Button dark={true} type='submit' className='mt-4'>
+												<label className='mt-2' htmlFor='template'>
+													Based on template
+												</label>
+												<Field
+													name='templateId'
+													options={selectTemplates}
+													component={FormSelect}
+													placeholder={
+														selectError
+															? "No templates found"
+															: "Select template"
+													}
+													isMulti={false}
+													isLoading={selectLoading}
+												/>
+												<Button
+													type='button'
+													onClick={() => {
+														if (
+															window.confirm(
+																"Applying template will reset canvas layout. Do you really want to reset this report?"
+															)
+														) {
+															applyTemplateHandler(values.templateId);
+														}
+													}}
+												>
+													Apply template
+												</Button>
+												<Button type='submit' className='mt-4' dark={true}>
 													Save
 												</Button>
 											</Form>
@@ -204,13 +306,14 @@ const TemplateCreate = (props) => {
 						</div>
 					</div>
 					{/*Canvas*/}
-					<div className='mt-10 mb-10 overflow-x-auto overflow-y-hidden border-2'>
+					<div className='mt-10 mb-10 overflow-x-auto overflow-y-hidden'>
 						<div
-							className='relative p-2'
+							className='relative m-auto border-2 shadow-xl'
 							style={{ width: "210mm", height: "297mm" }}
 						>
 							{/*Generate stored components to canvas */}
 							{components.map((i) => {
+								console.log("rendering", i);
 								return (
 									<RndCanvasItem
 										key={i.itemId}
@@ -226,7 +329,7 @@ const TemplateCreate = (props) => {
 					{/*Right sidebar */}
 					<div className='flex-1 ml-2 xl:ml-4'>
 						<div className='sticky top-0 flex justify-end h-screen'>
-							<Sidebar className='bg-gray-300'>
+							<Sidebar className='bg-white border-2 shadow-xl'>
 								<SidebarLinks sidebarName='Edit selected component'></SidebarLinks>
 								{selectedComponent &&
 									Object.keys(selectedComponent).map((visit, index) => (
@@ -243,4 +346,4 @@ const TemplateCreate = (props) => {
 	);
 };
 
-export default TemplateCreate;
+export default ReportCreate;

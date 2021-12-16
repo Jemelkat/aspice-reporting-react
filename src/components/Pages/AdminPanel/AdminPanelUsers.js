@@ -124,7 +124,7 @@ const AdminPanelUsers = () => {
 		switch (action) {
 			case ACTIONS.EDIT:
 				return (
-					<MyDialog isOpen={isOpen} setIsOpen={setIsOpen}>
+					<MyDialog isOpen={isOpen} onClose={() => setShowForm(false)}>
 						<FormEditUser
 							data={selectedUser}
 							onCancel={formCancelHandler}
@@ -137,7 +137,7 @@ const AdminPanelUsers = () => {
 					<MyDialog
 						title={`Do you really want to remove user ${selectedUser.username}?`}
 						isOpen={showForm}
-						setIsOpen={setShowForm}
+						onClose={() => setShowForm(false)}
 					>
 						<div className='flex flex-row items-center justify-evenly'>
 							<Button text='Yes' onClick={() => userDeleteHandler()}></Button>

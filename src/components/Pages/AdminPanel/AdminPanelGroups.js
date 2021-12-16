@@ -124,7 +124,7 @@ const AdminPanelGroups = () => {
 		switch (action) {
 			case ACTIONS.EDIT:
 				return (
-					<MyDialog isOpen={showForm} setIsOpen={setShowForm}>
+					<MyDialog isOpen={showForm} onClose={() => setShowForm(false)}>
 						<FormGroups
 							data={selectedGroup}
 							onCancel={formCancelHandler}
@@ -137,7 +137,7 @@ const AdminPanelGroups = () => {
 					<MyDialog
 						title='Do you want to delete group?'
 						isOpen={showForm}
-						setIsOpen={setShowForm}
+						onClose={() => setShowForm(false)}
 					>
 						<div className='flex flex-row items-center justify-evenly'>
 							<Button onClick={() => groupDeleteHandler()}>Yes</Button>

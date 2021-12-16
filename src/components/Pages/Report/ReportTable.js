@@ -69,10 +69,11 @@ const ReportTable = (props) => {
 							Share
 						</TableMenuItem>
 						<Link
+							key='2'
 							to={`${url}/create`}
 							onClick={() => props.onModeChange("edit", row.original.id)}
 						>
-							<TableMenuItem key='2'>Edit</TableMenuItem>
+							<TableMenuItem>Edit</TableMenuItem>
 						</Link>
 						<TableMenuItem
 							key='3'
@@ -157,13 +158,14 @@ const ReportTable = (props) => {
 					initSortColumn={"id"}
 				/>
 			</div>
+
 			{/*Share dialog*/}
 			<ConfirmDialog
 				title={`Do you want to share ${
-					selectedRow ? selectedRow.templateName : ""
+					selectedRow ? selectedRow.reportName : ""
 				} with your group?`}
 				isOpen={showShareDialog}
-				setIsOpen={setShowShareDialog}
+				onClose={() => setShowShareDialog(false)}
 				onOk={() => {
 					shareReportHandler();
 				}}
@@ -176,7 +178,7 @@ const ReportTable = (props) => {
 					selectedRow ? selectedRow.reportName : ""
 				}?`}
 				isOpen={showDeleteDialog}
-				setIsOpen={setShowDeleteDialog}
+				onClose={() => setShowDeleteDialog(false)}
 				onOk={() => {
 					deleteReportHandler();
 				}}

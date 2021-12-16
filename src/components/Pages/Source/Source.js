@@ -110,7 +110,11 @@ const Source = () => {
 					initSortColumn={"id"}
 				/>
 			</div>
-			<MyDialog isOpen={isOpen} setIsOpen={setIsOpen} title='Upload new source'>
+			<MyDialog
+				isOpen={isOpen}
+				onClose={() => setIsOpen(false)}
+				title='Upload new source'
+			>
 				<div
 					{...getRootProps({
 						className:

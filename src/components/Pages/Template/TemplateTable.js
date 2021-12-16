@@ -149,7 +149,7 @@ const TemplateTable = (props) => {
 					selectedRow ? selectedRow.templateName : ""
 				} with your group?`}
 				isOpen={showShareDialog}
-				setIsOpen={setShowShareDialog}
+				onClose={() => setShowShareDialog(false)}
 				onOk={() => {
 					shareTemplateHandler();
 				}}
@@ -162,7 +162,7 @@ const TemplateTable = (props) => {
 					selectedRow ? selectedRow.templateName : ""
 				}?`}
 				isOpen={showDeleteDialog}
-				setIsOpen={setShowDeleteDialog}
+				onClose={() => setShowDeleteDialog(false)}
 				onOk={() => {
 					deleteTemplateHandler();
 				}}

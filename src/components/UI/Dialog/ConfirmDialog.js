@@ -1,5 +1,4 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useRef } from "react";
+import { useRef } from "react";
 import Button from "../Button";
 import MyDialog from "./MyDialog";
 

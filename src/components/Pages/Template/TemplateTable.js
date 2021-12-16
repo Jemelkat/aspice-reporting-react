@@ -8,7 +8,7 @@ import { useRouteMatch } from "react-router";
 import TableMenuItem from "../../UI/Table/TableMenuItem";
 import TableMenuButton from "../../UI/Table/TableMenuButton";
 import ConfirmDialog from "../../UI/Dialog/ConfirmDialog";
-import MyDialog from "../../UI/Dialog/MyDialog";
+import { useAlert } from "react-alert";
 
 class TemplateObject {
 	constructor(data) {
@@ -21,20 +21,14 @@ class TemplateObject {
 }
 
 const TemplateTable = (props) => {
+	const [showShareDialog, setShowShareDialog] = useState(false);
+	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const { url } = useRouteMatch();
+	const alert = useAlert();
+
 	const [{ data, loading, error }, refetch] = useAxios("/template/getAll", {
 		useCache: false,
 	});
-	const [{}, postShare] = useAxios(
-		{ url: "/template/share", method: "POST" },
-		{
-			useCache: false,
-			manual: true,
-		}
-	);
-
-	const [showShareDialog, setShowShareDialog] = useState(false);
-	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
 	const [selectedRow, setSelectedRow] = useState(null);
 
@@ -97,6 +91,7 @@ const TemplateTable = (props) => {
 	);
 
 	const parseData = (data) => {
+		debugger;
 		let objectArray = [];
 		if (data)
 			data.forEach((item) => objectArray.push(new TemplateObject(item)));
@@ -105,16 +100,35 @@ const TemplateTable = (props) => {
 
 	//Share selected template with group
 	const shareTemplateHandler = () => {
-		postShare({ params: { templateId: selectedRow.id } }).then(() => {
-			setShowShareDialog(false);
-			refetch();
-		});
+		axiosInstance
+			.post("/template/share", null, {
+				params: { templateId: selectedRow.id },
+			})
+			.then((response) => {
+				alert.info(response.data.message);
+				setShowShareDialog(false);
+				refetch();
+			})
+			.catch(() => {
+				alert.error("There was error sharing template!");
+				setShowShareDialog(false);
+			});
 	};
 
 	const deleteTemplateHandler = () => {
-		axiosInstance.delete("/template/delete", {
-			params: { templateId: selectedRow.id },
-		});
+		axiosInstance
+			.delete("/template/delete", {
+				params: { templateId: selectedRow.id },
+			})
+			.then((response) => {
+				alert.info(response.data.message);
+				setShowDeleteDialog(false);
+				refetch();
+			})
+			.catch(() => {
+				alert.error("There was error deleting template!");
+				setShowShareDialog(false);
+			});
 	};
 
 	return (

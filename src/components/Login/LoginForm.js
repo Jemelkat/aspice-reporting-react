@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router";
 import { getLoggedUser, login, register } from "../../helpers/AuthHelper";
 import { AuthContext } from "../../context/AuthContext";
@@ -77,11 +77,11 @@ function LoginForm(props) {
 		<>
 			<form className='flex flex-col p-10' onSubmit={submitHandler}>
 				<div>
-					<span className='text-2xl pb-10'>
+					<span className='pb-10 text-2xl'>
 						{isLogin ? "Login" : "Register"}
 					</span>
 					{isLoading && (
-						<div className='animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-purple-500'></div>
+						<div className='w-5 h-5 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin'></div>
 					)}
 				</div>
 				<span>{error.errorMessage}</span>
@@ -126,7 +126,7 @@ function LoginForm(props) {
 					}}
 				></input>
 				<button
-					className='text-xl border-2 border-black py-3 mt-5'
+					className='py-3 mt-5 text-xl border-2 border-black'
 					type='submit'
 				>
 					{isLogin ? "Login" : "Register"}

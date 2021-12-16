@@ -30,7 +30,7 @@ const FormGroups = (props) => {
 		executePost,
 	] = useAxios(
 		{
-			url: "/group/create",
+			url: "/group/edit",
 			method: "POST",
 		},
 		{ manual: true }
@@ -52,10 +52,14 @@ const FormGroups = (props) => {
 				groupName: data.groupName,
 				users: usersData,
 			},
-		}).then(() => {
-			props.onCancel();
-			props.onSuccess();
-		});
+		})
+			.then(() => {
+				props.onCancel();
+				props.onSuccess();
+			})
+			.error((error) => {
+				console.log(error);
+			});
 	}
 
 	//Parse users to value:"", label:""

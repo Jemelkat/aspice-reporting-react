@@ -8,6 +8,7 @@ import { useRouteMatch } from "react-router";
 import TableMenuButton from "../../UI/Table/TableMenuButton";
 import TableMenuItem from "../../UI/Table/TableMenuItem";
 import ConfirmDialog from "../../UI/Dialog/ConfirmDialog";
+import { useAlert } from "react-alert";
 
 class ReportObject {
 	constructor(data) {
@@ -15,19 +16,22 @@ class ReportObject {
 		this.reportName = data.reportName;
 		this.reportCreated = data.reportCreated;
 		this.reportUpdated = data.reportLastUpdated;
-		this.reportTemplateName = data.reportTemplateName;
+		this.reportTemplateName = data.reportTemplate
+			? data.reportTemplate.templateName
+			: "";
 		this.reportShared = data.reportGroup ? "Yes" : "No";
 	}
 }
 const ReportTable = (props) => {
-	const { url } = useRouteMatch();
-	const [{ data, loading, error }, refetch] = useAxios("/report/getAll", {
-		useCache: false,
-	});
-
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [showShareDialog, setShowShareDialog] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+	const { url } = useRouteMatch();
+	const alert = useAlert();
+	const [{ data, loading, error }, refetch] = useAxios("/report/getAll", {
+		useCache: false,
+	});
 
 	const columns = useMemo(
 		() => [
@@ -66,7 +70,7 @@ const ReportTable = (props) => {
 								setShowShareDialog(true);
 							}}
 						>
-							Share
+							{row.original.reportShared === "Yes" ? "Unshare" : "Share"}
 						</TableMenuItem>
 						<Link
 							key='2'
@@ -115,10 +119,15 @@ const ReportTable = (props) => {
 	//Share selected template with group
 	const shareReportHandler = () => {
 		axiosInstance
-			.post("/report/share", { params: { reportId: selectedRow.id } })
+			.post("/report/share", null, { params: { reportId: selectedRow.id } })
 			.then((response) => {
+				alert.info(response.data.message);
 				setShowShareDialog(false);
 				refetch();
+			})
+			.catch(() => {
+				alert.error("There was error sharing report!");
+				setShowShareDialog(false);
 			});
 	};
 
@@ -128,8 +137,13 @@ const ReportTable = (props) => {
 				params: { reportId: selectedRow.id },
 			})
 			.then((response) => {
+				alert.info(response.data.message);
 				setShowDeleteDialog(false);
 				refetch();
+			})
+			.catch(() => {
+				alert.error("There was error deleting report!");
+				setShowDeleteDialog(false);
 			});
 	};
 

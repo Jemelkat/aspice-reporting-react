@@ -5,7 +5,7 @@ import PageContainer from "../../UI/PageContainer";
 import { useState } from "react";
 
 const Template = () => {
-	const { url, path } = useRouteMatch();
+	const { path } = useRouteMatch();
 	const [mode, setMode] = useState("create");
 	const [selectedId, setSelectedId] = useState(null);
 

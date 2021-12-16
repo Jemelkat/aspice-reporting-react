@@ -5,12 +5,24 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthContextProvider } from "./context/AuthContext";
 import { BrowserRouter } from "react-router-dom";
+import { transitions, positions, Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
+
+// optional configuration
+const options = {
+	position: positions.BOTTOM_RIGHT,
+	timeout: 2000,
+	offset: "3px",
+	transition: transitions.SCALE,
+};
 
 ReactDOM.render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<AuthContextProvider>
-				<App />
+				<AlertProvider template={AlertTemplate} {...options}>
+					<App />
+				</AlertProvider>
 			</AuthContextProvider>
 		</BrowserRouter>
 	</React.StrictMode>,

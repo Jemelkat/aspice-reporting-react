@@ -27,10 +27,14 @@ const FormEditUser = (props) => {
 				email: data.email,
 				roles: [],
 			},
-		}).then(() => {
-			props.onCancel();
-			props.onSuccess();
-		});
+		})
+			.then(() => {
+				props.onCancel();
+				props.onSuccess();
+			})
+			.error((error) => {
+				console.log(error);
+			});
 	}
 
 	return (

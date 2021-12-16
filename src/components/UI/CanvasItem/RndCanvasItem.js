@@ -14,10 +14,10 @@ const RndCanvasItem = (props) => {
 	return (
 		<Rnd
 			default={{
-				x: item.x,
-				y: item.y,
-				width: item.width,
-				height: item.height,
+				x: props.item.x,
+				y: props.item.y,
+				width: props.item.width,
+				height: props.item.height,
 			}}
 			dragGrid={[5, 5]}
 			resizeGrid={[5, 5]}

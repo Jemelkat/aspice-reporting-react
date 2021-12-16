@@ -83,9 +83,11 @@ const ReportCreate = ({ mode, reportId }) => {
 		}
 	};
 
-	const parseNewComponents = (components) => {
+	const parseAndSetComponents = (components) => {
+		let newComponents = [];
+		setComponents([]);
 		if (components) {
-			const newComponents = components.map(
+			newComponents = components.map(
 				(i) => new Item(i.itemId, i.x, i.y, i.width, i.height, i.type)
 			);
 			setComponents(newComponents);
@@ -170,12 +172,15 @@ const ReportCreate = ({ mode, reportId }) => {
 	};
 
 	const applyTemplateHandler = (templateId) => {
+		console.log("applying template ", templateId);
 		if (templateId !== "")
-			getTemplate({ params: { templateId: templateId } }).then((response) =>
-				parseNewComponents(response.data.templateItems)
-			);
+			getTemplate({ params: { templateId: templateId } }).then((response) => {
+				parseAndSetComponents(response.data.templateItems);
+				setSelectedComponent(null);
+			});
 		else {
 			setComponents([]);
+			setSelectedComponent(null);
 		}
 	};
 
@@ -191,10 +196,15 @@ const ReportCreate = ({ mode, reportId }) => {
 	}, []);
 
 	useEffect(() => {
+		console.log("report data change ", reportData);
 		if (reportData) {
-			parseNewComponents(reportData.reportItems);
+			parseAndSetComponents(reportData.reportItems);
 		}
 	}, [reportData]);
+
+	useEffect(() => {
+		console.log(components);
+	}, [components]);
 
 	return (
 		<>
@@ -303,6 +313,7 @@ const ReportCreate = ({ mode, reportId }) => {
 						>
 							{/*Generate stored components to canvas */}
 							{components.map((i) => {
+								console.log("rendering", i);
 								return (
 									<RndCanvasItem
 										key={i.itemId}

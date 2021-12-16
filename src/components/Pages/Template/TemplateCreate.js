@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import RndCanvasItem from "../../UI/CanvasItem/RndCanvasItem";
 import Button from "../../UI/Button";
 import * as Yup from "yup";
-import { Form, Formik, setNestedObjectValues } from "formik";
+import { Form, Formik } from "formik";
 import FormHidden from "../../UI/Form/FormHidden";
 import FormInput from "../../UI/Form/FormInput";
 import { axiosInstance, useAxios } from "../../../helpers/AxiosHelper";
@@ -121,18 +121,22 @@ const TemplateCreate = (props) => {
 		setSelectedComponent(components.find((i) => i.itemId === id));
 	};
 
-	useEffect(() => {
-		if (props.mode === "edit") fetchData();
-	}, []);
-
-	useEffect(() => {
-		if (data) {
-			const newComponents = data.templateItems.map(
+	const parseAndSetComponents = (components) => {
+		let newComponents = [];
+		if (components) {
+			newComponents = components.map(
 				(i) => new Item(i.itemId, i.x, i.y, i.width, i.height, i.type)
 			);
-			setComponents(newComponents);
 		}
-	}, [data]);
+		setComponents(newComponents);
+	};
+
+	useEffect(() => {
+		if (props.mode === "edit")
+			fetchData().then((response) => {
+				parseAndSetComponents(response.data.templateItems);
+			});
+	}, []);
 
 	return (
 		<>

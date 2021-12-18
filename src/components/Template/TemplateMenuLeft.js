@@ -9,11 +9,11 @@ import { typeEnum } from "./TemplateCreate";
 import * as Yup from "yup";
 import { PlusIcon } from "@heroicons/react/solid";
 
-const TemplateCanvasLeft = ({ data, onSave, onAddComponent }) => {
+const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
 			<div className='sticky top-0 flex justify-start h-screen'>
-				<Sidebar className='overflow-y-auto bg-gray-200 shadow-xl'>
+				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
 					<SidebarLinks sidebarName='Template'>
 						<Formik
 							initialValues={{
@@ -82,4 +82,4 @@ const TemplateCanvasLeft = ({ data, onSave, onAddComponent }) => {
 	);
 };
 
-export default TemplateCanvasLeft;
+export default TemplateMenuLeft;

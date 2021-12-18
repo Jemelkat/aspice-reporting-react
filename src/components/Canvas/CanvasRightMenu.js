@@ -5,9 +5,9 @@ import { Form, Formik } from "formik";
 import FormHidden from "../UI/Form/FormHidden";
 import FormInput from "../UI/Form/FormInput";
 import Button from "../UI/Button";
-import { typeEnum } from "./TemplateCreate";
+import { typeEnum } from "../Template/TemplateCreate";
 
-const TemplateCanvasRight = ({ selectedComponent, show, ...props }) => {
+const CanvasRightMenu = ({ selectedComponent, show, ...props }) => {
 	const renderTypeInputs = () => {
 		switch (selectedComponent.type) {
 			case typeEnum.STATIC_TEXT:
@@ -25,7 +25,7 @@ const TemplateCanvasRight = ({ selectedComponent, show, ...props }) => {
 		<div className='flex-1 ml-2 xl:ml-4'>
 			<div className='sticky top-0 flex justify-end h-screen'>
 				<Sidebar
-					className='overflow-y-auto bg-gray-200 shadow-xl'
+					className='overflow-y-auto bg-white shadow-xl'
 					position='right'
 					show={show}
 				>
@@ -107,4 +107,4 @@ const TemplateCanvasRight = ({ selectedComponent, show, ...props }) => {
 	);
 };
 
-export default TemplateCanvasRight;
+export default CanvasRightMenu;

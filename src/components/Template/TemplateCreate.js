@@ -15,6 +15,7 @@ import TemplateCanvasRight from "../Template/TemplateCanvasRight";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 import TemplateCanvasLeft from "./TemplateCanvasLeft";
+import { useAlert } from "react-alert";
 
 export const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
@@ -36,8 +37,12 @@ class Item {
 const TemplateCreate = (props) => {
 	//Stores all components currently on canvas
 	const [components, setComponents] = useState([]);
+	const [showSelected, setShowSelected] = useState(false);
 	const [selectedComponent, setSelectedComponent] = useState(null);
+
 	const history = useHistory();
+	const alert = useAlert();
+
 	const [{ data, loading, error }, fetchData] = useAxios(
 		{
 			url: "/template/get",
@@ -108,6 +113,7 @@ const TemplateCreate = (props) => {
 			i.itemId === id ? { ...i, x: x, y: y } : i
 		);
 		setSelectedComponent(updatedComponents.find((i) => i.itemId === id));
+		setShowSelected(true);
 		setComponents(updatedComponents);
 	};
 
@@ -119,11 +125,40 @@ const TemplateCreate = (props) => {
 				: i;
 		});
 		setSelectedComponent(updatedComponents.find((i) => i.itemId === id));
+		setShowSelected(true);
 		setComponents(updatedComponents);
 	};
 
 	const selectComponentHandler = (id) => {
 		setSelectedComponent(components.find((i) => i.itemId === id));
+		setShowSelected(true);
+	};
+
+	const deleteItemHandler = (id) => {
+		setShowSelected(false);
+		setSelectedComponent(null);
+		setComponents(components.filter((c) => c.itemId !== id));
+	};
+
+	const layerItemHandler = (id, to) => {
+		const nextFirst = components.filter((component) => component.itemId === id);
+		const nextComponents = components.filter(
+			(component) => component.itemId !== id
+		);
+
+		//Check if item exists
+		if (nextFirst.length !== 1) {
+			alert.error("Canvas error - found multiple items with id " + id);
+			return;
+		}
+
+		if (to === "top") {
+			setComponents([...nextComponents, nextFirst[0]]);
+		}
+
+		if (to === "bottom") {
+			setComponents([nextFirst[0], ...nextComponents]);
+		}
 	};
 
 	const parseAndSetComponents = (components) => {
@@ -134,10 +169,6 @@ const TemplateCreate = (props) => {
 			);
 		}
 		setComponents(newComponents);
-	};
-
-	const componentFormHandler = (component) => {
-		console.log(component);
 	};
 
 	useEffect(() => {
@@ -167,6 +198,10 @@ const TemplateCreate = (props) => {
 						<div
 							className='relative'
 							style={{ width: "210mm", height: "297mm" }}
+							onClick={() => {
+								setShowSelected(false);
+								setSelectedComponent(null);
+							}}
 						>
 							{/*Generate stored components to canvas */}
 							{components.map((i) => {
@@ -184,8 +219,10 @@ const TemplateCreate = (props) => {
 					</div>
 					{/*Right sidebar */}
 					<TemplateCanvasRight
+						show={showSelected}
 						selectedComponent={selectedComponent}
-						formChangeHandler={componentFormHandler}
+						onDeleteItem={deleteItemHandler}
+						onLayerChange={layerItemHandler}
 					></TemplateCanvasRight>
 				</div>
 			)}

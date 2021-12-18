@@ -7,7 +7,11 @@ const FormInput = ({ label, ...props }) => {
 	return (
 		<>
 			<label htmlFor={props.id || props.name}>{label}</label>
-			<input className='border-2' {...field} {...props} />
+			<input
+				className='bg-gray-100 border-2 border-gray-300'
+				{...field}
+				{...props}
+			/>
 			{meta.touched && meta.error ? (
 				<div className='error'>{meta.error}</div>
 			) : null}

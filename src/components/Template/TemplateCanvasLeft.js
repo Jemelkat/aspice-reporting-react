@@ -7,12 +7,13 @@ import Sidebar from "../UI/Sidebar/Sidebar";
 import SidebarLinks from "../UI/Sidebar/SidebarLinks";
 import { typeEnum } from "./TemplateCreate";
 import * as Yup from "yup";
+import { PlusIcon } from "@heroicons/react/solid";
 
 const TemplateCanvasLeft = ({ data, onSave, onAddComponent }) => {
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
 			<div className='sticky top-0 flex justify-start h-screen'>
-				<Sidebar className='overflow-y-auto bg-gray-300'>
+				<Sidebar className='overflow-y-auto bg-gray-200 shadow-xl'>
 					<SidebarLinks sidebarName='Template'>
 						<Formik
 							initialValues={{
@@ -41,27 +42,37 @@ const TemplateCanvasLeft = ({ data, onSave, onAddComponent }) => {
 							</Form>
 						</Formik>
 					</SidebarLinks>
-					<CanvasPanelDisclosure name='Template settings'>
-						<li>Editable</li>
-						<li>Shared</li>
+					<CanvasPanelDisclosure
+						name='Template settings'
+						className='bg-red-200'
+					>
+						<div>Editable</div>
+						<span>Shared</span>
 					</CanvasPanelDisclosure>
-					<CanvasPanelDisclosure name='Template components'>
+					<CanvasPanelDisclosure name='Text components'>
 						<div
-							className='p-2 m-2 bg-gray-200'
+							className='flex flex-row p-2 m-2 bg-gray-100'
 							onClick={() => onAddComponent(typeEnum.TEXT)}
 						>
+							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
 							TEXT
 						</div>
+					</CanvasPanelDisclosure>
+					<CanvasPanelDisclosure name='Graph components'>
 						<div
-							className='p-2 m-2 bg-gray-200'
+							className='flex flex-row p-2 m-2 bg-gray-100'
 							onClick={() => onAddComponent(typeEnum.GRAPH)}
 						>
+							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
 							GRAPH
 						</div>
+					</CanvasPanelDisclosure>
+					<CanvasPanelDisclosure name='Table components'>
 						<div
-							className='p-2 m-2 bg-gray-200'
+							className='flex flex-row p-2 m-2 bg-gray-100'
 							onClick={() => onAddComponent(typeEnum.TABLE)}
 						>
+							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
 							TABLE
 						</div>
 					</CanvasPanelDisclosure>

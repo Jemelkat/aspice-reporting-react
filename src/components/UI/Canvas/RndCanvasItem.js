@@ -34,14 +34,17 @@ const RndCanvasItem = (props) => {
 				});
 				props.onResize(item.id, x, y, ref.offsetHeight, ref.offsetWidth);
 			}}
-			onDragStop={(event, data) => {
+			onDrag={(event, data) => {
 				//Prevent -x and -y
 				const x = data.x < 0 ? 0 : data.x;
 				const y = data.y < 0 ? 0 : data.y;
 				setItem({ ...item, x: x, y: y });
 				props.onMove(item.id, x, y);
 			}}
-			onClick={() => props.onSelect(item.id)}
+			onClick={(e) => {
+				e.stopPropagation();
+				props.onSelect(item.id);
+			}}
 		>
 			<div className='flex items-center justify-center w-full h-full bg-gray-100 border-2 border-gray-300 rounded-sm shadow-lg'>
 				{item.type}

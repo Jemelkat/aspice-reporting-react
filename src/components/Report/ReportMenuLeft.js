@@ -1,0 +1,138 @@
+import { Field, Form, Formik } from "formik";
+import Button from "../UI/Button";
+import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
+import FormHidden from "../UI/Form/FormHidden";
+import FormInput from "../UI/Form/FormInput";
+import Sidebar from "../UI/Sidebar/Sidebar";
+import SidebarLinks from "../UI/Sidebar/SidebarLinks";
+import * as Yup from "yup";
+import { PlusIcon } from "@heroicons/react/solid";
+import FormSelect from "../UI/Form/FormSelect";
+import { useState } from "react";
+import { useAxios } from "../../helpers/AxiosHelper";
+import { typeEnum } from "../Template/TemplateCreate";
+
+const ReportMenuLeft = ({ data, onSave, onAddComponent, onTemplateChange }) => {
+	//Get all templates for select form input
+	const [{ data: selectData, loading: selectLoading, error: selectError }] =
+		useAxios("/template/getAll", { useCache: false });
+
+	//Parse templates to value:"", label:""
+	const parseTemplates = (templates) => {
+		let array = [];
+		if (templates)
+			templates.forEach((template) =>
+				array.push({ value: template.templateId, label: template.templateName })
+			);
+		array.push({ value: "", label: "None" });
+		return array;
+	};
+
+	return (
+		<div className='flex-1 mr-2 xl:mr-4'>
+			<div className='sticky top-0 flex justify-start h-screen'>
+				<Sidebar className='overflow-y-auto bg-white border-2 shadow-xl'>
+					<SidebarLinks sidebarName='Report'>
+						<Formik
+							initialValues={{
+								id: data ? data.reportId : "",
+								reportName: data ? data.reportName : "",
+								templateId: data
+									? data.reportTemplate
+										? data.reportTemplate.templateId
+										: ""
+									: "",
+							}}
+							validationSchema={Yup.object({
+								reportName: Yup.string().required("Required"),
+							})}
+							onSubmit={(values, { setSubmitting }) => {
+								onSave(values);
+								setSubmitting(false);
+							}}
+						>
+							{({ handleChange, values }) => (
+								<Form className='flex flex-col p-4'>
+									<FormHidden name='id'></FormHidden>
+									<FormInput
+										label='Report name'
+										name='reportName'
+										type='text'
+										placeholder='Report name...'
+									/>
+									<label className='mt-2' htmlFor='template'>
+										Based on template
+									</label>
+									<Field
+										name='templateId'
+										options={parseTemplates(selectData)}
+										component={FormSelect}
+										placeholder={
+											selectError ? "No templates found" : "Select template"
+										}
+										isMulti={false}
+										isLoading={selectLoading}
+									/>
+									<Button
+										type='button'
+										onClick={() => {
+											if (
+												window.confirm(
+													"Applying template will reset canvas layout. Do you really want to reset this report?"
+												)
+											) {
+												onTemplateChange(values.templateId);
+											}
+										}}
+									>
+										Apply template
+									</Button>
+									<Button type='submit' className='mt-4' dark={true}>
+										Save
+									</Button>
+								</Form>
+							)}
+						</Formik>
+					</SidebarLinks>
+					<SidebarLinks sidebarName='Template components'></SidebarLinks>
+					<CanvasPanelDisclosure
+						name='Template settings'
+						className='bg-red-200'
+					>
+						<div>Editable</div>
+						<span>Shared</span>
+					</CanvasPanelDisclosure>
+					<CanvasPanelDisclosure name='Text components'>
+						<div
+							className='flex flex-row p-2 m-2 bg-gray-100'
+							onClick={() => onAddComponent(typeEnum.TEXT)}
+						>
+							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
+							TEXT
+						</div>
+					</CanvasPanelDisclosure>
+					<CanvasPanelDisclosure name='Graph components'>
+						<div
+							className='flex flex-row p-2 m-2 bg-gray-100'
+							onClick={() => onAddComponent(typeEnum.GRAPH)}
+						>
+							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
+							GRAPH
+						</div>
+					</CanvasPanelDisclosure>
+					<CanvasPanelDisclosure name='Table components'>
+						<div
+							className='flex flex-row p-2 m-2 bg-gray-100'
+							onClick={() => onAddComponent(typeEnum.TABLE)}
+						>
+							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
+							TABLE
+						</div>
+					</CanvasPanelDisclosure>
+				</Sidebar>
+			</div>
+		</div>
+	);
+};
+
+export default ReportMenuLeft;

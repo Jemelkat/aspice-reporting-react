@@ -13,6 +13,7 @@ import RndCanvasItem from "../UI/Canvas/RndCanvasItem";
 import FormSelect from "../UI/Form/FormSelect";
 import { useHistory } from "react-router";
 import TemplateCanvasRight from "../Template/TemplateCanvasRight";
+import ReportMenuLeft from "./ReportMenuLeft";
 
 const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
@@ -35,7 +36,7 @@ const ReportCreate = ({ mode, reportId }) => {
 	//Stores all components currently on canvas
 	const [components, setComponents] = useState([]);
 	const [selectedComponent, setSelectedComponent] = useState(null);
-	const [selectTemplates, setSelectTemplates] = useState([]);
+	const [showSelected, setShowSelected] = useState(false);
 	let history = useHistory();
 
 	//Get current template - used for reseting of data
@@ -50,24 +51,16 @@ const ReportCreate = ({ mode, reportId }) => {
 		{ manual: true }
 	);
 
-	//Get all templates for select form input
-	const [
-		{ data: selectData, loading: selectLoading, error: selectError },
-		getSelectData,
-	] = useAxios("/template/getAll", { useCache: false, manual: true });
-
 	//Get current report for edit mode
-	const [
-		{ data: reportData, loading: reportLoading, error: reportError },
-		getReport,
-	] = useAxios(
-		{
-			url: "/report/get",
-			method: "GET",
-			params: { reportId: reportId },
-		},
-		{ useCache: false, manual: true }
-	);
+	const [{ data: data, loading: dataLoading, error: dataError }, getReport] =
+		useAxios(
+			{
+				url: "/report/get",
+				method: "GET",
+				params: { reportId: reportId },
+			},
+			{ useCache: false, manual: true }
+		);
 
 	//Get next id for new component
 	const nextItemId = () => {
@@ -93,17 +86,6 @@ const ReportCreate = ({ mode, reportId }) => {
 			);
 			setComponents(newComponents);
 		}
-	};
-
-	//Parse templates to value:"", label:""
-	const parseTemplates = (templates) => {
-		let array = [];
-		if (templates)
-			templates.forEach((template) =>
-				array.push({ value: template.templateId, label: template.templateName })
-			);
-		array.push({ value: "", label: "None" });
-		return array;
 	};
 
 	//Add new component to canvas
@@ -158,6 +140,7 @@ const ReportCreate = ({ mode, reportId }) => {
 			i.itemId === id ? { ...i, x: x, y: y } : i
 		);
 		setSelectedComponent(updatedComponents.find((i) => i.itemId === id));
+		setShowSelected(true);
 		setComponents(updatedComponents);
 	};
 
@@ -169,39 +152,66 @@ const ReportCreate = ({ mode, reportId }) => {
 				: i;
 		});
 		setSelectedComponent(updatedComponents.find((i) => i.itemId === id));
+		setShowSelected(true);
 		setComponents(updatedComponents);
 	};
 
 	const applyTemplateHandler = (templateId) => {
-		console.log("applying template ", templateId);
 		if (templateId !== "")
 			getTemplate({ params: { templateId: templateId } }).then((response) => {
 				parseAndSetComponents(response.data.templateItems);
+				setShowSelected(false);
 				setSelectedComponent(null);
 			});
 		else {
 			setComponents([]);
+			setShowSelected(false);
 			setSelectedComponent(null);
 		}
 	};
 
 	const selectComponentHandler = (id) => {
 		setSelectedComponent(components.find((i) => i.itemId === id));
+		setShowSelected(true);
+	};
+
+	const deleteItemHandler = (id) => {
+		setShowSelected(false);
+		setSelectedComponent(null);
+		setComponents(components.filter((c) => c.itemId !== id));
+	};
+
+	const layerItemHandler = (id, to) => {
+		const nextFirst = components.filter((component) => component.itemId === id);
+		const nextComponents = components.filter(
+			(component) => component.itemId !== id
+		);
+
+		//Check if item exists
+		if (nextFirst.length !== 1) {
+			alert.error("Canvas error - found multiple items with id " + id);
+			return;
+		}
+
+		if (to === "top") {
+			setComponents([...nextComponents, nextFirst[0]]);
+		}
+
+		if (to === "bottom") {
+			setComponents([nextFirst[0], ...nextComponents]);
+		}
 	};
 
 	useEffect(() => {
 		if (mode === "edit") getReport();
-		getSelectData().then((response) => {
-			setSelectTemplates(parseTemplates(response.data));
-		});
 	}, []);
 
 	useEffect(() => {
-		console.log("report data change ", reportData);
-		if (reportData) {
-			parseAndSetComponents(reportData.reportItems);
+		console.log("report data change ", data);
+		if (data) {
+			parseAndSetComponents(data.reportItems);
 		}
-	}, [reportData]);
+	}, [data]);
 
 	useEffect(() => {
 		console.log(components);
@@ -209,7 +219,7 @@ const ReportCreate = ({ mode, reportId }) => {
 
 	return (
 		<>
-			{reportLoading && mode === "edit" ? (
+			{dataLoading && mode === "edit" ? (
 				/**TODO ADJUST TO MIDDLE */
 				<div className='flex items-center justify-center flex-grow'>
 					<Loader fullscreen={false} dark={false}></Loader>
@@ -217,100 +227,21 @@ const ReportCreate = ({ mode, reportId }) => {
 			) : (
 				<div className='flex'>
 					{/*Left sidebar */}
-					<div className='flex-1 mr-2 xl:mr-4'>
-						<div className='sticky top-0 flex justify-start h-screen'>
-							<Sidebar className='overflow-y-auto bg-white border-2 shadow-xl'>
-								<SidebarLinks sidebarName='Report'>
-									<Formik
-										initialValues={{
-											id: reportData ? reportData.reportId : null,
-											reportName: reportData ? reportData.reportName : "",
-											templateId: reportData
-												? reportData.reportTemplate
-													? reportData.reportTemplate.templateId
-													: ""
-												: "",
-										}}
-										validationSchema={Yup.object({
-											reportName: Yup.string().required("Required"),
-										})}
-										onSubmit={(values, { setSubmitting }) => {
-											saveReportHandler(values);
-											setSubmitting(false);
-										}}
-									>
-										{({ handleChange, values }) => (
-											<Form className='flex flex-col p-4'>
-												<FormHidden name='id'></FormHidden>
-												<FormInput
-													label='Report name'
-													name='reportName'
-													type='text'
-													placeholder='Report name...'
-												/>
-												<label className='mt-2' htmlFor='template'>
-													Based on template
-												</label>
-												<Field
-													name='templateId'
-													options={selectTemplates}
-													component={FormSelect}
-													placeholder={
-														selectError
-															? "No templates found"
-															: "Select template"
-													}
-													isMulti={false}
-													isLoading={selectLoading}
-												/>
-												<Button
-													type='button'
-													onClick={() => {
-														if (
-															window.confirm(
-																"Applying template will reset canvas layout. Do you really want to reset this report?"
-															)
-														) {
-															applyTemplateHandler(values.templateId);
-														}
-													}}
-												>
-													Apply template
-												</Button>
-												<Button type='submit' className='mt-4' dark={true}>
-													Save
-												</Button>
-											</Form>
-										)}
-									</Formik>
-								</SidebarLinks>
-								<SidebarLinks sidebarName='Template components'></SidebarLinks>
-								<div
-									className='p-2 m-2 bg-gray-200'
-									onClick={() => addComponentHandler(typeEnum.TEXT)}
-								>
-									TEXT
-								</div>
-								<div
-									className='p-2 m-2 bg-gray-200'
-									onClick={() => addComponentHandler(typeEnum.GRAPH)}
-								>
-									GRAPH
-								</div>
-								<div
-									className='p-2 m-2 bg-gray-200'
-									onClick={() => addComponentHandler(typeEnum.TABLE)}
-								>
-									TABLE
-								</div>
-							</Sidebar>
-						</div>
-					</div>
+					<ReportMenuLeft
+						data={data}
+						onSave={saveReportHandler}
+						onAddComponent={addComponentHandler}
+						onTemplateChange={applyTemplateHandler}
+					></ReportMenuLeft>
 					{/*Canvas*/}
 					<div className='mt-10 mb-10 overflow-x-auto overflow-y-hidden'>
 						<div
 							className='relative m-auto border-2 shadow-xl'
 							style={{ width: "210mm", height: "297mm" }}
+							onClick={() => {
+								setShowSelected(false);
+								setSelectedComponent(null);
+							}}
 						>
 							{/*Generate stored components to canvas */}
 							{components.map((i) => {
@@ -329,7 +260,10 @@ const ReportCreate = ({ mode, reportId }) => {
 					</div>
 					{/*Right sidebar */}
 					<TemplateCanvasRight
+						show={showSelected}
 						selectedComponent={selectedComponent}
+						onDeleteItem={deleteItemHandler}
+						onLayerChange={layerItemHandler}
 					></TemplateCanvasRight>
 				</div>
 			)}

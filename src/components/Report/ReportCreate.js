@@ -2,7 +2,7 @@ import Sidebar from "../UI/Sidebar/Sidebar";
 import SidebarLinks from "../UI/Sidebar/SidebarLinks";
 import * as Yup from "yup";
 import { Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { axiosInstance } from "../../helpers/AxiosHelper";
 import { useAxios } from "../../helpers/AxiosHelper";
 import Loader from "../UI/Loader/Loader";
@@ -19,6 +19,8 @@ import Canvas from "../Canvas/Canvas";
 import { useAlert } from "react-alert";
 import { Tab } from "@headlessui/react";
 import PDFPreview from "../Preview/PDFPreview";
+import { saveAs } from "file-saver";
+import { generateReport, saveReport } from "../../services/ReportService";
 
 const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
@@ -94,21 +96,7 @@ const ReportCreate = ({ mode, reportId }) => {
 	//Saves report to DB
 	const saveReportHandler = async (formValues) => {
 		try {
-			const response = await axiosInstance.post("/report/save", {
-				reportId: formValues.id,
-				reportName: formValues.reportName,
-				reportItems:
-					//TODO REMOVE LINE AFTER : - new items are created every time
-					mode === "create"
-						? items.map((e) => ({ ...e, itemId: null }))
-						: items.map((e_1) => ({ ...e_1, itemId: null })),
-				reportTemplate:
-					formValues.templateId !== ""
-						? {
-								templateId: formValues.templateId,
-						  }
-						: null,
-			});
+			const response = await saveReport(formValues, items, mode);
 			parseAndSetComponents(response.data.reportItems);
 			setReportData(response.data);
 			alert.info("Report saved");
@@ -119,20 +107,25 @@ const ReportCreate = ({ mode, reportId }) => {
 		}
 	};
 
-	const generateReportHandler = (formValues) => {
-		saveReportHandler(formValues).then((response) => {
-			axiosInstance
-				.post("/report/generate", null, {
-					params: { reportId: response.data.reportId },
-				})
-				.then((response) => {
-					console.log(response);
-					alert.info("Report generated");
-				})
-				.catch((error) => {
-					console.log("Error", error);
-					alert.error("Error generating report.");
-				});
+	//Saves and generates report as response
+	const generateReportHandler = async (formValues) => {
+		const saveResponse = await saveReportHandler(formValues);
+		try {
+			const response = await generateReport(saveResponse.data.reportId);
+			setPreviewData(response.data);
+			console.log("generaete", response.data);
+			alert.info("Report generated");
+			return response;
+		} catch (e) {
+			alert.error("Error generating report.");
+			throw e;
+		}
+	};
+
+	//Saves, generates and downloads report
+	const downloadReportHandler = (formValues) => {
+		generateReportHandler(formValues).then((generateResponse) => {
+			saveAs(generateResponse.data, formValues.reportName + ".pdf");
 		});
 	};
 
@@ -184,6 +177,7 @@ const ReportCreate = ({ mode, reportId }) => {
 						onAddComponent={addItemHandler}
 						onTemplateChange={applyTemplateHandler}
 						onReportGenerate={generateReportHandler}
+						onDownloadReport={downloadReportHandler}
 					></ReportMenuLeft>
 					{/*Canvas*/}
 					<div className='overflow-x-auto overflow-y-hidden'>

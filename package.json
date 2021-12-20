@@ -14,6 +14,7 @@
 		"@testing-library/user-event": "^12.8.3",
 		"axios": "^0.24.0",
 		"axios-hooks": "^3.0.0",
+		"file-saver": "^2.0.5",
 		"formik": "^2.2.9",
 		"framer-motion": "^4.1.17",
 		"react": "^17.0.2",

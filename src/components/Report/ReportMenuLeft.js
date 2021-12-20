@@ -19,6 +19,7 @@ const ReportMenuLeft = ({
 	onAddComponent,
 	onTemplateChange,
 	onReportGenerate,
+	onDownloadReport,
 }) => {
 	//Get all templates for select form input
 	const [{ data: selectData, loading: selectLoading, error: selectError }] =
@@ -107,10 +108,23 @@ const ReportMenuLeft = ({
 													onReportGenerate(values);
 											});
 										}}
-										className='mt-4'
+										className='mt-1'
 										dark={true}
 									>
 										{"Save & Generate"}
+									</Button>
+									<Button
+										type='button'
+										onClick={() => {
+											validateForm(values).then((response) => {
+												Object.keys(response).length === 0 &&
+													onDownloadReport(values);
+											});
+										}}
+										className='mt-4'
+										dark={true}
+									>
+										{"Download"}
 									</Button>
 								</Form>
 							)}

@@ -2,7 +2,7 @@ import RndCanvasItem from "../UI/Canvas/RndCanvasItem";
 
 const Canvas = ({ items, onMove, onResize, onSelect, selectedItem }) => {
 	return (
-		<div className='mt-10 mb-10 overflow-x-auto overflow-y-hidden border-2'>
+		<div className='mt-4 mb-10 overflow-x-auto overflow-y-hidden border-2'>
 			<div
 				className='relative'
 				style={{ width: "210mm", height: "297mm" }}

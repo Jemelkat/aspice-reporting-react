@@ -31,7 +31,7 @@ const CanvasRightMenu = ({ selectedItem, show, ...props }) => {
 										Text:
 									</label>
 									<Field
-										style={{ "min-height": "10rem" }}
+										style={{ minHeight: "10rem" }}
 										as='textarea'
 										name='textArea'
 										className='border-2 border-gray-300'

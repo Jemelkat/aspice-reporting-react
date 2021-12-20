@@ -17,6 +17,8 @@ import ReportMenuLeft from "./ReportMenuLeft";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
 import { useAlert } from "react-alert";
+import { Tab } from "@headlessui/react";
+import PDFPreview from "../Preview/PDFPreview";
 
 const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
@@ -39,6 +41,8 @@ class Item {
 const ReportCreate = ({ mode, reportId }) => {
 	const [reportData, setReportData] = useState(null);
 	const [reportLoading, setReportLoading] = useState(true);
+	const [previewData, setPreviewData] = useState(null);
+
 	const alert = useAlert();
 	let history = useHistory();
 	const {
@@ -182,14 +186,55 @@ const ReportCreate = ({ mode, reportId }) => {
 						onReportGenerate={generateReportHandler}
 					></ReportMenuLeft>
 					{/*Canvas*/}
-					<Canvas
-						items={items}
-						selectedItem={selectedItem}
-						onMove={moveItemHandler}
-						onSelect={selectItemHandler}
-						onResize={resizeItemHandler}
-						onDeleteItem={deleteItemHandler}
-					></Canvas>
+					<div className='overflow-x-auto overflow-y-hidden'>
+						<Tab.Group>
+							<Tab.List className='flex justify-center pt-4'>
+								<Tab
+									className={({ selected }) => {
+										return (
+											"p-2 w-20 rounded-tl-lg rounded-bl-lg " +
+											(selected
+												? "bg-gray-800 text-white font-bold"
+												: "bg-gray-200 text-gray-800")
+										);
+									}}
+								>
+									Canvas
+								</Tab>
+								<Tab
+									className={({ selected }) => {
+										return (
+											"p-2 w-20 rounded-tr-lg rounded-br-lg font-bold " +
+											(selected
+												? "bg-gray-800 text-white font-bold"
+												: "bg-gray-200 text-gray-800")
+										);
+									}}
+								>
+									Preview
+								</Tab>
+							</Tab.List>
+							<Tab.Panels>
+								<Tab.Panel>
+									{/*Canvas */}
+									<Canvas
+										items={items}
+										selectedItem={selectedItem}
+										onMove={moveItemHandler}
+										onSelect={selectItemHandler}
+										onResize={resizeItemHandler}
+										onDeleteItem={deleteItemHandler}
+									></Canvas>
+								</Tab.Panel>
+								<Tab.Panel>
+									{/*Preview */}
+									<div className='mt-4 mb-10 overflow-x-auto overflow-y-hidden border-2'>
+										<PDFPreview pdfData={previewData}></PDFPreview>
+									</div>
+								</Tab.Panel>
+							</Tab.Panels>
+						</Tab.Group>
+					</div>
 					{/*Right sidebar */}
 					<CanvasRightMenu
 						show={showSelected}

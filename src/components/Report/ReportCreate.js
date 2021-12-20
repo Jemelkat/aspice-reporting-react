@@ -16,6 +16,7 @@ import CanvasRightMenu from "../Canvas/CanvasRightMenu";
 import ReportMenuLeft from "./ReportMenuLeft";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
+import { useAlert } from "react-alert";
 
 const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
@@ -24,17 +25,21 @@ const typeEnum = Object.freeze({
 });
 
 class Item {
-	constructor(id, x, y, width, height, type) {
+	constructor(id, x, y, width, height, type, textArea) {
 		this.itemId = id;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.type = type;
+		this.textArea = textArea;
 	}
 }
 
 const ReportCreate = ({ mode, reportId }) => {
+	const [reportData, setReportData] = useState(null);
+	const [reportLoading, setReportLoading] = useState(true);
+	const alert = useAlert();
 	let history = useHistory();
 	const {
 		items,
@@ -47,6 +52,7 @@ const ReportCreate = ({ mode, reportId }) => {
 		deleteItemHandler,
 		addItemHandler,
 		layerItemHandler,
+		updateItemHandler,
 	} = useCanvas();
 
 	//Get current template - used for reseting of data
@@ -61,53 +67,69 @@ const ReportCreate = ({ mode, reportId }) => {
 		{ manual: true }
 	);
 
-	//Get current report for edit mode
-	const [{ data: data, loading: dataLoading, error: dataError }, getReport] =
-		useAxios(
-			{
-				url: "/report/get",
-				method: "GET",
-				params: { reportId: reportId },
-			},
-			{ useCache: false, manual: true }
-		);
-
 	const parseAndSetComponents = (components) => {
 		let newComponents = [];
 		setItems([]);
 		if (components) {
 			newComponents = components.map(
-				(i) => new Item(i.itemId, i.x, i.y, i.width, i.height, i.type)
+				(i) =>
+					new Item(
+						i.itemId,
+						i.x,
+						i.y,
+						i.width,
+						i.height,
+						i.type,
+						i.textArea ? i.textArea : null
+					)
 			);
 			setItems(newComponents);
 		}
 	};
 
 	//Saves report to DB
-	const saveReportHandler = (formValues) => {
-		axiosInstance
-			.post("/report/save", {
+	const saveReportHandler = async (formValues) => {
+		try {
+			const response = await axiosInstance.post("/report/save", {
 				reportId: formValues.id,
 				reportName: formValues.reportName,
 				reportItems:
 					//TODO REMOVE LINE AFTER : - new items are created every time
 					mode === "create"
 						? items.map((e) => ({ ...e, itemId: null }))
-						: items.map((e) => ({ ...e, itemId: null })),
+						: items.map((e_1) => ({ ...e_1, itemId: null })),
 				reportTemplate:
 					formValues.templateId !== ""
 						? {
 								templateId: formValues.templateId,
 						  }
 						: null,
-			})
-			.then(function (response) {
-				history.push("/report");
-			})
-			.catch(function (error) {
-				//TODO ADD ALERT
-				console.log(error);
 			});
+			parseAndSetComponents(response.data.reportItems);
+			setReportData(response.data);
+			alert.info("Report saved");
+			return response;
+		} catch (e) {
+			alert.error("Error saving report.");
+			throw e;
+		}
+	};
+
+	const generateReportHandler = (formValues) => {
+		saveReportHandler(formValues).then((response) => {
+			axiosInstance
+				.post("/report/generate", null, {
+					params: { reportId: response.data.reportId },
+				})
+				.then((response) => {
+					console.log(response);
+					alert.info("Report generated");
+				})
+				.catch((error) => {
+					console.log("Error", error);
+					alert.error("Error generating report.");
+				});
+		});
 	};
 
 	const applyTemplateHandler = (templateId) => {
@@ -123,18 +145,28 @@ const ReportCreate = ({ mode, reportId }) => {
 	};
 
 	useEffect(() => {
-		if (mode === "edit") getReport();
-	}, []);
-
-	useEffect(() => {
-		if (data) {
-			parseAndSetComponents(data.reportItems);
+		if (mode === "edit") {
+			setReportLoading(true);
+			axiosInstance
+				.get("/report/get", { params: { reportId: reportId } })
+				.then((response) => {
+					setReportData(response.data);
+					parseAndSetComponents(response.data.reportItems);
+					setReportLoading(false);
+					alert.info("Report loaded.");
+				})
+				.catch((error) => {
+					alert.error("Error getting report date.");
+					history.push("/report");
+				});
+		} else {
+			setReportLoading(false);
 		}
-	}, [data]);
+	}, []);
 
 	return (
 		<>
-			{dataLoading && mode === "edit" ? (
+			{reportLoading && mode === "edit" ? (
 				/**TODO ADJUST TO MIDDLE */
 				<div className='flex items-center justify-center flex-grow'>
 					<Loader fullscreen={false} dark={false}></Loader>
@@ -143,14 +175,16 @@ const ReportCreate = ({ mode, reportId }) => {
 				<div className='flex overflow-x-hidden'>
 					{/*Left sidebar */}
 					<ReportMenuLeft
-						data={data}
+						data={reportData}
 						onSave={saveReportHandler}
 						onAddComponent={addItemHandler}
 						onTemplateChange={applyTemplateHandler}
+						onReportGenerate={generateReportHandler}
 					></ReportMenuLeft>
 					{/*Canvas*/}
 					<Canvas
 						items={items}
+						selectedItem={selectedItem}
 						onMove={moveItemHandler}
 						onSelect={selectItemHandler}
 						onResize={resizeItemHandler}
@@ -159,9 +193,10 @@ const ReportCreate = ({ mode, reportId }) => {
 					{/*Right sidebar */}
 					<CanvasRightMenu
 						show={showSelected}
-						selectedComponent={selectedItem}
+						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}
+						onItemUpdate={updateItemHandler}
 					></CanvasRightMenu>
 				</div>
 			)}

@@ -36,11 +36,11 @@ class Item {
 	}
 }
 
-const TemplateCreate = (props) => {
-	//Stores all components currently on canvas
-	//const [components, setComponents] = useState([]);
-	//const [showSelected, setShowSelected] = useState(false);
-	//const [selectedComponent, setSelectedComponent] = useState(null);
+const TemplateCreate = ({ mode, templateId }) => {
+	const [templateData, setTemplateData] = useState(null);
+	const [templateLoading, setTemplateLoading] = useState(true);
+	const history = useHistory();
+	const alert = useAlert();
 	const {
 		items,
 		setItems,
@@ -54,18 +54,6 @@ const TemplateCreate = (props) => {
 		layerItemHandler,
 	} = useCanvas();
 
-	const history = useHistory();
-	const alert = useAlert();
-
-	const [{ data, loading, error }, fetchData] = useAxios(
-		{
-			url: "/template/get",
-			method: "GET",
-			params: { templateId: props.templateId },
-		},
-		{ useCache: false, manual: true }
-	);
-
 	//Saves template to DB
 	const saveTemplateHandler = (formValues) => {
 		axiosInstance
@@ -74,16 +62,16 @@ const TemplateCreate = (props) => {
 				templateName: formValues.templateName,
 				templateItems:
 					//TODO REMOVE LINE AFTER : - new items are created every time
-					props.mode === "create"
+					mode === "create"
 						? items.map((e) => ({ ...e, itemId: null }))
 						: items.map((e) => ({ ...e, itemId: null })),
 			})
 			.then(function (response) {
-				history.push("/template");
+				parseAndSetComponents(response.data.templateItems);
+				alert.info("Template saved");
 			})
 			.catch(function (error) {
-				//TODO ADD ALERT
-				console.log(error);
+				alert.error("Error saving template.");
 			});
 	};
 
@@ -98,15 +86,28 @@ const TemplateCreate = (props) => {
 	};
 
 	useEffect(() => {
-		if (props.mode === "edit")
-			fetchData().then((response) => {
-				parseAndSetComponents(response.data.templateItems);
-			});
+		if (mode === "edit") {
+			setTemplateLoading(true);
+			axiosInstance
+				.get("/template/get", { params: { templateId: templateId } })
+				.then((response) => {
+					setTemplateData(response.data);
+					parseAndSetComponents(response.data.templateItems);
+					setTemplateLoading(false);
+					alert.info("Template loaded.");
+				})
+				.catch((error) => {
+					alert.error("Error getting template date.");
+					history.push("/report");
+				});
+		} else {
+			setTemplateLoading(false);
+		}
 	}, []);
 
 	return (
 		<>
-			{loading && props.mode === "edit" ? (
+			{templateLoading && mode === "edit" ? (
 				/**TODO ADJUST TO MIDDLE */
 				<div className='flex items-center justify-center flex-grow'>
 					<Loader fullscreen={false} dark={false}></Loader>
@@ -115,7 +116,7 @@ const TemplateCreate = (props) => {
 				<div className='flex overflow-x-hidden'>
 					{/*Left sidebar */}
 					<TemplateMenuLeft
-						data={data}
+						data={templateData}
 						onSave={saveTemplateHandler}
 						onAddComponent={addItemHandler}
 					></TemplateMenuLeft>
@@ -130,7 +131,7 @@ const TemplateCreate = (props) => {
 					{/*Right sidebar */}
 					<CanvasRightMenu
 						show={showSelected}
-						selectedComponent={selectedItem}
+						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}
 					></CanvasRightMenu>

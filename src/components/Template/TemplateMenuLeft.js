@@ -16,6 +16,7 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
 					<SidebarLinks sidebarName='Template'>
 						<Formik
+							enableReinitialize={true}
 							initialValues={{
 								id: data ? data.templateId : null,
 								templateName: data ? data.templateName : "",

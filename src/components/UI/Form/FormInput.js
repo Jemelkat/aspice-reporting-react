@@ -12,9 +12,7 @@ const FormInput = ({ label, ...props }) => {
 				{...field}
 				{...props}
 			/>
-			{meta.touched && meta.error ? (
-				<div className='error'>{meta.error}</div>
-			) : null}
+			{meta.error ? <div className='text-red-500'>{meta.error}</div> : null}
 		</>
 	);
 };

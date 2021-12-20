@@ -8,14 +8,22 @@ import SidebarLinks from "../UI/Sidebar/SidebarLinks";
 import * as Yup from "yup";
 import { PlusIcon } from "@heroicons/react/solid";
 import FormSelect from "../UI/Form/FormSelect";
-import { useState } from "react";
 import { useAxios } from "../../helpers/AxiosHelper";
 import { typeEnum } from "../Template/TemplateCreate";
+import { useEffect } from "react";
+import { useAlert } from "react-alert";
 
-const ReportMenuLeft = ({ data, onSave, onAddComponent, onTemplateChange }) => {
+const ReportMenuLeft = ({
+	data,
+	onSave,
+	onAddComponent,
+	onTemplateChange,
+	onReportGenerate,
+}) => {
 	//Get all templates for select form input
 	const [{ data: selectData, loading: selectLoading, error: selectError }] =
 		useAxios("/template/getAll", { useCache: false });
+	const alert = useAlert();
 
 	//Parse templates to value:"", label:""
 	const parseTemplates = (templates) => {
@@ -34,6 +42,7 @@ const ReportMenuLeft = ({ data, onSave, onAddComponent, onTemplateChange }) => {
 				<Sidebar className='overflow-y-auto bg-white border-2 shadow-xl'>
 					<SidebarLinks sidebarName='Report'>
 						<Formik
+							enableReinitialize={true}
 							initialValues={{
 								id: data ? data.reportId : "",
 								reportName: data ? data.reportName : "",
@@ -51,7 +60,7 @@ const ReportMenuLeft = ({ data, onSave, onAddComponent, onTemplateChange }) => {
 								setSubmitting(false);
 							}}
 						>
-							{({ handleChange, values }) => (
+							{({ values, validateForm }) => (
 								<Form className='flex flex-col p-4'>
 									<FormHidden name='id'></FormHidden>
 									<FormInput
@@ -89,6 +98,19 @@ const ReportMenuLeft = ({ data, onSave, onAddComponent, onTemplateChange }) => {
 									</Button>
 									<Button type='submit' className='mt-4' dark={true}>
 										Save
+									</Button>
+									<Button
+										type='button'
+										onClick={() => {
+											validateForm(values).then((response) => {
+												Object.keys(response).length === 0 &&
+													onReportGenerate(values);
+											});
+										}}
+										className='mt-4'
+										dark={true}
+									>
+										{"Save & Generate"}
 									</Button>
 								</Form>
 							)}

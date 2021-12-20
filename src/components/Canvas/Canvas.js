@@ -1,6 +1,6 @@
 import RndCanvasItem from "../UI/Canvas/RndCanvasItem";
 
-const Canvas = ({ items, onMove, onResize, onSelect }) => {
+const Canvas = ({ items, onMove, onResize, onSelect, selectedItem }) => {
 	return (
 		<div className='mt-10 mb-10 overflow-x-auto overflow-y-hidden border-2'>
 			<div
@@ -19,6 +19,7 @@ const Canvas = ({ items, onMove, onResize, onSelect }) => {
 							onMove={onMove}
 							onResize={onResize}
 							onSelect={onSelect}
+							isSelected={selectedItem && selectedItem.itemId === i.itemId}
 						></RndCanvasItem>
 					);
 				})}

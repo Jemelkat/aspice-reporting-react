@@ -3,13 +3,14 @@ import { useAlert } from "react-alert";
 import { typeEnum } from "../components/Template/TemplateCreate";
 
 class Item {
-	constructor(id, x, y, width, height, type) {
+	constructor(id, x, y, width, height, type, textArea) {
 		this.itemId = id;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.type = type;
+		this.textArea = textArea ? textArea : null;
 	}
 }
 
@@ -91,7 +92,6 @@ const useCanvas = () => {
 	};
 
 	const layerItemHandler = (id, to) => {
-		debugger;
 		const nextFirst = items.filter((item) => item.itemId === id);
 		const nextItems = items.filter((item) => item.itemId !== id);
 
@@ -110,6 +110,19 @@ const useCanvas = () => {
 		}
 	};
 
+	const updateItemHandler = (item) => {
+		const newItems = items.map((i) =>
+			i.itemId === item.itemId ? { ...item } : i
+		);
+		const nextSelected = items.filter((i) => i.itemId === item.itemId);
+		if (nextSelected.length !== 1) {
+			alert.error("Canvas error - cannot update item with id " + item.itemId);
+			return;
+		}
+		setItems(newItems);
+		setSelectedItem(nextSelected[0]);
+	};
+
 	return {
 		items,
 		setItems,
@@ -121,6 +134,7 @@ const useCanvas = () => {
 		deleteItemHandler,
 		addItemHandler,
 		layerItemHandler,
+		updateItemHandler,
 	};
 };
 

@@ -1,17 +1,54 @@
 import Sidebar from "../UI/Sidebar/Sidebar";
 import SidebarLinks from "../UI/Sidebar/SidebarLinks";
 import * as Yup from "yup";
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import FormHidden from "../UI/Form/FormHidden";
 import FormInput from "../UI/Form/FormInput";
 import Button from "../UI/Button";
 import { typeEnum } from "../Template/TemplateCreate";
+import { useEffect } from "react";
 
-const CanvasRightMenu = ({ selectedComponent, show, ...props }) => {
+const CanvasRightMenu = ({ selectedItem, show, ...props }) => {
+	//Id used in hook to rerender
+	const currentId = selectedItem ? selectedItem.itemId : null;
+
 	const renderTypeInputs = () => {
-		switch (selectedComponent.type) {
+		switch (selectedItem.type) {
 			case typeEnum.STATIC_TEXT:
-				return <div>Static text input form</div>;
+				return (
+					<div>
+						<Formik
+							initialValues={{
+								textArea:
+									selectedItem && selectedItem.textArea
+										? selectedItem.textArea
+										: "",
+							}}
+						>
+							{({ handleChange }) => (
+								<Form className='flex flex-col p-4'>
+									<label className='mt-2' htmlFor='template'>
+										Text:
+									</label>
+									<Field
+										style={{ "min-height": "10rem" }}
+										as='textarea'
+										name='textArea'
+										className='border-2 border-gray-300'
+										onChange={(e) => {
+											handleChange(e);
+											const newSelected = {
+												...selectedItem,
+												textArea: e.target.value,
+											};
+											props.onItemUpdate(newSelected);
+										}}
+									/>
+								</Form>
+							)}
+						</Formik>
+					</div>
+				);
 			case typeEnum.GRAPH:
 				return <div>Graph input form</div>;
 			case typeEnum.TABLE:
@@ -20,6 +57,11 @@ const CanvasRightMenu = ({ selectedComponent, show, ...props }) => {
 				return <div>Unknown item type. Cannot render input form.</div>;
 		}
 	};
+
+	//TODO: figure out a better way to change textarea
+	useEffect(() => {
+		console.log(currentId);
+	}, [currentId]);
 
 	return (
 		<div className='flex-1 ml-2 xl:ml-4'>
@@ -34,14 +76,14 @@ const CanvasRightMenu = ({ selectedComponent, show, ...props }) => {
 					<Formik
 						enableReinitialize={true}
 						initialValues={
-							selectedComponent
+							selectedItem
 								? {
-										id: selectedComponent.itemId,
-										x: selectedComponent.x,
-										y: selectedComponent.y,
-										width: selectedComponent.width,
-										height: selectedComponent.height,
-										type: selectedComponent.type,
+										id: selectedItem.itemId,
+										x: selectedItem.x,
+										y: selectedItem.y,
+										width: selectedItem.width,
+										height: selectedItem.height,
+										type: selectedItem.type,
 								  }
 								: {
 										id: "",
@@ -99,8 +141,9 @@ const CanvasRightMenu = ({ selectedComponent, show, ...props }) => {
 						)}
 					</Formik>
 
-					<SidebarLinks sidebarName='Component sources'></SidebarLinks>
-					<div>{selectedComponent && renderTypeInputs()}</div>
+					<SidebarLinks sidebarName='Component sources'>
+						{selectedItem && renderTypeInputs()}
+					</SidebarLinks>
 				</Sidebar>
 			</div>
 		</div>

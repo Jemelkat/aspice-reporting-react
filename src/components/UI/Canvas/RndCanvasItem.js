@@ -1,10 +1,7 @@
 import { Rnd } from "react-rnd";
-import { useState } from "react";
 import { typeEnum } from "../../Template/TemplateCreate";
-import useCanvas from "../../../hooks/useCanvas";
 
 const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
-	const { selectedItem } = useCanvas();
 	const renderContent = () => {
 		switch (item.type) {
 			case typeEnum.STATIC_TEXT:

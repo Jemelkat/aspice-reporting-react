@@ -43,13 +43,6 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 							</Form>
 						</Formik>
 					</SidebarLinks>
-					<CanvasPanelDisclosure
-						name='Template settings'
-						className='bg-red-200'
-					>
-						<div>Editable</div>
-						<span>Shared</span>
-					</CanvasPanelDisclosure>
 					<CanvasPanelDisclosure name='Text components'>
 						<div
 							className='flex flex-row p-2 m-2 bg-gray-100'

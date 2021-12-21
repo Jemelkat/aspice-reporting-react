@@ -1,4 +1,5 @@
 import { Transition } from "@headlessui/react";
+
 const Sidebar = ({ className, show = true, position = "left", children }) => {
 	return (
 		<Transition
@@ -12,9 +13,7 @@ const Sidebar = ({ className, show = true, position = "left", children }) => {
 			leaveTo={position === "left" ? "-translate-x-full" : "translate-x-full"}
 		>
 			<div
-				className={`${className} ${
-					position === "left" ? "border-r-2" : "border-l-2"
-				} h-screen min-h-screen shadow-lg w-64 block border-gray-100`}
+				className={`${className} h-screen min-h-screen shadow-lg w-64 block bg-white`}
 			>
 				<div>{children}</div>
 			</div>

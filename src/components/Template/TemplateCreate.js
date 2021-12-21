@@ -1,23 +1,13 @@
-import Sidebar from "../UI/Sidebar/Sidebar";
-import SidebarLinks from "../UI/Sidebar/SidebarLinks";
 import { useEffect, useState } from "react";
-import RndCanvasItem from "../UI/Canvas/RndCanvasItem";
-import Button from "../UI/Button";
-import * as Yup from "yup";
-import { Form, Formik } from "formik";
-import FormHidden from "../UI/Form/FormHidden";
-import FormInput from "../UI/Form/FormInput";
-import { axiosInstance, useAxios } from "../../helpers/AxiosHelper";
+import { axiosInstance } from "../../helpers/AxiosHelper";
 import { useHistory } from "react-router";
 import Loader from "../UI/Loader/Loader";
-import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
 import CanvasRightMenu from "../Canvas/CanvasRightMenu";
-import { Disclosure } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/solid";
 import TemplateMenuLeft from "./TemplateMenuLeft";
 import { useAlert } from "react-alert";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
+import { saveTemplate } from "../../services/TemplateService";
 
 export const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
@@ -55,24 +45,14 @@ const TemplateCreate = ({ mode, templateId }) => {
 	} = useCanvas();
 
 	//Saves template to DB
-	const saveTemplateHandler = (formValues) => {
-		axiosInstance
-			.post("/template/save", {
-				templateId: formValues.id,
-				templateName: formValues.templateName,
-				templateItems:
-					//TODO REMOVE LINE AFTER : - new items are created every time
-					mode === "create"
-						? items.map((e) => ({ ...e, itemId: null }))
-						: items.map((e) => ({ ...e, itemId: null })),
-			})
-			.then(function (response) {
-				parseAndSetComponents(response.data.templateItems);
-				alert.info("Template saved");
-			})
-			.catch(function (error) {
-				alert.error("Error saving template.");
-			});
+	const saveTemplateHandler = async (formValues) => {
+		try {
+			const response = await saveTemplate(formValues, items, mode);
+			parseAndSetComponents(response.data.templateItems);
+			alert.info("Template saved");
+		} catch (e) {
+			alert.error("Error saving template.");
+		}
 	};
 
 	const parseAndSetComponents = (components) => {
@@ -96,7 +76,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 					setTemplateLoading(false);
 					alert.info("Template loaded.");
 				})
-				.catch((error) => {
+				.catch(() => {
 					alert.error("Error getting template date.");
 					history.push("/report");
 				});

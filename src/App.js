@@ -1,23 +1,24 @@
-import { Switch, Route } from "react-router-dom";
-import { useContext } from "react";
 import "./App.css";
 
+import { Route, Switch } from "react-router-dom";
+
+import AdminPanel from "./pages/Admin/AdminPanel";
+import AdminRoute from "./routes/AdminRoute";
+import { AuthContext } from "./context/AuthContext";
+import AuthVerify from "./helpers/AuthVerify";
+import DashBoard from "./pages/DashBoard/Dashboard";
 import Home from "./pages/Home/Home";
+import Loader from "./components/UI/Loader/Loader";
 import Login from "./pages/Login/Login";
 import Nav from "./components/Nav/Nav";
 import PageContainer from "./components/UI/PageContainer";
-import { logout } from "./helpers/AuthHelper";
-import Source from "./pages/Source/Source";
-import AuthVerify from "./helpers/AuthVerify";
-import { AuthContext } from "./context/AuthContext";
-import AdminRoute from "./routes/AdminRoute";
 import PrivateRoute from "./routes/PrivateRoute";
-import AdminPanel from "./pages/Admin/AdminPanel";
 import Profile from "./pages/Profile/Profile";
-import Template from "./pages/Template/Template";
 import Report from "./pages/Report/Report";
-import DashBoard from "./pages/DashBoard/Dashboard";
-import Loader from "./components/UI/Loader/Loader";
+import Source from "./pages/Source/Source";
+import Template from "./pages/Template/Template";
+import { logout } from "./helpers/AuthHelper";
+import { useContext } from "react";
 
 function App() {
 	const { loggedUser, removeLoggedUser } = useContext(AuthContext);
@@ -54,9 +55,7 @@ function App() {
 							{loggedUser.user && (
 								<>
 									<PrivateRoute path='/dashboard'>
-										<PageContainer>
-											<DashBoard />
-										</PageContainer>
+										<DashBoard />
 									</PrivateRoute>
 									<PrivateRoute path='/profile'>
 										<PageContainer>

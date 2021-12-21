@@ -1,16 +1,7 @@
-import Sidebar from "../UI/Sidebar/Sidebar";
-import SidebarLinks from "../UI/Sidebar/SidebarLinks";
-import * as Yup from "yup";
-import { Field, Form, Formik } from "formik";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { axiosInstance } from "../../helpers/AxiosHelper";
 import { useAxios } from "../../helpers/AxiosHelper";
 import Loader from "../UI/Loader/Loader";
-import FormHidden from "../UI/Form/FormHidden";
-import FormInput from "../UI/Form/FormInput";
-import Button from "../UI/Button";
-import RndCanvasItem from "../UI/Canvas/RndCanvasItem";
-import FormSelect from "../UI/Form/FormSelect";
 import { useHistory } from "react-router";
 import CanvasRightMenu from "../Canvas/CanvasRightMenu";
 import ReportMenuLeft from "./ReportMenuLeft";
@@ -21,13 +12,6 @@ import { Tab } from "@headlessui/react";
 import PDFPreview from "../Preview/PDFPreview";
 import { saveAs } from "file-saver";
 import { generateReport, saveReport } from "../../services/ReportService";
-import fileToBase64 from "../../helpers/PdfHelper";
-
-const typeEnum = Object.freeze({
-	GRAPH: "GRAPH",
-	STATIC_TEXT: "STATIC_TEXT",
-	TABLE: "TABLE",
-});
 
 class Item {
 	constructor(id, x, y, width, height, type, textArea) {
@@ -63,10 +47,7 @@ const ReportCreate = ({ mode, reportId }) => {
 	} = useCanvas();
 
 	//Get current template - used for reseting of data
-	const [
-		{ data: templateData, loading: templateLoading, error: templateError },
-		getTemplate,
-	] = useAxios(
+	const [{}, getTemplate] = useAxios(
 		{
 			url: "/template/get",
 			method: "GET",
@@ -157,7 +138,7 @@ const ReportCreate = ({ mode, reportId }) => {
 					setReportLoading(false);
 					alert.info("Report loaded.");
 				})
-				.catch((error) => {
+				.catch(() => {
 					alert.error("Error getting report date.");
 					history.push("/report");
 				});

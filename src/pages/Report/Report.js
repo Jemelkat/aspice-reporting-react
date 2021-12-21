@@ -1,11 +1,12 @@
-import { useState } from "react";
 import { Route, Switch, useRouteMatch } from "react-router";
+
 import PageContainer from "../../components/UI/PageContainer";
 import ReportCreate from "../../components/Report/ReportCreate";
 import ReportTable from "../../components/Report/ReportTable";
+import { useState } from "react";
 
 const Report = () => {
-	const { url, path } = useRouteMatch();
+	const { path } = useRouteMatch();
 	const [mode, setMode] = useState("create");
 	const [selectedId, setSelectedId] = useState(null);
 

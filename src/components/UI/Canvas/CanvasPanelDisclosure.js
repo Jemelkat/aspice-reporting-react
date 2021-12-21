@@ -6,7 +6,7 @@ const CanvasPanelDisclosure = (props) => {
 		<Disclosure>
 			{({ open }) => (
 				<>
-					<Disclosure.Button className='flex justify-between w-full px-4 py-2 font-medium text-left text-gray-800 bg-gray-100 rounded-sm shadow-lg hover:bg-gray-300 drop-shadow-2xl text-md'>
+					<Disclosure.Button className='flex justify-between w-full px-4 py-2 font-medium text-left text-gray-800 bg-gray-200 rounded-sm shadow-sm hover:bg-gray-300 drop-shadow-2xl text-md'>
 						<span>{props.name}</span>
 						<ChevronUpIcon
 							className={`${
@@ -22,7 +22,7 @@ const CanvasPanelDisclosure = (props) => {
 						leaveFrom='transform scale-100 opacity-100'
 						leaveTo='transform scale-95 opacity-0'
 					>
-						<Disclosure.Panel className='pb-2 text-sm text-gray-800 bg-gray-200 '>
+						<Disclosure.Panel className='pb-2 text-sm text-gray-800 border '>
 							{props.children}
 						</Disclosure.Panel>
 					</Transition>

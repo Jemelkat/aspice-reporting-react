@@ -24,6 +24,7 @@ export const generateReport = async (reportId) => {
 	return axios.get("http://localhost:8080/report/generate", {
 		headers: {
 			Authorization: getAuthHeaderToken(),
+			Accept: "application/pdf",
 		},
 		responseType: "blob",
 		params: { reportId: reportId },

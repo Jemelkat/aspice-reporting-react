@@ -18,6 +18,8 @@ const CanvasRightMenu = ({ selectedItem, show, ...props }) => {
 				return (
 					<div>
 						<Formik
+							//TODO UPDATE TEXT FIELD ON CHANGE
+							enableReinitialize={true}
 							initialValues={{
 								textArea:
 									selectedItem && selectedItem.textArea
@@ -59,9 +61,7 @@ const CanvasRightMenu = ({ selectedItem, show, ...props }) => {
 	};
 
 	//TODO: figure out a better way to change textarea
-	useEffect(() => {
-		console.log(currentId);
-	}, [currentId]);
+	useEffect(() => {}, [currentId]);
 
 	return (
 		<div className='flex-1 ml-2 xl:ml-4'>
@@ -71,79 +71,88 @@ const CanvasRightMenu = ({ selectedItem, show, ...props }) => {
 					position='right'
 					show={show}
 				>
-					<SidebarLinks sidebarName='Edit selected component'></SidebarLinks>
+					{selectedItem && (
+						<>
+							<SidebarLinks sidebarName='Edit selected component'></SidebarLinks>
 
-					<Formik
-						enableReinitialize={true}
-						initialValues={
-							selectedItem
-								? {
-										id: selectedItem.itemId,
-										x: selectedItem.x,
-										y: selectedItem.y,
-										width: selectedItem.width,
-										height: selectedItem.height,
-										type: selectedItem.type,
-								  }
-								: {
-										id: "",
-										x: "",
-										y: "",
-										width: "",
-										height: "",
-										type: "",
-								  }
-						}
-					>
-						{({ values }) => (
-							<Form className='flex flex-col p-4'>
-								<FormHidden name='id'></FormHidden>
-								<div className='grid grid-cols-2 gap-y-2'>
-									<FormInput label='Type:' name='type' type='text' disabled />
-									<FormInput label='X:' name='x' type='number' disabled />
-									<FormInput label='Y:' name='y' type='number' disabled />
-									<FormInput
-										label='Width:'
-										name='width'
-										type='number'
-										disabled
-									/>
-									<FormInput
-										label='Height:'
-										name='height'
-										type='number'
-										disabled
-									/>
-								</div>
-								<Button
-									type='button'
-									className='mt-2 bg-gray-300 hover:bg-gray-400'
-									onClick={() => props.onLayerChange(values.id, "top")}
-								>
-									Move to Top
-								</Button>
-								<Button
-									type='button'
-									className='mt-2 bg-gray-300 hover:bg-gray-400'
-									onClick={() => props.onLayerChange(values.id, "bottom")}
-								>
-									Move to Bottom
-								</Button>
-								<Button
-									type='button'
-									dark
-									className='mt-2 bg-gray-300 hover:bg-gray-400'
-									onClick={() => props.onDeleteItem(values.id)}
-								>
-									Remove item
-								</Button>
-							</Form>
-						)}
-					</Formik>
+							<Formik
+								enableReinitialize={true}
+								initialValues={
+									selectedItem
+										? {
+												id: selectedItem.itemId,
+												x: selectedItem.x,
+												y: selectedItem.y,
+												width: selectedItem.width,
+												height: selectedItem.height,
+												type: selectedItem.type,
+										  }
+										: {
+												id: "",
+												x: "",
+												y: "",
+												width: "",
+												height: "",
+												type: "",
+										  }
+								}
+							>
+								{({ values }) => (
+									<Form className='flex flex-col p-4'>
+										<FormHidden name='id'></FormHidden>
+										<div className='grid grid-cols-2 gap-y-2'>
+											<FormInput
+												label='Type:'
+												name='type'
+												type='text'
+												disabled
+											/>
+											<FormInput label='X:' name='x' type='number' disabled />
+											<FormInput label='Y:' name='y' type='number' disabled />
+											<FormInput
+												label='Width:'
+												name='width'
+												type='number'
+												disabled
+											/>
+											<FormInput
+												label='Height:'
+												name='height'
+												type='number'
+												disabled
+											/>
+										</div>
+										<Button
+											type='button'
+											className='mt-2 bg-gray-300 hover:bg-gray-400'
+											onClick={() => props.onLayerChange(values.id, "top")}
+										>
+											Move to Top
+										</Button>
+										<Button
+											type='button'
+											className='mt-2 bg-gray-300 hover:bg-gray-400'
+											onClick={() => props.onLayerChange(values.id, "bottom")}
+										>
+											Move to Bottom
+										</Button>
+										<Button
+											type='button'
+											dark
+											className='mt-2 bg-gray-300 hover:bg-gray-400'
+											onClick={() => props.onDeleteItem(values.id)}
+										>
+											Remove item
+										</Button>
+									</Form>
+								)}
+							</Formik>
 
-					<SidebarLinks sidebarName='Component sources'>
-						{selectedItem && renderTypeInputs()}
-					</SidebarLinks>
+							<SidebarLinks sidebarName='Component sources'>
+								{renderTypeInputs()}
+							</SidebarLinks>
+						</>
+					)}
 				</Sidebar>
 			</div>
 		</div>

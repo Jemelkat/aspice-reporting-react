@@ -97,7 +97,7 @@ const ReportMenuLeft = ({
 									>
 										Apply template
 									</Button>
-									<Button type='submit' className='mt-4' dark={true}>
+									<Button type='submit' className='mt-4'>
 										Save
 									</Button>
 									<Button

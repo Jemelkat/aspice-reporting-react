@@ -120,7 +120,7 @@ const useCanvas = () => {
 			return;
 		}
 		setItems(newItems);
-		setSelectedItem(nextSelected[0]);
+		//setSelectedItem(nextSelected[0]);
 	};
 
 	return {

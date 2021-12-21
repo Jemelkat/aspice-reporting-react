@@ -21,6 +21,7 @@ import { Tab } from "@headlessui/react";
 import PDFPreview from "../Preview/PDFPreview";
 import { saveAs } from "file-saver";
 import { generateReport, saveReport } from "../../services/ReportService";
+import fileToBase64 from "../../helpers/PdfHelper";
 
 const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
@@ -112,9 +113,13 @@ const ReportCreate = ({ mode, reportId }) => {
 		const saveResponse = await saveReportHandler(formValues);
 		try {
 			const response = await generateReport(saveResponse.data.reportId);
-			setPreviewData(response.data);
-			console.log("generaete", response.data);
 			alert.info("Report generated");
+
+			const pdfFile = new Blob([response.data], {
+				type: "application/pdf;base64",
+			});
+			const fileURL = URL.createObjectURL(pdfFile);
+			setPreviewData(fileURL);
 			return response;
 		} catch (e) {
 			alert.error("Error generating report.");
@@ -169,7 +174,7 @@ const ReportCreate = ({ mode, reportId }) => {
 					<Loader fullscreen={false} dark={false}></Loader>
 				</div>
 			) : (
-				<div className='flex overflow-x-hidden'>
+				<div className='flex bg-gray-200'>
 					{/*Left sidebar */}
 					<ReportMenuLeft
 						data={reportData}
@@ -189,7 +194,7 @@ const ReportCreate = ({ mode, reportId }) => {
 											"p-2 w-20 rounded-tl-lg rounded-bl-lg " +
 											(selected
 												? "bg-gray-800 text-white font-bold"
-												: "bg-gray-200 text-gray-800")
+												: "bg-white text-gray-800")
 										);
 									}}
 								>
@@ -198,10 +203,10 @@ const ReportCreate = ({ mode, reportId }) => {
 								<Tab
 									className={({ selected }) => {
 										return (
-											"p-2 w-20 rounded-tr-lg rounded-br-lg font-bold " +
+											"p-2 w-20 rounded-tr-lg rounded-br-lg " +
 											(selected
 												? "bg-gray-800 text-white font-bold"
-												: "bg-gray-200 text-gray-800")
+												: "bg-white text-gray-800")
 										);
 									}}
 								>

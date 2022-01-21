@@ -5,9 +5,9 @@ import FormHidden from "../UI/Form/FormHidden";
 import FormInput from "../UI/Form/FormInput";
 import Sidebar from "../UI/Sidebar/Sidebar";
 import SidebarLinks from "../UI/Sidebar/SidebarLinks";
-import { typeEnum } from "./TemplateCreate";
 import * as Yup from "yup";
 import { PlusIcon } from "@heroicons/react/solid";
+import { typeEnum } from "./TemplateCreate";
 
 const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 	return (

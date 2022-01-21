@@ -47,7 +47,7 @@ const PDFPreview = ({ pdfData }) => {
 					>
 						{Array.from(new Array(numPages), (el, index) => (
 							<Page
-								className='mt-1 mb-1 border-black shadow-lg '
+								className='mt-1 mb-1 border-black shadow-lg'
 								key={`page_${index + 1}`}
 								pageNumber={index + 1}
 							/>

@@ -50,6 +50,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 			const response = await saveTemplate(formValues, items, mode);
 			parseAndSetComponents(response.data.templateItems);
 			alert.info("Template saved");
+			history.push("/template");
 		} catch (e) {
 			alert.error("Error saving template.");
 		}

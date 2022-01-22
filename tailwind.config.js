@@ -3,7 +3,11 @@ module.exports = {
 	darkMode: false, // or 'media' or 'class'
 	important: true,
 	theme: {
-		extend: {},
+		extend: {
+			width: {
+				"36r": "30rem",
+			},
+		},
 	},
 	variants: {
 		extend: {},

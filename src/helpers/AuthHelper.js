@@ -11,7 +11,6 @@ export const login = (username, password) => {
 		})
 		.then((response) => {
 			if (response.data.token) {
-				console.log("Storing token");
 				localStorage.setItem("user", JSON.stringify(response.data));
 			}
 			return response.data;

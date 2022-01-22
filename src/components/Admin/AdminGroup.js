@@ -36,7 +36,7 @@ const AdminGroup = () => {
 	const [{ deleteData, deleteLoading, deleteError }, executeDelete] = useAxios(
 		{
 			url: API_URL + "/group/delete",
-			method: "POST",
+			method: "DELETE",
 		},
 		{ manual: true }
 	);
@@ -95,8 +95,9 @@ const AdminGroup = () => {
 	//Format loaded data for table
 	const parseGroupData = (groupData) => {
 		let groupArray = [];
-		if (groupData)
+		if (groupData !== null && groupData !== undefined) {
 			groupData.forEach((group) => groupArray.push(new Group(group)));
+		}
 		return groupArray;
 	};
 
@@ -140,7 +141,9 @@ const AdminGroup = () => {
 						onClose={() => setShowForm(false)}
 					>
 						<div className='flex flex-row items-center justify-evenly'>
-							<Button onClick={() => groupDeleteHandler()}>Yes</Button>
+							<Button dark onClick={() => groupDeleteHandler()}>
+								Yes
+							</Button>
 							<Button onClick={() => setShowForm(false)}>Cancel</Button>
 						</div>
 					</MyDialog>

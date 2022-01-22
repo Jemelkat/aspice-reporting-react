@@ -13,11 +13,13 @@ const AuthVerify = (props) => {
 	props.history.listen(() => {
 		const user = JSON.parse(localStorage.getItem("user"));
 
-		if (user) {
+		if (user && user.token) {
 			const decodedJwt = parseJwt(user.token);
 			if (decodedJwt.exp * 1000 < Date.now()) {
 				props.logOut();
 			}
+		} else {
+			props.logOut();
 		}
 	});
 

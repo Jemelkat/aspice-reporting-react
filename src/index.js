@@ -7,6 +7,8 @@ import { AuthContextProvider } from "./context/AuthContext";
 import { BrowserRouter } from "react-router-dom";
 import { transitions, positions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import "react-dual-listbox/lib/react-dual-listbox.css";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 // optional configuration
 const options = {

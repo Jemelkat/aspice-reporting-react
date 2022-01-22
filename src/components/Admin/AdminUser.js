@@ -29,7 +29,7 @@ const ACTIONS = {
 
 const AdminUser = () => {
 	const [{ data, loading, error }, refetch] = useAxios("/admin/getAllUsers", {
-		useCache: false,
+		useCache: true,
 	});
 
 	//Delete
@@ -116,7 +116,9 @@ const AdminUser = () => {
 
 	const parseUserData = (userData) => {
 		let userArray = [];
-		if (userData) userData.forEach((user) => userArray.push(new User(user)));
+		if (userData !== null && userData !== undefined) { 
+			userData.forEach((user) => userArray.push(new User(user)))
+		};
 		return userArray;
 	};
 

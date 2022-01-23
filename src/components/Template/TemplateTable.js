@@ -13,7 +13,7 @@ import ShareDialog from "../UI/Dialog/ShareDialog";
 
 class TemplateObject {
 	constructor(data) {
-		this.id = data.templateId;
+		this.id = data.id;
 		this.templateName = data.templateName;
 		this.templateCreated = data.templateCreated;
 		this.templateLastUpdated = data.templateLastUpdated;

@@ -13,7 +13,7 @@ import ShareDialog from "../UI/Dialog/ShareDialog";
 
 class ReportObject {
 	constructor(data) {
-		this.id = data.reportId;
+		this.id = data.id;
 		this.reportName = data.reportName;
 		this.reportCreated = data.reportCreated;
 		this.reportUpdated = data.reportLastUpdated;

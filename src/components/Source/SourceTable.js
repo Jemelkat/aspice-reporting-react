@@ -12,7 +12,7 @@ import { deleteSource } from "../../services/SourceService";
 
 class SourceObject {
 	constructor(data) {
-		this.id = data.sourceId;
+		this.id = data.id;
 		this.sourceName = data.sourceName;
 		this.sourceCreated = data.sourceCreated;
 		this.sourceLastUpdated = data.sourceLastUpdated;

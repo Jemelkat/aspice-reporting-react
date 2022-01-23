@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAlert } from "react-alert";
-import { typeEnum } from "../components/Template/TemplateCreate";
-import { Item } from "../helpers/ClassHelper";
+import { Item, typeEnum } from "../helpers/ClassHelper";
 
 const useCanvas = () => {
 	const alert = useAlert();

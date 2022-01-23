@@ -7,7 +7,7 @@ import Sidebar from "../UI/Sidebar/Sidebar";
 import SidebarLinks from "../UI/Sidebar/SidebarLinks";
 import * as Yup from "yup";
 import { PlusIcon } from "@heroicons/react/solid";
-import { typeEnum } from "./TemplateCreate";
+import { typeEnum } from "../../helpers/ClassHelper";
 
 const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 	return (

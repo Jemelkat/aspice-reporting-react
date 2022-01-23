@@ -12,9 +12,9 @@ export const saveReport = async (formValues, items, mode) => {
 				? items.map((e) => ({ ...e, id: null }))
 				: items.map((e_1) => ({ ...e_1, id: null })),
 		reportTemplate:
-			formValues.id !== ""
+			formValues.templateId !== ""
 				? {
-						id: formValues.id,
+						id: formValues.templateId,
 				  }
 				: null,
 	});

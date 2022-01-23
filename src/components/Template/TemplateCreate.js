@@ -10,12 +10,6 @@ import Canvas from "../Canvas/Canvas";
 import { saveTemplate } from "../../services/TemplateService";
 import { Item } from "../../helpers/ClassHelper";
 
-export const typeEnum = Object.freeze({
-	GRAPH: "GRAPH",
-	STATIC_TEXT: "STATIC_TEXT",
-	TABLE: "TABLE",
-});
-
 const TemplateCreate = ({ mode, templateId }) => {
 	const [templateData, setTemplateData] = useState(null);
 	const [templateLoading, setTemplateLoading] = useState(true);
@@ -46,6 +40,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 		}
 	};
 
+	//Parses components of template to Item array
 	const parseAndSetComponents = (components) => {
 		let newComponents = [];
 		if (components) {
@@ -57,6 +52,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 	};
 
 	useEffect(() => {
+		//EDIT - load template for reseting
 		if (mode === "edit") {
 			setTemplateLoading(true);
 			axiosInstance
@@ -85,7 +81,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 				</div>
 			) : (
 				<div className='flex overflow-x-hidden'>
-					{/*Left sidebar */}
+					{/*Left sidebar*/}
 					<TemplateMenuLeft
 						data={templateData}
 						onSave={saveTemplateHandler}

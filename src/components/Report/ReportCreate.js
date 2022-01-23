@@ -82,7 +82,7 @@ const ReportCreate = ({ mode, reportId }) => {
 	const generateReportHandler = async (formValues) => {
 		const saveResponse = await saveReportHandler(formValues);
 		try {
-			const response = await generateReport(saveResponse.data.reportId);
+			const response = await generateReport(saveResponse.data.id);
 			alert.info("Report generated");
 
 			const pdfFile = new Blob([response.data], {

@@ -1,12 +1,11 @@
 import Sidebar from "../UI/Sidebar/Sidebar";
 import SidebarLinks from "../UI/Sidebar/SidebarLinks";
-import * as Yup from "yup";
 import { Field, Form, Formik } from "formik";
 import FormHidden from "../UI/Form/FormHidden";
 import FormInput from "../UI/Form/FormInput";
 import Button from "../UI/Button";
-import { typeEnum } from "../Template/TemplateCreate";
 import { useEffect } from "react";
+import { typeEnum } from "../../helpers/ClassHelper";
 
 const CanvasRightMenu = ({ selectedItem, show, ...props }) => {
 	//Id used in hook to rerender

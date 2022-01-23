@@ -9,8 +9,8 @@ import * as Yup from "yup";
 import { PlusIcon } from "@heroicons/react/solid";
 import FormSelect from "../UI/Form/FormSelect";
 import { useAxios } from "../../helpers/AxiosHelper";
-import { typeEnum } from "../Template/TemplateCreate";
 import { useAlert } from "react-alert";
+import { typeEnum } from "../../helpers/ClassHelper";
 
 const ReportMenuLeft = ({
 	data,
@@ -44,11 +44,11 @@ const ReportMenuLeft = ({
 						<Formik
 							enableReinitialize={true}
 							initialValues={{
-								id: data ? data.reportId : "",
+								id: data ? data.id : "",
 								reportName: data ? data.reportName : "",
 								templateId: data
 									? data.reportTemplate
-										? data.reportTemplate.templateId
+										? data.reportTemplate.id
 										: ""
 									: "",
 							}}

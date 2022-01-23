@@ -1,5 +1,5 @@
 import { Rnd } from "react-rnd";
-import { typeEnum } from "../../Template/TemplateCreate";
+import { typeEnum } from "../../../helpers/ClassHelper";
 
 const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 	const renderContent = () => {

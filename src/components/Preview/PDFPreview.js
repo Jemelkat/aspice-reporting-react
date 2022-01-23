@@ -28,9 +28,7 @@ const PDFPreview = ({ pdfData }) => {
 				<button type='button' onClick={() => previousPage()}>
 					<ArrowLeftIcon className='w-4 h-4 cursor-pointer'></ArrowLeftIcon>
 				</button>
-				<span>
-					Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
-				</span>
+				<span>Number of pages: {numPages || "--"}</span>
 				<button type='button' onClick={() => nextPage()}>
 					<ArrowRightIcon className='w-4 h-4 cursor-pointer'></ArrowRightIcon>
 				</button>

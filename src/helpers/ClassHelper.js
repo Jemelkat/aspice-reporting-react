@@ -9,3 +9,9 @@ export class Item {
 		this.textArea = textArea ? textArea : null;
 	}
 }
+
+export const typeEnum = Object.freeze({
+	GRAPH: "GRAPH",
+	STATIC_TEXT: "STATIC_TEXT",
+	TABLE: "TABLE",
+});

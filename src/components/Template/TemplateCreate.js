@@ -17,7 +17,7 @@ export const typeEnum = Object.freeze({
 
 class Item {
 	constructor(id, x, y, width, height, type) {
-		this.itemId = id;
+		this.id = id;
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -60,7 +60,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 		let newComponents = [];
 		if (components) {
 			newComponents = components.map(
-				(i) => new Item(i.itemId, i.x, i.y, i.width, i.height, i.type)
+				(i) => new Item(i.id, i.x, i.y, i.width, i.height, i.type)
 			);
 		}
 		setItems(newComponents);

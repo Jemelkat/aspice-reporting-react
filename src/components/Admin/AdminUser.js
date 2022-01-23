@@ -7,6 +7,7 @@ import AdminUserForm from "./AdminUserForm";
 import MyDialog from "../UI/Dialog/MyDialog";
 import Button from "../UI/Button";
 import { useAxios } from "../../helpers/AxiosHelper";
+import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
 
 class User {
 	constructor(userData) {
@@ -29,7 +30,7 @@ const ACTIONS = {
 
 const AdminUser = () => {
 	const [{ data, loading, error }, refetch] = useAxios("/admin/getAllUsers", {
-		useCache: true,
+		useCache: false,
 	});
 
 	//Delete
@@ -116,9 +117,9 @@ const AdminUser = () => {
 
 	const parseUserData = (userData) => {
 		let userArray = [];
-		if (userData !== null && userData !== undefined) { 
-			userData.forEach((user) => userArray.push(new User(user)))
-		};
+		if (userData !== null && userData !== undefined) {
+			userData.forEach((user) => userArray.push(new User(user)));
+		}
 		return userArray;
 	};
 
@@ -126,7 +127,11 @@ const AdminUser = () => {
 		switch (action) {
 			case ACTIONS.EDIT:
 				return (
-					<MyDialog isOpen={isOpen} onClose={() => setShowForm(false)}>
+					<MyDialog
+						title='Edit user'
+						isOpen={isOpen}
+						onClose={() => setShowForm(false)}
+					>
 						<AdminUserForm
 							data={selectedUser}
 							onCancel={formCancelHandler}
@@ -136,16 +141,16 @@ const AdminUser = () => {
 				);
 			case ACTIONS.REMOVE:
 				return (
-					<MyDialog
+					<ConfirmDialog
 						title={`Do you really want to remove user ${selectedUser.username}?`}
+						description={
+							"This action will remove all sources, templates and reports asociated with this user."
+						}
 						isOpen={showForm}
 						onClose={() => setShowForm(false)}
-					>
-						<div className='flex flex-row items-center justify-evenly'>
-							<Button text='Yes' onClick={() => userDeleteHandler()}></Button>
-							<Button text='Cancel' onClick={() => setShowForm(false)}></Button>
-						</div>
-					</MyDialog>
+						onOk={userDeleteHandler}
+						onCancel={() => setShowForm(false)}
+					></ConfirmDialog>
 				);
 			default:
 				return <>NIC</>;

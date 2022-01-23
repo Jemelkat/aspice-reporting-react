@@ -173,9 +173,10 @@ const ReportTable = (props) => {
 
 			{/*Delete dialog */}
 			<ConfirmDialog
-				title={`Do you really want to delete report ${
+				title={`Do you want to delete report: ${
 					selectedRow ? selectedRow.reportName : ""
 				}?`}
+				description='This report will be completely removed - all shared groups will lose access to this report.'
 				isOpen={showDeleteDialog}
 				onClose={() => setShowDeleteDialog(false)}
 				onOk={() => {

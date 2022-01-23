@@ -136,9 +136,10 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 
 			{/*Delete dialog */}
 			<ConfirmDialog
-				title={`Do you really want to delete source ${
+				title={`Do you want to delete source: ${
 					selectedRow ? selectedRow.sourceName : ""
 				}?`}
+				description='This source will be completely removed - all shared groups will lose access to this source.'
 				isOpen={showDeleteDialog}
 				onClose={() => setShowDeleteDialog(false)}
 				onOk={() => {

@@ -6,7 +6,9 @@ import { useAlert } from "react-alert";
 
 const Source = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [{ data, loading, error }, refetch] = useAxios("/source/getAll");
+	const [{ data, loading, error }, refetch] = useAxios("/source/getAll", {
+		useCache: false,
+	});
 	const alert = useAlert();
 
 	if (error) {

@@ -81,7 +81,6 @@ const AdminGroupForm = (props) => {
 
 	return (
 		<>
-			<div className='text-xl font-bold text-center'>Edit group from</div>
 			<Formik
 				initialValues={{
 					id: props.data.id,
@@ -112,7 +111,7 @@ const AdminGroupForm = (props) => {
 						placeholder='Select multi languages...'
 						isMulti={true}
 					/>
-					<div className='flex justify-center mt-6 space-x-2 space'>
+					<div className='flex justify-center mt-4 space-x-2 space'>
 						<Button type='submit' className='mt-2' dark={true}>
 							Save
 						</Button>

@@ -19,6 +19,7 @@ const ShareDialog = ({
 	onClose,
 	onSuccess,
 	title,
+	description,
 }) => {
 	const [selected, setSelected] = useState([]);
 	const [options, setOptions] = useState([]);
@@ -117,8 +118,8 @@ const ShareDialog = ({
 
 	return (
 		<MyDialog
-			className='w-36r'
 			title={title}
+			description={description}
 			isOpen={showShareDialog}
 			onClose={onClose}
 		>

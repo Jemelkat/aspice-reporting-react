@@ -18,7 +18,7 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 						<Formik
 							enableReinitialize={true}
 							initialValues={{
-								id: data ? data.templateId : null,
+								id: data ? data.id : null,
 								templateName: data ? data.templateName : "",
 							}}
 							validationSchema={Yup.object({

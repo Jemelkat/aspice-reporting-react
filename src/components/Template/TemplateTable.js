@@ -154,9 +154,10 @@ const TemplateTable = (props) => {
 
 			{/*Delete dialog */}
 			<ConfirmDialog
-				title={`Do you really want to delete template ${
+				title={`Do you want to delete template: ${
 					selectedRow ? selectedRow.templateName : ""
 				}?`}
+				description='This template will be completely removed - all shared groups will lose access to this template.'
 				isOpen={showDeleteDialog}
 				onClose={() => setShowDeleteDialog(false)}
 				onOk={() => {

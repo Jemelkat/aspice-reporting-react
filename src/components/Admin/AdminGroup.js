@@ -6,6 +6,7 @@ import TableMenuItem from "../UI/Table/TableMenuItem";
 import MyDialog from "../UI/Dialog/MyDialog";
 import AdminGroupForm from "./AdminGroupForm";
 import { useAxios } from "../../helpers/AxiosHelper";
+import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
 
 const API_URL = "http://localhost:8080";
 
@@ -125,7 +126,11 @@ const AdminGroup = () => {
 		switch (action) {
 			case ACTIONS.EDIT:
 				return (
-					<MyDialog isOpen={showForm} onClose={() => setShowForm(false)}>
+					<MyDialog
+						title='Edit group'
+						isOpen={showForm}
+						onClose={() => setShowForm(false)}
+					>
 						<AdminGroupForm
 							data={selectedGroup}
 							onCancel={formCancelHandler}
@@ -135,18 +140,14 @@ const AdminGroup = () => {
 				);
 			case ACTIONS.REMOVE:
 				return (
-					<MyDialog
+					<ConfirmDialog
 						title='Do you want to delete group?'
+						description='This action will unshare all shared resources with this group.'
 						isOpen={showForm}
 						onClose={() => setShowForm(false)}
-					>
-						<div className='flex flex-row items-center justify-evenly'>
-							<Button dark onClick={() => groupDeleteHandler()}>
-								Yes
-							</Button>
-							<Button onClick={() => setShowForm(false)}>Cancel</Button>
-						</div>
-					</MyDialog>
+						onOk={groupDeleteHandler}
+						onCancel={() => setShowForm(false)}
+					></ConfirmDialog>
 				);
 			default:
 				return <></>;

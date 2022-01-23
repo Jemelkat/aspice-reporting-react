@@ -6,6 +6,7 @@ function MyDialog({ isOpen, onClose, title, description, ...props }) {
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog
+				className='w-36r'
 				initialFocus={completeButtonRef}
 				onClose={onClose}
 				as='div'
@@ -27,10 +28,10 @@ function MyDialog({ isOpen, onClose, title, description, ...props }) {
 							className={`${props.className} relative flex flex-col max-w-sm px-2 py-4 bg-white rounded-md shadow-2xl md:max-w-xl`}
 							ref={completeButtonRef}
 						>
-							<Dialog.Title className='flex justify-center pb-4 text-sm font-semibold sm:text-lg'>
+							<Dialog.Title className='flex justify-center pb-4 font-semibold text-md sm:text-lg'>
 								{title}
 							</Dialog.Title>
-							<Dialog.Description className=''>
+							<Dialog.Description className='pb-4 pl-2 pr-2 text-center md:pl-8 md:pr-8'>
 								{description}
 							</Dialog.Description>
 

@@ -1,15 +1,42 @@
+import { useCallback, useState } from "react";
+import { useAlert } from "react-alert";
 import { useDropzone } from "react-dropzone";
+import { uploadSource } from "../../helpers/UploadHelper";
 import MyDialog from "../UI/Dialog/MyDialog";
 
-const SourceUpload = ({ isOpen, onOpenChange, onUpload }) => {
+const SourceUpload = ({ isOpen, onOpenChange, onRefetch }) => {
+	const [progress, setProgress] = useState(0);
 	const onDrop = (acceptedFiles) => {
-		onUpload(acceptedFiles);
+		onUploadHandler(acceptedFiles);
 	};
-
 	const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
 		onDrop,
 		multiple: false,
 	});
+	const alert = useAlert();
+
+	const onUploadHandler = useCallback((acceptedFiles) => {
+		upload(acceptedFiles);
+	}, []);
+
+	const upload = (acceptedFiles) => {
+		setProgress(0);
+
+		uploadSource(acceptedFiles, (event) => {
+			setProgress(Math.round((100 * event.loaded) / event.total));
+			console.log(Math.round((100 * event.loaded) / event.total));
+		})
+			.then(() => {
+				//Get all sources after upload
+				onRefetch();
+				//Close dropwindow
+				onOpenChange(false);
+				alert.info("New source added.");
+			})
+			.catch((error) => {
+				alert.error(error.data.message);
+			});
+	};
 
 	return (
 		<MyDialog

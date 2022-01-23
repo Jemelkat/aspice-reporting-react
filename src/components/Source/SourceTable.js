@@ -1,9 +1,8 @@
 import { useMemo, useState } from "react";
 import { useAlert } from "react-alert";
-import { axiosInstance, useAxios } from "../../helpers/AxiosHelper";
+import { axiosInstance } from "../../helpers/AxiosHelper";
 import Button from "../UI/Button";
 import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
-import MyDialog from "../UI/Dialog/MyDialog";
 import Table from "../UI/Table/Table";
 import TableMenuButton from "../UI/Table/TableMenuButton";
 import TableMenuItem from "../UI/Table/TableMenuItem";
@@ -61,8 +60,15 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 						<TableMenuItem
 							key='1'
 							onClickAction={() => {
-								setSelectedRow(row.original);
-								setShowShareDialog(true);
+								if (
+									row.original.shared === "" ||
+									row.original.sharedBy === "You"
+								) {
+									setSelectedRow(row.original);
+									setShowShareDialog(true);
+								} else {
+									alert.info("Only the owner of this source can share it.");
+								}
 							}}
 						>
 							Share
@@ -100,11 +106,6 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 			});
 	};
 
-	const shareSourceHandler = () => {
-		//TODO
-		console.log("Sharing source");
-	};
-
 	const parseSourceData = (sourceData) => {
 		let sourceArray = [];
 		if (sourceData)
@@ -114,15 +115,6 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 		return sourceArray;
 	};
 
-	const options = [
-		{ value: "one", label: "Option One" },
-		{ value: "two", label: "Option Two" },
-	];
-
-	const [selected, setSelected] = useState([]);
-	const onSelectChangeHandler = (selected) => {
-		setSelected(selected);
-	};
 	return (
 		<>
 			<Title text='Sources'></Title>
@@ -161,11 +153,12 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 			{/*Share dialog*/}
 			{showShareDialog && selectedRow && (
 				<ShareDialog
+					title={`Sharing source: ${selectedRow ? selectedRow.sourceName : ""}`}
 					optionsUrl={`/source/${selectedRow ? selectedRow.id : "x"}/groups`}
 					shareUrl={`/source/${selectedRow ? selectedRow.id : "x"}/share`}
-					selectedRow={selectedRow}
 					showShareDialog={showShareDialog}
 					onClose={() => setShowShareDialog(false)}
+					onSuccess={() => onRefetch()}
 				></ShareDialog>
 			)}
 		</>

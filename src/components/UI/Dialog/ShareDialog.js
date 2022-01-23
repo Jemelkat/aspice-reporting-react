@@ -4,21 +4,21 @@ import {
 	ChevronLeftIcon,
 	ChevronRightIcon,
 } from "@heroicons/react/solid";
-import MyListBox from "../ListBox/MyListBox";
 import MyDialog from "./MyDialog";
 import DualListBox from "react-dual-listbox";
 import Button from "../Button";
-import { useCallback, useEffect, useState } from "react";
-import { axiosInstance, useAxios } from "../../../helpers/AxiosHelper";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "../../../helpers/AxiosHelper";
 import { useAlert } from "react-alert";
 import Loader from "../Loader/Loader";
 
 const ShareDialog = ({
 	optionsUrl,
 	shareUrl,
-	selectedRow,
 	showShareDialog,
 	onClose,
+	onSuccess,
+	title,
 }) => {
 	const [selected, setSelected] = useState([]);
 	const [options, setOptions] = useState([]);
@@ -37,6 +37,7 @@ const ShareDialog = ({
 			.post(shareUrl, selected)
 			.then((response) => {
 				alert.info(response.data.message);
+				onSuccess();
 				onClose();
 			})
 			.catch((error) => {
@@ -72,7 +73,11 @@ const ShareDialog = ({
 			const response = await axiosInstance.get(optionsUrl);
 			return response.data;
 		} catch (error) {
-			alert.error("There was error getting groups.");
+			alert.error(
+				error.response.data
+					? error.response.data.message
+					: "There was error getting groups."
+			);
 			throw error;
 		}
 	};
@@ -82,15 +87,13 @@ const ShareDialog = ({
 		let userGroups = [];
 		let sourceGroups = [];
 		try {
-			userGroups = await loadUserGroups();
 			sourceGroups = await loadSourceGroups();
+			userGroups = await loadUserGroups();
 		} catch (error) {
-			debugger;
 			onClose();
 			throw error;
 		}
 
-		debugger;
 		//Get all posible options - sorted by id
 		let ids = new Set(userGroups.map((userGroup) => userGroup.id));
 		let optionsMerged = [
@@ -115,7 +118,7 @@ const ShareDialog = ({
 	return (
 		<MyDialog
 			className='w-36r'
-			title={`Sharing source ${selectedRow ? selectedRow.sourceName : ""}`}
+			title={title}
 			isOpen={showShareDialog}
 			onClose={onClose}
 		>

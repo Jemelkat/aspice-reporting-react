@@ -10,13 +10,13 @@ import Title from "../UI/Title";
 import ShareDialog from "../UI/Dialog/ShareDialog";
 
 class SourceObject {
-	constructor(source) {
-		this.id = source.sourceId;
-		this.sourceName = source.sourceName;
-		this.sourceCreated = source.sourceCreated;
-		this.sourceLastUpdated = source.sourceLastUpdated;
-		this.shared = source.shared ? "Yes" : "";
-		this.sharedBy = source.sharedBy;
+	constructor(data) {
+		this.id = data.sourceId;
+		this.sourceName = data.sourceName;
+		this.sourceCreated = data.sourceCreated;
+		this.sourceLastUpdated = data.sourceLastUpdated;
+		this.shared = data.shared ? "Yes" : "";
+		this.sharedBy = data.sharedBy;
 	}
 }
 

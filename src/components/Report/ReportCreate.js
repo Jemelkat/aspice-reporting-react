@@ -49,7 +49,7 @@ const ReportCreate = ({ mode, reportId }) => {
 	//Get current template - used for reseting of data
 	const [{}, getTemplate] = useAxios(
 		{
-			url: "/template/get",
+			url: "/templates/get",
 			method: "GET",
 		},
 		{ manual: true }

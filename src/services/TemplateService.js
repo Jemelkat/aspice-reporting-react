@@ -1,7 +1,7 @@
 import { axiosInstance } from "../helpers/AxiosHelper";
 
 export const saveTemplate = async (formValues, items, mode) => {
-	return axiosInstance.post("/template/save", {
+	return axiosInstance.post("/templates/save", {
 		templateId: formValues.id,
 		templateName: formValues.templateName,
 		templateItems:

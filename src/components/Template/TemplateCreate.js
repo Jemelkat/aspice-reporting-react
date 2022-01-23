@@ -70,7 +70,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 		if (mode === "edit") {
 			setTemplateLoading(true);
 			axiosInstance
-				.get("/template/get", { params: { templateId: templateId } })
+				.get("/templates/get", { params: { templateId: templateId } })
 				.then((response) => {
 					setTemplateData(response.data);
 					parseAndSetComponents(response.data.templateItems);

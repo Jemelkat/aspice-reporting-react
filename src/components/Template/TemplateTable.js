@@ -9,14 +9,16 @@ import TableMenuItem from "../UI/Table/TableMenuItem";
 import TableMenuButton from "../UI/Table/TableMenuButton";
 import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
 import { useAlert } from "react-alert";
+import ShareDialog from "../UI/Dialog/ShareDialog";
 
 class TemplateObject {
 	constructor(data) {
 		this.id = data.templateId;
 		this.templateName = data.templateName;
 		this.templateCreated = data.templateCreated;
-		this.templateUpdated = data.templateLastUpdated;
-		this.templateShared = data.templateGroup ? "Yes" : "No";
+		this.templateLastUpdated = data.templateLastUpdated;
+		this.shared = data.shared ? "Yes" : "";
+		this.sharedBy = data.sharedBy;
 	}
 }
 
@@ -26,7 +28,7 @@ const TemplateTable = (props) => {
 	const { url } = useRouteMatch();
 	const alert = useAlert();
 
-	const [{ data, loading, error }, refetch] = useAxios("/template/getAll", {
+	const [{ data, loading, error }, refetch] = useAxios("/templates/getAll", {
 		useCache: false,
 	});
 
@@ -48,11 +50,15 @@ const TemplateTable = (props) => {
 			},
 			{
 				Header: "Last updated",
-				accessor: "templateUpdated",
+				accessor: "templateLastUpdated",
 			},
 			{
 				Header: "Shared",
-				accessor: "templateShared",
+				accessor: "shared",
+			},
+			{
+				Header: "Shared by",
+				accessor: "sharedBy",
 			},
 			{
 				Header: "Actions",
@@ -100,7 +106,7 @@ const TemplateTable = (props) => {
 	//Share selected template with group
 	const shareTemplateHandler = () => {
 		axiosInstance
-			.post("/template/share", null, {
+			.post("/templates/share", null, {
 				params: { templateId: selectedRow.id },
 			})
 			.then((response) => {
@@ -116,7 +122,7 @@ const TemplateTable = (props) => {
 
 	const deleteTemplateHandler = () => {
 		axiosInstance
-			.delete("/template/delete", {
+			.delete("/templates/delete", {
 				params: { templateId: selectedRow.id },
 			})
 			.then((response) => {
@@ -156,19 +162,6 @@ const TemplateTable = (props) => {
 				/>
 			</div>
 
-			{/*Share dialog*/}
-			<ConfirmDialog
-				title={`Do you want to share ${
-					selectedRow ? selectedRow.templateName : ""
-				} with your group?`}
-				isOpen={showShareDialog}
-				onClose={() => setShowShareDialog(false)}
-				onOk={() => {
-					shareTemplateHandler();
-				}}
-				onCancel={() => setShowShareDialog(false)}
-			></ConfirmDialog>
-
 			{/*Delete dialog */}
 			<ConfirmDialog
 				title={`Do you really want to delete template ${
@@ -181,6 +174,19 @@ const TemplateTable = (props) => {
 				}}
 				onCancel={() => setShowDeleteDialog(false)}
 			></ConfirmDialog>
+
+			{showShareDialog && selectedRow && (
+				<ShareDialog
+					title={`Sharing template: ${
+						selectedRow ? selectedRow.templateName : ""
+					}`}
+					optionsUrl={`/templates/${selectedRow ? selectedRow.id : "x"}/groups`}
+					shareUrl={`/templates/${selectedRow ? selectedRow.id : "x"}/share`}
+					showShareDialog={showShareDialog}
+					onClose={() => setShowShareDialog(false)}
+					onSuccess={() => refetch()}
+				></ShareDialog>
+			)}
 		</>
 	);
 };

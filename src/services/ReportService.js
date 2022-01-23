@@ -3,7 +3,7 @@ import { getAuthHeaderToken } from "../helpers/AuthHelper";
 import { axiosInstance } from "../helpers/AxiosHelper";
 
 export const saveReport = async (formValues, items, mode) => {
-	return axiosInstance.post("/report/save", {
+	return axiosInstance.post("reports/save", {
 		reportId: formValues.id,
 		reportName: formValues.reportName,
 		reportItems:
@@ -21,7 +21,7 @@ export const saveReport = async (formValues, items, mode) => {
 };
 
 export const generateReport = async (reportId) => {
-	return axios.get("http://localhost:8080/report/generate", {
+	return axios.get("http://localhost:8080/reports/generate", {
 		headers: {
 			Authorization: getAuthHeaderToken(),
 			Accept: "application/pdf",

@@ -8,6 +8,7 @@ import TableMenuButton from "../UI/Table/TableMenuButton";
 import TableMenuItem from "../UI/Table/TableMenuItem";
 import Title from "../UI/Title";
 import ShareDialog from "../UI/Dialog/ShareDialog";
+import { deleteSource } from "../../services/SourceService";
 
 class SourceObject {
 	constructor(data) {
@@ -90,20 +91,16 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 		[]
 	);
 
-	const deleteSourceHandler = () => {
-		axiosInstance
-			.delete("/source/delete", {
-				params: { sourceId: selectedRow.id },
-			})
-			.then((response) => {
-				alert.info(response.data.message);
-				setShowDeleteDialog(false);
-				onRefetch();
-			})
-			.catch(() => {
-				alert.error("There was error deleting source!");
-				setShowDeleteDialog(false);
-			});
+	const deleteSourceHandler = async () => {
+		try {
+			const response = await deleteSource(selectedRow.id);
+			alert.info(response.data.message);
+			setShowDeleteDialog(false);
+			onRefetch();
+		} catch (error) {
+			alert.error("There was error deleting source!");
+			setShowDeleteDialog(false);
+		}
 	};
 
 	const parseSourceData = (sourceData) => {

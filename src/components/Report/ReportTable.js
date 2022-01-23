@@ -9,6 +9,7 @@ import TableMenuButton from "../UI/Table/TableMenuButton";
 import TableMenuItem from "../UI/Table/TableMenuItem";
 import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
 import { useAlert } from "react-alert";
+import ShareDialog from "../UI/Dialog/ShareDialog";
 
 class ReportObject {
 	constructor(data) {
@@ -19,7 +20,8 @@ class ReportObject {
 		this.reportTemplateName = data.reportTemplate
 			? data.reportTemplate.templateName
 			: "";
-		this.reportShared = data.reportGroup ? "Yes" : "No";
+		this.shared = data.shared ? "Yes" : "";
+		this.sharedBy = data.sharedBy;
 	}
 }
 const ReportTable = (props) => {
@@ -29,7 +31,7 @@ const ReportTable = (props) => {
 
 	const { url } = useRouteMatch();
 	const alert = useAlert();
-	const [{ data, loading, error }, refetch] = useAxios("/report/getAll", {
+	const [{ data, loading, error }, refetch] = useAxios("/reports/getAll", {
 		useCache: false,
 	});
 
@@ -57,7 +59,11 @@ const ReportTable = (props) => {
 			},
 			{
 				Header: "Shared",
-				accessor: "reportShared",
+				accessor: "shared",
+			},
+			{
+				Header: "Shared by",
+				accessor: "sharedBy",
 			},
 			{
 				Header: "Actions",
@@ -66,11 +72,18 @@ const ReportTable = (props) => {
 						<TableMenuItem
 							key='1'
 							onClickAction={() => {
-								setSelectedRow(row.original);
-								setShowShareDialog(true);
+								if (
+									row.original.shared === "" ||
+									row.original.sharedBy === "You"
+								) {
+									setSelectedRow(row.original);
+									setShowShareDialog(true);
+								} else {
+									alert.info("Only the owner of this source can share it.");
+								}
 							}}
 						>
-							{row.original.reportShared === "Yes" ? "Unshare" : "Share"}
+							Share
 						</TableMenuItem>
 						<Link
 							key='2'
@@ -116,24 +129,9 @@ const ReportTable = (props) => {
 		return objectArray;
 	};
 
-	//Share selected template with group
-	const shareReportHandler = () => {
-		axiosInstance
-			.post("/report/share", null, { params: { reportId: selectedRow.id } })
-			.then((response) => {
-				alert.info(response.data.message);
-				setShowShareDialog(false);
-				refetch();
-			})
-			.catch(() => {
-				alert.error("There was error sharing report!");
-				setShowShareDialog(false);
-			});
-	};
-
 	const deleteReportHandler = () => {
 		axiosInstance
-			.delete("/report/delete", {
+			.delete("reports/delete", {
 				params: { reportId: selectedRow.id },
 			})
 			.then((response) => {
@@ -173,19 +171,6 @@ const ReportTable = (props) => {
 				/>
 			</div>
 
-			{/*Share dialog*/}
-			<ConfirmDialog
-				title={`Do you want to share ${
-					selectedRow ? selectedRow.reportName : ""
-				} with your group?`}
-				isOpen={showShareDialog}
-				onClose={() => setShowShareDialog(false)}
-				onOk={() => {
-					shareReportHandler();
-				}}
-				onCancel={() => setShowShareDialog(false)}
-			></ConfirmDialog>
-
 			{/*Delete dialog */}
 			<ConfirmDialog
 				title={`Do you really want to delete report ${
@@ -198,6 +183,18 @@ const ReportTable = (props) => {
 				}}
 				onCancel={() => setShowDeleteDialog(false)}
 			></ConfirmDialog>
+
+			{/*Share dialog*/}
+			{showShareDialog && selectedRow && (
+				<ShareDialog
+					title={`Sharing report: ${selectedRow ? selectedRow.reportName : ""}`}
+					optionsUrl={`/reports/${selectedRow ? selectedRow.id : "x"}/groups`}
+					shareUrl={`/reports/${selectedRow ? selectedRow.id : "x"}/share`}
+					showShareDialog={showShareDialog}
+					onClose={() => setShowShareDialog(false)}
+					onSuccess={() => refetch()}
+				></ShareDialog>
+			)}
 		</>
 	);
 };

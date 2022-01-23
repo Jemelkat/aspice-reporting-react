@@ -131,7 +131,7 @@ const ReportCreate = ({ mode, reportId }) => {
 		if (mode === "edit") {
 			setReportLoading(true);
 			axiosInstance
-				.get("/report/get", { params: { reportId: reportId } })
+				.get("/reports/get", { params: { reportId: reportId } })
 				.then((response) => {
 					setReportData(response.data);
 					parseAndSetComponents(response.data.reportItems);

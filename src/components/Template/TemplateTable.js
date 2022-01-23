@@ -67,8 +67,15 @@ const TemplateTable = (props) => {
 						<TableMenuItem
 							key='1'
 							onClickAction={() => {
-								setSelectedRow(row.original);
-								setShowShareDialog(true);
+								if (
+									row.original.shared === "" ||
+									row.original.sharedBy === "You"
+								) {
+									setSelectedRow(row.original);
+									setShowShareDialog(true);
+								} else {
+									alert.info("Only the owner of this source can share it.");
+								}
 							}}
 						>
 							Share
@@ -101,23 +108,6 @@ const TemplateTable = (props) => {
 		if (data)
 			data.forEach((item) => objectArray.push(new TemplateObject(item)));
 		return objectArray;
-	};
-
-	//Share selected template with group
-	const shareTemplateHandler = () => {
-		axiosInstance
-			.post("/templates/share", null, {
-				params: { templateId: selectedRow.id },
-			})
-			.then((response) => {
-				alert.info(response.data.message);
-				setShowShareDialog(false);
-				refetch();
-			})
-			.catch(() => {
-				alert.error("There was error sharing template!");
-				setShowShareDialog(false);
-			});
 	};
 
 	const deleteTemplateHandler = () => {

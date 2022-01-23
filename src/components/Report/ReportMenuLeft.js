@@ -10,7 +10,6 @@ import { PlusIcon } from "@heroicons/react/solid";
 import FormSelect from "../UI/Form/FormSelect";
 import { useAxios } from "../../helpers/AxiosHelper";
 import { typeEnum } from "../Template/TemplateCreate";
-import { useEffect } from "react";
 import { useAlert } from "react-alert";
 
 const ReportMenuLeft = ({
@@ -31,7 +30,7 @@ const ReportMenuLeft = ({
 		let array = [];
 		if (templates)
 			templates.forEach((template) =>
-				array.push({ value: template.templateId, label: template.templateName })
+				array.push({ value: template.id, label: template.templateName })
 			);
 		array.push({ value: "", label: "None" });
 		return array;

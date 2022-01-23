@@ -12,18 +12,7 @@ import { Tab } from "@headlessui/react";
 import PDFPreview from "../Preview/PDFPreview";
 import { saveAs } from "file-saver";
 import { generateReport, saveReport } from "../../services/ReportService";
-
-class Item {
-	constructor(id, x, y, width, height, type, textArea) {
-		this.itemId = id;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.type = type;
-		this.textArea = textArea;
-	}
-}
+import { Item } from "../../helpers/ClassHelper";
 
 const ReportCreate = ({ mode, reportId }) => {
 	const [reportData, setReportData] = useState(null);
@@ -52,7 +41,7 @@ const ReportCreate = ({ mode, reportId }) => {
 			url: "/templates/get",
 			method: "GET",
 		},
-		{ manual: true }
+		{ manual: true, useCache: false }
 	);
 
 	const parseAndSetComponents = (components) => {
@@ -62,7 +51,7 @@ const ReportCreate = ({ mode, reportId }) => {
 			newComponents = components.map(
 				(i) =>
 					new Item(
-						i.itemId,
+						i.id,
 						i.x,
 						i.y,
 						i.width,

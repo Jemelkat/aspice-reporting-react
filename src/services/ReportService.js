@@ -4,17 +4,17 @@ import { axiosInstance } from "../helpers/AxiosHelper";
 
 export const saveReport = async (formValues, items, mode) => {
 	return axiosInstance.post("reports/save", {
-		reportId: formValues.id,
+		id: formValues.id,
 		reportName: formValues.reportName,
 		reportItems:
 			//TODO REMOVE LINE AFTER : - new items are created every time
 			mode === "create"
-				? items.map((e) => ({ ...e, itemId: null }))
-				: items.map((e_1) => ({ ...e_1, itemId: null })),
+				? items.map((e) => ({ ...e, id: null }))
+				: items.map((e_1) => ({ ...e_1, id: null })),
 		reportTemplate:
-			formValues.templateId !== ""
+			formValues.id !== ""
 				? {
-						templateId: formValues.templateId,
+						id: formValues.id,
 				  }
 				: null,
 	});

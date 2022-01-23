@@ -1,18 +1,7 @@
 import { useState } from "react";
 import { useAlert } from "react-alert";
 import { typeEnum } from "../components/Template/TemplateCreate";
-
-class Item {
-	constructor(id, x, y, width, height, type, textArea) {
-		this.itemId = id;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.type = type;
-		this.textArea = textArea ? textArea : null;
-	}
-}
+import { Item } from "../helpers/ClassHelper";
 
 const useCanvas = () => {
 	const alert = useAlert();
@@ -29,7 +18,7 @@ const useCanvas = () => {
 			return (
 				Math.max.apply(
 					null,
-					itemArray.map((item) => item.itemId)
+					itemArray.map((item) => item.id)
 				) + 1
 			);
 		}
@@ -38,9 +27,9 @@ const useCanvas = () => {
 	//Change state list item x, y on each item move
 	const moveItemHandler = (id, x, y) => {
 		let updatedComponents = items.map((i) =>
-			i.itemId === id ? { ...i, x: x, y: y } : i
+			i.id === id ? { ...i, x: x, y: y } : i
 		);
-		setSelectedItem(updatedComponents.find((i) => i.itemId === id));
+		setSelectedItem(updatedComponents.find((i) => i.id === id));
 		setShowSelected(true);
 		setItems(updatedComponents);
 	};
@@ -48,21 +37,22 @@ const useCanvas = () => {
 	//Change height, width state of item on resize
 	const resizeItemHandler = (id, x, y, height, width) => {
 		let updatedComponents = items.map((i) => {
-			return i.itemId === id
+			return i.id === id
 				? { ...i, x: x, y: y, height: height, width: width }
 				: i;
 		});
-		setSelectedItem(updatedComponents.find((i) => i.itemId === id));
+		setSelectedItem(updatedComponents.find((i) => i.id === id));
 		setShowSelected(true);
 		setItems(updatedComponents);
 	};
 
 	const selectItemHandler = (id) => {
+		debugger;
 		if (id === null) {
 			setSelectedItem(null);
 			setShowSelected(false);
 		} else {
-			setSelectedItem(items.find((i) => i.itemId === id));
+			setSelectedItem(items.find((i) => i.id === id));
 			setShowSelected(true);
 		}
 	};
@@ -70,7 +60,7 @@ const useCanvas = () => {
 	const deleteItemHandler = (id) => {
 		setShowSelected(false);
 		setSelectedItem(null);
-		setItems(items.filter((c) => c.itemId !== id));
+		setItems(items.filter((c) => c.id !== id));
 	};
 
 	const addItemHandler = (type) => {
@@ -92,8 +82,8 @@ const useCanvas = () => {
 	};
 
 	const layerItemHandler = (id, to) => {
-		const nextFirst = items.filter((item) => item.itemId === id);
-		const nextItems = items.filter((item) => item.itemId !== id);
+		const nextFirst = items.filter((item) => item.id === id);
+		const nextItems = items.filter((item) => item.id !== id);
 
 		//Check if item exists
 		if (nextFirst.length !== 1) {
@@ -111,12 +101,10 @@ const useCanvas = () => {
 	};
 
 	const updateItemHandler = (item) => {
-		const newItems = items.map((i) =>
-			i.itemId === item.itemId ? { ...item } : i
-		);
-		const nextSelected = items.filter((i) => i.itemId === item.itemId);
+		const newItems = items.map((i) => (i.id === item.id ? { ...item } : i));
+		const nextSelected = items.filter((i) => i.id === item.id);
 		if (nextSelected.length !== 1) {
-			alert.error("Canvas error - cannot update item with id " + item.itemId);
+			alert.error("Canvas error - cannot update item with id " + item.id);
 			return;
 		}
 		setItems(newItems);

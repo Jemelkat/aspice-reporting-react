@@ -8,23 +8,13 @@ import { useAlert } from "react-alert";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
 import { saveTemplate } from "../../services/TemplateService";
+import { Item } from "../../helpers/ClassHelper";
 
 export const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
 	STATIC_TEXT: "STATIC_TEXT",
 	TABLE: "TABLE",
 });
-
-class Item {
-	constructor(id, x, y, width, height, type) {
-		this.id = id;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.type = type;
-	}
-}
 
 const TemplateCreate = ({ mode, templateId }) => {
 	const [templateData, setTemplateData] = useState(null);

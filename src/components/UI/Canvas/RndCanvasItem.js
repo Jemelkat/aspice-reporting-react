@@ -42,17 +42,17 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 			onResize={(e, direction, ref, delta, position) => {
 				const x = position.x < 0 ? 0 : position.x;
 				const y = position.y < 0 ? 0 : position.y;
-				onResize(item.itemId, x, y, ref.offsetHeight, ref.offsetWidth);
+				onResize(item.id, x, y, ref.offsetHeight, ref.offsetWidth);
 			}}
 			onDrag={(event, data) => {
 				//Prevent -x and -y
 				const x = data.x < 0 ? 0 : data.x;
 				const y = data.y < 0 ? 0 : data.y;
-				onMove(item.itemId, x, y);
+				onMove(item.id, x, y);
 			}}
 			onClick={(e) => {
 				e.stopPropagation();
-				onSelect(item.itemId);
+				onSelect(item.id);
 			}}
 		>
 			<div

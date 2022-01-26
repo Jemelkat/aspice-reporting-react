@@ -45,6 +45,7 @@ const ReportCreate = ({ mode, reportId }) => {
 	);
 
 	const parseAndSetComponents = (components) => {
+		debugger;
 		let newComponents = [];
 		setItems([]);
 		if (components) {
@@ -57,10 +58,12 @@ const ReportCreate = ({ mode, reportId }) => {
 						i.width,
 						i.height,
 						i.type,
-						i.textArea ? i.textArea : null
+						i.textArea ? i.textArea : null,
+						i.textStyle ? i.textStyle : null
 					)
 			);
 			setItems(newComponents);
+			selectItemHandler(null);
 		}
 	};
 

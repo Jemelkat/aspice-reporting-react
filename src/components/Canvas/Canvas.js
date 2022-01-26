@@ -1,6 +1,7 @@
 import RndCanvasItem from "../UI/Canvas/RndCanvasItem";
 
 const Canvas = ({ items, onMove, onResize, onSelect, selectedItem }) => {
+	console.log("rendering ", items);
 	return (
 		<div className='mt-4 mb-10 overflow-x-auto overflow-y-hidden border-2'>
 			<div
@@ -14,12 +15,12 @@ const Canvas = ({ items, onMove, onResize, onSelect, selectedItem }) => {
 				{items.map((i) => {
 					return (
 						<RndCanvasItem
-							key={i.itemId}
+							key={i.id}
 							item={i}
 							onMove={onMove}
 							onResize={onResize}
 							onSelect={onSelect}
-							isSelected={selectedItem && selectedItem.itemId === i.itemId}
+							isSelected={selectedItem && selectedItem.id === i.id}
 						></RndCanvasItem>
 					);
 				})}

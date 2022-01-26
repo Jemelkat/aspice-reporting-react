@@ -6,13 +6,15 @@ const FormInput = ({ label, ...props }) => {
 	const [field, meta] = useField(props);
 	return (
 		<>
-			<label htmlFor={props.id || props.name}>{label}</label>
+			{label && <label htmlFor={props.id || props.name}>{label}</label>}
 			<input
 				className='bg-gray-100 border-2 border-gray-300'
 				{...field}
 				{...props}
 			/>
-			{meta.error ? <div className='text-red-500'>{meta.error}</div> : null}
+			{meta.error ? (
+				<div className='text-red-500 col-span-full'>{meta.error}</div>
+			) : null}
 		</>
 	);
 };

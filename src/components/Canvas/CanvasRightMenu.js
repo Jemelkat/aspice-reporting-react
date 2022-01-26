@@ -6,49 +6,23 @@ import FormInput from "../UI/Form/FormInput";
 import Button from "../UI/Button";
 import { useEffect } from "react";
 import { typeEnum } from "../../helpers/ClassHelper";
+import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
+import TextSettings from "./TextSettings";
+import { useRef } from "react";
 
-const CanvasRightMenu = ({ selectedItem, show, ...props }) => {
+const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 	//Id used in hook to rerender
 	const currentId = selectedItem ? selectedItem.itemId : null;
+	const formRef = useRef();
 
 	const renderTypeInputs = () => {
 		switch (selectedItem.type) {
 			case typeEnum.STATIC_TEXT:
 				return (
-					<div>
-						<Formik
-							//TODO UPDATE TEXT FIELD ON CHANGE
-							enableReinitialize={true}
-							initialValues={{
-								textArea:
-									selectedItem && selectedItem.textArea
-										? selectedItem.textArea
-										: "",
-							}}
-						>
-							{({ handleChange }) => (
-								<Form className='flex flex-col p-4'>
-									<label className='mt-2' htmlFor='template'>
-										Text:
-									</label>
-									<Field
-										style={{ minHeight: "10rem" }}
-										as='textarea'
-										name='textArea'
-										className='border-2 border-gray-300'
-										onChange={(e) => {
-											handleChange(e);
-											const newSelected = {
-												...selectedItem,
-												textArea: e.target.value,
-											};
-											props.onItemUpdate(newSelected);
-										}}
-									/>
-								</Form>
-							)}
-						</Formik>
-					</div>
+					<TextSettings
+						selectedItem={selectedItem}
+						onItemUpdate={onItemUpdate}
+					></TextSettings>
 				);
 			case typeEnum.GRAPH:
 				return <div>Graph input form</div>;
@@ -73,13 +47,25 @@ const CanvasRightMenu = ({ selectedItem, show, ...props }) => {
 					{selectedItem && (
 						<>
 							<SidebarLinks sidebarName='Edit selected component'></SidebarLinks>
-
+							<div className='flex flex-col justify-center pb-4 pl-4 pr-4'>
+								<Button
+									type='button'
+									dark
+									className='mt-2 bg-gray-300 hover:bg-gray-400'
+									onClick={() => {
+										props.onDeleteItem(formRef.current.values.id);
+									}}
+								>
+									Remove item
+								</Button>
+							</div>
 							<Formik
 								enableReinitialize={true}
+								innerRef={formRef}
 								initialValues={
 									selectedItem
 										? {
-												id: selectedItem.itemId,
+												id: selectedItem.id,
 												x: selectedItem.x,
 												y: selectedItem.y,
 												width: selectedItem.width,
@@ -97,59 +83,54 @@ const CanvasRightMenu = ({ selectedItem, show, ...props }) => {
 								}
 							>
 								{({ values }) => (
-									<Form className='flex flex-col p-4'>
-										<FormHidden name='id'></FormHidden>
-										<div className='grid grid-cols-2 gap-y-2'>
-											<FormInput
-												label='Type:'
-												name='type'
-												type='text'
-												disabled
-											/>
-											<FormInput label='X:' name='x' type='number' disabled />
-											<FormInput label='Y:' name='y' type='number' disabled />
-											<FormInput
-												label='Width:'
-												name='width'
-												type='number'
-												disabled
-											/>
-											<FormInput
-												label='Height:'
-												name='height'
-												type='number'
-												disabled
-											/>
-										</div>
-										<Button
-											type='button'
-											className='mt-2 bg-gray-300 hover:bg-gray-400'
-											onClick={() => props.onLayerChange(values.id, "top")}
-										>
-											Move to Top
-										</Button>
-										<Button
-											type='button'
-											className='mt-2 bg-gray-300 hover:bg-gray-400'
-											onClick={() => props.onLayerChange(values.id, "bottom")}
-										>
-											Move to Bottom
-										</Button>
-										<Button
-											type='button'
-											dark
-											className='mt-2 bg-gray-300 hover:bg-gray-400'
-											onClick={() => props.onDeleteItem(values.id)}
-										>
-											Remove item
-										</Button>
+									<Form className='flex flex-col'>
+										<CanvasPanelDisclosure name='Basic information'>
+											<FormHidden name='id'></FormHidden>
+											<div className='grid grid-cols-2 p-4 gap-y-2'>
+												<FormInput
+													label='Type:'
+													name='type'
+													type='text'
+													disabled
+												/>
+												<FormInput label='X:' name='x' type='number' disabled />
+												<FormInput label='Y:' name='y' type='number' disabled />
+												<FormInput
+													label='Width:'
+													name='width'
+													type='number'
+													disabled
+												/>
+												<FormInput
+													label='Height:'
+													name='height'
+													type='number'
+													disabled
+												/>
+											</div>
+											<div className='flex flex-col justify-center p-4'>
+												<Button
+													type='button'
+													className='mt-2 bg-gray-300 hover:bg-gray-400'
+													onClick={() => props.onLayerChange(values.id, "top")}
+												>
+													Move to Top
+												</Button>
+												<Button
+													type='button'
+													className='mt-2 bg-gray-300 hover:bg-gray-400'
+													onClick={() =>
+														props.onLayerChange(values.id, "bottom")
+													}
+												>
+													Move to Bottom
+												</Button>
+											</div>
+										</CanvasPanelDisclosure>
 									</Form>
 								)}
 							</Formik>
-
-							<SidebarLinks sidebarName='Component sources'>
-								{renderTypeInputs()}
-							</SidebarLinks>
+							{renderTypeInputs()}
 						</>
 					)}
 				</Sidebar>

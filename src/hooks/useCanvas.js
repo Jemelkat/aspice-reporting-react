@@ -46,7 +46,6 @@ const useCanvas = () => {
 	};
 
 	const selectItemHandler = (id) => {
-		debugger;
 		if (id === null) {
 			setSelectedItem(null);
 			setShowSelected(false);
@@ -100,14 +99,21 @@ const useCanvas = () => {
 	};
 
 	const updateItemHandler = (item) => {
+		//Find the item and replace
 		const newItems = items.map((i) => (i.id === item.id ? { ...item } : i));
-		const nextSelected = items.filter((i) => i.id === item.id);
-		if (nextSelected.length !== 1) {
-			alert.error("Canvas error - cannot update item with id " + item.id);
-			return;
-		}
 		setItems(newItems);
-		//setSelectedItem(nextSelected[0]);
+		setSelectedItem(
+			new Item(
+				item.id,
+				item.x,
+				item.y,
+				item.width,
+				item.height,
+				item.type,
+				item.textArea,
+				item.textStyle
+			)
+		);
 	};
 
 	return {

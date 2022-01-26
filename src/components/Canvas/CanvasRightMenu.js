@@ -46,19 +46,8 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 				>
 					{selectedItem && (
 						<>
-							<SidebarLinks sidebarName='Edit selected component'></SidebarLinks>
-							<div className='flex flex-col justify-center pb-4 pl-4 pr-4'>
-								<Button
-									type='button'
-									dark
-									className='mt-2 bg-gray-300 hover:bg-gray-400'
-									onClick={() => {
-										props.onDeleteItem(formRef.current.values.id);
-									}}
-								>
-									Remove item
-								</Button>
-							</div>
+							<SidebarLinks sidebarName='Edit component'></SidebarLinks>
+
 							<Formik
 								enableReinitialize={true}
 								innerRef={formRef}
@@ -131,6 +120,18 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 								)}
 							</Formik>
 							{renderTypeInputs()}
+							<div className='flex flex-col justify-center pb-4 pl-4 pr-4'>
+								<Button
+									type='button'
+									dark
+									className='mt-2 bg-gray-300 hover:bg-gray-400'
+									onClick={() => {
+										props.onDeleteItem(formRef.current.values.id);
+									}}
+								>
+									Remove item
+								</Button>
+							</div>
 						</>
 					)}
 				</Sidebar>

@@ -10,17 +10,20 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 	const renderContent = () => {
 		switch (item.type) {
 			case typeEnum.STATIC_TEXT:
-				return (
-					<div
-						style={{
-							whiteSpace: "pre-line",
-							fontSize: fontSize,
-							lineHeight: fontSize,
-						}}
-					>
-						{item.textArea}
-					</div>
-				);
+				const style = {
+					fontFamily: "DejaVu",
+					whiteSpace: "pre-line",
+					fontSize: item.textStyle.fontSize
+						? item.textStyle.fontSize + "px"
+						: "11px",
+					lineHeight: "1.2",
+					fontWeight: item.textStyle.bold ? "bold" : "",
+					fontStyle: item.textStyle.italic ? "italic" : "",
+					textDecoration: item.textStyle.underline ? "underline" : "",
+					color: item.textStyle.color,
+				};
+
+				return <div style={style}>{item.textArea}</div>;
 			case typeEnum.GRAPH:
 				return (
 					<div className='flex items-center justify-center'>{item.type}</div>

@@ -2,40 +2,47 @@ import { Field, Form, Formik } from "formik";
 import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
 import FormInput from "../UI/Form/FormInput";
 import * as Yup from "yup";
+import { ChromePicker } from "react-color";
+import { useEffect, useState } from "react";
 
 const TextSettings = ({ selectedItem, onItemUpdate }) => {
-	console.log(selectedItem);
+	const [color, setColor] = useState(selectedItem.textStyle.color);
+
+	const colorChangeHandler = (newColor) => {
+		const newSelected = {
+			...selectedItem,
+			textStyle: {
+				...selectedItem.textStyle,
+				color: newColor.hex,
+			},
+		};
+		onItemUpdate(newSelected);
+		setColor(newColor.hex);
+	};
+
+	useEffect(() => {
+		if (selectedItem.textStyle.color != color) {
+			setColor(selectedItem.textStyle.color);
+		}
+	}, [selectedItem.textStyle.color]);
+
 	return (
 		<>
 			<div>
 				<Formik
 					enableReinitialize={true}
 					initialValues={{
-						textArea:
-							selectedItem && selectedItem.textArea
-								? selectedItem.textArea
-								: "",
-						fontSize:
-							selectedItem &&
-							selectedItem.textStyle &&
-							selectedItem.textStyle.fontSize
-								? selectedItem.textStyle.fontSize
-								: 11,
-						bold:
-							selectedItem &&
-							selectedItem.textStyle &&
-							selectedItem.textStyle.bold
-								? selectedItem.textStyle.bold
-								: false,
-						italic:
-							selectedItem &&
-							selectedItem.textStyle &&
-							selectedItem.textStyle.italic
-								? selectedItem.textStyle.italic
-								: false,
+						textArea: selectedItem.textArea ? selectedItem.textArea : "",
+						fontSize: selectedItem.textStyle.fontSize
+							? selectedItem.textStyle.fontSize
+							: 11,
+						bold: selectedItem.textStyle.bold
+							? selectedItem.textStyle.bold
+							: false,
+						italic: selectedItem.textStyle.italic
+							? selectedItem.textStyle.italic
+							: false,
 						underline:
-							selectedItem &&
-							selectedItem.textStyle &&
 							selectedItem.textStyle.underline != null
 								? selectedItem.textStyle.underline
 								: false,
@@ -116,7 +123,14 @@ const TextSettings = ({ selectedItem, onItemUpdate }) => {
 											onItemUpdate(newSelected);
 										}}
 									/>
-									<FormInput label='Color:' name='color' type='text' />
+									<div className='flex flex-col col-span-full'>
+										<label>Color:</label>
+										<ChromePicker
+											className='w-full border-2 shadow-md '
+											color={color}
+											onChange={colorChangeHandler}
+										></ChromePicker>
+									</div>
 								</div>
 							</CanvasPanelDisclosure>
 							<div className='flex flex-col pl-4 pr-4'>

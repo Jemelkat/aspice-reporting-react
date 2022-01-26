@@ -18,11 +18,11 @@ export class Item {
 		this.textArea = textArea ? textArea : null;
 		this.textStyle = {
 			id: textStyle ? textStyle.id : null,
-			fontSize: textStyle ? textStyle.fontSize : null,
+			fontSize: textStyle ? textStyle.fontSize : 11,
 			bold: textStyle ? textStyle.bold : false,
 			italic: textStyle ? textStyle.italic : false,
 			underline: textStyle ? textStyle.underline : false,
-			color: textStyle ? textStyle.color : null,
+			color: textStyle ? textStyle.color : "#000000",
 		};
 	}
 }

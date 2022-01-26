@@ -30,3 +30,8 @@ code {
 		animation-delay: 750ms !important;
 	}
 }
+
+@font-face {
+	font-family: "DejaVu";
+	src: local("DejaVu"), url(./assets/fonts/DejaVuSerif.ttf) format("truetype");
+}

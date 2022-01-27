@@ -11,7 +11,11 @@ import { useAlert } from "react-alert";
 import { Tab } from "@headlessui/react";
 import PDFPreview from "../Preview/PDFPreview";
 import { saveAs } from "file-saver";
-import { generateReport, saveReport } from "../../services/ReportService";
+import {
+	generateReport,
+	getReport,
+	saveReport,
+} from "../../services/ReportService";
 import { Item } from "../../helpers/ClassHelper";
 
 const ReportCreate = ({ mode, reportId }) => {
@@ -45,7 +49,6 @@ const ReportCreate = ({ mode, reportId }) => {
 	);
 
 	const parseAndSetComponents = (components) => {
-		debugger;
 		let newComponents = [];
 		setItems([]);
 		if (components) {
@@ -122,8 +125,7 @@ const ReportCreate = ({ mode, reportId }) => {
 	useEffect(() => {
 		if (mode === "edit") {
 			setReportLoading(true);
-			axiosInstance
-				.get("/reports/get", { params: { reportId: reportId } })
+			getReport(reportId)
 				.then((response) => {
 					setReportData(response.data);
 					parseAndSetComponents(response.data.reportItems);

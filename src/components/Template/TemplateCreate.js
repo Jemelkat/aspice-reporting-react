@@ -26,6 +26,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 		deleteItemHandler,
 		addItemHandler,
 		layerItemHandler,
+		updateItemHandler,
 	} = useCanvas();
 
 	//Saves template to DB
@@ -45,7 +46,17 @@ const TemplateCreate = ({ mode, templateId }) => {
 		let newComponents = [];
 		if (components) {
 			newComponents = components.map(
-				(i) => new Item(i.id, i.x, i.y, i.width, i.height, i.type)
+				(i) =>
+					new Item(
+						i.id,
+						i.x,
+						i.y,
+						i.width,
+						i.height,
+						i.type,
+						i.textArea ? i.textArea : null,
+						i.textStyle ? i.textStyle : null
+					)
 			);
 		}
 		setItems(newComponents);
@@ -101,6 +112,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}
+						onItemUpdate={updateItemHandler}
 					></CanvasRightMenu>
 				</div>
 			)}

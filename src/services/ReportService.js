@@ -3,15 +3,10 @@ import { getAuthHeaderToken } from "../helpers/AuthHelper";
 import { axiosInstance } from "../helpers/AxiosHelper";
 
 export const saveReport = async (formValues, items, mode) => {
-	debugger;
 	return axiosInstance.post("reports/save", {
 		id: formValues.id,
 		reportName: formValues.reportName,
-		reportItems:
-			//TODO REMOVE LINE AFTER : - new items are created every time
-			mode === "create"
-				? items.map((e) => ({ ...e, id: null }))
-				: items.map((e_1) => ({ ...e_1, id: null })),
+		reportItems: items.map((i) => ({ ...i })),
 		reportTemplate:
 			formValues.templateId !== ""
 				? {
@@ -19,6 +14,10 @@ export const saveReport = async (formValues, items, mode) => {
 				  }
 				: null,
 	});
+};
+
+export const getReport = async (reportId) => {
+	return axiosInstance.get("/reports/get", { params: { reportId: reportId } });
 };
 
 export const generateReport = async (reportId) => {

@@ -2,11 +2,6 @@ import { Rnd } from "react-rnd";
 import { typeEnum } from "../../../helpers/ClassHelper";
 
 const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
-	let fontSize =
-		item.textStyle && item.textStyle.fontSize
-			? item.textStyle.fontSize + "px"
-			: "11px";
-
 	const renderContent = () => {
 		switch (item.type) {
 			case typeEnum.STATIC_TEXT:

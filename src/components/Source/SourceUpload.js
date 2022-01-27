@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useAlert } from "react-alert";
 import { useDropzone } from "react-dropzone";
-import { uploadSource } from "../../helpers/UploadHelper";
+import { uploadSource } from "../../services/SourceService";
 import MyDialog from "../UI/Dialog/MyDialog";
 
 const SourceUpload = ({ isOpen, onOpenChange, onRefetch }) => {

@@ -1,11 +1,8 @@
-//Helper functions for loggin process
-import axios from "axios";
-
-const API_URL = "http://localhost:8080/auth/";
+import { axiosInstance } from "./AxiosHelper";
 
 export const login = (username, password) => {
-	return axios
-		.post(API_URL + "signin", {
+	return axiosInstance
+		.post("/signin", {
 			username,
 			password,
 		})
@@ -22,7 +19,7 @@ export const logout = () => {
 };
 
 export const register = (username, email, password) => {
-	return axios.post(API_URL + "signup", {
+	return axiosInstance.post("/signup", {
 		username,
 		email,
 		password,

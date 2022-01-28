@@ -70,8 +70,18 @@ const useCanvas = () => {
 			case typeEnum.GRAPH:
 				item = new Item(nextItemId(), 0, 0, 200, 200, typeEnum.GRAPH);
 				break;
-			case typeEnum.TABLE:
-				item = new Item(nextItemId(), 0, 0, 350, 200, typeEnum.TABLE);
+			case typeEnum.SIMPLE_TABLE:
+				item = new Item(nextItemId(), 0, 0, 350, 200, typeEnum.SIMPLE_TABLE);
+				break;
+			case typeEnum.CAPABILITY_TABLE:
+				item = new Item(
+					nextItemId(),
+					0,
+					0,
+					350,
+					200,
+					typeEnum.CAPABILITY_TABLE
+				);
 				break;
 			default:
 				break;
@@ -111,7 +121,8 @@ const useCanvas = () => {
 				item.height,
 				item.type,
 				item.textArea,
-				item.textStyle
+				item.textStyle,
+				item.tableColumns
 			)
 		);
 	};

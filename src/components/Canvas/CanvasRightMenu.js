@@ -7,8 +7,9 @@ import Button from "../UI/Button";
 import { useEffect } from "react";
 import { typeEnum } from "../../helpers/ClassHelper";
 import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
-import TextSettings from "./TextSettings";
+import TextSettings from "../ComponentSettings/Text/TextSettings";
 import { useRef } from "react";
+import TableSettings from "../ComponentSettings/Table/TableSettings";
 
 const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 	//Id used in hook to rerender
@@ -26,8 +27,27 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 				);
 			case typeEnum.GRAPH:
 				return <div>Graph input form</div>;
-			case typeEnum.TABLE:
-				return <div>Table input form</div>;
+			case typeEnum.SIMPLE_TABLE:
+				debugger;
+				return (
+					<TableSettings
+						simple
+						sourceId={
+							selectedItem.tableColumns && selectedItem.tableColumns.length > 0
+								? selectedItem.tableColumns[0].source.id
+								: null
+						}
+						selectedItem={selectedItem}
+						onItemUpdate={onItemUpdate}
+					></TableSettings>
+				);
+			case typeEnum.CAPABILITY_TABLE:
+				return (
+					<TableSettings
+						selectedItem={selectedItem}
+						onItemUpdate={onItemUpdate}
+					></TableSettings>
+				);
 			default:
 				return <div>Unknown item type. Cannot render input form.</div>;
 		}
@@ -120,7 +140,7 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 								)}
 							</Formik>
 							{renderTypeInputs()}
-							<div className='flex flex-col justify-center pb-4 pl-4 pr-4'>
+							<div className='flex flex-col justify-center pb-4 pl-4 pr-4 mt-4 border-t-2'>
 								<Button
 									type='button'
 									dark

@@ -151,7 +151,7 @@ const ReportMenuLeft = ({
 					<CanvasPanelDisclosure name='Table components'>
 						<div
 							className='flex flex-row p-2 m-2 bg-gray-100'
-							onClick={() => onAddComponent(typeEnum.TABLE)}
+							onClick={() => onAddComponent(typeEnum.SIMPLE_TABLE)}
 						>
 							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
 							TABLE

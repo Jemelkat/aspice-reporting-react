@@ -8,8 +8,9 @@ export const FormSelect = ({
 	options,
 	isMulti = false,
 	isLoading = false,
+	onSelect,
 }) => {
-	const onChange = (option) => {
+	const setValueHandler = (option) => {
 		form.setFieldValue(
 			field.name,
 			isMulti ? option.map((item) => item.value) : option.value
@@ -31,7 +32,10 @@ export const FormSelect = ({
 			className={className}
 			name={field.name}
 			value={getValue()}
-			onChange={onChange}
+			onChange={(e) => {
+				setValueHandler(e);
+				if (onSelect) onSelect(e);
+			}}
 			placeholder={placeholder}
 			options={options}
 			isMulti={isMulti}

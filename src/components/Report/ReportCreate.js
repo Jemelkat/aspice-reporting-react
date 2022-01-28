@@ -9,7 +9,7 @@ import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
 import { useAlert } from "react-alert";
 import { Tab } from "@headlessui/react";
-import PDFPreview from "../Preview/PDFPreview";
+import PDFPreview from "../Canvas/PDFPreview";
 import { saveAs } from "file-saver";
 import {
 	generateReport,

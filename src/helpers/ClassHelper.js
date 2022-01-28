@@ -7,7 +7,8 @@ export class Item {
 		height,
 		type,
 		textArea = null,
-		textStyle = null
+		textStyle = null,
+		tableColumns = null
 	) {
 		this.id = id;
 		this.x = x;
@@ -24,11 +25,13 @@ export class Item {
 			underline: textStyle ? textStyle.underline : false,
 			color: textStyle ? textStyle.color : "#000000",
 		};
+		this.tableColumns = tableColumns ? [...tableColumns] : null;
 	}
 }
 
 export const typeEnum = Object.freeze({
 	GRAPH: "GRAPH",
 	STATIC_TEXT: "STATIC_TEXT",
-	TABLE: "TABLE",
+	SIMPLE_TABLE: "SIMPLE_TABLE",
+	CAPABILITY_TABLE: "CAPABILITY_TABLE",
 });

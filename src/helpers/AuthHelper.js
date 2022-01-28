@@ -2,7 +2,7 @@ import { axiosInstance } from "./AxiosHelper";
 
 export const login = (username, password) => {
 	return axiosInstance
-		.post("/signin", {
+		.post("/auth/signin", {
 			username,
 			password,
 		})
@@ -19,7 +19,7 @@ export const logout = () => {
 };
 
 export const register = (username, email, password) => {
-	return axiosInstance.post("/signup", {
+	return axiosInstance.post("/auth/signup", {
 		username,
 		email,
 		password,

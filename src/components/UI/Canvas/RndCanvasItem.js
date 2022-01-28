@@ -23,7 +23,8 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 				return (
 					<div className='flex items-center justify-center'>{item.type}</div>
 				);
-			case typeEnum.TABLE:
+			case typeEnum.CAPABILITY_TABLE:
+			case typeEnum.SIMPLE_TABLE:
 				return <div>{item.type}</div>;
 			default:
 				return <div>UNKNOWN ITEM TYPE</div>;

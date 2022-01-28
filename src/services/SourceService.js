@@ -20,3 +20,7 @@ export const uploadSource = (file, onUploadProgress) => {
 	};
 	return axiosInstance.post("/source/upload", formData, requestOptions);
 };
+
+export const getColumns = (sourceId) => {
+	return axiosInstance.get(`source/${sourceId}/columns`);
+};

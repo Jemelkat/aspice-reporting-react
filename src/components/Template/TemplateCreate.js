@@ -55,7 +55,8 @@ const TemplateCreate = ({ mode, templateId }) => {
 						i.height,
 						i.type,
 						i.textArea ? i.textArea : null,
-						i.textStyle ? i.textStyle : null
+						i.textStyle ? i.textStyle : null,
+						i.tableColumns ? i.tableColumns : null
 					)
 			);
 		}
@@ -91,7 +92,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 					<Loader fullscreen={false} dark={false}></Loader>
 				</div>
 			) : (
-				<div className='flex overflow-x-hidden'>
+				<div className='flex bg-gray-200'>
 					{/*Left sidebar*/}
 					<TemplateMenuLeft
 						data={templateData}

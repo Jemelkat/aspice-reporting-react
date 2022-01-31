@@ -21,7 +21,6 @@ const TableSettings = ({
 
 	//Adds new column to table
 	const addColumnHandler = (sourceId = null) => {
-		debugger;
 		let columns = selectedItem.tableColumns ? selectedItem.tableColumns : [];
 		columns.push({
 			id:
@@ -33,7 +32,7 @@ const TableSettings = ({
 					  ) + 1,
 			source: { id: sourceId },
 			sourceColumn: { id: null },
-			width: 20,
+			width: 50,
 		});
 		const newSelected = {
 			...selectedItem,
@@ -72,7 +71,7 @@ const TableSettings = ({
 				}}
 				validationSchema={Yup.object().shape({})}
 			>
-				{({ handleChange }) => (
+				{({ setFieldValue, handleChange }) => (
 					<Form className='flex flex-col'>
 						<div className='flex flex-col justify-center'>
 							<FieldArray
@@ -90,6 +89,7 @@ const TableSettings = ({
 												onItemUpdate={onItemUpdate}
 												setGlobalSource={setGlobalSource}
 												handleChange={handleChange}
+												setFieldValue={setFieldValue}
 											></SimpleTableSettings>
 										);
 									} else {

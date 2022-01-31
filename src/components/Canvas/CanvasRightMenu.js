@@ -28,13 +28,15 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 			case typeEnum.GRAPH:
 				return <div>Graph input form</div>;
 			case typeEnum.SIMPLE_TABLE:
-				debugger;
 				return (
 					<TableSettings
 						simple
 						sourceId={
 							selectedItem.tableColumns && selectedItem.tableColumns.length > 0
-								? selectedItem.tableColumns[0].source.id
+								? selectedItem.tableColumns[0].source &&
+								  selectedItem.tableColumns[0].source.id
+									? selectedItem.tableColumns[0].source.id
+									: null
 								: null
 						}
 						selectedItem={selectedItem}

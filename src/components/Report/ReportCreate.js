@@ -62,7 +62,8 @@ const ReportCreate = ({ mode, reportId }) => {
 						i.height,
 						i.type,
 						i.textArea ? i.textArea : null,
-						i.textStyle ? i.textStyle : null
+						i.textStyle ? i.textStyle : null,
+						i.tableColumns ? i.tableColumns : null
 					)
 			);
 			setItems(newComponents);
@@ -125,8 +126,10 @@ const ReportCreate = ({ mode, reportId }) => {
 	useEffect(() => {
 		if (mode === "edit") {
 			setReportLoading(true);
+			debugger;
 			getReport(reportId)
 				.then((response) => {
+					debugger;
 					setReportData(response.data);
 					parseAndSetComponents(response.data.reportItems);
 					setReportLoading(false);

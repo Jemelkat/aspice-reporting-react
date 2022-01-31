@@ -16,6 +16,7 @@ export class Item {
 		this.width = width;
 		this.height = height;
 		this.type = type;
+		//TEXT
 		this.textArea = textArea ? textArea : null;
 		this.textStyle = {
 			id: textStyle ? textStyle.id : null,
@@ -25,6 +26,7 @@ export class Item {
 			underline: textStyle ? textStyle.underline : false,
 			color: textStyle ? textStyle.color : "#000000",
 		};
+		//SIMPLE_TABLE
 		this.tableColumns = tableColumns ? [...tableColumns] : null;
 	}
 }

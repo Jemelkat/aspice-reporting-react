@@ -28,7 +28,7 @@ const ACTIONS = {
 const AdminGroup = () => {
 	//Fetch group data
 	const [{ data, loading, error }, refetch] = useAxios(
-		API_URL + "/admin/getAllGroups",
+		API_URL + "/admin/allGroups",
 		{
 			useCache: false,
 		}

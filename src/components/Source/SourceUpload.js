@@ -34,7 +34,8 @@ const SourceUpload = ({ isOpen, onOpenChange, onRefetch }) => {
 				alert.info("New source added.");
 			})
 			.catch((error) => {
-				alert.error(error.data.message);
+				debugger;
+				alert.error(error.toJSON.messsage);
 			});
 	};
 

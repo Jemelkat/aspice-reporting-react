@@ -15,6 +15,7 @@ const SimpleTableSettings = ({
 	onItemUpdate,
 	setGlobalSource,
 	handleChange,
+	setFieldValue,
 }) => {
 	const alert = useAlert();
 	return (
@@ -51,33 +52,32 @@ const SimpleTableSettings = ({
 								name={`Column ${column.name ? column.name : index}`}
 							>
 								<div className='flex flex-col justify-center pl-4 pr-4'>
-									{!sourcesLoading &&
-										selectedItem.tableColumns[index].source.id && (
-											<div key={index}>
-												<label className='mt-2'>Column:</label>
-												<TableColumnSelect
-													selectedItem={selectedItem}
-													sourceId={selectedItem.tableColumns[index].source.id}
-													index={index}
-													onItemUpdate={onItemUpdate}
-													handleChange={handleChange}
-												></TableColumnSelect>
-												<FormInput
-													label='Column width'
-													name={`columns.${index}.width`}
-													type='number'
-													onChange={(e) => {
-														handleChange(e);
-														if (e.target.value > 0) {
-															let newSelected = selectedItem;
-															newSelected.tableColumns[index].width =
-																e.target.value;
-															onItemUpdate(newSelected);
-														}
-													}}
-												/>
-											</div>
-										)}
+									{!sourcesLoading && selectedItem.tableColumns[index].source && (
+										<div key={index}>
+											<label className='mt-2'>Column:</label>
+											<TableColumnSelect
+												selectedItem={selectedItem}
+												sourceId={selectedItem.tableColumns[index].source.id}
+												index={index}
+												onItemUpdate={onItemUpdate}
+												setFieldValue={setFieldValue}
+											></TableColumnSelect>
+											<FormInput
+												label='Column width'
+												name={`columns.${index}.width`}
+												type='number'
+												onChange={(e) => {
+													handleChange(e);
+													if (e.target.value > 0) {
+														let newSelected = selectedItem;
+														newSelected.tableColumns[index].width =
+															e.target.value;
+														onItemUpdate(newSelected);
+													}
+												}}
+											/>
+										</div>
+									)}
 									<Button
 										className='mt-2'
 										onClick={() => {

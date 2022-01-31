@@ -1,5 +1,5 @@
 import { Field } from "formik";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../UI/Form/FormSelect";
 
@@ -8,7 +8,7 @@ const TableColumnSelect = ({
 	sourceId,
 	index,
 	onItemUpdate,
-	handleChange,
+	setFieldValue,
 }) => {
 	const [
 		{ data: columnData, loading: columnLoading, error: columnError },
@@ -28,9 +28,17 @@ const TableColumnSelect = ({
 		array.push({ value: null, label: "None" });
 		return array;
 	};
+
+	//Set selected columns to null when source changes
+	const firstUpdate = useRef(true);
 	useEffect(() => {
-		console.log(selectedItem.tableColumns[index]);
+		if (firstUpdate.current) {
+			firstUpdate.current = false;
+			refetch();
+			return;
+		}
 		refetch();
+		setFieldValue(`columns.${index}.sourceColumn.id`, null);
 	}, [selectedItem.tableColumns[index].source.id]);
 
 	return (
@@ -42,6 +50,7 @@ const TableColumnSelect = ({
 			onSelect={(e) => {
 				if (selectedItem.tableColumns.length > 0) {
 					selectedItem.tableColumns[index].sourceColumn.id = e.value;
+					selectedItem.tableColumns[index].sourceColumn.columnName = e.label;
 					onItemUpdate(selectedItem);
 				} else {
 					alert.error("Error updating this column.");

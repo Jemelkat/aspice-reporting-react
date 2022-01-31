@@ -29,7 +29,7 @@ const ACTIONS = {
 };
 
 const AdminUser = () => {
-	const [{ data, loading, error }, refetch] = useAxios("/admin/getAllUsers", {
+	const [{ data, loading, error }, refetch] = useAxios("/admin/allUsers", {
 		useCache: false,
 	});
 

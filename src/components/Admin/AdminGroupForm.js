@@ -15,7 +15,7 @@ const AdminGroupForm = (props) => {
 	//Get select users values
 	const [{ usersData, usersLoading, usersError }, refetchUsers] = useAxios(
 		{
-			url: "/admin/getAllUsers",
+			url: "/admin/allUsersSimple",
 			method: "GET",
 		},
 		{

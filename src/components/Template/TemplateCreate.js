@@ -56,6 +56,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 						i.type,
 						i.textArea ? i.textArea : null,
 						i.textStyle ? i.textStyle : null,
+						i.source ? i.source : null,
 						i.tableColumns ? i.tableColumns : null
 					)
 			);

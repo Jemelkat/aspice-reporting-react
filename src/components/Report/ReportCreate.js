@@ -16,7 +16,7 @@ import {
 	getReport,
 	saveReport,
 } from "../../services/ReportService";
-import { Item } from "../../helpers/ClassHelper";
+import { CapabilityTable, Item, typeEnum } from "../../helpers/ClassHelper";
 
 const ReportCreate = ({ mode, reportId }) => {
 	const [reportData, setReportData] = useState(null);
@@ -52,20 +52,41 @@ const ReportCreate = ({ mode, reportId }) => {
 		let newComponents = [];
 		setItems([]);
 		if (components) {
-			newComponents = components.map(
-				(i) =>
-					new Item(
-						i.id,
-						i.x,
-						i.y,
-						i.width,
-						i.height,
-						i.type,
-						i.textArea ? i.textArea : null,
-						i.textStyle ? i.textStyle : null,
-						i.tableColumns ? i.tableColumns : null
-					)
-			);
+			newComponents = components.map((i) => {
+				switch (i.type) {
+					case typeEnum.CAPABILITY_TABLE:
+						return new CapabilityTable(
+							i.id,
+							i.x,
+							i.y,
+							i.width,
+							i.height,
+							i.type,
+							i.source ? i.source : null,
+							i.processColumn ? i.processColumn : null,
+							i.levelColumn ? i.levelColumn : null,
+							i.engineeringColumn ? i.engineeringColumn : null,
+							i.scoreColumn ? i.scoreColumn : null
+						);
+					default:
+						return new Item(
+							i.id,
+							i.x,
+							i.y,
+							i.width,
+							i.height,
+							i.type,
+							i.textArea ? i.textArea : null,
+							i.textStyle ? i.textStyle : null,
+							i.source ? i.source : null,
+							i.tableColumns ? i.tableColumns : null,
+							i.processColumn ? i.processColumn : null,
+							i.levelColumn ? i.levelColumn : null,
+							i.engineeringColumn ? i.engineeringColumn : null,
+							i.scoreColumn ? i.scoreColumn : null
+						);
+				}
+			});
 			setItems(newComponents);
 			selectItemHandler(null);
 		}
@@ -126,10 +147,8 @@ const ReportCreate = ({ mode, reportId }) => {
 	useEffect(() => {
 		if (mode === "edit") {
 			setReportLoading(true);
-			debugger;
 			getReport(reportId)
 				.then((response) => {
-					debugger;
 					setReportData(response.data);
 					parseAndSetComponents(response.data.reportItems);
 					setReportLoading(false);

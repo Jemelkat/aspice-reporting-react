@@ -1,11 +1,13 @@
 import { Field, FieldArray, Form, Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAlert } from "react-alert";
 import * as Yup from "yup";
 import { useAxios } from "../../../helpers/AxiosHelper";
+import { CapabilityTable, typeEnum } from "../../../helpers/ClassHelper";
 import Button from "../../UI/Button";
 import FormSelect from "../../UI/Form/FormSelect";
 import AdvancedTableSettings from "./AdvancedTableSettings";
+import CapabilityTableSettigs from "./CapabilityTableSettings";
 import SimpleTableSettings from "./SimpleTableSettings";
 
 const TableSettings = ({
@@ -14,45 +16,27 @@ const TableSettings = ({
 	simple,
 	sourceId = null,
 }) => {
+	const [selectData, setSelectData] = useState([]);
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
-		useAxios("/source/getAll", { useCache: false });
-	const [globalSource, setGlobalSource] = useState(sourceId);
-	const alert = useAlert();
+		useAxios("/source/allSimple", { useCache: false });
+	const [
+		{ data: columnsData, loading: columnsLoading, error: columnsError },
+		fetchColumns,
+	] = useAxios(`/source/${sourceId}/columns`, {
+		useCache: false,
+		manual: true,
+	});
 
-	//Adds new column to table
-	const addColumnHandler = (sourceId = null) => {
-		let columns = selectedItem.tableColumns ? selectedItem.tableColumns : [];
-		columns.push({
-			id:
-				columns.length === 0
-					? 0
-					: Math.max.apply(
-							null,
-							columns.map((item) => item.id)
-					  ) + 1,
-			source: { id: sourceId },
-			sourceColumn: { id: null },
-			width: 50,
-		});
-		const newSelected = {
-			...selectedItem,
-			tableColumns: [...columns],
-		};
-		onItemUpdate(newSelected);
-	};
+	//Fetch new data on source change or set to empty on null source
+	useEffect(() => {
+		if (sourceId !== null) {
+			fetchColumns().then((reponse) => setSelectData(reponse.data));
+		} else {
+			setSelectData([]);
+		}
+	}, [sourceId]);
 
-	//Removes existing column from table
-	const removeColumnHandler = (id) => {
-		selectedItem.tableColumns.splice(id, 1);
-		const newSelected = {
-			...selectedItem,
-			tableColumns: [...selectedItem.tableColumns],
-		};
-		onItemUpdate(newSelected);
-	};
-
-	//Parse templates to value:"", label:""
-	//TODO: MAKE REST RETURN value label
+	//Parse sources
 	const parseSources = (sources) => {
 		let array = [];
 		if (sources)
@@ -62,72 +46,125 @@ const TableSettings = ({
 		array.push({ value: null, label: "None" });
 		return array;
 	};
+
+	//Parse columns
+	const parseColumns = (columns) => {
+		let array = [];
+		if (columns)
+			columns.forEach((column) =>
+				array.push({ value: column.id, label: column.columnName })
+			);
+		//array.push({ value: "", label: "None" });
+		return array;
+	};
+
+	let initialVals = {
+		sourceFormId: selectedItem.source ? selectedItem.source.id : null,
+	};
+	if (simple) {
+		initialVals = { ...initialVals, columns: selectedItem.tableColumns };
+	} else {
+		initialVals = {
+			...initialVals,
+			processColumn: selectedItem.processColumn.sourceColumn.id,
+			levelColumn: selectedItem.levelColumn.id,
+			engineeringColumn: selectedItem.engineeringColumn.id,
+			scoreColumn: selectedItem.scoreColumn.id,
+		};
+	}
+
 	return (
 		<div>
 			<Formik
 				enableReinitialize={true}
-				initialValues={{
-					columns: selectedItem.tableColumns,
-				}}
+				initialValues={initialVals}
 				validationSchema={Yup.object().shape({})}
 			>
 				{({ setFieldValue, handleChange }) => (
 					<Form className='flex flex-col'>
 						<div className='flex flex-col justify-center'>
-							<FieldArray
-								name='columns'
-								render={() => {
-									if (simple) {
+							<div className='flex flex-col justify-center pl-4 pr-4'>
+								<label>Source:</label>
+								<Field
+									name='sourceFormId'
+									options={parseSources(sourcesData)}
+									component={FormSelect}
+									placeholder={
+										sourcesError ? "No sources found" : "Select source"
+									}
+									onSelect={(e) => {
+										let updatedSelected = selectedItem;
+										updatedSelected.source.id = e.value;
+										//Change selected coluns to NONE on source change
+										if (selectedItem.type === typeEnum.CAPABILITY_TABLE) {
+											updatedSelected.processColumn.sourceColumn.id = null;
+											updatedSelected.processColumn.sourceColumn.columnName =
+												null;
+											updatedSelected.levelColumn.id = null;
+											updatedSelected.engineeringColumn.id = null;
+											updatedSelected.scoreColumn.id = null;
+											updatedSelected.levelColumn.columnName = null;
+											updatedSelected.engineeringColumn.columnName = null;
+											updatedSelected.scoreColumn.columnName = null;
+										} else if (
+											selectedItem.type === typeEnum.SIMPLE_TABLE &&
+											updatedSelected.tableColumns &&
+											updatedSelected.tableColumns.length > 0
+										) {
+											updatedSelected.tableColumns.map((column) => {
+												column.sourceColumn.id = null;
+												column.sourceColumn.sourceName = null;
+											});
+										}
+										onItemUpdate(updatedSelected);
+									}}
+									isMulti={false}
+									isLoading={sourcesLoading}
+								/>
+							</div>
+							{simple ? (
+								<FieldArray
+									name='columns'
+									render={() => {
 										return (
 											<SimpleTableSettings
-												onRemoveColumn={removeColumnHandler}
 												selectedItem={selectedItem}
-												selectedItem={selectedItem}
-												sources={parseSources(sourcesData)}
-												sourcesLoading={sourcesLoading}
-												sourcesError={sourcesError}
 												onItemUpdate={onItemUpdate}
-												setGlobalSource={setGlobalSource}
 												handleChange={handleChange}
-												setFieldValue={setFieldValue}
+												columnsData={parseColumns(selectData)}
+												columnsLoading={columnsLoading}
+												columnsError={columnsError}
 											></SimpleTableSettings>
 										);
-									} else {
-										return (
-											<AdvancedTableSettings
-												onRemoveColumn={removeColumnHandler}
-												selectedItem={selectedItem}
-												selectedItem={selectedItem}
-												sources={parseSources(sourcesData)}
-												sourcesLoading={sourcesLoading}
-												sourcesError={sourcesError}
-												onItemUpdate={onItemUpdate}
-											></AdvancedTableSettings>
-										);
-									}
-								}}
-							></FieldArray>
-							<div className='flex flex-col justify-center pl-4 pr-4'>
-								<Button
-									className='mt-4'
-									onClick={() => {
-										addColumnHandler(globalSource);
 									}}
-								>
-									Add new column
-								</Button>
-							</div>
-							{/* <AdvancedTableSettings
-								simple
-								selectedItem={selectedItem}
-								sources={parseSources(sourcesData)}
-								sourcesLoading={sourcesLoading}
-								sourcesError={sourcesError}
-								onItemUpdate={onItemUpdate}
-							></AdvancedTableSettings> */}
+								></FieldArray>
+							) : (
+								<CapabilityTableSettigs
+									selectedItem={selectedItem}
+									onItemUpdate={onItemUpdate}
+									handleChange={handleChange}
+									setFieldValue={setFieldValue}
+									columnsData={parseColumns(selectData)}
+									columnsLoading={columnsLoading}
+									columnsError={columnsError}
+								></CapabilityTableSettigs>
+							)}
 						</div>
 					</Form>
 				)}
+			</Formik>
+			<Formik
+				enableReinitialize={true}
+				initialValues={{
+					sid: selectedItem.source ? selectedItem.source.id : null,
+					columns: selectedItem.tableColumns,
+					processColumn: selectedItem.processColumn
+						? selectedItem.processColumn.sourceColumn.id
+						: null,
+				}}
+				validationSchema={Yup.object().shape({})}
+			>
+				<Form></Form>
 			</Formik>
 		</div>
 	);

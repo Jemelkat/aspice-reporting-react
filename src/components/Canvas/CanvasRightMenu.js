@@ -32,11 +32,8 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 					<TableSettings
 						simple
 						sourceId={
-							selectedItem.tableColumns && selectedItem.tableColumns.length > 0
-								? selectedItem.tableColumns[0].source &&
-								  selectedItem.tableColumns[0].source.id
-									? selectedItem.tableColumns[0].source.id
-									: null
+							selectedItem.source && selectedItem.source.id
+								? selectedItem.source.id
 								: null
 						}
 						selectedItem={selectedItem}
@@ -46,6 +43,11 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 			case typeEnum.CAPABILITY_TABLE:
 				return (
 					<TableSettings
+						sourceId={
+							selectedItem.source && selectedItem.source.id
+								? selectedItem.source.id
+								: null
+						}
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
 					></TableSettings>

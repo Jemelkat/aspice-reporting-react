@@ -24,6 +24,7 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 					<div className='flex items-center justify-center'>{item.type}</div>
 				);
 			case typeEnum.CAPABILITY_TABLE:
+				return <div>CAPABILITY_TABLE</div>;
 			case typeEnum.SIMPLE_TABLE:
 				return (
 					<div>
@@ -79,12 +80,12 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 			dragGrid={[5, 5]}
 			resizeGrid={[5, 5]}
 			bounds='parent'
-			onResizeStop={(e, direction, ref, delta, position) => {
+			onResize={(e, direction, ref, delta, position) => {
 				const x = position.x < 0 ? 0 : position.x;
 				const y = position.y < 0 ? 0 : position.y;
 				onResize(item.id, x, y, ref.offsetHeight, ref.offsetWidth);
 			}}
-			onDragStop={(event, data) => {
+			onDrag={(event, data) => {
 				//Prevent -x and -y
 				const x = data.x < 0 ? 0 : data.x;
 				const y = data.y < 0 ? 0 : data.y;

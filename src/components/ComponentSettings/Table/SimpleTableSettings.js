@@ -1,48 +1,46 @@
-import { Field } from "formik";
 import { useAlert } from "react-alert";
 import Button from "../../UI/Button";
 import CanvasPanelDisclosure from "../../UI/Canvas/CanvasPanelDisclosure";
 import FormInput from "../../UI/Form/FormInput";
-import FormSelect from "../../UI/Form/FormSelect";
 import TableColumnSelect from "./TableColumnSelect";
 
 const SimpleTableSettings = ({
-	onRemoveColumn,
 	selectedItem,
-	sources,
-	sourcesLoading,
-	sourcesError,
 	onItemUpdate,
-	setGlobalSource,
 	handleChange,
-	setFieldValue,
+	columnsData,
+	columnsLoading,
+	columnsError,
 }) => {
 	const alert = useAlert();
+	//Adds new column to table
+	const addColumnHandler = () => {
+		let columns = selectedItem.tableColumns ? selectedItem.tableColumns : [];
+		columns.push({
+			id:
+				columns.length === 0
+					? 0
+					: Math.max.apply(
+							null,
+							columns.map((item) => item.id)
+					  ) + 1,
+			sourceColumn: { id: null },
+			width: 50,
+		});
+		let newSelected = selectedItem;
+		selectedItem.tableColumns = [...columns];
+		onItemUpdate(newSelected);
+	};
+
+	//Removes existing column from table
+	const removeColumnHandler = (id) => {
+		let newSelected = selectedItem;
+		newSelected.tableColumns.splice(id, 1);
+		onItemUpdate(newSelected);
+	};
+
 	return (
 		<>
-			<div className='flex flex-col justify-center pl-4 pr-4'>
-				<label>Source:</label>
-				<Field
-					name={`columns.0.source.id`}
-					options={sources}
-					component={FormSelect}
-					placeholder={sourcesError ? "No sources found" : "Select source"}
-					onSelect={(e) => {
-						setGlobalSource(e.value);
-						if (selectedItem.tableColumns) {
-							let updatedItems = selectedItem.tableColumns.map((column) => {
-								column.source.id = e.value;
-								column.sourceColumn.id = null;
-								return column;
-							});
-							selectedItem.tableColumns = updatedItems;
-							onItemUpdate(selectedItem);
-						}
-					}}
-					isMulti={false}
-					isLoading={sourcesLoading}
-				/>
-			</div>
 			<div className='mt-4'>
 				{selectedItem.tableColumns && selectedItem.tableColumns.length > 0 ? (
 					selectedItem.tableColumns.map((column, index) => {
@@ -52,15 +50,17 @@ const SimpleTableSettings = ({
 								name={`Column ${column.name ? column.name : index}`}
 							>
 								<div className='flex flex-col justify-center pl-4 pr-4'>
-									{!sourcesLoading && selectedItem.tableColumns[index].source && (
+									{selectedItem.source && (
 										<div key={index}>
 											<label className='mt-2'>Column:</label>
 											<TableColumnSelect
+												name={"columns"}
 												selectedItem={selectedItem}
-												sourceId={selectedItem.tableColumns[index].source.id}
 												index={index}
 												onItemUpdate={onItemUpdate}
-												setFieldValue={setFieldValue}
+												columnsData={columnsData}
+												columnsLoading={columnsLoading}
+												columnsError={columnsError}
 											></TableColumnSelect>
 											<FormInput
 												label='Column width'
@@ -81,7 +81,7 @@ const SimpleTableSettings = ({
 									<Button
 										className='mt-2'
 										onClick={() => {
-											onRemoveColumn(index);
+											removeColumnHandler(index);
 										}}
 									>
 										Remove column
@@ -93,6 +93,16 @@ const SimpleTableSettings = ({
 				) : (
 					<div className='pt-2 text-center'>This table has no columns yet.</div>
 				)}
+				<div className='flex flex-col justify-center pl-4 pr-4'>
+					<Button
+						className='mt-4'
+						onClick={() => {
+							addColumnHandler();
+						}}
+					>
+						Add new column
+					</Button>
+				</div>
 			</div>
 		</>
 	);

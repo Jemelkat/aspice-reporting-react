@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Select from "react-select";
 
 export const FormSelect = ({
@@ -18,13 +19,15 @@ export const FormSelect = ({
 	};
 
 	const getValue = () => {
+		let newValue;
 		if (options) {
-			return isMulti
+			newValue = isMulti
 				? options.filter((option) => field.value.indexOf(option.value) >= 0)
 				: options.find((option) => option.value === field.value);
 		} else {
-			return isMulti ? [] : "";
+			newValue = isMulti ? [] : null;
 		}
+		return newValue == undefined ? null : newValue;
 	};
 
 	return (

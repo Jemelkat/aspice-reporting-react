@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAlert } from "react-alert";
-import { Item, typeEnum } from "../helpers/ClassHelper";
+import { CapabilityTable, Item, typeEnum } from "../helpers/ClassHelper";
 
 const useCanvas = () => {
 	const alert = useAlert();
@@ -25,24 +25,26 @@ const useCanvas = () => {
 
 	//Change state list item x, y on each item move
 	const moveItemHandler = (id, x, y) => {
-		let updatedComponents = items.map((i) =>
-			i.id === id ? { ...i, x: x, y: y } : i
-		);
-		setSelectedItem(updatedComponents.find((i) => i.id === id));
+		let updatedItem = items.find((i) => i.id === id);
+		updatedItem.x = x;
+		updatedItem.y = y;
+		const newItems = items.map((i) => (i.id === id ? updatedItem : i));
+		setSelectedItem(updatedItem);
 		setShowSelected(true);
-		setItems(updatedComponents);
+		setItems(newItems);
 	};
 
 	//Change height, width state of item on resize
 	const resizeItemHandler = (id, x, y, height, width) => {
-		let updatedComponents = items.map((i) => {
-			return i.id === id
-				? { ...i, x: x, y: y, height: height, width: width }
-				: i;
-		});
-		setSelectedItem(updatedComponents.find((i) => i.id === id));
+		let updatedItem = items.find((i) => i.id === id);
+		updatedItem.x = x;
+		updatedItem.y = y;
+		updatedItem.height = height;
+		updatedItem.width = width;
+		const newItems = items.map((i) => (i.id === id ? updatedItem : i));
+		setSelectedItem(updatedItem);
 		setShowSelected(true);
-		setItems(updatedComponents);
+		setItems(newItems);
 	};
 
 	const selectItemHandler = (id) => {
@@ -74,7 +76,7 @@ const useCanvas = () => {
 				item = new Item(nextItemId(), 0, 0, 350, 200, typeEnum.SIMPLE_TABLE);
 				break;
 			case typeEnum.CAPABILITY_TABLE:
-				item = new Item(
+				item = new CapabilityTable(
 					nextItemId(),
 					0,
 					0,
@@ -86,7 +88,8 @@ const useCanvas = () => {
 			default:
 				break;
 		}
-		setItems([...items, item]);
+		const itemsArray = [...items, item];
+		setItems(itemsArray);
 	};
 
 	const layerItemHandler = (id, to) => {
@@ -110,21 +113,10 @@ const useCanvas = () => {
 
 	const updateItemHandler = (item) => {
 		//Find the item and replace
-		const newItems = items.map((i) => (i.id === item.id ? { ...item } : i));
+		const newItems = items.map((i) => (i.id === item.id ? item : i));
+		const newSelected = newItems.find((i) => i.id === item.id);
 		setItems(newItems);
-		setSelectedItem(
-			new Item(
-				item.id,
-				item.x,
-				item.y,
-				item.width,
-				item.height,
-				item.type,
-				item.textArea,
-				item.textStyle,
-				item.tableColumns
-			)
-		);
+		setSelectedItem(newSelected);
 	};
 
 	return {

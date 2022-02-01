@@ -21,13 +21,56 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 				return <div style={style}>{item.textArea}</div>;
 			case typeEnum.GRAPH:
 				return (
-					<div className='flex items-center justify-center'>{item.type}</div>
+					<div className='flex items-center justify-center'>
+						<div className='absolute w-32 -mt-5 -ml-16 text-2xl text-center bg-white border border-black top-1/2 left-1/2'>
+							GRAPH
+						</div>
+					</div>
 				);
 			case typeEnum.CAPABILITY_TABLE:
-				return <div>CAPABILITY_TABLE</div>;
+				return (
+					<div
+						style={{
+							fontFamily: "DejaVu",
+							whiteSpace: "pre-line",
+							fontSize: "11px",
+							lineHeight: "1.2",
+						}}
+					>
+						<div className='absolute w-32 -ml-16 text-xl text-center bg-white border border-black -mt-7 top-1/2 left-1/2'>
+							CAPABILITY TABLE
+						</div>
+						{/* <table>
+							<tr>
+								<td className='w-8 text-center border border-black '>Proces</td>
+								<td className='w-8 text-center border border-black '>BP1</td>
+								<td className='w-8 text-center border border-black '>BP2</td>
+								<td className='w-8 text-center border border-black '>BP3</td>
+								<td className='w-8 text-center border border-black '>BP4</td>
+							</tr>
+							<tr>
+								<td className='w-8 text-center border border-black '>...</td>
+								<td className='w-8 text-center border border-black '>...</td>
+								<td className='w-8 text-center border border-black '>...</td>
+								<td className='w-8 text-center border border-black '>...</td>
+								<td className='w-8 text-center border border-black '>...</td>
+							</tr>
+							<tr>
+								<td className='w-8 text-center border border-black '>...</td>
+								<td className='w-8 text-center border border-black '>...</td>
+								<td className='w-8 text-center border border-black '>...</td>
+								<td className='w-8 text-center border border-black '>...</td>
+								<td className='w-8 text-center border border-black '>...</td>
+							</tr>
+						</table> */}
+					</div>
+				);
 			case typeEnum.SIMPLE_TABLE:
 				return (
 					<div>
+						<div className='absolute w-32 -mt-5 -ml-16 text-2xl text-center bg-white border border-black top-1/2 left-1/2'>
+							TABLE
+						</div>
 						{item.tableColumns && item.tableColumns.length > 0 ? (
 							<div className='flex'>
 								{item.tableColumns.map((column) => (
@@ -59,7 +102,7 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 								))}
 							</div>
 						) : (
-							<div className='text-center'> SIMPLE TABLE</div>
+							<></>
 						)}
 					</div>
 				);

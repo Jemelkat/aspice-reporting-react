@@ -84,7 +84,7 @@ const TableSettings = ({
 					<Form className='flex flex-col'>
 						<div className='flex flex-col justify-center'>
 							<div className='flex flex-col justify-center pl-4 pr-4'>
-								<label>Source:</label>
+								<label className='font-medium'>Source:</label>
 								<Field
 									name='sourceFormId'
 									options={parseSources(sourcesData)}

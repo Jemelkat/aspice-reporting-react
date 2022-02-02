@@ -94,6 +94,7 @@ const ReportCreate = ({ mode, reportId }) => {
 
 	//Saves report to DB
 	const saveReportHandler = async (formValues) => {
+		//TODO: add validation
 		try {
 			const response = await saveReport(formValues, items, mode);
 			parseAndSetComponents(response.data.reportItems);
@@ -102,7 +103,6 @@ const ReportCreate = ({ mode, reportId }) => {
 			return response;
 		} catch (e) {
 			alert.error("Error saving report.");
-			throw e;
 		}
 	};
 

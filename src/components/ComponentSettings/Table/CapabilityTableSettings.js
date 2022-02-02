@@ -10,7 +10,7 @@ const CapabilityTableSettigs = ({
 }) => {
 	return (
 		<div className='flex flex-col justify-center pl-4 pr-4'>
-			<label>Process:</label>
+			<label className='font-medium'>Process name:</label>
 			<Field
 				name='processColumn'
 				options={columnsData}
@@ -25,7 +25,7 @@ const CapabilityTableSettigs = ({
 				isMulti={false}
 				isLoading={columnsLoading}
 			/>
-			<label>Level Column:</label>
+			<label className='font-medium'>Capability level:</label>
 			<Field
 				name='levelColumn'
 				options={columnsData}
@@ -40,7 +40,7 @@ const CapabilityTableSettigs = ({
 				isMulti={false}
 				isLoading={columnsLoading}
 			/>
-			<label>Engineering Column:</label>
+			<label className='font-medium'>Performance criterion:</label>
 			<Field
 				name='engineeringColumn'
 				options={columnsData}
@@ -55,7 +55,7 @@ const CapabilityTableSettigs = ({
 				isMulti={false}
 				isLoading={columnsLoading}
 			/>
-			<label>Score column:</label>
+			<label className='font-medium'>Score/Value:</label>
 			<Field
 				name='scoreColumn'
 				options={columnsData}

@@ -103,12 +103,18 @@ const ReportCreate = ({ mode, reportId }) => {
 			return response;
 		} catch (e) {
 			alert.error("Error saving report.");
+			throw e;
 		}
 	};
 
 	//Saves and generates report as response
 	const generateReportHandler = async (formValues) => {
-		const saveResponse = await saveReportHandler(formValues);
+		let saveResponse;
+		try {
+			saveResponse = await saveReportHandler(formValues);
+		} catch (e) {
+			return;
+		}
 		try {
 			const response = await generateReport(saveResponse.data.id);
 			alert.info("Report generated");

@@ -23,7 +23,6 @@ const ReportMenuLeft = ({
 	//Get all templates for select form input
 	const [{ data: selectData, loading: selectLoading, error: selectError }] =
 		useAxios("/templates/getAll", { useCache: false });
-	const alert = useAlert();
 
 	//Parse templates to value:"", label:""
 	const parseTemplates = (templates) => {

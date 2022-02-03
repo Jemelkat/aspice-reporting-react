@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { useAlert } from "react-alert";
-import { CapabilityTable, Item, typeEnum } from "../helpers/ClassHelper";
+import {
+	CapabilityTable,
+	Item,
+	SimpleTable,
+	Text,
+	typeEnum,
+} from "../helpers/ClassHelper";
 
 const useCanvas = () => {
 	const alert = useAlert();
@@ -67,13 +73,20 @@ const useCanvas = () => {
 		let item;
 		switch (type) {
 			case typeEnum.TEXT:
-				item = new Item(nextItemId(), 0, 0, 150, 50, typeEnum.STATIC_TEXT);
+				item = new Text(nextItemId(), 0, 0, 150, 50, typeEnum.STATIC_TEXT);
 				break;
 			case typeEnum.GRAPH:
 				item = new Item(nextItemId(), 0, 0, 200, 200, typeEnum.GRAPH);
 				break;
 			case typeEnum.SIMPLE_TABLE:
-				item = new Item(nextItemId(), 0, 0, 350, 200, typeEnum.SIMPLE_TABLE);
+				item = new SimpleTable(
+					nextItemId(),
+					0,
+					0,
+					350,
+					200,
+					typeEnum.SIMPLE_TABLE
+				);
 				break;
 			case typeEnum.CAPABILITY_TABLE:
 				item = new CapabilityTable(

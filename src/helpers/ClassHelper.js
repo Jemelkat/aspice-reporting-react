@@ -1,6 +1,66 @@
-import { nullLiteral } from "@babel/types";
+export const createItemFromExisting = (item) => {
+	switch (item.type) {
+		case typeEnum.TEXT:
+			return new Text(
+				item.id,
+				item.x,
+				item.y,
+				item.width,
+				item.height,
+				item.type,
+				item.textArea ? item.textArea : null
+			);
+		case typeEnum.GRAPH:
+			return new Item(
+				item.id,
+				item.x,
+				item.y,
+				item.width,
+				item.height,
+				item.type
+			);
+		case typeEnum.SIMPLE_TABLE:
+			return new SimpleTable(
+				item.id,
+				item.x,
+				item.y,
+				item.width,
+				item.height,
+				item.type,
+				item.source ? item.source : null,
+				item.tableColumns ? item.tableColumns : null
+			);
+		case typeEnum.CAPABILITY_TABLE:
+			return new CapabilityTable(
+				item.id,
+				item.x,
+				item.y,
+				item.width,
+				item.height,
+				item.type,
+				item.source ? item.source : null,
+				item.processColumn ? item.processColumn : null,
+				item.levelColumn ? item.levelColumn : null,
+				item.engineeringColumn ? item.engineeringColumn : null,
+				item.scoreColumn ? item.scoreColumn : null
+			);
+		default:
+			return null;
+	}
+};
 
 export class Item {
+	constructor(id, x, y, width, height, type) {
+		this.id = id;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.type = type;
+	}
+}
+
+export class Text extends Item {
 	constructor(
 		id,
 		x,
@@ -9,21 +69,9 @@ export class Item {
 		height,
 		type,
 		textArea = null,
-		textStyle = null,
-		source = null,
-		tableColumns = null,
-		processColumn = null,
-		levelColumn = null,
-		engineeringColumn = null,
-		scoreColumn = null
+		textStyle = null
 	) {
-		this.id = id;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.type = type;
-		//TEXT
+		super(id, x, y, width, height, type);
 		this.textArea = textArea ? textArea : null;
 		this.textStyle = {
 			id: textStyle ? textStyle.id : null,
@@ -33,43 +81,30 @@ export class Item {
 			underline: textStyle ? textStyle.underline : false,
 			color: textStyle ? textStyle.color : "#000000",
 		};
-		//SIMPLE_TABLE
+	}
+}
+
+export class SimpleTable extends Item {
+	constructor(
+		id,
+		x,
+		y,
+		width,
+		height,
+		type,
+		source = null,
+		tableColumns = null
+	) {
+		super(id, x, y, width, height, type);
 		this.source = {
 			id: source ? source.id : null,
 			name: source ? source.name : null,
 		};
 		this.tableColumns = tableColumns ? [...tableColumns] : null;
-		//CAPABILITY TABLE
-		this.processColumn = {
-			width: processColumn && processColumn.width ? processColumn.width : 100,
-			sourceColumn: {
-				id:
-					processColumn && processColumn.sourceColumn
-						? processColumn.sourceColumn.id
-						: null,
-				columnName:
-					processColumn && processColumn.sourceColumn
-						? processColumn.sourceColumn.columnName
-						: null,
-			},
-		};
-
-		this.levelColumn = {
-			id: levelColumn ? levelColumn.id : null,
-			name: levelColumn ? levelColumn.name : null,
-		};
-		this.engineeringColumn = {
-			id: engineeringColumn ? engineeringColumn.id : null,
-			name: engineeringColumn ? engineeringColumn.name : null,
-		};
-		this.scoreColumn = {
-			id: scoreColumn ? scoreColumn.id : null,
-			name: scoreColumn ? scoreColumn.name : null,
-		};
 	}
 }
 
-export class CapabilityTable {
+export class CapabilityTable extends Item {
 	constructor(
 		id,
 		x,
@@ -83,12 +118,7 @@ export class CapabilityTable {
 		engineeringColumn = null,
 		scoreColumn = null
 	) {
-		this.id = id;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.type = type;
+		super(id, x, y, width, height, type);
 		this.source = {
 			id: source ? source.id : null,
 			name: source ? source.name : null,

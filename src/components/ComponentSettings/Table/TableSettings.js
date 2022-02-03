@@ -1,12 +1,9 @@
 import { Field, FieldArray, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { useAlert } from "react-alert";
 import * as Yup from "yup";
 import { useAxios } from "../../../helpers/AxiosHelper";
-import { CapabilityTable, typeEnum } from "../../../helpers/ClassHelper";
-import Button from "../../UI/Button";
+import { typeEnum } from "../../../helpers/ClassHelper";
 import FormSelect from "../../UI/Form/FormSelect";
-import AdvancedTableSettings from "./AdvancedTableSettings";
 import CapabilityTableSettigs from "./CapabilityTableSettings";
 import SimpleTableSettings from "./SimpleTableSettings";
 

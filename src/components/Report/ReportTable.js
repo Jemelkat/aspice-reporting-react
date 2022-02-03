@@ -149,6 +149,10 @@ const ReportTable = (props) => {
 		props.onModeChange("create", null);
 	}, []);
 
+	if (error) {
+		alert.error("Error getting report data");
+	}
+
 	return (
 		<>
 			<Title text='Reports'></Title>

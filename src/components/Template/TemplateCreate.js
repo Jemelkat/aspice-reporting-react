@@ -8,7 +8,7 @@ import { useAlert } from "react-alert";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
 import { saveTemplate } from "../../services/TemplateService";
-import { Item } from "../../helpers/ClassHelper";
+import { createItemFromExisting, Item } from "../../helpers/ClassHelper";
 
 const TemplateCreate = ({ mode, templateId }) => {
 	const [templateData, setTemplateData] = useState(null);
@@ -45,21 +45,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 	const parseAndSetComponents = (components) => {
 		let newComponents = [];
 		if (components) {
-			newComponents = components.map(
-				(i) =>
-					new Item(
-						i.id,
-						i.x,
-						i.y,
-						i.width,
-						i.height,
-						i.type,
-						i.textArea ? i.textArea : null,
-						i.textStyle ? i.textStyle : null,
-						i.source ? i.source : null,
-						i.tableColumns ? i.tableColumns : null
-					)
-			);
+			newComponents = components.map((i) => createItemFromExisting(i));
 		}
 		setItems(newComponents);
 	};

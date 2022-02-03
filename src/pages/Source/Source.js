@@ -12,7 +12,7 @@ const Source = () => {
 	const alert = useAlert();
 
 	if (error) {
-		alert.warn("Error getting source data");
+		alert.error("Error getting source data");
 	}
 
 	return (

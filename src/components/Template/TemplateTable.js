@@ -34,6 +34,10 @@ const TemplateTable = (props) => {
 
 	const [selectedRow, setSelectedRow] = useState(null);
 
+	if (error) {
+		alert.error("Error getting template data");
+	}
+
 	const columns = useMemo(
 		() => [
 			{

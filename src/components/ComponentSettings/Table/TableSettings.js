@@ -150,19 +150,6 @@ const TableSettings = ({
 					</Form>
 				)}
 			</Formik>
-			<Formik
-				enableReinitialize={true}
-				initialValues={{
-					sid: selectedItem.source ? selectedItem.source.id : null,
-					columns: selectedItem.tableColumns,
-					processColumn: selectedItem.processColumn
-						? selectedItem.processColumn.sourceColumn.id
-						: null,
-				}}
-				validationSchema={Yup.object().shape({})}
-			>
-				<Form></Form>
-			</Formik>
 		</div>
 	);
 };

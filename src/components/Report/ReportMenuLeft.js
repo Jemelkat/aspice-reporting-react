@@ -141,10 +141,10 @@ const ReportMenuLeft = ({
 					<CanvasPanelDisclosure name='Graph components'>
 						<div
 							className='flex flex-row p-2 m-2 bg-gray-100'
-							onClick={() => onAddComponent(typeEnum.GRAPH)}
+							onClick={() => onAddComponent(typeEnum.CAPABILITY_BAR_GRAPH)}
 						>
 							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							GRAPH
+							CAPABILITY_BAR_GRAPH
 						</div>
 					</CanvasPanelDisclosure>
 					<CanvasPanelDisclosure name='Table components'>

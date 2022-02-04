@@ -10,15 +10,7 @@ export const createItemFromExisting = (item) => {
 				item.type,
 				item.textArea ? item.textArea : null
 			);
-		case typeEnum.GRAPH:
-			return new Item(
-				item.id,
-				item.x,
-				item.y,
-				item.width,
-				item.height,
-				item.type
-			);
+
 		case typeEnum.SIMPLE_TABLE:
 			return new SimpleTable(
 				item.id,
@@ -42,6 +34,18 @@ export const createItemFromExisting = (item) => {
 				item.processColumn ? item.processColumn : null,
 				item.levelColumn ? item.levelColumn : null,
 				item.engineeringColumn ? item.engineeringColumn : null,
+				item.scoreColumn ? item.scoreColumn : null
+			);
+		case typeEnum.CAPABILITY_BAR_GRAPH:
+			return new CapabilityBarGraph(
+				item.id,
+				item.x,
+				item.y,
+				item.width,
+				item.height,
+				item.type,
+				item.source ? item.source : null,
+				item.levelColumn ? item.levelColumn : null,
 				item.scoreColumn ? item.scoreColumn : null
 			);
 		default:
@@ -149,34 +153,40 @@ export class CapabilityTable extends Item {
 			id: scoreColumn ? scoreColumn.id : null,
 			columnName: scoreColumn ? scoreColumn.columnName : null,
 		};
-		this.resetColumns = () => {
-			this.processColumn = {
-				...this.processColumn,
-				sourceColumn: {
-					id: null,
-					columnName: null,
-				},
-			};
+	}
+}
 
-			this.levelColumn = {
-				id: null,
-				columnName: null,
-			};
-			this.engineeringColumn = {
-				id: null,
-				columnName: null,
-			};
-			this.scoreColumn = {
-				id: null,
-				columnName: null,
-			};
+export class CapabilityBarGraph extends Item {
+	constructor(
+		id,
+		x,
+		y,
+		width,
+		height,
+		type,
+		source = null,
+		levelColumn = null,
+		scoreColumn = null
+	) {
+		super(id, x, y, width, height, type);
+		this.source = {
+			id: source ? source.id : null,
+			name: source ? source.name : null,
+		};
+		this.levelColumn = {
+			id: levelColumn ? levelColumn.id : null,
+			columnName: levelColumn ? levelColumn.columnName : null,
+		};
+		this.scoreColumn = {
+			id: scoreColumn ? scoreColumn.id : null,
+			columnName: scoreColumn ? scoreColumn.columnName : null,
 		};
 	}
 }
 
 export const typeEnum = Object.freeze({
-	GRAPH: "GRAPH",
-	STATIC_TEXT: "STATIC_TEXT",
+	CAPABILITY_BAR_GRAPH: "CAPABILITY_BAR_GRAPH",
+	TEXT: "TEXT",
 	SIMPLE_TABLE: "SIMPLE_TABLE",
 	CAPABILITY_TABLE: "CAPABILITY_TABLE",
 });

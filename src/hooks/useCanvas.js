@@ -73,10 +73,17 @@ const useCanvas = () => {
 		let item;
 		switch (type) {
 			case typeEnum.TEXT:
-				item = new Text(nextItemId(), 0, 0, 150, 50, typeEnum.STATIC_TEXT);
+				item = new Text(nextItemId(), 0, 0, 150, 50, typeEnum.TEXT);
 				break;
-			case typeEnum.GRAPH:
-				item = new Item(nextItemId(), 0, 0, 200, 200, typeEnum.GRAPH);
+			case typeEnum.CAPABILITY_BAR_GRAPH:
+				item = new CapabilityTable(
+					nextItemId(),
+					0,
+					0,
+					200,
+					200,
+					typeEnum.CAPABILITY_BAR_GRAPH
+				);
 				break;
 			case typeEnum.SIMPLE_TABLE:
 				item = new SimpleTable(

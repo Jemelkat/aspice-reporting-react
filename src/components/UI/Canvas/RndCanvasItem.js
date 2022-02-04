@@ -4,7 +4,7 @@ import { typeEnum } from "../../../helpers/ClassHelper";
 const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 	const renderContent = () => {
 		switch (item.type) {
-			case typeEnum.STATIC_TEXT:
+			case typeEnum.TEXT:
 				const style = {
 					fontFamily: "DejaVu",
 					whiteSpace: "pre-line",
@@ -19,11 +19,11 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 				};
 
 				return <div style={style}>{item.textArea}</div>;
-			case typeEnum.GRAPH:
+			case typeEnum.CAPABILITY_BAR_GRAPH:
 				return (
 					<div className='flex items-center justify-center'>
-						<div className='absolute w-32 -mt-5 -ml-16 text-2xl text-center bg-white border border-black top-1/2 left-1/2'>
-							GRAPH
+						<div className='absolute w-32 -ml-16 text-2xl text-center bg-white border border-black -mt-11 top-1/2 left-1/2'>
+							CAPABILITY BAR GRAPH
 						</div>
 					</div>
 				);

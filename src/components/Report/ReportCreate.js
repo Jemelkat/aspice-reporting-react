@@ -73,7 +73,11 @@ const ReportCreate = ({ mode, reportId }) => {
 			alert.info("Report saved");
 			return response;
 		} catch (e) {
-			alert.error("Error saving report.");
+			if (e.response.data.message) {
+				alert.error(e.response.data.message);
+			} else {
+				alert.error("Error saving report.");
+			}
 			throw e;
 		}
 	};

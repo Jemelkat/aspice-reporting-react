@@ -10,6 +10,7 @@ import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
 import TextSettings from "../ComponentSettings/Text/TextSettings";
 import { useRef } from "react";
 import TableSettings from "../ComponentSettings/Table/TableSettings";
+import CapabilityBarGraphSettings from "../ComponentSettings/Graph/CapabilityBarGraphSettings";
 
 const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 	//Id used in hook to rerender
@@ -18,15 +19,20 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 
 	const renderTypeInputs = () => {
 		switch (selectedItem.type) {
-			case typeEnum.STATIC_TEXT:
+			case typeEnum.TEXT:
 				return (
 					<TextSettings
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
 					></TextSettings>
 				);
-			case typeEnum.GRAPH:
-				return <div>Graph input form</div>;
+			case typeEnum.CAPABILITY_BAR_GRAPH:
+				return (
+					<CapabilityBarGraphSettings
+						selectedItem={selectedItem}
+						onItemUpdate={onItemUpdate}
+					></CapabilityBarGraphSettings>
+				);
 			case typeEnum.SIMPLE_TABLE:
 				return (
 					<TableSettings

@@ -8,7 +8,8 @@ export const createItemFromExisting = (item) => {
 				item.width,
 				item.height,
 				item.type,
-				item.textArea ? item.textArea : null
+				item.textArea ? item.textArea : null,
+				item.textStyle ? item.textStyle : null
 			);
 
 		case typeEnum.SIMPLE_TABLE:
@@ -45,7 +46,9 @@ export const createItemFromExisting = (item) => {
 				item.height,
 				item.type,
 				item.source ? item.source : null,
+				item.processColumn ? item.processColumn : null,
 				item.levelColumn ? item.levelColumn : null,
+				item.attributeColumn ? item.attributeColumn : null,
 				item.scoreColumn ? item.scoreColumn : null
 			);
 		default:
@@ -104,7 +107,24 @@ export class SimpleTable extends Item {
 			id: source ? source.id : null,
 			name: source ? source.name : null,
 		};
-		this.tableColumns = tableColumns ? [...tableColumns] : null;
+		this.tableColumns = tableColumns
+			? tableColumns.map((column) => {
+					return {
+						id: column.id ? column.id : null,
+						sourceColumn: {
+							id:
+								column.sourceColumn && column.sourceColumn.id
+									? column.sourceColumn.id
+									: null,
+							columnName:
+								column.sourceColumn && column.sourceColumn.columnName
+									? column.sourceColumn.columnName
+									: null,
+						},
+						width: column.width ? column.width : 50,
+					};
+			  })
+			: null;
 	}
 }
 
@@ -165,7 +185,9 @@ export class CapabilityBarGraph extends Item {
 		height,
 		type,
 		source = null,
+		processColumn = null,
 		levelColumn = null,
+		attributeColumn = null,
 		scoreColumn = null
 	) {
 		super(id, x, y, width, height, type);
@@ -173,9 +195,17 @@ export class CapabilityBarGraph extends Item {
 			id: source ? source.id : null,
 			name: source ? source.name : null,
 		};
+		this.processColumn = {
+			id: processColumn ? processColumn.id : null,
+			columnName: processColumn ? processColumn.columnName : null,
+		};
 		this.levelColumn = {
 			id: levelColumn ? levelColumn.id : null,
 			columnName: levelColumn ? levelColumn.columnName : null,
+		};
+		this.attributeColumn = {
+			id: attributeColumn ? attributeColumn.id : null,
+			columnName: attributeColumn ? attributeColumn.columnName : null,
 		};
 		this.scoreColumn = {
 			id: scoreColumn ? scoreColumn.id : null,

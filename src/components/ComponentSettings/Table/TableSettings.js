@@ -36,11 +36,12 @@ const TableSettings = ({
 	//Parse sources
 	const parseSources = (sources) => {
 		let array = [];
-		if (sources)
+		if (sources) {
 			sources.forEach((source) =>
 				array.push({ value: source.id, label: source.sourceName })
 			);
-		array.push({ value: null, label: "None" });
+			array.push({ value: null, label: "None" });
+		}
 		return array;
 	};
 
@@ -51,7 +52,6 @@ const TableSettings = ({
 			columns.forEach((column) =>
 				array.push({ value: column.id, label: column.columnName })
 			);
-		//array.push({ value: "", label: "None" });
 		return array;
 	};
 
@@ -69,7 +69,7 @@ const TableSettings = ({
 			scoreColumn: selectedItem.scoreColumn.id,
 		};
 	}
-
+	console.log(initialVals);
 	return (
 		<div>
 			<Formik
@@ -87,11 +87,18 @@ const TableSettings = ({
 									options={parseSources(sourcesData)}
 									component={FormSelect}
 									placeholder={
-										sourcesError ? "No sources found" : "Select source"
+										sourcesLoading
+											? "Loading..."
+											: sourcesError
+											? "Error getting sources"
+											: sourcesData && sourcesData.length > 0
+											? "Select source"
+											: "No sources found"
 									}
 									onSelect={(e) => {
 										let updatedSelected = selectedItem;
 										updatedSelected.source.id = e.value;
+										updatedSelected.source.sourceName = e.label;
 										//Change selected coluns to NONE on source change
 										if (selectedItem.type === typeEnum.CAPABILITY_TABLE) {
 											updatedSelected.processColumn.sourceColumn.id = null;
@@ -108,9 +115,11 @@ const TableSettings = ({
 											updatedSelected.tableColumns &&
 											updatedSelected.tableColumns.length > 0
 										) {
+											debugger;
 											updatedSelected.tableColumns.map((column) => {
+												debugger;
 												column.sourceColumn.id = null;
-												column.sourceColumn.sourceName = null;
+												column.sourceColumn.columnName = null;
 											});
 										}
 										onItemUpdate(updatedSelected);
@@ -139,8 +148,6 @@ const TableSettings = ({
 								<CapabilityTableSettigs
 									selectedItem={selectedItem}
 									onItemUpdate={onItemUpdate}
-									handleChange={handleChange}
-									setFieldValue={setFieldValue}
 									columnsData={parseColumns(selectData)}
 									columnsLoading={columnsLoading}
 									columnsError={columnsError}

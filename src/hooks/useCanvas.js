@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAlert } from "react-alert";
 import {
+	CapabilityBarGraph,
 	CapabilityTable,
 	Item,
 	SimpleTable,
@@ -76,7 +77,7 @@ const useCanvas = () => {
 				item = new Text(nextItemId(), 0, 0, 150, 50, typeEnum.TEXT);
 				break;
 			case typeEnum.CAPABILITY_BAR_GRAPH:
-				item = new CapabilityTable(
+				item = new CapabilityBarGraph(
 					nextItemId(),
 					0,
 					0,

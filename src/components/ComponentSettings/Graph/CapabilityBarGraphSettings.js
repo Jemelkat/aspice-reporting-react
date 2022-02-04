@@ -65,7 +65,9 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			enableReinitialize={true}
 			initialValues={{
 				sourceFormId: selectedItem.source.id,
+				processColumn: selectedItem.processColumn.id,
 				levelColumn: selectedItem.levelColumn.id,
+				attributeColumn: selectedItem.attributeColumn.id,
 				scoreColumn: selectedItem.scoreColumn.id,
 			}}
 			validationSchema={Yup.object().shape({})}
@@ -106,6 +108,29 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={sourcesLoading}
 							/>
+							<label className='font-medium'>Process column:</label>
+							<Field
+								name='processColumn'
+								options={columnsData}
+								component={FormSelect}
+								placeholder={
+									columnsLoading
+										? "Loading..."
+										: columnsError
+										? "Error getting columns"
+										: columnsData.length > 0
+										? "Select column"
+										: "No columns found"
+								}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.processColumn.id = e.value;
+									updatedSelected.processColumn.columnName = e.label;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
+								isLoading={columnsLoading}
+							/>
 							<label className='font-medium'>Capability level:</label>
 							<Field
 								name='levelColumn'
@@ -124,6 +149,29 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									let updatedSelected = selectedItem;
 									updatedSelected.levelColumn.id = e.value;
 									updatedSelected.levelColumn.columnName = e.label;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
+								isLoading={columnsLoading}
+							/>
+							<label className='font-medium'>Attribute column:</label>
+							<Field
+								name='attributeColumn'
+								options={columnsData}
+								component={FormSelect}
+								placeholder={
+									columnsLoading
+										? "Loading..."
+										: columnsError
+										? "Error getting columns"
+										: columnsData.length > 0
+										? "Select column"
+										: "No columns found"
+								}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.attributeColumn.id = e.value;
+									updatedSelected.attributeColumn.columnName = e.label;
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}

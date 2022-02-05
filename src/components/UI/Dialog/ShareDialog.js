@@ -125,7 +125,7 @@ const ShareDialog = ({
 		>
 			{loading ? (
 				<div className='h-56'>
-					<Loader fullscreen={false} dark={false}></Loader>
+					<Loader size='small'>Loading groups...</Loader>
 				</div>
 			) : (
 				<>

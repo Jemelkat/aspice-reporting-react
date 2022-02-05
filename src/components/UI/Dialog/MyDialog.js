@@ -12,8 +12,8 @@ function MyDialog({ isOpen, onClose, title, description, ...props }) {
 				as='div'
 				className='fixed inset-0 z-10 flex items-center justify-center overflow-y-auto'
 			>
-				<div className='flex items-center justify-center min-h-screen'>
-					<Dialog.Overlay className='fixed inset-0 bg-gray-800 opacity-30' />
+				<div className='flex items-center justify-center'>
+					<Dialog.Overlay className='fixed inset-0 bg-gray-800 opacity-50' />
 
 					<Transition.Child
 						as={Fragment}
@@ -28,7 +28,7 @@ function MyDialog({ isOpen, onClose, title, description, ...props }) {
 							className={`${props.className} relative flex flex-col max-w-sm px-2 py-4 bg-white rounded-md shadow-2xl md:max-w-xl`}
 							ref={completeButtonRef}
 						>
-							<Dialog.Title className='flex justify-center pb-4 font-semibold text-md sm:text-lg'>
+							<Dialog.Title className='flex justify-center pb-2 font-semibold text-md sm:text-lg'>
 								{title}
 							</Dialog.Title>
 							<Dialog.Description className='pb-4 pl-2 pr-2 text-center md:pl-8 md:pr-8'>

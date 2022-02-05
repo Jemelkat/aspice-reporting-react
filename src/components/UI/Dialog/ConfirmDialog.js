@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import Button from "../Button";
+import Loader from "../Loader/Loader";
 import MyDialog from "./MyDialog";
 
 const ConfirmDialog = (props) => {
@@ -12,10 +13,18 @@ const ConfirmDialog = (props) => {
 			description={props.description}
 		>
 			<div className='flex flex-row justify-center space-x-4'>
-				<Button onClick={props.onOk} dark={true} addRef={completeButtonRef}>
-					Yes
-				</Button>
-				<Button onClick={props.onCancel}>Cancel</Button>
+				{!props.isProcessing ? (
+					<>
+						<Button onClick={props.onOk} dark={true} addRef={completeButtonRef}>
+							Yes
+						</Button>
+						<Button onClick={props.onCancel}>Cancel</Button>
+					</>
+				) : (
+					<>
+						<Loader size='small'>{props.processingText}</Loader>
+					</>
+				)}
 			</div>
 		</MyDialog>
 	);

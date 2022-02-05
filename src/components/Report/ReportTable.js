@@ -28,6 +28,7 @@ const ReportTable = (props) => {
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [showShareDialog, setShowShareDialog] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+	const [isProcessing, setIsProcessing] = useState(false);
 
 	const { url } = useRouteMatch();
 	const alert = useAlert();
@@ -130,6 +131,7 @@ const ReportTable = (props) => {
 	};
 
 	const deleteReportHandler = () => {
+		setIsProcessing(true);
 		axiosInstance
 			.delete("reports/delete", {
 				params: { reportId: selectedRow.id },
@@ -137,10 +139,12 @@ const ReportTable = (props) => {
 			.then((response) => {
 				alert.info(response.data.message);
 				setShowDeleteDialog(false);
+				setIsProcessing(false);
 				refetch();
 			})
 			.catch(() => {
 				alert.error("There was error deleting report!");
+				setIsProcessing(false);
 				setShowDeleteDialog(false);
 			});
 	};
@@ -182,6 +186,8 @@ const ReportTable = (props) => {
 				}?`}
 				description='This report will be completely removed - all shared groups will lose access to this report.'
 				isOpen={showDeleteDialog}
+				isProcessing={isProcessing}
+				processingText={"Deleting report..."}
 				onClose={() => setShowDeleteDialog(false)}
 				onOk={() => {
 					deleteReportHandler();

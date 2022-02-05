@@ -25,6 +25,7 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [showShareDialog, setShowShareDialog] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 
 	const alert = useAlert();
 
@@ -93,13 +94,16 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 
 	const deleteSourceHandler = async () => {
 		try {
+			setIsDeleting(true);
 			const response = await deleteSource(selectedRow.id);
 			alert.info(response.data.message);
 			setShowDeleteDialog(false);
+			setIsDeleting(false);
 			onRefetch();
 		} catch (error) {
-			alert.error("There was error deleting source!");
 			setShowDeleteDialog(false);
+			setIsDeleting(false);
+			alert.error("There was error deleting source!");
 		}
 	};
 
@@ -141,6 +145,8 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 				}?`}
 				description='This source will be completely removed - all shared groups will lose access to this source.'
 				isOpen={showDeleteDialog}
+				isProcessing={isDeleting}
+				processingText={"Deleting file..."}
 				onClose={() => setShowDeleteDialog(false)}
 				onOk={() => {
 					deleteSourceHandler();

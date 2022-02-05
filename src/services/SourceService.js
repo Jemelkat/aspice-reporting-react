@@ -7,7 +7,7 @@ export const deleteSource = (sourceId) => {
 	});
 };
 
-export const uploadSource = (file, onUploadProgress) => {
+export const uploadSource = (file, onProgress) => {
 	let formData = new FormData();
 	formData.append("file", file[0]);
 
@@ -16,6 +16,9 @@ export const uploadSource = (file, onUploadProgress) => {
 		headers: {
 			"Content-Type": "multipart/form-data",
 			Authorization: getAuthHeaderToken(),
+		},
+		onUploadProgress: function (event) {
+			onProgress(event);
 		},
 	};
 	return axiosInstance.post("/source/upload", formData, requestOptions);

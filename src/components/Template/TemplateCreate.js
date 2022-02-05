@@ -75,8 +75,8 @@ const TemplateCreate = ({ mode, templateId }) => {
 		<>
 			{templateLoading && mode === "edit" ? (
 				/**TODO ADJUST TO MIDDLE */
-				<div className='flex items-center justify-center flex-grow'>
-					<Loader fullscreen={false} dark={false}></Loader>
+				<div className='flex flex-col items-center justify-center h-screen-header'>
+					<Loader>Loading template data...</Loader>
 				</div>
 			) : (
 				<div className='flex bg-gray-200'>

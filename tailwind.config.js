@@ -7,6 +7,9 @@ module.exports = {
 			width: {
 				"36r": "30rem",
 			},
+			height: {
+				"screen-header": "calc(100vh - 4rem)",
+			},
 		},
 	},
 	variants: {

@@ -86,7 +86,9 @@ function App() {
 					<AuthVerify logOut={logoutHandler} />
 				</>
 			) : (
-				<Loader fullscreen={true} dark={true}></Loader>
+				<Loader fullscreen dark>
+					Loading...
+				</Loader>
 			)}
 		</>
 	);

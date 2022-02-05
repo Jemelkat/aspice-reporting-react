@@ -1,11 +1,11 @@
 const Loader = ({ fullscreen, dark, size = "normal", ...props }) => {
 	return (
-		<div className='justify-center text-center'>
-			<div
-				className={`${fullscreen ? "min-h-screen min-w-full" : "h-full"} ${
-					dark ? "bg-gray-800" : "bg-white"
-				} flex justify-center items-center space-x-3`}
-			>
+		<div
+			className={`flex flex-col justify-center text-center ${
+				dark ? "bg-gray-800" : "bg-white"
+			} ${fullscreen ? "min-h-screen min-w-screen" : "h-full"} `}
+		>
+			<div className={`flex justify-center items-center space-x-3`}>
 				<div
 					className={`${dark ? "bg-white" : "bg-gray-800"}  ${
 						size === "small" ? "w-4 h-4 " : "w-8 h-8 "
@@ -22,9 +22,13 @@ const Loader = ({ fullscreen, dark, size = "normal", ...props }) => {
 					}  rounded-full animate-bounce`}
 				></div>
 			</div>
-			<p className={`${size === "small" ? "text-sm" : "text-base"}`}>
+			<span
+				className={`${size === "small" ? "text-sm pt-1" : "text-base pt-2"} ${
+					dark ? "text-white" : "text-gray-800"
+				}`}
+			>
 				{props.children}
-			</p>
+			</span>
 		</div>
 	);
 };

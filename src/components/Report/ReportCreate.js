@@ -27,6 +27,7 @@ const ReportCreate = ({ mode, reportId }) => {
 	const [reportData, setReportData] = useState(null);
 	const [reportLoading, setReportLoading] = useState(true);
 	const [previewData, setPreviewData] = useState(null);
+	const [isProcessing, setProcessing] = useState(false);
 
 	const alert = useAlert();
 	let history = useHistory();
@@ -66,13 +67,16 @@ const ReportCreate = ({ mode, reportId }) => {
 	//Saves report to DB
 	const saveReportHandler = async (formValues) => {
 		//TODO: add validation
+		setProcessing(true);
 		try {
 			const response = await saveReport(formValues, items, mode);
 			parseAndSetComponents(response.data.reportItems);
 			setReportData(response.data);
+			setProcessing(false);
 			alert.info("Report saved");
 			return response;
 		} catch (e) {
+			setProcessing(false);
 			if (e.response.data && e.response.data.message) {
 				alert.error(e.response.data.message);
 			} else {
@@ -85,9 +89,11 @@ const ReportCreate = ({ mode, reportId }) => {
 	//Saves and generates report as response
 	const generateReportHandler = async (formValues) => {
 		let saveResponse;
+		setProcessing(true);
 		try {
 			saveResponse = await saveReportHandler(formValues);
 		} catch (e) {
+			setProcessing(false);
 			return;
 		}
 		try {
@@ -99,8 +105,10 @@ const ReportCreate = ({ mode, reportId }) => {
 			});
 			const fileURL = URL.createObjectURL(pdfFile);
 			setPreviewData(fileURL);
+			setProcessing(false);
 			return response;
 		} catch (e) {
+			setProcessing(false);
 			alert.error("Error generating report.");
 			throw e;
 		}
@@ -160,6 +168,7 @@ const ReportCreate = ({ mode, reportId }) => {
 						onTemplateChange={applyTemplateHandler}
 						onReportGenerate={generateReportHandler}
 						onDownloadReport={downloadReportHandler}
+						isProcessing={isProcessing}
 					></ReportMenuLeft>
 					{/*Canvas*/}
 					<div className='overflow-x-auto overflow-y-hidden'>

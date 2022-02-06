@@ -59,11 +59,10 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 					></TableSettings>
 				);
 			default:
-				return <div>Unknown item type. Cannot render input form.</div>;
+				return <div>Unknown item type. Cannot render settings form.</div>;
 		}
 	};
 
-	//TODO: figure out a better way to change textarea
 	useEffect(() => {}, [currentId]);
 
 	return (
@@ -89,7 +88,6 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 												y: selectedItem.y,
 												width: selectedItem.width,
 												height: selectedItem.height,
-												type: selectedItem.type,
 										  }
 										: {
 												id: "",
@@ -97,7 +95,6 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 												y: "",
 												width: "",
 												height: "",
-												type: "",
 										  }
 								}
 							>
@@ -106,12 +103,6 @@ const CanvasRightMenu = ({ selectedItem, show, onItemUpdate, ...props }) => {
 										<CanvasPanelDisclosure name='Basic information'>
 											<FormHidden name='id'></FormHidden>
 											<div className='grid grid-cols-2 p-4 gap-y-2'>
-												<FormInput
-													label='Type:'
-													name='type'
-													type='text'
-													disabled
-												/>
 												<FormInput label='X:' name='x' type='number' disabled />
 												<FormInput label='Y:' name='y' type='number' disabled />
 												<FormInput

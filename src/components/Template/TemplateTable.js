@@ -15,8 +15,10 @@ class TemplateObject {
 	constructor(data) {
 		this.id = data.id;
 		this.templateName = data.templateName;
-		this.templateCreated = data.templateCreated;
-		this.templateLastUpdated = data.templateLastUpdated;
+		this.templateCreated = new Date(data.templateCreated).toLocaleString();
+		this.templateLastUpdated = data.templateLastUpdated
+			? new Date(data.templateLastUpdated).toLocaleString()
+			: "";
 		this.shared = data.shared ? "Yes" : "";
 		this.sharedBy = data.sharedBy;
 	}

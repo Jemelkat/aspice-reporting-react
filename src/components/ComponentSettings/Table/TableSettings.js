@@ -63,9 +63,13 @@ const TableSettings = ({
 	} else {
 		initialVals = {
 			...initialVals,
+			fontSize: selectedItem.fontSize,
 			processColumn: selectedItem.processColumn.sourceColumn.id,
+			processWidth: selectedItem.processWidth,
 			levelColumn: selectedItem.levelColumn.id,
-			engineeringColumn: selectedItem.engineeringColumn.id,
+			levelLimit: selectedItem.levelLimit,
+			criterionColumn: selectedItem.criterionColumn.id,
+			criterionWidth: selectedItem.criterionWidth,
 			scoreColumn: selectedItem.scoreColumn.id,
 		};
 	}
@@ -105,10 +109,10 @@ const TableSettings = ({
 											updatedSelected.processColumn.sourceColumn.columnName =
 												null;
 											updatedSelected.levelColumn.id = null;
-											updatedSelected.engineeringColumn.id = null;
+											updatedSelected.criterionColumn.id = null;
 											updatedSelected.scoreColumn.id = null;
 											updatedSelected.levelColumn.columnName = null;
-											updatedSelected.engineeringColumn.columnName = null;
+											updatedSelected.criterionColumn.columnName = null;
 											updatedSelected.scoreColumn.columnName = null;
 										} else if (
 											selectedItem.type === typeEnum.SIMPLE_TABLE &&
@@ -151,6 +155,7 @@ const TableSettings = ({
 									columnsData={parseColumns(selectData)}
 									columnsLoading={columnsLoading}
 									columnsError={columnsError}
+									handleChange={handleChange}
 								></CapabilityTableSettigs>
 							)}
 						</div>

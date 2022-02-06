@@ -15,8 +15,10 @@ class ReportObject {
 	constructor(data) {
 		this.id = data.id;
 		this.reportName = data.reportName;
-		this.reportCreated = data.reportCreated;
-		this.reportUpdated = data.reportLastUpdated;
+		this.reportCreated = new Date(data.reportCreated).toLocaleString();
+		this.reportUpdated = data.reportLastUpdated
+			? new Date(data.reportLastUpdated).toLocaleString()
+			: "";
 		this.reportTemplateName = data.reportTemplate
 			? data.reportTemplate.templateName
 			: "";
@@ -59,33 +61,9 @@ const ReportTable = (props) => {
 				accessor: "reportUpdated",
 			},
 			{
-				Header: "Shared",
-				accessor: "shared",
-			},
-			{
-				Header: "Shared by",
-				accessor: "sharedBy",
-			},
-			{
 				Header: "Actions",
 				Cell: ({ row }) => (
 					<TableMenuButton buttonText='Actions'>
-						<TableMenuItem
-							key='1'
-							onClickAction={() => {
-								if (
-									row.original.shared === "" ||
-									row.original.sharedBy === "You"
-								) {
-									setSelectedRow(row.original);
-									setShowShareDialog(true);
-								} else {
-									alert.info("Only the owner of this source can share it.");
-								}
-							}}
-						>
-							Share
-						</TableMenuItem>
 						<Link
 							key='2'
 							to={`${url}/create`}
@@ -105,20 +83,6 @@ const ReportTable = (props) => {
 						</TableMenuItem>
 					</TableMenuButton>
 				),
-			},
-		],
-		[]
-	);
-
-	const initialState = useMemo(
-		() => [
-			{
-				sortBy: [
-					{
-						id: "reportCreated",
-						desc: false,
-					},
-				],
 			},
 		],
 		[]
@@ -194,18 +158,6 @@ const ReportTable = (props) => {
 				}}
 				onCancel={() => setShowDeleteDialog(false)}
 			></ConfirmDialog>
-
-			{/*Share dialog*/}
-			{showShareDialog && selectedRow && (
-				<ShareDialog
-					title={`Sharing report: ${selectedRow ? selectedRow.reportName : ""}`}
-					optionsUrl={`/reports/${selectedRow ? selectedRow.id : "x"}/groups`}
-					shareUrl={`/reports/${selectedRow ? selectedRow.id : "x"}/share`}
-					showShareDialog={showShareDialog}
-					onClose={() => setShowShareDialog(false)}
-					onSuccess={() => refetch()}
-				></ShareDialog>
-			)}
 		</>
 	);
 };

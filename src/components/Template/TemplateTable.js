@@ -15,8 +15,10 @@ class TemplateObject {
 	constructor(data) {
 		this.id = data.id;
 		this.templateName = data.templateName;
-		this.templateCreated = data.templateCreated;
-		this.templateLastUpdated = data.templateLastUpdated;
+		this.templateCreated = new Date(data.templateCreated).toLocaleString();
+		this.templateLastUpdated = data.templateLastUpdated
+			? new Date(data.templateLastUpdated).toLocaleString()
+			: "";
 		this.shared = data.shared ? "Yes" : "";
 		this.sharedBy = data.sharedBy;
 	}
@@ -57,33 +59,9 @@ const TemplateTable = (props) => {
 				accessor: "templateLastUpdated",
 			},
 			{
-				Header: "Shared",
-				accessor: "shared",
-			},
-			{
-				Header: "Shared by",
-				accessor: "sharedBy",
-			},
-			{
 				Header: "Actions",
 				Cell: ({ row }) => (
 					<TableMenuButton buttonText='Actions'>
-						<TableMenuItem
-							key='1'
-							onClickAction={() => {
-								if (
-									row.original.shared === "" ||
-									row.original.sharedBy === "You"
-								) {
-									setSelectedRow(row.original);
-									setShowShareDialog(true);
-								} else {
-									alert.info("Only the owner of this source can share it.");
-								}
-							}}
-						>
-							Share
-						</TableMenuItem>
 						<Link
 							to={`${url}/create`}
 							onClick={() => props.onModeChange("edit", row.original.id)}
@@ -169,19 +147,6 @@ const TemplateTable = (props) => {
 				}}
 				onCancel={() => setShowDeleteDialog(false)}
 			></ConfirmDialog>
-
-			{showShareDialog && selectedRow && (
-				<ShareDialog
-					title={`Sharing template: ${
-						selectedRow ? selectedRow.templateName : ""
-					}`}
-					optionsUrl={`/templates/${selectedRow ? selectedRow.id : "x"}/groups`}
-					shareUrl={`/templates/${selectedRow ? selectedRow.id : "x"}/share`}
-					showShareDialog={showShareDialog}
-					onClose={() => setShowShareDialog(false)}
-					onSuccess={() => refetch()}
-				></ShareDialog>
-			)}
 		</>
 	);
 };

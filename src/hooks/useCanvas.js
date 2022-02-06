@@ -3,7 +3,6 @@ import { useAlert } from "react-alert";
 import {
 	CapabilityBarGraph,
 	CapabilityTable,
-	Item,
 	SimpleTable,
 	Text,
 	typeEnum,

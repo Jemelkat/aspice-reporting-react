@@ -31,10 +31,14 @@ export const createItemFromExisting = (item) => {
 				item.width,
 				item.height,
 				item.type,
+				item.fontSize ? item.fontSize : 9,
 				item.source ? item.source : null,
 				item.processColumn ? item.processColumn : null,
+				item.processWidth ? item.processWidth : 50,
 				item.levelColumn ? item.levelColumn : null,
-				item.engineeringColumn ? item.engineeringColumn : null,
+				item.levelLimit >= 0 ? item.levelLimit : 5,
+				item.criterionColumn ? item.criterionColumn : null,
+				item.criterionWidth ? item.criterionWidth : 25,
 				item.scoreColumn ? item.scoreColumn : null
 			);
 		case typeEnum.CAPABILITY_BAR_GRAPH:
@@ -45,6 +49,7 @@ export const createItemFromExisting = (item) => {
 				item.width,
 				item.height,
 				item.type,
+				item.orientation ? item.orientation : "VERTICAL",
 				item.source ? item.source : null,
 				item.processColumn ? item.processColumn : null,
 				item.levelColumn ? item.levelColumn : null,
@@ -136,13 +141,18 @@ export class CapabilityTable extends Item {
 		width,
 		height,
 		type,
+		fontSize = 10,
 		source = null,
 		processColumn = null,
+		processWidth = 100,
 		levelColumn = null,
-		engineeringColumn = null,
+		levelLimit = 5,
+		criterionColumn = null,
+		criterionWidth = 25,
 		scoreColumn = null
 	) {
 		super(id, x, y, width, height, type);
+		this.fontSize = fontSize;
 		this.source = {
 			id: source ? source.id : null,
 			name: source ? source.name : null,
@@ -160,15 +170,17 @@ export class CapabilityTable extends Item {
 						: null,
 			},
 		};
-
+		this.processWidth = processWidth;
 		this.levelColumn = {
 			id: levelColumn ? levelColumn.id : null,
 			columnName: levelColumn ? levelColumn.columnName : null,
 		};
-		this.engineeringColumn = {
-			id: engineeringColumn ? engineeringColumn.id : null,
-			columnName: engineeringColumn ? engineeringColumn.columnName : null,
+		this.levelLimit = levelLimit;
+		this.criterionColumn = {
+			id: criterionColumn ? criterionColumn.id : null,
+			columnName: criterionColumn ? criterionColumn.columnName : null,
 		};
+		this.criterionWidth = criterionWidth;
 		this.scoreColumn = {
 			id: scoreColumn ? scoreColumn.id : null,
 			columnName: scoreColumn ? scoreColumn.columnName : null,
@@ -184,6 +196,7 @@ export class CapabilityBarGraph extends Item {
 		width,
 		height,
 		type,
+		orientation = "VERTICAL",
 		source = null,
 		processColumn = null,
 		levelColumn = null,
@@ -191,6 +204,7 @@ export class CapabilityBarGraph extends Item {
 		scoreColumn = null
 	) {
 		super(id, x, y, width, height, type);
+		this.orientation = orientation;
 		this.source = {
 			id: source ? source.id : null,
 			name: source ? source.name : null,

@@ -64,6 +64,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 		<Formik
 			enableReinitialize={true}
 			initialValues={{
+				orientation: selectedItem.orientation,
 				sourceFormId: selectedItem.source.id,
 				processColumn: selectedItem.processColumn.id,
 				levelColumn: selectedItem.levelColumn.id,
@@ -76,6 +77,21 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
+							<label className='font-medium'>Graph orientation:</label>
+							<Field
+								name='orientation'
+								options={[
+									{ value: "VERTICAL", label: "Vertical" },
+									{ value: "HORIZONTAL", label: "Horizontal" },
+								]}
+								component={FormSelect}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.orientation = e.value;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
+							/>
 							<label className='font-medium'>Source:</label>
 							<Field
 								name='sourceFormId'

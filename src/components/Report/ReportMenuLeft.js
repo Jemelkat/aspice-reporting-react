@@ -11,6 +11,7 @@ import FormSelect from "../UI/Form/FormSelect";
 import { useAxios } from "../../helpers/AxiosHelper";
 import { useAlert } from "react-alert";
 import { typeEnum } from "../../helpers/ClassHelper";
+import Loader from "../UI/Loader/Loader";
 
 const ReportMenuLeft = ({
 	data,
@@ -19,6 +20,7 @@ const ReportMenuLeft = ({
 	onTemplateChange,
 	onReportGenerate,
 	onDownloadReport,
+	isProcessing,
 }) => {
 	//Get all templates for select form input
 	const [{ data: selectData, loading: selectLoading, error: selectError }] =
@@ -84,27 +86,30 @@ const ReportMenuLeft = ({
 									<Button
 										type='button'
 										onClick={() => {
-											if (
-												window.confirm(
-													"Applying template will reset canvas layout. Do you really want to reset this report?"
-												)
-											) {
-												onTemplateChange(values.templateId);
+											if (!isProcessing) {
+												if (
+													window.confirm(
+														"Applying template will reset canvas layout. Do you really want to reset this report?"
+													)
+												) {
+													onTemplateChange(values.templateId);
+												}
 											}
 										}}
 									>
 										Apply template
 									</Button>
-									<Button type='submit' className='mt-4'>
+									<Button type={!isProcessing && "submit"} className='mt-4'>
 										Save
 									</Button>
 									<Button
 										type='button'
 										onClick={() => {
-											validateForm(values).then((response) => {
-												Object.keys(response).length === 0 &&
-													onReportGenerate(values);
-											});
+											!isProcessing &&
+												validateForm(values).then((response) => {
+													Object.keys(response).length === 0 &&
+														onReportGenerate(values);
+												});
 										}}
 										className='mt-1'
 										dark={true}
@@ -114,10 +119,11 @@ const ReportMenuLeft = ({
 									<Button
 										type='button'
 										onClick={() => {
-											validateForm(values).then((response) => {
-												Object.keys(response).length === 0 &&
-													onDownloadReport(values);
-											});
+											!isProcessing &&
+												validateForm(values).then((response) => {
+													Object.keys(response).length === 0 &&
+														onDownloadReport(values);
+												});
 										}}
 										className='mt-4'
 										dark={true}

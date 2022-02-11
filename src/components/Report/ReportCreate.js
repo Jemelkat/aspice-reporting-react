@@ -35,6 +35,7 @@ const ReportCreate = ({ mode, reportId }) => {
 		items,
 		setItems,
 		showSelected,
+		hideSettings,
 		selectedItem,
 		moveItemHandler,
 		resizeItemHandler,
@@ -229,6 +230,7 @@ const ReportCreate = ({ mode, reportId }) => {
 					{/*Right sidebar */}
 					<CanvasRightMenu
 						show={showSelected}
+						onClose={hideSettings}
 						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}

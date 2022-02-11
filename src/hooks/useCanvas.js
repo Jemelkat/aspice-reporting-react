@@ -14,6 +14,10 @@ const useCanvas = () => {
 	const [selectedItem, setSelectedItem] = useState(null);
 	const [showSelected, setShowSelected] = useState(false);
 
+	const hideSettings = () => {
+		setShowSelected(false);
+	};
+
 	//Get next id for new component
 	const nextItemId = () => {
 		const itemArray = items;
@@ -112,6 +116,26 @@ const useCanvas = () => {
 		setItems(itemsArray);
 	};
 
+	const addItemDashboardHandler = (type, currentColumns) => {
+		let item;
+		switch (type) {
+			case typeEnum.CAPABILITY_BAR_GRAPH:
+				item = new CapabilityBarGraph(
+					nextItemId(),
+					(items.length * 2) % currentColumns,
+					Infinity,
+					3,
+					6,
+					typeEnum.CAPABILITY_BAR_GRAPH
+				);
+				break;
+			default:
+				break;
+		}
+		const itemsArray = [...items, item];
+		setItems(itemsArray);
+	};
+
 	const layerItemHandler = (id, to) => {
 		const nextFirst = items.filter((item) => item.id === id);
 		const nextItems = items.filter((item) => item.id !== id);
@@ -143,12 +167,14 @@ const useCanvas = () => {
 		items,
 		setItems,
 		showSelected,
+		hideSettings,
 		selectedItem,
 		moveItemHandler,
 		resizeItemHandler,
 		selectItemHandler,
 		deleteItemHandler,
 		addItemHandler,
+		addItemDashboardHandler,
 		layerItemHandler,
 		updateItemHandler,
 	};

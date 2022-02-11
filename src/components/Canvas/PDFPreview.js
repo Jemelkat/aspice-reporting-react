@@ -1,9 +1,4 @@
-import { useCallback, useState } from "react";
-
 const PDFPreview = ({ pdfData }) => {
-	const [numPages, setNumPages] = useState(null);
-	const [pageNumber, setPageNumber] = useState(1);
-
 	return (
 		<div className='flex flex-col items-center justify-center'>
 			<div

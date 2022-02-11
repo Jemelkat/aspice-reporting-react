@@ -37,7 +37,6 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			columns.forEach((column) =>
 				array.push({ value: column.id, label: column.columnName })
 			);
-		//array.push({ value: "", label: "None" });
 		return array;
 	};
 

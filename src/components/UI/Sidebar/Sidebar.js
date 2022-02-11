@@ -15,7 +15,7 @@ const Sidebar = ({ className, show = true, position = "left", children }) => {
 			<div
 				className={`${className} h-screen min-h-screen shadow-lg w-64 block bg-white`}
 			>
-				<div>{children}</div>
+				<div className='relative'>{children}</div>
 			</div>
 		</Transition>
 	);

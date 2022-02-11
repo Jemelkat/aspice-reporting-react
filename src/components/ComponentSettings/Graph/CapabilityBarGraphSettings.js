@@ -14,10 +14,8 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 
 	//Load columns if source is defined on load
 	useEffect(() => {
-		if (selectedItem.source.id !== null) {
-			getColumnsHandler(selectedItem.source.id);
-		}
-	}, []);
+		getColumnsHandler(selectedItem.source.id);
+	}, [selectedItem.source.id]);
 
 	//Parse sources
 	const parseSources = (sources) => {

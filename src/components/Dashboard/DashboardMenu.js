@@ -10,18 +10,32 @@ import { PlusIcon } from "@heroicons/react/solid";
 import { typeEnum } from "../../helpers/ClassHelper";
 import useCanvas from "../../hooks/useCanvas";
 
-const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
+const DashboardMenu = ({ data, onSave, onAddComponent, currentColumns }) => {
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
 			<div className='sticky top-0 flex justify-start h-screen'>
 				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
 					<SidebarLinks sidebarName='Dashboard'>
-						<div className='flex flex-col p-4'>
-							Save current dashboard to DB
-							<Button dark={true} type='submit' className='mt-4'>
-								Save
-							</Button>
-						</div>
+						<Formik
+							enableReinitialize={true}
+							initialValues={{
+								id: data ? data.id : "",
+							}}
+							onSubmit={(values, { setSubmitting }) => {
+								debugger;
+								onSave(values);
+								setSubmitting(false);
+							}}
+						>
+							{({}) => (
+								<Form className='flex flex-col p-4'>
+									<FormHidden name='id'></FormHidden>
+									<Button dark type='submit' className='mt-4'>
+										Save
+									</Button>
+								</Form>
+							)}
+						</Formik>
 					</SidebarLinks>
 					<CanvasPanelDisclosure name='Graph components'>
 						<div

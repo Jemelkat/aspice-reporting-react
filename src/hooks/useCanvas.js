@@ -39,8 +39,8 @@ const useCanvas = () => {
 		updatedItem.x = x;
 		updatedItem.y = y;
 		const newItems = items.map((i) => (i.id === id ? updatedItem : i));
-		setSelectedItem(updatedItem);
-		setShowSelected(true);
+		// setSelectedItem(updatedItem);
+		// setShowSelected(true);
 		setItems(newItems);
 	};
 
@@ -52,8 +52,8 @@ const useCanvas = () => {
 		updatedItem.height = height;
 		updatedItem.width = width;
 		const newItems = items.map((i) => (i.id === id ? updatedItem : i));
-		setSelectedItem(updatedItem);
-		setShowSelected(true);
+		// setSelectedItem(updatedItem);
+		// setShowSelected(true);
 		setItems(newItems);
 	};
 

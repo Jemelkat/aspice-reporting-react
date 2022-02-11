@@ -1,19 +1,24 @@
-import { Responsive, WidthProvider } from "react-grid-layout";
+import { Responsive } from "react-grid-layout";
 import "../../../node_modules/react-grid-layout/css/styles.css";
 import "../../..//node_modules/react-resizable/css/styles.css";
 import Sidebar from "../../components/UI/Sidebar/Sidebar";
 import SidebarLinks from "../../components/UI/Sidebar/SidebarLinks";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CanvasRightMenu from "../../components/Canvas/CanvasRightMenu";
 import DashBoardMenu from "../../components/Dashboard/DashboardMenu";
 import { SizeMe } from "react-sizeme";
 import useCanvas from "../../hooks/useCanvas";
-import { typeEnum } from "../../helpers/ClassHelper";
+import { createItemFromExisting, typeEnum } from "../../helpers/ClassHelper";
 import { PencilAltIcon, PencilIcon } from "@heroicons/react/solid";
+import { getFromLS, saveToLS } from "../../services/LocalStorageService";
+import { getDashboard, saveDashboard } from "../../services/DashboardService";
+import { useAlert } from "react-alert";
+import Loader from "../../components/UI/Loader/Loader";
 
 const DashBoard = (props) => {
 	const {
 		items,
+		setItems,
 		selectedItem,
 		showSelected,
 		hideSettings,
@@ -21,58 +26,40 @@ const DashBoard = (props) => {
 		deleteItemHandler,
 		selectItemHandler,
 		updateItemHandler,
+		resizeItemHandler,
+		moveItemHandler,
 	} = useCanvas();
-	const originalLayouts = getFromLS("layouts") || {};
-	const [currentBreakpoint, setCurrentBreakpoint] = useState("lg");
 	const [currentColumns, setCurrentColumns] = useState(12);
-	const [layouts, setLayouts] = useState(
-		JSON.parse(JSON.stringify(originalLayouts))
-	);
 
-	const stringifyLayout = () => {
-		return layouts[currentBreakpoint].map(function (l) {
-			return (
-				<div className='layoutItem' key={l.i}>
-					<b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]
-				</div>
-			);
-		});
+	const getLayouts = (key) => {
+		let LSLayouts = getFromLS(key);
+		try {
+			LSLayouts = JSON.parse(LSLayouts) || {};
+		} catch (e) {}
 	};
+	const [layouts, setLayouts] = useState(
+		JSON.parse(JSON.stringify(getLayouts("rgl-8") || {}))
+	);
+	const [dashboardLoading, setDashboardLoading] = useState(true);
+	const alert = useAlert();
 
 	const onLayoutChange = (layout, layouts) => {
-		debugger;
-		saveToLS("layouts", layouts);
+		saveLayout("rgl-8", layouts);
 		setLayouts(layouts);
 	};
 
 	const onBreakpointChange = (breakpoint, cols) => {
-		debugger;
-		setCurrentBreakpoint(breakpoint);
 		setCurrentColumns(cols);
 	};
 
-	function getFromLS(key) {
-		let ls = {};
-		if (global.localStorage) {
-			try {
-				ls = JSON.parse(global.localStorage.getItem("rgl-8")) || {};
-			} catch (e) {
-				/*Ignore*/
-			}
-		}
-		return ls[key];
-	}
-
-	function saveToLS(key, value) {
-		if (global.localStorage) {
-			global.localStorage.setItem(
-				"rgl-8",
-				JSON.stringify({
-					[key]: value,
-				})
-			);
-		}
-	}
+	const saveLayout = (key, value) => {
+		saveToLS(
+			key,
+			JSON.stringify({
+				["layouts"]: value,
+			})
+		);
+	};
 
 	const createElement = (el) => {
 		const removeStyle = {
@@ -96,6 +83,7 @@ const DashBoard = (props) => {
 							onClick={(e) => {
 								selectItemHandler(el.id);
 								e.stopPropagation();
+								e.preventDefault();
 							}}
 							className='absolute w-5 h-5 bg-gray-800 cursor-pointer top-1 right-7'
 						></PencilIcon>
@@ -105,6 +93,7 @@ const DashBoard = (props) => {
 								selectItemHandler(null);
 								deleteItemHandler(el.id);
 								e.stopPropagation();
+								e.preventDefault();
 							}}
 						>
 							<svg
@@ -134,41 +123,98 @@ const DashBoard = (props) => {
 		);
 	};
 
+	const parseAndSetComponents = (components) => {
+		let newComponents = [];
+		setItems([]);
+		if (components) {
+			newComponents = components.map((i) => createItemFromExisting(i));
+			setItems(newComponents);
+			selectItemHandler(null);
+		}
+	};
+
+	//Saves template to DB
+	const saveDashboardHandler = async (formValues) => {
+		try {
+			debugger;
+			const response = await saveDashboard(formValues, items);
+			parseAndSetComponents(response.data.dashboardItems);
+			alert.info("Dashboard saved");
+		} catch (e) {
+			alert.error("Error saving dashboard.");
+		}
+	};
+
+	useEffect(() => {
+		setDashboardLoading(true);
+		getDashboard()
+			.then((response) => {
+				parseAndSetComponents(response.data.dashboardItems);
+				setDashboardLoading(false);
+				alert.info("Dashboard loaded.");
+			})
+			.catch(() => {
+				setDashboardLoading(false);
+				alert.error("Error getting dashboard data.");
+			});
+	}, []);
+
 	return (
 		<>
 			<div className='flex bg-gray-200'>
-				<DashBoardMenu
-					onAddComponent={addItemDashboardHandler}
-					currentColumns={currentColumns}
-				></DashBoardMenu>
+				{dashboardLoading ? (
+					<div className='items-center justify-center w-full h-screen-header'>
+						<Loader>Loading dashboard data...</Loader>
+					</div>
+				) : (
+					<>
+						<DashBoardMenu
+							onAddComponent={addItemDashboardHandler}
+							currentColumns={currentColumns}
+							onSave={saveDashboardHandler}
+						></DashBoardMenu>
 
-				<div className='w-full pt-5'>
-					<SizeMe>
-						{({ size }) => (
-							<Responsive
-								width={size.width}
-								className='w-full min-h-screen bg-white border-2'
-								breakpoints={{ lg: 1200, sm: 768, xs: 480, xxs: 0 }}
-								cols={{ lg: 12, sm: 6, xs: 4, xxs: 1 }}
-								rowHeight={30}
-								layouts={layouts}
-								onLayoutChange={onLayoutChange}
-								onBreakpointChange={onBreakpointChange}
-							>
-								{items.map((el) => createElement(el))}
-							</Responsive>
-						)}
-					</SizeMe>
-				</div>
+						<div className='w-full pt-5'>
+							<SizeMe>
+								{({ size }) => (
+									<Responsive
+										width={size.width}
+										className='w-full min-h-screen bg-white border-2'
+										breakpoints={{ xs: 480, xxs: 0 }}
+										cols={{ xs: 12, xxs: 1 }}
+										rowHeight={30}
+										layouts={layouts}
+										onLayoutChange={onLayoutChange}
+										onBreakpointChange={onBreakpointChange}
+										onResizeStop={(layout, oldItem, newItem) =>
+											resizeItemHandler(
+												parseInt(newItem.i),
+												newItem.x,
+												newItem.y,
+												newItem.h,
+												newItem.w
+											)
+										}
+										onDragStop={(layout, oldItem, newItem) =>
+											moveItemHandler(parseInt(newItem.i), newItem.x, newItem.y)
+										}
+									>
+										{items.map((el) => createElement(el))}
+									</Responsive>
+								)}
+							</SizeMe>
+						</div>
 
-				<CanvasRightMenu
-					simple
-					show={showSelected}
-					onClose={hideSettings}
-					selectedItem={selectedItem}
-					onDeleteItem={deleteItemHandler}
-					onItemUpdate={updateItemHandler}
-				></CanvasRightMenu>
+						<CanvasRightMenu
+							simple
+							show={showSelected}
+							onClose={hideSettings}
+							selectedItem={selectedItem}
+							onDeleteItem={deleteItemHandler}
+							onItemUpdate={updateItemHandler}
+						></CanvasRightMenu>
+					</>
+				)}
 			</div>
 		</>
 	);

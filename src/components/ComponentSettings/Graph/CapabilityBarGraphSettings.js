@@ -12,10 +12,12 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [columnsLoading, setColumnsLoading] = useState(false);
 	const [columnsError, setColumnsError] = useState(false);
 
+	console.log(selectedItem);
 	//Load columns if source is defined on load
 	useEffect(() => {
+		debugger;
 		getColumnsHandler(selectedItem.source.id);
-	}, [selectedItem.source.id]);
+	}, [selectedItem]);
 
 	//Parse sources
 	const parseSources = (sources) => {
@@ -62,11 +64,13 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			enableReinitialize={true}
 			initialValues={{
 				orientation: selectedItem.orientation,
-				sourceFormId: selectedItem.source.id,
-				processColumn: selectedItem.processColumn.id,
-				levelColumn: selectedItem.levelColumn.id,
-				attributeColumn: selectedItem.attributeColumn.id,
-				scoreColumn: selectedItem.scoreColumn.id,
+				sourceFormId: selectedItem.source && selectedItem.source.id,
+				processColumn:
+					selectedItem.processColumn && selectedItem.processColumn.id,
+				levelColumn: selectedItem.levelColumn && selectedItem.levelColumn.id,
+				attributeColumn:
+					selectedItem.attributeColumn && selectedItem.attributeColumn.id,
+				scoreColumn: selectedItem.scoreColumn && selectedItem.scoreColumn.id,
 			}}
 			validationSchema={Yup.object().shape({})}
 		>

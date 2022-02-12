@@ -21,7 +21,7 @@ const CanvasRightMenu = ({
 	...props
 }) => {
 	//Id used in hook to rerender
-	const currentId = selectedItem ? selectedItem.itemId : null;
+	const currentId = selectedItem ? selectedItem.id : null;
 	const formRef = useRef();
 
 	const renderTypeInputs = () => {

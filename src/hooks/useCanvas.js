@@ -1,3 +1,4 @@
+import { isObject } from "formik";
 import { useState } from "react";
 import { useAlert } from "react-alert";
 import {
@@ -14,11 +15,6 @@ const useCanvas = () => {
 	const [items, setItems] = useState([]);
 	const [selectedItem, setSelectedItem] = useState(null);
 	const [showSelected, setShowSelected] = useState(false);
-
-	//Hide settings right sidebar
-	const hideSettings = () => {
-		setShowSelected(false);
-	};
 
 	//Get next id for new component
 	const nextItemId = () => {
@@ -61,9 +57,10 @@ const useCanvas = () => {
 
 	//Select item from items list by id
 	const selectItemHandler = (id) => {
+		debugger;
 		if (id === null) {
-			setSelectedItem(null);
 			setShowSelected(false);
+			setSelectedItem(null);
 		} else {
 			setSelectedItem(items.find((i) => i.id === id));
 			setShowSelected(true);
@@ -182,7 +179,7 @@ const useCanvas = () => {
 		items,
 		setItems,
 		showSelected,
-		hideSettings,
+		setSelectedItem,
 		selectedItem,
 		moveItemHandler,
 		resizeItemHandler,

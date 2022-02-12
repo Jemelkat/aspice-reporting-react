@@ -25,16 +25,22 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 		switch (item.type) {
 			case typeEnum.CAPABILITY_BAR_GRAPH:
 				result =
+					item.source &&
 					item.source.id != null &&
+					item.processColumn &&
 					item.processColumn.id != null &&
+					item.levelColumn &&
 					item.levelColumn.id != null &&
+					item.attributeColumn &&
 					item.attributeColumn.id != null &&
+					item.scoreColumn &&
 					item.scoreColumn.id != null;
 		}
 		return result;
 	};
 
 	const loadItemData = async (id) => {
+		debugger;
 		setIsLoading(true);
 		try {
 			const response = await getItemData(id);
@@ -61,6 +67,7 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 		const defined = isItemDefined(item);
 		setIsDefined(defined);
 		if (firstUpdate.current) {
+			console.log("first load");
 			firstUpdate.current = false;
 			if (defined) {
 				loadItemData(item.id);
@@ -131,7 +138,14 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 								}}
 							>
 								<CartesianGrid vertical={false} />
-								<XAxis dataKey='name' angle='-45' dy={20} height={30}></XAxis>
+								<XAxis
+									dataKey='name'
+									angle='-90'
+									minTickGap={-200}
+									dy={20}
+									dx={-5}
+									height={45}
+								></XAxis>
 								<YAxis
 									allowDecimals={false}
 									label={{
@@ -151,7 +165,10 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 					<div className='flex flex-col items-center justify-center h-full'>
 						<RefreshIcon
 							onClick={(e) => {
-								onSave().then(() => loadItemData(item.id));
+								onSave(item.id).then((newId) => {
+									debugger;
+									loadItemData(newId);
+								});
 								e.stopPropagation();
 								e.preventDefault();
 							}}

@@ -39,6 +39,7 @@ const DashboardCanvas = ({
 	const createDashboardItem = (el) => {
 		let { height: h, width: w, ...rest } = el;
 		el = { h, w, ...rest };
+		debugger;
 		return (
 			<div
 				key={el.id}

@@ -13,26 +13,11 @@ const DashboardMenu = ({ data, onSave, onAddComponent, currentColumns }) => {
 			<div className='sticky top-0 flex justify-start h-screen'>
 				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
 					<SidebarLinks sidebarName='Dashboard'>
-						<Formik
-							enableReinitialize={true}
-							initialValues={{
-								id: data ? data.id : "",
-							}}
-							onSubmit={(values, { setSubmitting }) => {
-								debugger;
-								onSave(values);
-								setSubmitting(false);
-							}}
-						>
-							{({}) => (
-								<Form className='flex flex-col p-4'>
-									<FormHidden name='id'></FormHidden>
-									<Button dark type='submit' className='mt-4'>
-										Save
-									</Button>
-								</Form>
-							)}
-						</Formik>
+						<div className='flex flex-col p-4'>
+							<Button dark className='mt-4' onClick={() => onSave()}>
+								Save
+							</Button>
+						</div>
 					</SidebarLinks>
 					<CanvasPanelDisclosure name='Graph components'>
 						<div

@@ -111,9 +111,13 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										//Load columns for new source
 										getColumnsHandler(e.value);
 										//Change selected coluns to NONE on source change
+										updatedSelected.processColumn.id = null;
 										updatedSelected.levelColumn.id = null;
+										updatedSelected.attributeColumn.id = null;
 										updatedSelected.scoreColumn.id = null;
+										updatedSelected.processColumn.columnName = null;
 										updatedSelected.levelColumn.columnName = null;
+										updatedSelected.attributeColumn.columnName = null;
 										updatedSelected.scoreColumn.columnName = null;
 										onItemUpdate(updatedSelected);
 									}

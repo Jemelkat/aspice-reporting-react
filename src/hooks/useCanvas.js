@@ -3,6 +3,7 @@ import { useAlert } from "react-alert";
 import {
 	CapabilityBarGraph,
 	CapabilityTable,
+	createItemFromExisting,
 	SimpleTable,
 	Text,
 	typeEnum,
@@ -14,6 +15,7 @@ const useCanvas = () => {
 	const [selectedItem, setSelectedItem] = useState(null);
 	const [showSelected, setShowSelected] = useState(false);
 
+	//Hide settings right sidebar
 	const hideSettings = () => {
 		setShowSelected(false);
 	};
@@ -57,6 +59,7 @@ const useCanvas = () => {
 		setItems(newItems);
 	};
 
+	//Select item from items list by id
 	const selectItemHandler = (id) => {
 		if (id === null) {
 			setSelectedItem(null);
@@ -67,12 +70,14 @@ const useCanvas = () => {
 		}
 	};
 
+	//Delete item from items list by id
 	const deleteItemHandler = (id) => {
 		setShowSelected(false);
 		setSelectedItem(null);
 		setItems(items.filter((c) => c.id !== id));
 	};
 
+	//Add new item to list for report and template canvas
 	const addItemHandler = (type) => {
 		let item;
 		switch (type) {
@@ -116,6 +121,7 @@ const useCanvas = () => {
 		setItems(itemsArray);
 	};
 
+	//Add new item to list for dashboard
 	const addItemDashboardHandler = (type, currentColumns) => {
 		let item;
 		switch (type) {
@@ -136,31 +142,40 @@ const useCanvas = () => {
 		setItems(itemsArray);
 	};
 
+	//Change order of items in list - will be rendered on top or bottom off canvas
 	const layerItemHandler = (id, to) => {
 		const nextFirst = items.filter((item) => item.id === id);
 		const nextItems = items.filter((item) => item.id !== id);
-
 		//Check if item exists
 		if (nextFirst.length !== 1) {
 			alert.error("Canvas error - found multiple items with id " + id);
 			return;
 		}
-
 		if (to === "top") {
 			setItems([...nextItems, nextFirst[0]]);
 		}
-
 		if (to === "bottom") {
 			setItems([nextFirst[0], ...nextItems]);
 		}
 	};
 
+	//Update exosting item in items list
 	const updateItemHandler = (item) => {
 		//Find the item and replace
 		const newItems = items.map((i) => (i.id === item.id ? item : i));
 		const newSelected = newItems.find((i) => i.id === item.id);
 		setItems(newItems);
 		setSelectedItem(newSelected);
+	};
+
+	const parseLoadedItems = (items) => {
+		let newItems = [];
+		setItems([]);
+		if (items) {
+			newItems = items.map((i) => createItemFromExisting(i));
+			setItems(newItems);
+			selectItemHandler(null);
+		}
 	};
 
 	return {
@@ -177,6 +192,7 @@ const useCanvas = () => {
 		addItemDashboardHandler,
 		layerItemHandler,
 		updateItemHandler,
+		parseLoadedItems,
 	};
 };
 

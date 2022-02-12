@@ -2,13 +2,10 @@ import { Form, Formik } from "formik";
 import Button from "../UI/Button";
 import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
 import FormHidden from "../UI/Form/FormHidden";
-import FormInput from "../UI/Form/FormInput";
 import Sidebar from "../UI/Sidebar/Sidebar";
 import SidebarLinks from "../UI/Sidebar/SidebarLinks";
-import * as Yup from "yup";
-import { PlusIcon } from "@heroicons/react/solid";
+import { PlusIcon, RefreshIcon } from "@heroicons/react/solid";
 import { typeEnum } from "../../helpers/ClassHelper";
-import useCanvas from "../../hooks/useCanvas";
 
 const DashboardMenu = ({ data, onSave, onAddComponent, currentColumns }) => {
 	return (

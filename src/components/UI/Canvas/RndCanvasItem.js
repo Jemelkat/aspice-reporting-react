@@ -1,5 +1,7 @@
 import { Rnd } from "react-rnd";
 import { typeEnum } from "../../../helpers/ClassHelper";
+import { ReactComponent as SVGBarHorizontal } from "../../../assets/barchart-horizontal.svg";
+import { ReactComponent as SVGBarVertical } from "../../../assets/barchart-vertical.svg";
 
 const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 	const renderContent = () => {
@@ -21,50 +23,19 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 				return <div style={style}>{item.textArea}</div>;
 			case typeEnum.CAPABILITY_BAR_GRAPH:
 				return (
-					<div className='w-full h-full -rotate-45'>
-						<svg
-							className='pt-4 pb-2 pl-2 pr-2'
-							id='chart'
-							width='100%'
-							height='100%'
-							viewBox='0 0 1000 500'
-							preserveAspectRatio='none'
-							xmlns='http://www.w3.org/2000/svg'
+					<div className='w-full h-full'>
+						{item.orientation === "HORIZONTAL" ? (
+							<SVGBarHorizontal></SVGBarHorizontal>
+						) : (
+							<SVGBarVertical></SVGBarVertical>
+						)}
+						<div
+							style={{
+								fontFamily: "DejaVu",
+								whiteSpace: "pre-line",
+							}}
+							className='absolute w-32 -mt-4 -ml-16 text-center bg-white border border-black top-1/2 left-1/2'
 						>
-							<path
-								d='  M0,500  h100  v-125  q0,-0 -0,-0  h-100  q-0,0 -0,0  Z'
-								fill='#4572a7'
-							/>
-							<path
-								d='  M125,500  h100  v-250  q0,-0 -0,-0  h-100  q-0,0 -0,0  Z'
-								fill='#4572a7'
-							/>
-							<path
-								d='  M250,500  h100  v-500  q0,-0 -0,-0  h-100  q-0,0 -0,0  Z'
-								fill='#4572a7'
-							/>
-							<path
-								d='  M375,500  h100  v-250  q0,-0 -0,-0  h-100  q-0,0 -0,0  Z'
-								fill='#4572a7'
-							/>
-							<path
-								d='  M500,500  h100  v-125  q0,-0 -0,-0  h-100  q-0,0 -0,0  Z'
-								fill='#4572a7'
-							/>
-							<path
-								d='  M625,500  h100  v-375  q0,-0 -0,-0  h-100  q-0,0 -0,0  Z'
-								fill='#4572a7'
-							/>
-							<path
-								d='  M750,500  h100  v-375  q0,-0 -0,-0  h-100  q-0,0 -0,0  Z'
-								fill='#4572a7'
-							/>
-							<path
-								d='  M875,500  h100  v-125  q0,-0 -0,-0  h-100  q-0,0 -0,0  Z'
-								fill='#4572a7'
-							/>
-						</svg>
-						<div className='absolute w-32 -mt-4 -ml-16 text-center bg-white border border-black top-1/2 left-1/2'>
 							CAPABILITY BAR GRAPH
 						</div>
 					</div>

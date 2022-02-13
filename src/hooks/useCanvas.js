@@ -5,6 +5,7 @@ import {
 	CapabilityBarGraph,
 	CapabilityTable,
 	createItemFromExisting,
+	LevelPieGraph,
 	SimpleTable,
 	Text,
 	typeEnum,
@@ -57,7 +58,6 @@ const useCanvas = () => {
 
 	//Select item from items list by id
 	const selectItemHandler = (id) => {
-		debugger;
 		if (id === null) {
 			setShowSelected(false);
 			setSelectedItem(null);
@@ -130,6 +130,16 @@ const useCanvas = () => {
 					3,
 					6,
 					typeEnum.CAPABILITY_BAR_GRAPH
+				);
+				break;
+			case typeEnum.LEVEL_PIE_GRAPH:
+				item = new LevelPieGraph(
+					nextItemId(),
+					(items.length * 2) % currentColumns,
+					Infinity,
+					3,
+					6,
+					typeEnum.LEVEL_PIE_GRAPH
 				);
 				break;
 			default:

@@ -1,18 +1,11 @@
 import { PencilIcon, RefreshIcon } from "@heroicons/react/solid";
 import { useEffect, useState, useRef } from "react";
 import { useAlert } from "react-alert";
-import {
-	BarChart,
-	Bar,
-	XAxis,
-	YAxis,
-	CartesianGrid,
-	Tooltip,
-	ResponsiveContainer,
-} from "recharts";
 import { typeEnum } from "../../helpers/ClassHelper";
 import { getItemData } from "../../services/DashboardService";
 import Loader from "../UI/Loader/Loader";
+import DashboardBarGraph from "./DashboardBarGraph";
+import DashboardPieChart from "./DashboardPieChart";
 
 const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -20,9 +13,11 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 	const [data, setData] = useState(null);
 	const alert = useAlert();
 
+	//All selects need to be valid for item to be defined - we can get data for this item
 	const isItemDefined = (item) => {
 		let result = false;
 		switch (item.type) {
+			case typeEnum.LEVEL_PIE_GRAPH:
 			case typeEnum.CAPABILITY_BAR_GRAPH:
 				result =
 					item.source &&
@@ -39,15 +34,15 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 		return result;
 	};
 
+	//Loads dashboard item graph data from server
 	const loadItemData = async (id) => {
-		debugger;
 		setIsLoading(true);
 		try {
 			const response = await getItemData(id);
 			const responseData = response.data;
 			let graphData = [];
 			for (const property in responseData) {
-				graphData.push({ name: property, level: responseData[property] });
+				graphData.push({ name: property, value: responseData[property] });
 			}
 			setData(graphData);
 			setIsLoading(false);
@@ -61,13 +56,14 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 		}
 	};
 
+	//Load data on first render if item is fully defined
 	const firstUpdate = useRef(true);
 	useEffect(() => {
 		setData(null);
 		const defined = isItemDefined(item);
 		setIsDefined(defined);
+		console.log(defined);
 		if (firstUpdate.current) {
-			console.log("first load");
 			firstUpdate.current = false;
 			if (defined) {
 				loadItemData(item.id);
@@ -80,6 +76,24 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 		item.attributeColumn.id,
 		item.scoreColumn.id,
 	]);
+
+	//Render correct graph
+	const renderGraph = () => {
+		switch (item.type) {
+			case typeEnum.CAPABILITY_BAR_GRAPH:
+				return (
+					<DashboardBarGraph
+						data={data}
+						isHorizontal={item.orientation === "HORIZONTAL"}
+					></DashboardBarGraph>
+				);
+			case typeEnum.LEVEL_PIE_GRAPH:
+				return <DashboardPieChart data={data}></DashboardPieChart>;
+			default:
+				alert.info("Unknown item type");
+				break;
+		}
+	};
 
 	return (
 		<div className='flex flex-col h-full'>
@@ -119,48 +133,13 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 					</span>
 				</span>
 			</div>
-
 			{isLoading ? (
 				<div className='h-full'>
 					<Loader size='small'>Loading graph data...</Loader>
 				</div>
 			) : isDefined ? (
-				data != null ? (
-					<div className='h-full pt-4 pb-4 pr-4'>
-						<ResponsiveContainer width='100%' height='100%'>
-							<BarChart
-								data={data}
-								margin={{
-									top: 5,
-									right: 5,
-									left: 5,
-									bottom: 40,
-								}}
-							>
-								<CartesianGrid vertical={false} />
-								<XAxis
-									dataKey='name'
-									angle='-90'
-									minTickGap={-200}
-									dy={20}
-									dx={-5}
-									height={45}
-								></XAxis>
-								<YAxis
-									allowDecimals={false}
-									label={{
-										value: "Level",
-										angle: -90,
-										position: "insideLeft",
-										dx: 10,
-									}}
-								/>
-								<Tooltip />
-
-								<Bar dataKey='level' fill='#4572a7' />
-							</BarChart>
-						</ResponsiveContainer>
-					</div>
+				data !== null ? (
+					<div className='h-full pt-4'>{renderGraph()}</div>
 				) : (
 					<div className='flex flex-col items-center justify-center h-full'>
 						<RefreshIcon

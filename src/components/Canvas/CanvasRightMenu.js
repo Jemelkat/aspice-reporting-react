@@ -11,6 +11,7 @@ import TextSettings from "../ComponentSettings/Text/TextSettings";
 import { useRef } from "react";
 import TableSettings from "../ComponentSettings/Table/TableSettings";
 import CapabilityBarGraphSettings from "../ComponentSettings/Graph/CapabilityBarGraphSettings";
+import LevelPieGraphSettings from "../ComponentSettings/Graph/LevelPieGraphSettings";
 
 const CanvasRightMenu = ({
 	simple = false,
@@ -40,6 +41,13 @@ const CanvasRightMenu = ({
 						onItemUpdate={onItemUpdate}
 					></CapabilityBarGraphSettings>
 				);
+			case typeEnum.LEVEL_PIE_GRAPH:
+				return (
+					<LevelPieGraphSettings
+						selectedItem={selectedItem}
+						onItemUpdate={onItemUpdate}
+					></LevelPieGraphSettings>
+				);
 			case typeEnum.SIMPLE_TABLE:
 				return (
 					<TableSettings
@@ -65,6 +73,7 @@ const CanvasRightMenu = ({
 						onItemUpdate={onItemUpdate}
 					></TableSettings>
 				);
+
 			default:
 				return <div>Unknown item type. Cannot render settings form.</div>;
 		}

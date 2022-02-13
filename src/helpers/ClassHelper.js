@@ -49,7 +49,21 @@ export const createItemFromExisting = (item) => {
 				item.width,
 				item.height,
 				item.type,
-				item.orientation ? item.orientation : "VERTICAL",
+				item.orientation ? item.orientation : "HORIZONTAL",
+				item.source ? item.source : null,
+				item.processColumn ? item.processColumn : null,
+				item.levelColumn ? item.levelColumn : null,
+				item.attributeColumn ? item.attributeColumn : null,
+				item.scoreColumn ? item.scoreColumn : null
+			);
+		case typeEnum.LEVEL_PIE_GRAPH:
+			return new LevelPieGraph(
+				item.id,
+				item.x,
+				item.y,
+				item.width,
+				item.height,
+				item.type,
 				item.source ? item.source : null,
 				item.processColumn ? item.processColumn : null,
 				item.levelColumn ? item.levelColumn : null,
@@ -196,7 +210,7 @@ export class CapabilityBarGraph extends Item {
 		width,
 		height,
 		type,
-		orientation = "VERTICAL",
+		orientation = "HORIZONTAL",
 		source = null,
 		processColumn = null,
 		levelColumn = null,
@@ -228,9 +242,48 @@ export class CapabilityBarGraph extends Item {
 	}
 }
 
+export class LevelPieGraph extends Item {
+	constructor(
+		id,
+		x,
+		y,
+		width,
+		height,
+		type,
+		source = null,
+		processColumn = null,
+		levelColumn = null,
+		attributeColumn = null,
+		scoreColumn = null
+	) {
+		super(id, x, y, width, height, type);
+		this.source = {
+			id: source ? source.id : null,
+			name: source ? source.name : null,
+		};
+		this.processColumn = {
+			id: processColumn ? processColumn.id : null,
+			columnName: processColumn ? processColumn.columnName : null,
+		};
+		this.levelColumn = {
+			id: levelColumn ? levelColumn.id : null,
+			columnName: levelColumn ? levelColumn.columnName : null,
+		};
+		this.attributeColumn = {
+			id: attributeColumn ? attributeColumn.id : null,
+			columnName: attributeColumn ? attributeColumn.columnName : null,
+		};
+		this.scoreColumn = {
+			id: scoreColumn ? scoreColumn.id : null,
+			columnName: scoreColumn ? scoreColumn.columnName : null,
+		};
+	}
+}
+
 export const typeEnum = Object.freeze({
 	CAPABILITY_BAR_GRAPH: "CAPABILITY_BAR_GRAPH",
 	TEXT: "TEXT",
 	SIMPLE_TABLE: "SIMPLE_TABLE",
 	CAPABILITY_TABLE: "CAPABILITY_TABLE",
+	LEVEL_PIE_GRAPH: "LEVEL_PIE_GRAPH",
 });

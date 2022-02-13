@@ -4,6 +4,7 @@ import { typeEnum } from "../helpers/ClassHelper";
 export const saveDashboard = async (dashboardId, items) => {
 	let saveItems = items.map((i) => {
 		switch (i.type) {
+			case typeEnum.LEVEL_PIE_GRAPH:
 			case typeEnum.CAPABILITY_BAR_GRAPH:
 				i.source = i.source.id ? i.source : null;
 				i.processColumn = i.processColumn.id ? i.processColumn : null;

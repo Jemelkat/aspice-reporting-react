@@ -56,17 +56,17 @@ const DashBoard = () => {
 
 	//Saves dashboard to DB
 	const saveDashboardHandler = async (selectedId = null) => {
-		//Find index on which the current selected ID is
-		let index = -1;
-		if (selectedId !== null) {
-			index = items.findIndex((item) => item.id === selectedId);
-			if (index === -1) {
-				alert.error("Dashboard data integrity error.");
-				throw new Error("Dashboard data integrity error.");
-			}
-		}
 		//save
 		try {
+			//Find index on which the current selected ID is
+			let index = -1;
+			if (selectedId !== null) {
+				index = items.findIndex((item) => item.id === selectedId);
+				if (index === -1) {
+					alert.error("Dashboard data integrity error.");
+					throw new Error("Dashboard data integrity error.");
+				}
+			}
 			const response = await saveDashboard(dashboardId, items);
 			alert.info("Dashboard saved");
 			return updateIdsOnSaveHandler(response.data.dashboardItems, index);

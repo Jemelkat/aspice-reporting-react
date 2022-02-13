@@ -39,7 +39,8 @@ const DashboardCanvas = ({
 	const createDashboardItem = (el) => {
 		let { height: h, width: w, ...rest } = el;
 		el = { h, w, ...rest };
-		debugger;
+		el.minW = 3;
+		el.minH = 6;
 		return (
 			<div
 				key={el.id}
@@ -64,9 +65,10 @@ const DashboardCanvas = ({
 					<Responsive
 						width={size.width}
 						className='w-full min-h-screen bg-white border-2'
-						breakpoints={{ xs: 480, xxs: 0 }}
-						cols={{ xs: 12, xxs: 1 }}
+						breakpoints={{ lg: 1200, md: 996, xs: 520, xxs: 0 }}
+						cols={{ lg: 18, md: 12, xs: 9, xxs: 1 }}
 						rowHeight={30}
+						minW={3}
 						layouts={layouts}
 						onLayoutChange={layoutChangeHandler}
 						onBreakpointChange={onBreakpointChange}

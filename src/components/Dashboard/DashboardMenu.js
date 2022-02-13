@@ -27,7 +27,16 @@ const DashboardMenu = ({ data, onSave, onAddComponent, currentColumns }) => {
 							}}
 						>
 							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							GRAPH
+							BAR GRAPH
+						</div>
+						<div
+							className='flex flex-row p-2 m-2 bg-gray-100'
+							onClick={() => {
+								onAddComponent(typeEnum.LEVEL_PIE_GRAPH, currentColumns);
+							}}
+						>
+							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
+							PIE GRAPH
 						</div>
 					</CanvasPanelDisclosure>
 				</Sidebar>

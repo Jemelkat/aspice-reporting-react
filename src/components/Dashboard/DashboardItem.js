@@ -166,7 +166,7 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 						}}
 						className='w-10 h-10 cursor-pointer'
 					></PencilIcon>
-					<span>Please define the graph sources</span>
+					<span className='text-center'>Please define the graph sources</span>
 				</div>
 			)}
 		</div>

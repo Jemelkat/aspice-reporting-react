@@ -14,6 +14,8 @@ import {
 const useCanvas = () => {
 	const alert = useAlert();
 	const [items, setItems] = useState([]);
+	const [pieX, setPieX] = useState(0);
+	const [barX, setBarX] = useState(0);
 	const [selectedItem, setSelectedItem] = useState(null);
 	const [showSelected, setShowSelected] = useState(false);
 
@@ -122,26 +124,34 @@ const useCanvas = () => {
 	const addItemDashboardHandler = (type, currentColumns) => {
 		let item;
 		switch (type) {
-			case typeEnum.CAPABILITY_BAR_GRAPH:
+			case typeEnum.CAPABILITY_BAR_GRAPH: {
+				const newBarX =
+					barX >= currentColumns ? 0 : barX + 6 > currentColumns ? 0 : barX;
 				item = new CapabilityBarGraph(
 					nextItemId(),
-					(items.length * 2) % currentColumns,
+					newBarX,
 					Infinity,
-					3,
+					6,
 					6,
 					typeEnum.CAPABILITY_BAR_GRAPH
 				);
+				setBarX(newBarX + 6);
 				break;
-			case typeEnum.LEVEL_PIE_GRAPH:
+			}
+			case typeEnum.LEVEL_PIE_GRAPH: {
+				const newPieX =
+					pieX >= currentColumns ? 0 : pieX + 4 > currentColumns ? 0 : pieX;
 				item = new LevelPieGraph(
 					nextItemId(),
-					(items.length * 2) % currentColumns,
+					newPieX,
 					Infinity,
-					3,
+					4,
 					6,
 					typeEnum.LEVEL_PIE_GRAPH
 				);
+				setPieX(newPieX + 4);
 				break;
+			}
 			default:
 				break;
 		}

@@ -113,6 +113,16 @@ const useCanvas = () => {
 					typeEnum.CAPABILITY_TABLE
 				);
 				break;
+			case typeEnum.LEVEL_PIE_GRAPH:
+				item = new LevelPieGraph(
+					nextItemId(),
+					0,
+					0,
+					200,
+					200,
+					typeEnum.LEVEL_PIE_GRAPH
+				);
+				break;
 			default:
 				break;
 		}

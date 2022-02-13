@@ -6,6 +6,9 @@ import Sidebar from "../UI/Sidebar/Sidebar";
 import SidebarLinks from "../UI/Sidebar/SidebarLinks";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/solid";
 import { typeEnum } from "../../helpers/ClassHelper";
+import SidebarCanvasItem from "../UI/Sidebar/SidebarCanvasItem";
+import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
+import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
 
 const DashboardMenu = ({ data, onSave, onAddComponent, currentColumns }) => {
 	return (
@@ -19,26 +22,30 @@ const DashboardMenu = ({ data, onSave, onAddComponent, currentColumns }) => {
 							</Button>
 						</div>
 					</SidebarLinks>
-					<CanvasPanelDisclosure name='Graph components'>
-						<div
-							className='flex flex-row p-2 m-2 bg-gray-100'
+					<div className='flex items-center justify-center h-8 text-white bg-gray-800'>
+						Dashboard items
+					</div>
+					<div className='flex flex-col items-center justify-center'>
+						<span className='w-full p-4 text-center'>
+							Click on item to add it to dashboard
+						</span>
+						<SidebarCanvasItem
+							name={"Capability bar graph"}
 							onClick={() => {
 								onAddComponent(typeEnum.CAPABILITY_BAR_GRAPH, currentColumns);
 							}}
 						>
-							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							BAR GRAPH
-						</div>
-						<div
-							className='flex flex-row p-2 m-2 bg-gray-100'
+							<SVGBarHorizontal></SVGBarHorizontal>
+						</SidebarCanvasItem>
+						<SidebarCanvasItem
+							name={"Level pie graph"}
 							onClick={() => {
 								onAddComponent(typeEnum.LEVEL_PIE_GRAPH, currentColumns);
 							}}
 						>
-							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							PIE GRAPH
-						</div>
-					</CanvasPanelDisclosure>
+							<SVGPie></SVGPie>
+						</SidebarCanvasItem>
+					</div>
 				</Sidebar>
 			</div>
 		</div>

@@ -26,7 +26,7 @@ const DashboardMenu = ({ data, onSave, onAddComponent, currentColumns }) => {
 						Dashboard items
 					</div>
 					<div className='flex flex-col items-center justify-center'>
-						<span className='w-full p-4 text-center'>
+						<span className='w-full pt-2 pb-2 pl-5 pr-5 text-sm text-center'>
 							Click on item to add it to dashboard
 						</span>
 						<SidebarCanvasItem

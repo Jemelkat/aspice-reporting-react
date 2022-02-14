@@ -26,7 +26,7 @@ const DashboardPieChart = ({ data }) => {
 		percent,
 		index,
 	}) => {
-		debugger;
+		const reversedData = [...data].reverse();
 		const radius = innerRadius + (outerRadius - innerRadius) * 0.7;
 		const x = cx + radius * Math.cos(-midAngle * RADIAN);
 		const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -40,7 +40,7 @@ const DashboardPieChart = ({ data }) => {
 				dominantBaseline='central'
 				className='text-xs'
 			>
-				{`${data[index].value}`}
+				{`${reversedData[index].value}`}
 			</text>
 		);
 	};
@@ -51,11 +51,13 @@ const DashboardPieChart = ({ data }) => {
 				<Pie
 					dataKey='value'
 					isAnimationActive={false}
-					data={data}
+					data={[...data].reverse()}
 					cx='50%'
 					cy='50%'
 					labelLine={false}
 					label={renderCustomizedLabel}
+					startAngle={90}
+					endAngle={450}
 				>
 					{data.map((entry, index) => (
 						<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

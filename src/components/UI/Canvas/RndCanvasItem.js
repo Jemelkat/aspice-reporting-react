@@ -1,5 +1,8 @@
 import { Rnd } from "react-rnd";
 import { typeEnum } from "../../../helpers/ClassHelper";
+import { ReactComponent as SVGBarHorizontal } from "../../../assets/barchart-horizontal.svg";
+import { ReactComponent as SVGBarVertical } from "../../../assets/barchart-vertical.svg";
+import { ReactComponent as SVGPie } from "../../../assets/piechart.svg";
 
 const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 	const renderContent = () => {
@@ -21,8 +24,19 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 				return <div style={style}>{item.textArea}</div>;
 			case typeEnum.CAPABILITY_BAR_GRAPH:
 				return (
-					<div className='flex items-center justify-center'>
-						<div className='absolute w-32 -ml-16 text-2xl text-center bg-white border border-black -mt-11 top-1/2 left-1/2'>
+					<div className='w-full h-full'>
+						{item.orientation === "HORIZONTAL" ? (
+							<SVGBarHorizontal></SVGBarHorizontal>
+						) : (
+							<SVGBarVertical></SVGBarVertical>
+						)}
+						<div
+							style={{
+								fontFamily: "DejaVu",
+								whiteSpace: "pre-line",
+							}}
+							className='absolute w-32 -mt-4 -ml-16 text-center bg-white border border-black top-1/2 left-1/2'
+						>
 							CAPABILITY BAR GRAPH
 						</div>
 					</div>
@@ -81,6 +95,21 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 						) : (
 							<></>
 						)}
+					</div>
+				);
+			case typeEnum.LEVEL_PIE_GRAPH:
+				return (
+					<div className='w-full h-full'>
+						<SVGPie></SVGPie>
+						<div
+							style={{
+								fontFamily: "DejaVu",
+								whiteSpace: "pre-line",
+							}}
+							className='absolute w-32 -mt-4 -ml-16 text-center bg-white border border-black top-1/2 left-1/2'
+						>
+							LEVEL PIE GRAPH
+						</div>
 					</div>
 				);
 			default:

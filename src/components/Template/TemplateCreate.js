@@ -19,6 +19,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 		items,
 		setItems,
 		showSelected,
+		hideSettings,
 		selectedItem,
 		moveItemHandler,
 		resizeItemHandler,
@@ -97,6 +98,7 @@ const TemplateCreate = ({ mode, templateId }) => {
 					{/*Right sidebar */}
 					<CanvasRightMenu
 						show={showSelected}
+						onClose={hideSettings}
 						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}

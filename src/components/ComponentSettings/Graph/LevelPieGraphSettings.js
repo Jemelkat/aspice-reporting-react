@@ -5,17 +5,15 @@ import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import { getColumnsForSource } from "../../../services/SourceColumnService";
 
-const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
+const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);
 	const [columnsLoading, setColumnsLoading] = useState(false);
 	const [columnsError, setColumnsError] = useState(false);
 
-	console.log(selectedItem);
 	//Load columns if source is defined on load
 	useEffect(() => {
-		debugger;
 		getColumnsHandler(selectedItem.source.id);
 	}, [selectedItem]);
 
@@ -63,7 +61,6 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 		<Formik
 			enableReinitialize={true}
 			initialValues={{
-				orientation: selectedItem.orientation,
 				sourceFormId: selectedItem.source && selectedItem.source.id,
 				processColumn:
 					selectedItem.processColumn && selectedItem.processColumn.id,
@@ -78,21 +75,6 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
-							<label className='font-medium'>Graph orientation:</label>
-							<Field
-								name='orientation'
-								options={[
-									{ value: "VERTICAL", label: "Vertical" },
-									{ value: "HORIZONTAL", label: "Horizontal" },
-								]}
-								component={FormSelect}
-								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									updatedSelected.orientation = e.value;
-									onItemUpdate(updatedSelected);
-								}}
-								isMulti={false}
-							/>
 							<label className='font-medium'>Source:</label>
 							<Field
 								name='sourceFormId'
@@ -229,4 +211,4 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	);
 };
 
-export default CapabilityBarGraphSettings;
+export default LevelPieGraphSettings;

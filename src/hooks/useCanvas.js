@@ -1,8 +1,11 @@
+import { isObject } from "formik";
 import { useState } from "react";
 import { useAlert } from "react-alert";
 import {
 	CapabilityBarGraph,
 	CapabilityTable,
+	createItemFromExisting,
+	LevelPieGraph,
 	SimpleTable,
 	Text,
 	typeEnum,
@@ -11,6 +14,8 @@ import {
 const useCanvas = () => {
 	const alert = useAlert();
 	const [items, setItems] = useState([]);
+	const [pieX, setPieX] = useState(0);
+	const [barX, setBarX] = useState(0);
 	const [selectedItem, setSelectedItem] = useState(null);
 	const [showSelected, setShowSelected] = useState(false);
 
@@ -35,8 +40,8 @@ const useCanvas = () => {
 		updatedItem.x = x;
 		updatedItem.y = y;
 		const newItems = items.map((i) => (i.id === id ? updatedItem : i));
-		setSelectedItem(updatedItem);
-		setShowSelected(true);
+		// setSelectedItem(updatedItem);
+		// setShowSelected(true);
 		setItems(newItems);
 	};
 
@@ -48,27 +53,30 @@ const useCanvas = () => {
 		updatedItem.height = height;
 		updatedItem.width = width;
 		const newItems = items.map((i) => (i.id === id ? updatedItem : i));
-		setSelectedItem(updatedItem);
-		setShowSelected(true);
+		// setSelectedItem(updatedItem);
+		// setShowSelected(true);
 		setItems(newItems);
 	};
 
+	//Select item from items list by id
 	const selectItemHandler = (id) => {
 		if (id === null) {
-			setSelectedItem(null);
 			setShowSelected(false);
+			setSelectedItem(null);
 		} else {
 			setSelectedItem(items.find((i) => i.id === id));
 			setShowSelected(true);
 		}
 	};
 
+	//Delete item from items list by id
 	const deleteItemHandler = (id) => {
 		setShowSelected(false);
 		setSelectedItem(null);
 		setItems(items.filter((c) => c.id !== id));
 	};
 
+	//Add new item to list for report and template canvas
 	const addItemHandler = (type) => {
 		let item;
 		switch (type) {
@@ -105,6 +113,16 @@ const useCanvas = () => {
 					typeEnum.CAPABILITY_TABLE
 				);
 				break;
+			case typeEnum.LEVEL_PIE_GRAPH:
+				item = new LevelPieGraph(
+					nextItemId(),
+					0,
+					0,
+					200,
+					200,
+					typeEnum.LEVEL_PIE_GRAPH
+				);
+				break;
 			default:
 				break;
 		}
@@ -112,25 +130,63 @@ const useCanvas = () => {
 		setItems(itemsArray);
 	};
 
+	//Add new item to list for dashboard
+	const addItemDashboardHandler = (type, currentColumns) => {
+		let item;
+		switch (type) {
+			case typeEnum.CAPABILITY_BAR_GRAPH: {
+				const newBarX =
+					barX >= currentColumns ? 0 : barX + 6 > currentColumns ? 0 : barX;
+				item = new CapabilityBarGraph(
+					nextItemId(),
+					newBarX,
+					Infinity,
+					6,
+					6,
+					typeEnum.CAPABILITY_BAR_GRAPH
+				);
+				setBarX(newBarX + 6);
+				break;
+			}
+			case typeEnum.LEVEL_PIE_GRAPH: {
+				const newPieX =
+					pieX >= currentColumns ? 0 : pieX + 4 > currentColumns ? 0 : pieX;
+				item = new LevelPieGraph(
+					nextItemId(),
+					newPieX,
+					Infinity,
+					4,
+					6,
+					typeEnum.LEVEL_PIE_GRAPH
+				);
+				setPieX(newPieX + 4);
+				break;
+			}
+			default:
+				break;
+		}
+		const itemsArray = [...items, item];
+		setItems(itemsArray);
+	};
+
+	//Change order of items in list - will be rendered on top or bottom off canvas
 	const layerItemHandler = (id, to) => {
 		const nextFirst = items.filter((item) => item.id === id);
 		const nextItems = items.filter((item) => item.id !== id);
-
 		//Check if item exists
 		if (nextFirst.length !== 1) {
 			alert.error("Canvas error - found multiple items with id " + id);
 			return;
 		}
-
 		if (to === "top") {
 			setItems([...nextItems, nextFirst[0]]);
 		}
-
 		if (to === "bottom") {
 			setItems([nextFirst[0], ...nextItems]);
 		}
 	};
 
+	//Update exosting item in items list
 	const updateItemHandler = (item) => {
 		//Find the item and replace
 		const newItems = items.map((i) => (i.id === item.id ? item : i));
@@ -139,18 +195,31 @@ const useCanvas = () => {
 		setSelectedItem(newSelected);
 	};
 
+	const parseLoadedItems = (items) => {
+		let newItems = [];
+		setItems([]);
+		if (items) {
+			newItems = items.map((i) => createItemFromExisting(i));
+			setItems(newItems);
+			selectItemHandler(null);
+		}
+	};
+
 	return {
 		items,
 		setItems,
 		showSelected,
+		setSelectedItem,
 		selectedItem,
 		moveItemHandler,
 		resizeItemHandler,
 		selectItemHandler,
 		deleteItemHandler,
 		addItemHandler,
+		addItemDashboardHandler,
 		layerItemHandler,
 		updateItemHandler,
+		parseLoadedItems,
 	};
 };
 

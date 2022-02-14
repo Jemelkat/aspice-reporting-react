@@ -1,8 +1,25 @@
 import { Transition } from "@headlessui/react";
+import { Fragment, useEffect, useState } from "react";
 
 const Sidebar = ({ className, show = true, position = "left", children }) => {
+	const [isScrolled, setIsScrolled] = useState(false);
+
+	const listenToScroll = () => {
+		if (window.scrollY > 60) {
+			setIsScrolled(true);
+		} else {
+			setIsScrolled(false);
+		}
+	};
+
+	useEffect(() => {
+		window.addEventListener("scroll", listenToScroll);
+		return () => window.removeEventListener("scroll", listenToScroll);
+	}, []);
+
 	return (
 		<Transition
+			as={Fragment}
 			appear={true}
 			show={show}
 			enter='transform transition ease-in-out duration-500 sm:duration-500'
@@ -13,7 +30,9 @@ const Sidebar = ({ className, show = true, position = "left", children }) => {
 			leaveTo={position === "left" ? "-translate-x-full" : "translate-x-full"}
 		>
 			<div
-				className={`${className} h-screen min-h-screen shadow-lg w-64 block bg-white`}
+				className={`${className} ${
+					isScrolled ? "h-screen" : "h-screen-header"
+				} shadow-lg w-64 block bg-white`}
 			>
 				<div className='relative'>{children}</div>
 			</div>

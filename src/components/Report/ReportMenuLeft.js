@@ -12,6 +12,9 @@ import { useAxios } from "../../helpers/AxiosHelper";
 import { useAlert } from "react-alert";
 import { typeEnum } from "../../helpers/ClassHelper";
 import Loader from "../UI/Loader/Loader";
+import SidebarCanvasItem from "../UI/Sidebar/SidebarCanvasItem";
+import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
+import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
 
 const ReportMenuLeft = ({
 	data,
@@ -134,7 +137,7 @@ const ReportMenuLeft = ({
 							)}
 						</Formik>
 					</SidebarLinks>
-					<SidebarLinks sidebarName='Template components'></SidebarLinks>
+					<SidebarLinks sidebarName='Items'></SidebarLinks>
 					<CanvasPanelDisclosure name='Text components'>
 						<div
 							className='flex flex-row p-2 m-2 bg-gray-100'
@@ -145,35 +148,47 @@ const ReportMenuLeft = ({
 						</div>
 					</CanvasPanelDisclosure>
 					<CanvasPanelDisclosure name='Graph components'>
-						<div
-							className='flex flex-row p-2 m-2 bg-gray-100'
-							onClick={() => onAddComponent(typeEnum.CAPABILITY_BAR_GRAPH)}
-						>
-							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							CAPABILITY_BAR_GRAPH
-						</div>
-						<div
-							className='flex flex-row p-2 m-2 bg-gray-100'
-							onClick={() => onAddComponent(typeEnum.LEVEL_PIE_GRAPH)}
-						>
-							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							LEVEL_PIE_GRAPH
+						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
+							<SidebarCanvasItem
+								mini
+								name={"Capability bar"}
+								onClick={() => {
+									onAddComponent(typeEnum.CAPABILITY_BAR_GRAPH);
+								}}
+							>
+								<SVGBarHorizontal></SVGBarHorizontal>
+							</SidebarCanvasItem>
+							<SidebarCanvasItem
+								mini
+								name={"Level pie"}
+								onClick={() => {
+									onAddComponent(typeEnum.LEVEL_PIE_GRAPH);
+								}}
+							>
+								<SVGPie></SVGPie>
+							</SidebarCanvasItem>
 						</div>
 					</CanvasPanelDisclosure>
 					<CanvasPanelDisclosure name='Table components'>
-						<div
-							className='flex flex-row p-2 m-2 bg-gray-100'
-							onClick={() => onAddComponent(typeEnum.SIMPLE_TABLE)}
-						>
-							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							TABLE
-						</div>
-						<div
-							className='flex flex-row p-2 m-2 bg-gray-100'
-							onClick={() => onAddComponent(typeEnum.CAPABILITY_TABLE)}
-						>
-							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							CAPABILITY TABLE
+						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
+							<SidebarCanvasItem
+								mini
+								name={"Table"}
+								onClick={() => {
+									onAddComponent(typeEnum.SIMPLE_TABLE);
+								}}
+							>
+								Simple table
+							</SidebarCanvasItem>
+							<SidebarCanvasItem
+								mini
+								name={"Capability table"}
+								onClick={() => {
+									onAddComponent(typeEnum.CAPABILITY_TABLE);
+								}}
+							>
+								Capability table
+							</SidebarCanvasItem>
 						</div>
 					</CanvasPanelDisclosure>
 				</Sidebar>

@@ -1,11 +1,23 @@
-const SidebarCanvasItem = (props) => {
+const SidebarCanvasItem = ({ name, mini = false, ...props }) => {
 	return (
 		<div
-			className='items-center justify-center w-48 mb-4 shadow-md cursor-pointer hover:bg-gray-200'
+			className={`flex flex-col items-center justify-center border border-black cursor-pointer ${
+				mini ? "w-20" : "w-40"
+			} mb-4 shadow-md`}
 			onClick={props.onClick}
 		>
-			<div className='h-6 pl-2 text-white bg-gray-800'>{props.name}</div>
-			<div className='h-24 border border-gray-800 '>{props.children}</div>
+			<span
+				className={` ${
+					mini ? "font-extralight text-xs text-center h-4" : "pl-2 h-6"
+				} w-full   text-white bg-gray-800`}
+			>
+				{name}
+			</span>
+			<div className='w-full hover:bg-gray-200'>
+				<div className={`border-gray-808 ${mini ? "h-16" : "h-24"}`}>
+					{props.children}
+				</div>
+			</div>
 		</div>
 	);
 };

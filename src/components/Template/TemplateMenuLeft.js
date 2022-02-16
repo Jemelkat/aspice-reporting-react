@@ -8,6 +8,9 @@ import SidebarLinks from "../UI/Sidebar/SidebarLinks";
 import * as Yup from "yup";
 import { PlusIcon } from "@heroicons/react/solid";
 import { typeEnum } from "../../helpers/ClassHelper";
+import SidebarCanvasItem from "../UI/Sidebar/SidebarCanvasItem";
+import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
+import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
 
 const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 	return (
@@ -53,28 +56,47 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 						</div>
 					</CanvasPanelDisclosure>
 					<CanvasPanelDisclosure name='Graph components'>
-						<div
-							className='flex flex-row p-2 m-2 bg-gray-100'
-							onClick={() => onAddComponent(typeEnum.GRAPH)}
-						>
-							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							GRAPH
+						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
+							<SidebarCanvasItem
+								mini
+								name={"Capability bar"}
+								onClick={() => {
+									onAddComponent(typeEnum.CAPABILITY_BAR_GRAPH);
+								}}
+							>
+								<SVGBarHorizontal></SVGBarHorizontal>
+							</SidebarCanvasItem>
+							<SidebarCanvasItem
+								mini
+								name={"Level pie"}
+								onClick={() => {
+									onAddComponent(typeEnum.LEVEL_PIE_GRAPH);
+								}}
+							>
+								<SVGPie></SVGPie>
+							</SidebarCanvasItem>
 						</div>
 					</CanvasPanelDisclosure>
 					<CanvasPanelDisclosure name='Table components'>
-						<div
-							className='flex flex-row p-2 m-2 bg-gray-100'
-							onClick={() => onAddComponent(typeEnum.SIMPLE_TABLE)}
-						>
-							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							TABLE
-						</div>
-						<div
-							className='flex flex-row p-2 m-2 bg-gray-100'
-							onClick={() => onAddComponent(typeEnum.CAPABILITY_TABLE)}
-						>
-							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							CAPABILITY TABLE
+						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
+							<SidebarCanvasItem
+								mini
+								name={"Table"}
+								onClick={() => {
+									onAddComponent(typeEnum.SIMPLE_TABLE);
+								}}
+							>
+								Simple table
+							</SidebarCanvasItem>
+							<SidebarCanvasItem
+								mini
+								name={"Capability table"}
+								onClick={() => {
+									onAddComponent(typeEnum.CAPABILITY_TABLE);
+								}}
+							>
+								Capability table
+							</SidebarCanvasItem>
 						</div>
 					</CanvasPanelDisclosure>
 				</Sidebar>

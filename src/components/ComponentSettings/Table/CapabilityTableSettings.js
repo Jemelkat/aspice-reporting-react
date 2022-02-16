@@ -35,10 +35,10 @@ const CapabilityTableSettigs = ({
 					columnsLoading
 						? "Loading..."
 						: columnsError
-						? "Error getting columns"
+						? "Error!"
 						: columnsData.length > 0
 						? "Select column"
-						: "No columns found"
+						: "No columns"
 				}
 				onSelect={(e) => {
 					let updatedSelected = selectedItem;
@@ -72,10 +72,10 @@ const CapabilityTableSettigs = ({
 					columnsLoading
 						? "Loading..."
 						: columnsError
-						? "Error getting columns"
+						? "Error!"
 						: columnsData.length > 0
 						? "Select column"
-						: "No columns found"
+						: "No columns"
 				}
 				onSelect={(e) => {
 					let updatedSelected = selectedItem;
@@ -110,10 +110,10 @@ const CapabilityTableSettigs = ({
 					columnsLoading
 						? "Loading..."
 						: columnsError
-						? "Error getting columns"
+						? "Error!"
 						: columnsData.length > 0
 						? "Select column"
-						: "No columns found"
+						: "No columns"
 				}
 				onSelect={(e) => {
 					let updatedSelected = selectedItem;
@@ -147,10 +147,10 @@ const CapabilityTableSettigs = ({
 					columnsLoading
 						? "Loading..."
 						: columnsError
-						? "Error getting columns"
+						? "Error!"
 						: columnsData.length > 0
 						? "Select column"
-						: "No columns found"
+						: "No columns"
 				}
 				onSelect={(e) => {
 					let updatedSelected = selectedItem;

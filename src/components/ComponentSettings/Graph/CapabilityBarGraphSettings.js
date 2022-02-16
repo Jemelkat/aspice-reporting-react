@@ -102,10 +102,10 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									sourcesLoading
 										? "Loading..."
 										: sourcesError
-										? "Error getting sources"
+										? "Error!"
 										: sourcesData && sourcesData.length > 0
 										? "Select source"
-										: "No sources found"
+										: "No sources"
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
@@ -138,10 +138,10 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									columnsLoading
 										? "Loading..."
 										: columnsError
-										? "Error getting columns"
+										? "Error!"
 										: columnsData.length > 0
 										? "Select column"
-										: "No columns found"
+										: "No columns"
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
@@ -161,10 +161,10 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									columnsLoading
 										? "Loading..."
 										: columnsError
-										? "Error getting columns"
+										? "Error!"
 										: columnsData.length > 0
 										? "Select column"
-										: "No columns found"
+										: "No columns"
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
@@ -184,10 +184,10 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									columnsLoading
 										? "Loading..."
 										: columnsError
-										? "Error getting columns"
+										? "Error!"
 										: columnsData.length > 0
 										? "Select column"
-										: "No columns found"
+										: "No columns"
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
@@ -207,10 +207,10 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									columnsLoading
 										? "Loading..."
 										: columnsError
-										? "Error getting columns"
+										? "Error!"
 										: columnsData.length > 0
 										? "Select column"
-										: "No columns found"
+										: "No columns"
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;

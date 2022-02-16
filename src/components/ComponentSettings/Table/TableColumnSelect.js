@@ -16,7 +16,7 @@ const TableColumnSelect = ({
 			name={`${name}.${index}.sourceColumn.id`}
 			options={columnsData}
 			component={FormSelect}
-			placeholder={columnsError ? "No columns found" : "Select column"}
+			placeholder={columnsError ? "Error" : "Select column"}
 			onSelect={(e) => {
 				if (selectedItem.tableColumns.length > 0) {
 					selectedItem.tableColumns[index].sourceColumn.id = e.value;

@@ -14,8 +14,8 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 			<BarChart
 				data={data}
 				margin={{
-					top: 5,
-					right: 5,
+					top: 15,
+					right: 15,
 					left: 5,
 					bottom: isHorizontal ? 50 : 25,
 				}}
@@ -39,10 +39,10 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 							label={{
 								value: "Level",
 								position: "outsideMiddle",
-								dy: 20,
+								dx: -10,
 								angle: -90,
 							}}
-							height={30}
+							width={45}
 						/>
 					</>
 				) : (
@@ -55,7 +55,7 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 								position: "outsideMiddle",
 								dy: 20,
 							}}
-							height={30}
+							height={15}
 						></XAxis>
 						<YAxis type='category' dataKey='name' minTickGap={10} width={100} />
 					</>

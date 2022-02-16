@@ -9,12 +9,12 @@ import {
 
 const DashboardPieChart = ({ data }) => {
 	const COLORS = [
-		"#4572a7",
-		"#008fbe",
-		"#00aab7",
-		"#00c092",
-		"#70cf5c",
 		"#d6d327",
+		"#70cf5c",
+		"#00c092",
+		"#00aab7",
+		"#008fbe",
+		"#4572a7",
 	];
 	const RADIAN = Math.PI / 180;
 	const renderCustomizedLabel = ({
@@ -38,7 +38,7 @@ const DashboardPieChart = ({ data }) => {
 				fill='white'
 				textAnchor={"middle"}
 				dominantBaseline='central'
-				className='text-xs'
+				className='text-sm'
 			>
 				{`${reversedData[index].value}`}
 			</text>
@@ -59,9 +59,16 @@ const DashboardPieChart = ({ data }) => {
 					startAngle={90}
 					endAngle={450}
 				>
-					{data.map((entry, index) => (
-						<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-					))}
+					{data.map((entry, index) => {
+						const colorIndex = index + (COLORS.length - data.length);
+						console.log(colorIndex);
+						return (
+							<Cell
+								key={`cell-${index}`}
+								fill={COLORS[colorIndex % COLORS.length]}
+							/>
+						);
+					})}
 				</Pie>
 				<Legend></Legend>
 				<Tooltip></Tooltip>

@@ -1,16 +1,12 @@
-import { Form, Formik } from "formik";
 import Button from "../UI/Button";
-import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
-import FormHidden from "../UI/Form/FormHidden";
 import Sidebar from "../UI/Sidebar/Sidebar";
 import SidebarLinks from "../UI/Sidebar/SidebarLinks";
-import { PlusIcon, RefreshIcon } from "@heroicons/react/solid";
 import { typeEnum } from "../../helpers/ClassHelper";
 import SidebarCanvasItem from "../UI/Sidebar/SidebarCanvasItem";
 import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
 import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
 
-const DashboardMenu = ({ data, onSave, onAddComponent, currentColumns }) => {
+const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
 			<div className='sticky top-0 flex justify-start h-screen'>

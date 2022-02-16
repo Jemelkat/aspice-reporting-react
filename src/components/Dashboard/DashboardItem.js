@@ -139,7 +139,7 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 				</div>
 			) : isDefined ? (
 				data !== null ? (
-					<div className='h-full pt-4'>{renderGraph()}</div>
+					<div className='h-full'>{renderGraph()}</div>
 				) : (
 					<div className='flex flex-col items-center justify-center h-full'>
 						<RefreshIcon

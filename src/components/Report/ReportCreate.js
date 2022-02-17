@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../../helpers/AxiosHelper";
 import { useAxios } from "../../helpers/AxiosHelper";
 import Loader from "../UI/Loader/Loader";
 import { useHistory } from "react-router";
@@ -141,11 +140,15 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 					let loadedItems = response.data;
 					//Add new item if report was redirected from dashboard
 					if (addItem) {
-						const addedItemId =
-							Math.max.apply(
-								null,
-								loadedItems.reportItems.map((item) => item.id)
-							) + 1;
+						let addedItemId = 0;
+						if (loadedItems.length > 0) {
+							addedItemId =
+								Math.max.apply(
+									null,
+									loadedItems.reportItems.map((item) => item.id)
+								) + 1;
+						}
+						//Set new ID to added item as max + 1 or 0 if template is empty
 						let updatedAddItem = addItem;
 						updatedAddItem.id = addedItemId;
 						loadedItems.reportItems.push(updatedAddItem);

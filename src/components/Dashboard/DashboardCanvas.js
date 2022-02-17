@@ -12,6 +12,7 @@ const DashboardCanvas = ({
 	onBreakpointChange,
 	onSelectItem,
 	onDeleteItem,
+	onExport,
 }) => {
 	const getLayouts = (key) => {
 		let LSLayouts = getFromLS(key);
@@ -53,6 +54,7 @@ const DashboardCanvas = ({
 					onSelectItem={onSelectItem}
 					onDeleteItem={onDeleteItem}
 					onSave={onSave}
+					onExport={onExport}
 				></DashboardItem>
 			</div>
 		);
@@ -69,6 +71,7 @@ const DashboardCanvas = ({
 						cols={{ lg: 20, md: 12, xs: 12, xxs: 1 }}
 						rowHeight={30}
 						layouts={layouts}
+						isBounded={true}
 						onLayoutChange={layoutChangeHandler}
 						onBreakpointChange={onBreakpointChange}
 						onResizeStop={(layout, oldItem, newItem) =>

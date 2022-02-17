@@ -9,12 +9,17 @@ import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";
 import { useHistory } from "react-router-dom";
 
-const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
+const DashboardItem = ({
+	item,
+	onSelectItem,
+	onDeleteItem,
+	onSave,
+	onExport,
+}) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isDefined, setIsDefined] = useState(false);
 	const [data, setData] = useState(null);
 	const alert = useAlert();
-	const { push } = useHistory();
 
 	//All selects need to be valid for item to be defined - we can get data for this item
 	const isItemDefined = (item) => {
@@ -98,16 +103,6 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 		}
 	};
 
-	const getItemForCanvas = () => {
-		const { h: height, w: width, ...rest } = item;
-		let canvasItem = { height, width, ...rest };
-		canvasItem.x = 0;
-		canvasItem.y = 0;
-		canvasItem.height = 200;
-		canvasItem.width = 200;
-		return canvasItem;
-	};
-
 	return (
 		<div className='flex flex-col h-full'>
 			<div className='w-full text-white bg-gray-800 h-7'>
@@ -115,10 +110,8 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 				<span>
 					<UploadIcon
 						onClick={(e) => {
-							push({
-								pathname: "/report/create",
-								state: { mode: "edit", reportId: 5, item: getItemForCanvas() },
-							});
+							onSelectItem(item.id);
+							onExport();
 							e.preventDefault();
 							e.stopPropagation();
 						}}

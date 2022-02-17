@@ -9,6 +9,7 @@ import { useAlert } from "react-alert";
 import Loader from "../../components/UI/Loader/Loader";
 import DashboardCanvas from "../../components/Dashboard/DashboardCanvas";
 import { createItemFromExisting } from "../../helpers/ClassHelper";
+import ExportItemDialog from "../../components/Dashboard/ExportItemDialog";
 const DashBoard = () => {
 	const {
 		items,
@@ -16,7 +17,6 @@ const DashBoard = () => {
 		selectedItem,
 		setSelectedItem,
 		showSelected,
-		hideSettings,
 		addItemDashboardHandler,
 		deleteItemHandler,
 		selectItemHandler,
@@ -28,6 +28,7 @@ const DashBoard = () => {
 	const [currentColumns, setCurrentColumns] = useState(12);
 	const [dashboardLoading, setDashboardLoading] = useState(true);
 	const [dashboardId, setDashboardId] = useState(null);
+	const [showExportDialog, setShowExportDialog] = useState(false);
 	const alert = useAlert();
 
 	const breakPointChangeHandler = (breakpoint, cols) => {
@@ -113,6 +114,7 @@ const DashBoard = () => {
 							onSave={saveDashboardHandler}
 							onResize={resizeItemHandler}
 							onBreakpointChange={breakPointChangeHandler}
+							onExport={() => setShowExportDialog(true)}
 						></DashboardCanvas>
 
 						<CanvasRightMenu
@@ -123,6 +125,14 @@ const DashBoard = () => {
 							onDeleteItem={deleteItemHandler}
 							onItemUpdate={updateItemHandler}
 						></CanvasRightMenu>
+
+						{showExportDialog && (
+							<ExportItemDialog
+								item={selectedItem}
+								showDialog={showExportDialog}
+								onClose={() => setShowExportDialog(false)}
+							></ExportItemDialog>
+						)}
 					</>
 				)}
 			</div>

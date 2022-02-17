@@ -15,7 +15,6 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	console.log(selectedItem);
 	//Load columns if source is defined on load
 	useEffect(() => {
-		debugger;
 		getColumnsHandler(selectedItem.source.id);
 	}, [selectedItem]);
 

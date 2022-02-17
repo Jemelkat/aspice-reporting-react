@@ -5,7 +5,7 @@ const Sidebar = ({ className, show = true, position = "left", children }) => {
 	const [isScrolled, setIsScrolled] = useState(false);
 
 	const listenToScroll = () => {
-		if (window.scrollY > 1) {
+		if (window.scrollY >= 0) {
 			setIsScrolled(true);
 		} else {
 			setIsScrolled(false);

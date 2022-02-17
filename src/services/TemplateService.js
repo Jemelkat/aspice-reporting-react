@@ -7,3 +7,10 @@ export const saveTemplate = async (formValues, items) => {
 		templateItems: items.map((i) => ({ ...i })),
 	});
 };
+
+class TemplateService {
+	static getAllSimple = async () => {
+		return axiosInstance.get("/templates/allSimple");
+	};
+}
+export default TemplateService;

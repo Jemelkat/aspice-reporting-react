@@ -20,9 +20,8 @@ const Report = (props) => {
 	const changeModeHandler = (value, id) => {
 		setMode(value);
 		setSelectedId(id);
+		setAddItem(null);
 	};
-
-	console.log(mode, selectedId, addItem);
 
 	return (
 		<>

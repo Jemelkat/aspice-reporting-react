@@ -7,7 +7,6 @@ import { getItemData } from "../../services/DashboardService";
 import Loader from "../UI/Loader/Loader";
 import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";
-import { useHistory } from "react-router-dom";
 
 const DashboardItem = ({
 	item,

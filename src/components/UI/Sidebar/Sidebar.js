@@ -32,7 +32,7 @@ const Sidebar = ({ className, show = true, position = "left", children }) => {
 			<div
 				className={`${className} ${
 					isScrolled ? "h-screen" : "h-screen-header"
-				} shadow-lg w-56 block bg-white pb-6`}
+				} shadow-lg w-60 block bg-white pb-6`}
 			>
 				<div className='relative'>{children}</div>
 			</div>

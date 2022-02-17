@@ -10,6 +10,7 @@ export const FormSelect = ({
 	isMulti = false,
 	isLoading = false,
 	onSelect,
+	error,
 }) => {
 	const setValueHandler = (option) => {
 		form.setFieldValue(
@@ -31,19 +32,23 @@ export const FormSelect = ({
 	};
 
 	return (
-		<Select
-			className={className}
-			name={field.name}
-			value={getValue()}
-			onChange={(e) => {
-				setValueHandler(e);
-				if (onSelect) onSelect(e);
-			}}
-			placeholder={placeholder}
-			options={options}
-			isMulti={isMulti}
-			isLoading={isLoading}
-		/>
+		<>
+			<Select
+				className={className}
+				name={field.name}
+				value={getValue()}
+				onChange={(e) => {
+					setValueHandler(e);
+					if (onSelect) onSelect(e);
+				}}
+				placeholder={placeholder}
+				options={options}
+				isMulti={isMulti}
+				isLoading={isLoading}
+			/>
+
+			{error ? <div className='text-red-500 col-span-full'>{error}</div> : null}
+		</>
 	);
 };
 

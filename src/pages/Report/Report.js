@@ -3,16 +3,24 @@ import { Route, Switch, useRouteMatch } from "react-router";
 import PageContainer from "../../components/UI/PageContainer";
 import ReportCreate from "../../components/Report/ReportCreate";
 import ReportTable from "../../components/Report/ReportTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Report = () => {
+const Report = (props) => {
 	const { path } = useRouteMatch();
-	const [mode, setMode] = useState("create");
-	const [selectedId, setSelectedId] = useState(null);
+	const [mode, setMode] = useState(
+		props.history.location.state ? props.history.location.state.mode : "create"
+	);
+	const [selectedId, setSelectedId] = useState(
+		props.history.location.state ? props.history.location.state.reportId : null
+	);
+	const [addItem, setAddItem] = useState(
+		props.history.location.state ? props.history.location.state.item : null
+	);
 
 	const changeModeHandler = (value, id) => {
 		setMode(value);
 		setSelectedId(id);
+		setAddItem(null);
 	};
 
 	return (
@@ -24,7 +32,11 @@ const Report = () => {
 					</PageContainer>
 				</Route>
 				<Route path={`${path}/create`}>
-					<ReportCreate mode={mode} reportId={selectedId}></ReportCreate>
+					<ReportCreate
+						mode={mode}
+						reportId={selectedId}
+						addItem={addItem}
+					></ReportCreate>
 				</Route>
 			</Switch>
 		</>

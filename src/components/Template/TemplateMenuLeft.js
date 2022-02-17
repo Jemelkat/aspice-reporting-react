@@ -11,6 +11,8 @@ import { typeEnum } from "../../helpers/ClassHelper";
 import SidebarCanvasItem from "../UI/Sidebar/SidebarCanvasItem";
 import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
 import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
+import { ReactComponent as SVGSimpleTable } from "../../assets/simple-table.svg";
+import { ReactComponent as SVGCapabilityTable } from "../../assets/capability-table.svg";
 
 const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 	return (
@@ -46,7 +48,12 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 							</Form>
 						</Formik>
 					</SidebarLinks>
-					<CanvasPanelDisclosure name='Text components'>
+					<SidebarLinks sidebarName='Items'>
+						<span className='w-full pt-2 pb-2 pl-5 pr-5 text-sm text-center'>
+							Click on item to add it to template
+						</span>
+					</SidebarLinks>
+					<CanvasPanelDisclosure name='Text components' dark>
 						<div
 							className='flex flex-row p-2 m-2 bg-gray-100'
 							onClick={() => onAddComponent(typeEnum.TEXT)}
@@ -55,7 +62,7 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 							TEXT
 						</div>
 					</CanvasPanelDisclosure>
-					<CanvasPanelDisclosure name='Graph components'>
+					<CanvasPanelDisclosure name='Graph components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
 							<SidebarCanvasItem
 								mini
@@ -77,7 +84,7 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 							</SidebarCanvasItem>
 						</div>
 					</CanvasPanelDisclosure>
-					<CanvasPanelDisclosure name='Table components'>
+					<CanvasPanelDisclosure name='Table components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
 							<SidebarCanvasItem
 								mini
@@ -86,7 +93,7 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 									onAddComponent(typeEnum.SIMPLE_TABLE);
 								}}
 							>
-								Simple table
+								<SVGSimpleTable />
 							</SidebarCanvasItem>
 							<SidebarCanvasItem
 								mini
@@ -95,7 +102,7 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 									onAddComponent(typeEnum.CAPABILITY_TABLE);
 								}}
 							>
-								Capability table
+								<SVGCapabilityTable />
 							</SidebarCanvasItem>
 						</div>
 					</CanvasPanelDisclosure>

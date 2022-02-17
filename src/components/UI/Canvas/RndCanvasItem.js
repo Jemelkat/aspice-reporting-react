@@ -3,7 +3,7 @@ import { typeEnum } from "../../../helpers/ClassHelper";
 import { ReactComponent as SVGBarHorizontal } from "../../../assets/barchart-horizontal.svg";
 import { ReactComponent as SVGBarVertical } from "../../../assets/barchart-vertical.svg";
 import { ReactComponent as SVGPie } from "../../../assets/piechart.svg";
-
+import { ReactComponent as SVGCapabilityTable } from "../../../assets/capability-table.svg";
 const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 	const renderContent = () => {
 		switch (item.type) {

@@ -15,6 +15,8 @@ import Loader from "../UI/Loader/Loader";
 import SidebarCanvasItem from "../UI/Sidebar/SidebarCanvasItem";
 import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
 import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
+import { ReactComponent as SVGSimpleTable } from "../../assets/simple-table.svg";
+import { ReactComponent as SVGCapabilityTable } from "../../assets/capability-table.svg";
 
 const ReportMenuLeft = ({
 	data,
@@ -43,7 +45,7 @@ const ReportMenuLeft = ({
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
 			<div className='sticky top-0 flex justify-start h-screen'>
-				<Sidebar className='overflow-y-auto bg-white border-2 shadow-xl'>
+				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
 					<SidebarLinks sidebarName='Report'>
 						<Formik
 							enableReinitialize={true}
@@ -137,8 +139,13 @@ const ReportMenuLeft = ({
 							)}
 						</Formik>
 					</SidebarLinks>
-					<SidebarLinks sidebarName='Items'></SidebarLinks>
-					<CanvasPanelDisclosure name='Text components'>
+
+					<SidebarLinks sidebarName='Items'>
+						<span className='w-full pt-2 pb-2 pl-5 pr-5 text-sm text-center'>
+							Click on item to add it to report
+						</span>
+					</SidebarLinks>
+					<CanvasPanelDisclosure name='Text components' dark>
 						<div
 							className='flex flex-row p-2 m-2 bg-gray-100'
 							onClick={() => onAddComponent(typeEnum.TEXT)}
@@ -147,7 +154,7 @@ const ReportMenuLeft = ({
 							TEXT
 						</div>
 					</CanvasPanelDisclosure>
-					<CanvasPanelDisclosure name='Graph components'>
+					<CanvasPanelDisclosure name='Graph components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
 							<SidebarCanvasItem
 								mini
@@ -156,7 +163,7 @@ const ReportMenuLeft = ({
 									onAddComponent(typeEnum.CAPABILITY_BAR_GRAPH);
 								}}
 							>
-								<SVGBarHorizontal></SVGBarHorizontal>
+								<SVGBarHorizontal />
 							</SidebarCanvasItem>
 							<SidebarCanvasItem
 								mini
@@ -165,11 +172,11 @@ const ReportMenuLeft = ({
 									onAddComponent(typeEnum.LEVEL_PIE_GRAPH);
 								}}
 							>
-								<SVGPie></SVGPie>
+								<SVGPie />
 							</SidebarCanvasItem>
 						</div>
 					</CanvasPanelDisclosure>
-					<CanvasPanelDisclosure name='Table components'>
+					<CanvasPanelDisclosure name='Table components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
 							<SidebarCanvasItem
 								mini
@@ -178,7 +185,7 @@ const ReportMenuLeft = ({
 									onAddComponent(typeEnum.SIMPLE_TABLE);
 								}}
 							>
-								Simple table
+								<SVGSimpleTable />
 							</SidebarCanvasItem>
 							<SidebarCanvasItem
 								mini
@@ -187,7 +194,7 @@ const ReportMenuLeft = ({
 									onAddComponent(typeEnum.CAPABILITY_TABLE);
 								}}
 							>
-								Capability table
+								<SVGCapabilityTable />
 							</SidebarCanvasItem>
 						</div>
 					</CanvasPanelDisclosure>

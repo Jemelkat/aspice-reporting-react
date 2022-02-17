@@ -1,13 +1,20 @@
-import { PencilIcon, RefreshIcon } from "@heroicons/react/solid";
+import { PencilIcon, RefreshIcon, UploadIcon } from "@heroicons/react/solid";
 import { useEffect, useState, useRef } from "react";
 import { useAlert } from "react-alert";
+import { Redirect } from "react-router-dom";
 import { typeEnum } from "../../helpers/ClassHelper";
 import { getItemData } from "../../services/DashboardService";
 import Loader from "../UI/Loader/Loader";
 import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";
 
-const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
+const DashboardItem = ({
+	item,
+	onSelectItem,
+	onDeleteItem,
+	onSave,
+	onExport,
+}) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isDefined, setIsDefined] = useState(false);
 	const [data, setData] = useState(null);
@@ -100,16 +107,25 @@ const DashboardItem = ({ item, onSelectItem, onDeleteItem, onSave }) => {
 			<div className='w-full text-white bg-gray-800 h-7'>
 				<div className='pl-1 mr-10 overflow-hidden'>{item.type}</div>
 				<span>
+					<UploadIcon
+						onClick={(e) => {
+							onSelectItem(item.id);
+							onExport();
+							e.preventDefault();
+							e.stopPropagation();
+						}}
+						className='absolute w-5 h-5 bg-gray-800 cursor-pointer top-0.5 right-14'
+					></UploadIcon>
 					<PencilIcon
 						onClick={(e) => {
 							onSelectItem(item.id);
 							e.stopPropagation();
 							e.preventDefault();
 						}}
-						className='absolute w-5 h-5 bg-gray-800 cursor-pointer top-1 right-7'
+						className='absolute w-5 h-5 bg-gray-800 cursor-pointer top-0.5 right-7'
 					></PencilIcon>
 					<span
-						class='z-0 border-1 drop-shadow-l absolute top-1 right-1 bg-gray-800  cursor-pointer '
+						class='z-0 border-1 drop-shadow-l absolute top-0.5 right-1 bg-gray-800  cursor-pointer '
 						onClick={(e) => {
 							onDeleteItem(item.id);
 							e.stopPropagation();

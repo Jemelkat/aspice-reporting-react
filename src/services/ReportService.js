@@ -20,6 +20,10 @@ export const getReport = async (reportId) => {
 	return axiosInstance.get("/reports/get", { params: { reportId: reportId } });
 };
 
+export const getAllSimple = async () => {
+	return axiosInstance.get("/reports/allSimple");
+};
+
 export const generateReport = async (reportId) => {
 	return axios.get("http://localhost:8080/reports/generate", {
 		headers: {

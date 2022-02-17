@@ -1,5 +1,5 @@
+import React from "react";
 import { useContext } from "react";
-
 import { Redirect, Route } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -9,9 +9,9 @@ function LoggedRoute({ children, ...rest }) {
 	return (
 		<Route
 			{...rest}
-			render={({ location }) => {
+			render={({ location, ...props }) => {
 				return loggedUser.user ? (
-					children
+					React.cloneElement(children, { ...props })
 				) : (
 					<Redirect
 						to={{

@@ -10,7 +10,7 @@ import Canvas from "../Canvas/Canvas";
 import { saveTemplate } from "../../services/TemplateService";
 import { createItemFromExisting, Item } from "../../helpers/ClassHelper";
 
-const TemplateCreate = ({ mode, templateId }) => {
+const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	const [templateData, setTemplateData] = useState(null);
 	const [templateLoading, setTemplateLoading] = useState(true);
 	const history = useHistory();
@@ -58,8 +58,24 @@ const TemplateCreate = ({ mode, templateId }) => {
 			axiosInstance
 				.get("/templates/get", { params: { templateId: templateId } })
 				.then((response) => {
-					setTemplateData(response.data);
-					parseAndSetComponents(response.data.templateItems);
+					let loadedItems = response.data;
+					//Add new item if template was redirected from dashboard
+					if (addItem) {
+						let addedItemId = 0;
+						if (loadedItems.length > 0) {
+							addedItemId =
+								Math.max.apply(
+									null,
+									loadedItems.reportItems.map((item) => item.id)
+								) + 1;
+						}
+						//Set new ID to added item as max + 1 or 0 if template is empty
+						let updatedAddItem = addItem;
+						updatedAddItem.id = addedItemId;
+						loadedItems.reportItems.push(updatedAddItem);
+					}
+					setTemplateData(loadedItems);
+					parseAndSetComponents(loadedItems.templateItems);
 					setTemplateLoading(false);
 					alert.info("Template loaded.");
 				})

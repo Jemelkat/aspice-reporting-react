@@ -2,7 +2,7 @@ const SidebarCanvasItem = ({ name, mini = false, ...props }) => {
 	return (
 		<div
 			className={`flex flex-col items-center justify-center border border-black cursor-pointer ${
-				mini ? "w-20" : "w-40"
+				mini ? "w-24" : "w-40"
 			} mb-4 shadow-md`}
 			onClick={props.onClick}
 		>

@@ -1,17 +1,23 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 
-const CanvasPanelDisclosure = (props) => {
+const CanvasPanelDisclosure = ({ dark = false, ...props }) => {
 	return (
 		<Disclosure>
 			{({ open }) => (
 				<>
-					<Disclosure.Button className='flex justify-between w-full px-4 py-2 font-medium text-left text-gray-800 bg-gray-200 rounded-sm shadow-sm hover:bg-gray-300 drop-shadow-2xl'>
+					<Disclosure.Button
+						className={`${
+							dark
+								? "text-white bg-gray-800 hover:bg-gray-700"
+								: "text-gray-800 bg-gray-200 hover:bg-gray-300"
+						} flex justify-between w-full px-4 py-2 font-medium text-left  shadow-sm  drop-shadow-2xl`}
+					>
 						<span>{props.name}</span>
 						<ChevronUpIcon
-							className={`${
-								open ? "transform rotate-180" : ""
-							} w-6 h-6 text-gray-800`}
+							className={`${open ? "transform rotate-180" : ""} w-6 h-6 ${
+								dark ? "text-white" : "text-gray-800"
+							}`}
 						/>
 					</Disclosure.Button>
 					<Transition
@@ -22,7 +28,7 @@ const CanvasPanelDisclosure = (props) => {
 						leaveFrom='transform scale-100 opacity-100'
 						leaveTo='transform scale-95 opacity-0'
 					>
-						<Disclosure.Panel className='pb-1 text-gray-800 border'>
+						<Disclosure.Panel className='pb-1 text-gray-800'>
 							{props.children}
 						</Disclosure.Panel>
 					</Transition>

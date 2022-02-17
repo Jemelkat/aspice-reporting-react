@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../../helpers/AxiosHelper";
 import { useAxios } from "../../helpers/AxiosHelper";
 import Loader from "../UI/Loader/Loader";
 import { useHistory } from "react-router";
@@ -23,7 +22,7 @@ import {
 	typeEnum,
 } from "../../helpers/ClassHelper";
 
-const ReportCreate = ({ mode, reportId }) => {
+const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	const [reportData, setReportData] = useState(null);
 	const [reportLoading, setReportLoading] = useState(true);
 	const [previewData, setPreviewData] = useState(null);
@@ -138,13 +137,29 @@ const ReportCreate = ({ mode, reportId }) => {
 			setReportLoading(true);
 			getReport(reportId)
 				.then((response) => {
-					setReportData(response.data);
-					parseAndSetComponents(response.data.reportItems);
+					let loadedItems = response.data;
+					//Add new item if report was redirected from dashboard
+					if (addItem) {
+						let addedItemId = 0;
+						if (loadedItems.length > 0) {
+							addedItemId =
+								Math.max.apply(
+									null,
+									loadedItems.reportItems.map((item) => item.id)
+								) + 1;
+						}
+						//Set new ID to added item as max + 1 or 0 if template is empty
+						let updatedAddItem = addItem;
+						updatedAddItem.id = addedItemId;
+						loadedItems.reportItems.push(updatedAddItem);
+					}
+					setReportData(loadedItems);
+					parseAndSetComponents(loadedItems.reportItems);
 					setReportLoading(false);
 					alert.info("Report loaded.");
 				})
 				.catch(() => {
-					alert.error("Error getting report date.");
+					alert.error("Error getting report data.");
 					history.push("/report");
 				});
 		} else {

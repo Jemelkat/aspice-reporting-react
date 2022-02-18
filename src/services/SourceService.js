@@ -27,3 +27,17 @@ export const uploadSource = (file, onProgress) => {
 export const getColumns = (sourceId) => {
 	return axiosInstance.get(`source/${sourceId}/columns`);
 };
+
+export default class SourceService {
+	static download(sourceId) {
+		const requestOptions = {
+			method: "GET",
+			headers: {
+				Authorization: getAuthHeaderToken(),
+				Accept: "text/csv",
+			},
+			responseType: "blob",
+		};
+		return axiosInstance.get(`source/${sourceId}/download`, requestOptions);
+	}
+}

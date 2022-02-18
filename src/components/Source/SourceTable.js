@@ -8,7 +8,8 @@ import TableMenuButton from "../UI/Table/TableMenuButton";
 import TableMenuItem from "../UI/Table/TableMenuItem";
 import Title from "../UI/Title";
 import ShareDialog from "../UI/Dialog/ShareDialog";
-import { deleteSource } from "../../services/SourceService";
+import SourceService, { deleteSource } from "../../services/SourceService";
+import { saveAs } from "file-saver";
 
 class SourceObject {
 	constructor(data) {
@@ -77,8 +78,23 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 						</TableMenuItem>
 						<TableMenuItem
 							key='2'
+							onClickAction={() => {
+								SourceService.download(row.original.id).then(
+									(generateResponse) => {
+										saveAs(
+											generateResponse.data,
+											row.original.sourceName + ".csv"
+										);
+									}
+								);
+							}}
+						>
+							Download CSV
+						</TableMenuItem>
+						<TableMenuItem
+							key='3'
 							addClasses='text-red-800'
-							onClickAction={(e) => {
+							onClickAction={() => {
 								setSelectedRow(row.original);
 								setShowDeleteDialog(true);
 							}}

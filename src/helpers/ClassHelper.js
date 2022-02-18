@@ -52,6 +52,7 @@ export const createItemFromExisting = (item) => {
 				item.orientation ? item.orientation : "HORIZONTAL",
 				item.source ? item.source : null,
 				item.processColumn ? item.processColumn : null,
+				item.processFilter ? item.processFilter : [],
 				item.levelColumn ? item.levelColumn : null,
 				item.attributeColumn ? item.attributeColumn : null,
 				item.scoreColumn ? item.scoreColumn : null
@@ -213,6 +214,7 @@ export class CapabilityBarGraph extends Item {
 		orientation = "HORIZONTAL",
 		source = null,
 		processColumn = null,
+		processFilter = [],
 		levelColumn = null,
 		attributeColumn = null,
 		scoreColumn = null
@@ -227,6 +229,7 @@ export class CapabilityBarGraph extends Item {
 			id: processColumn ? processColumn.id : null,
 			columnName: processColumn ? processColumn.columnName : null,
 		};
+		this.processFilter = processFilter;
 		this.levelColumn = {
 			id: levelColumn ? levelColumn.id : null,
 			columnName: levelColumn ? levelColumn.columnName : null,

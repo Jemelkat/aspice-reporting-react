@@ -3,7 +3,11 @@ import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../UI/Form/FormSelect";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
-import { getColumnsForSource } from "../../../services/SourceColumnService";
+import { InformationCircleIcon } from "@heroicons/react/outline";
+import { useAlert } from "react-alert";
+import SourceColumnService, {
+	getColumnsForSource,
+} from "../../../services/SourceColumnService";
 
 const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -11,8 +15,13 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [columnsData, setColumnsData] = useState([]);
 	const [columnsLoading, setColumnsLoading] = useState(false);
 	const [columnsError, setColumnsError] = useState(false);
+	const [processColumnData, setprocessColumnData] = useState({
+		data: [],
+		loading: false,
+		error: false,
+	});
+	const alert = useAlert();
 
-	console.log(selectedItem);
 	//Load columns if source is defined on load
 	useEffect(() => {
 		getColumnsHandler(selectedItem.source.id);
@@ -44,6 +53,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 		setColumnsError(false);
 		if (sourceId === null) {
 			setColumnsData([]);
+			setprocessColumnData({ data: [], loading: false, error: false });
 		} else {
 			//Load new columns for source
 			try {
@@ -55,6 +65,37 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				setColumnsLoading(false);
 				setColumnsError(true);
 			}
+			//Get filter values for process
+			if (selectedItem.processColumn.id) {
+				getProcessFilterData(sourceId, selectedItem.processColumn.id);
+			}
+		}
+	};
+
+	const getProcessFilterData = async (sourceId, columnId) => {
+		setprocessColumnData({ data: [], loading: true, error: false });
+		try {
+			const response = await SourceColumnService.getColumDistinctValues(
+				sourceId,
+				columnId
+			);
+			debugger;
+			const newData = response.data.map((filter) => ({
+				value: filter,
+				label: filter,
+			}));
+			setprocessColumnData((prevState) => ({
+				...prevState,
+				data: newData,
+				loading: false,
+			}));
+		} catch (e) {
+			alert.error("Error getting process column values.");
+			setprocessColumnData((prevState) => ({
+				...prevState,
+				loading: false,
+				error: true,
+			}));
 		}
 	};
 
@@ -66,6 +107,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				sourceFormId: selectedItem.source && selectedItem.source.id,
 				processColumn:
 					selectedItem.processColumn && selectedItem.processColumn.id,
+				processFilter: selectedItem.processFilter.map((i) => i),
 				levelColumn: selectedItem.levelColumn && selectedItem.levelColumn.id,
 				attributeColumn:
 					selectedItem.attributeColumn && selectedItem.attributeColumn.id,
@@ -73,8 +115,9 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			}}
 			validationSchema={Yup.object().shape({})}
 		>
-			{() => (
+			{({ values }) => (
 				<Form className='flex flex-col'>
+					{console.log(values.processColumn)}
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
 							<label className='font-medium'>Graph orientation:</label>
@@ -92,6 +135,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}}
 								isMulti={false}
 							/>
+							<div className='mt-2 mb-3 border border-gray-800 border-opacity-30'></div>
 							<label className='font-medium'>Source:</label>
 							<Field
 								name='sourceFormId'
@@ -122,12 +166,38 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										updatedSelected.levelColumn.columnName = null;
 										updatedSelected.attributeColumn.columnName = null;
 										updatedSelected.scoreColumn.columnName = null;
+										//Reset filters
+										updatedSelected.processFilter = [];
 										onItemUpdate(updatedSelected);
 									}
 								}}
 								isMulti={false}
 								isLoading={sourcesLoading}
 							/>
+							<label className='flex items-center pt-1 text-sm'>
+								Optional filter by asessor:
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+							</label>
+							<Field
+								name='assessorFilter'
+								options={columnsData}
+								component={FormSelect}
+								placeholder={
+									columnsLoading
+										? "Loading..."
+										: columnsError
+										? "Error!"
+										: columnsData.length > 0
+										? "Select assessor"
+										: "No columns"
+								}
+								onSelect={(e) => {
+									//TODO
+								}}
+								isMulti={false}
+								isLoading={columnsLoading}
+							/>
+							<div className='mt-2 mb-3 border border-gray-800 border-opacity-30'></div>
 							<label className='font-medium'>Process column:</label>
 							<Field
 								name='processColumn'
@@ -146,11 +216,43 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									let updatedSelected = selectedItem;
 									updatedSelected.processColumn.id = e.value;
 									updatedSelected.processColumn.columnName = e.label;
+									updatedSelected.processFilter = [];
 									onItemUpdate(updatedSelected);
+									getProcessFilterData(values.sourceFormId, e.value);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
+							<label className='pt-1 text-sm'>
+								Optional filter by process:
+							</label>
+							<Field
+								name='processFilter'
+								options={processColumnData.data}
+								component={FormSelect}
+								placeholder={
+									values.processColumn
+										? processColumnData.loading
+											? "Loading..."
+											: processColumnData.error
+											? "Error!"
+											: processColumnData.data?.length > 0
+											? "Filter values"
+											: "No values"
+										: ""
+								}
+								onSelect={(e) => {
+									debugger;
+									let updatedSelected = selectedItem;
+									updatedSelected.processFilter = e.map(
+										(filter) => filter.value
+									);
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={true}
+								isLoading={processColumnData.loading}
+							/>
+							<div className='mt-2 mb-3 border border-gray-800 border-opacity-30'></div>
 							<label className='font-medium'>Capability level:</label>
 							<Field
 								name='levelColumn'
@@ -174,6 +276,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
+							<div className='mt-2 mb-3 border border-gray-800 border-opacity-30'></div>
 							<label className='font-medium'>Attribute column:</label>
 							<Field
 								name='attributeColumn'
@@ -197,6 +300,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
+							<div className='mt-2 mb-3 border border-gray-800 border-opacity-30'></div>
 							<label className='font-medium'>Score/Value:</label>
 							<Field
 								name='scoreColumn'

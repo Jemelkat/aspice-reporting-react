@@ -36,14 +36,20 @@ const CapabilityTableSettigs = ({
 						? "Loading..."
 						: columnsError
 						? "Error!"
-						: columnsData.length > 0
+						: columnsData.length > 1
 						? "Select column"
 						: "No columns"
 				}
 				onSelect={(e) => {
 					let updatedSelected = selectedItem;
-					updatedSelected.processColumn.sourceColumn.id = e.value;
-					updatedSelected.processColumn.sourceColumn.columnName = e.label;
+					if (e.value !== null) {
+						updatedSelected.processColumn = {
+							id: e.value,
+							columnName: e.label,
+						};
+					} else {
+						updatedSelected.processColumn = null;
+					}
 					onItemUpdate(updatedSelected);
 				}}
 				isMulti={false}
@@ -73,14 +79,20 @@ const CapabilityTableSettigs = ({
 						? "Loading..."
 						: columnsError
 						? "Error!"
-						: columnsData.length > 0
+						: columnsData.length > 1
 						? "Select column"
 						: "No columns"
 				}
 				onSelect={(e) => {
 					let updatedSelected = selectedItem;
-					updatedSelected.levelColumn.id = e.value;
-					updatedSelected.levelColumn.columnName = e.label;
+					if (e.value !== null) {
+						updatedSelected.levelColumn = {
+							id: e.value,
+							columnName: e.label,
+						};
+					} else {
+						updatedSelected.levelColumn = null;
+					}
 					onItemUpdate(updatedSelected);
 				}}
 				isMulti={false}
@@ -93,7 +105,6 @@ const CapabilityTableSettigs = ({
 				onChange={(e) => {
 					handleChange(e);
 					if (e.target.value >= 0 && e.target.value <= 5) {
-						debugger;
 						let newSelected = selectedItem;
 						newSelected.levelLimit = e.target.value;
 						onItemUpdate(newSelected);
@@ -111,15 +122,20 @@ const CapabilityTableSettigs = ({
 						? "Loading..."
 						: columnsError
 						? "Error!"
-						: columnsData.length > 0
+						: columnsData.length > 1
 						? "Select column"
 						: "No columns"
 				}
 				onSelect={(e) => {
 					let updatedSelected = selectedItem;
-					updatedSelected.criterionColumn.id = e.value;
-					updatedSelected.criterionColumn.columnName = e.label;
-					onItemUpdate(updatedSelected);
+					if (e.value !== null) {
+						updatedSelected.criterionColumn = {
+							id: e.value,
+							columnName: e.label,
+						};
+					} else {
+						updatedSelected.criterionColumn = null;
+					}
 				}}
 				isMulti={false}
 				isLoading={columnsLoading}
@@ -148,15 +164,20 @@ const CapabilityTableSettigs = ({
 						? "Loading..."
 						: columnsError
 						? "Error!"
-						: columnsData.length > 0
+						: columnsData.length > 1
 						? "Select column"
 						: "No columns"
 				}
 				onSelect={(e) => {
 					let updatedSelected = selectedItem;
-					updatedSelected.scoreColumn.id = e.value;
-					updatedSelected.scoreColumn.columnName = e.label;
-					onItemUpdate(updatedSelected);
+					if (e.value !== null) {
+						updatedSelected.scoreColumn = {
+							id: e.value,
+							columnName: e.label,
+						};
+					} else {
+						updatedSelected.scoreColumn = null;
+					}
 				}}
 				isMulti={false}
 				isLoading={columnsLoading}

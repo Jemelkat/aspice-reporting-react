@@ -24,7 +24,7 @@ const SimpleTableSettings = ({
 							null,
 							columns.map((item) => item.id)
 					  ) + 1,
-			sourceColumn: { id: null },
+			sourceColumn: null,
 			width: 50,
 		});
 		let newSelected = selectedItem;

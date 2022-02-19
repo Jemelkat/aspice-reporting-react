@@ -125,28 +125,16 @@ export class SimpleTable extends Item {
 		tableColumns = null
 	) {
 		super(id, x, y, width, height, type);
-		this.source = {
-			id: source ? source.id : null,
-			name: source ? source.name : null,
-		};
+		this.source = source;
 		this.tableColumns = tableColumns
 			? tableColumns.map((column) => {
 					return {
 						id: column.id ? column.id : null,
-						sourceColumn: {
-							id:
-								column.sourceColumn && column.sourceColumn.id
-									? column.sourceColumn.id
-									: null,
-							columnName:
-								column.sourceColumn && column.sourceColumn.columnName
-									? column.sourceColumn.columnName
-									: null,
-						},
+						sourceColumn: column.sourceColumn,
 						width: column.width ? column.width : 50,
 					};
 			  })
-			: null;
+			: [];
 	}
 }
 
@@ -170,38 +158,14 @@ export class CapabilityTable extends Item {
 	) {
 		super(id, x, y, width, height, type);
 		this.fontSize = fontSize;
-		this.source = {
-			id: source ? source.id : null,
-			name: source ? source.name : null,
-		};
-		this.processColumn = {
-			width: processColumn && processColumn.width ? processColumn.width : 100,
-			sourceColumn: {
-				id:
-					processColumn && processColumn.sourceColumn
-						? processColumn.sourceColumn.id
-						: null,
-				columnName:
-					processColumn && processColumn.sourceColumn
-						? processColumn.sourceColumn.columnName
-						: null,
-			},
-		};
+		this.source = source;
+		this.processColumn = processColumn;
 		this.processWidth = processWidth;
-		this.levelColumn = {
-			id: levelColumn ? levelColumn.id : null,
-			columnName: levelColumn ? levelColumn.columnName : null,
-		};
+		this.levelColumn = levelColumn;
 		this.levelLimit = levelLimit;
-		this.criterionColumn = {
-			id: criterionColumn ? criterionColumn.id : null,
-			columnName: criterionColumn ? criterionColumn.columnName : null,
-		};
+		this.criterionColumn = criterionColumn;
 		this.criterionWidth = criterionWidth;
-		this.scoreColumn = {
-			id: scoreColumn ? scoreColumn.id : null,
-			columnName: scoreColumn ? scoreColumn.columnName : null,
-		};
+		this.scoreColumn = scoreColumn;
 	}
 }
 

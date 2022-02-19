@@ -51,6 +51,8 @@ export const createItemFromExisting = (item) => {
 				item.type,
 				item.orientation ? item.orientation : "HORIZONTAL",
 				item.source ? item.source : null,
+				item.assessorColumn ? item.assessorColumn : null,
+				item.assessorFilter ? item.assessorFilter : [],
 				item.processColumn ? item.processColumn : null,
 				item.processFilter ? item.processFilter : [],
 				item.levelColumn ? item.levelColumn : null,
@@ -213,6 +215,8 @@ export class CapabilityBarGraph extends Item {
 		type,
 		orientation = "HORIZONTAL",
 		source = null,
+		assessorColumn = null,
+		assessorFilter = [],
 		processColumn = null,
 		processFilter = [],
 		levelColumn = null,
@@ -221,27 +225,14 @@ export class CapabilityBarGraph extends Item {
 	) {
 		super(id, x, y, width, height, type);
 		this.orientation = orientation;
-		this.source = {
-			id: source ? source.id : null,
-			name: source ? source.name : null,
-		};
-		this.processColumn = {
-			id: processColumn ? processColumn.id : null,
-			columnName: processColumn ? processColumn.columnName : null,
-		};
+		this.source = source;
+		this.assessorColumn = assessorColumn;
+		this.assessorFilter = assessorFilter;
+		this.processColumn = processColumn;
 		this.processFilter = processFilter;
-		this.levelColumn = {
-			id: levelColumn ? levelColumn.id : null,
-			columnName: levelColumn ? levelColumn.columnName : null,
-		};
-		this.attributeColumn = {
-			id: attributeColumn ? attributeColumn.id : null,
-			columnName: attributeColumn ? attributeColumn.columnName : null,
-		};
-		this.scoreColumn = {
-			id: scoreColumn ? scoreColumn.id : null,
-			columnName: scoreColumn ? scoreColumn.columnName : null,
-		};
+		this.levelColumn = levelColumn;
+		this.attributeColumn = attributeColumn;
+		this.scoreColumn = scoreColumn;
 	}
 }
 
@@ -260,26 +251,11 @@ export class LevelPieGraph extends Item {
 		scoreColumn = null
 	) {
 		super(id, x, y, width, height, type);
-		this.source = {
-			id: source ? source.id : null,
-			name: source ? source.name : null,
-		};
-		this.processColumn = {
-			id: processColumn ? processColumn.id : null,
-			columnName: processColumn ? processColumn.columnName : null,
-		};
-		this.levelColumn = {
-			id: levelColumn ? levelColumn.id : null,
-			columnName: levelColumn ? levelColumn.columnName : null,
-		};
-		this.attributeColumn = {
-			id: attributeColumn ? attributeColumn.id : null,
-			columnName: attributeColumn ? attributeColumn.columnName : null,
-		};
-		this.scoreColumn = {
-			id: scoreColumn ? scoreColumn.id : null,
-			columnName: scoreColumn ? scoreColumn.columnName : null,
-		};
+		this.source = source;
+		this.processColumn = processColumn;
+		this.levelColumn = levelColumn;
+		this.attributeColumn = attributeColumn;
+		this.scoreColumn = scoreColumn;
 	}
 }
 

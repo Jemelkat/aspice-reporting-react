@@ -27,16 +27,11 @@ const DashboardItem = ({
 			case typeEnum.LEVEL_PIE_GRAPH:
 			case typeEnum.CAPABILITY_BAR_GRAPH:
 				result =
-					item.source &&
-					item.source.id != null &&
-					item.processColumn &&
-					item.processColumn.id != null &&
-					item.levelColumn &&
-					item.levelColumn.id != null &&
-					item.attributeColumn &&
-					item.attributeColumn.id != null &&
-					item.scoreColumn &&
-					item.scoreColumn.id != null;
+					item.source?.id &&
+					item.processColumn?.id &&
+					item.levelColumn?.id &&
+					item.attributeColumn?.id &&
+					item.scoreColumn?.id;
 		}
 		return result;
 	};
@@ -76,11 +71,11 @@ const DashboardItem = ({
 			}
 		}
 	}, [
-		item.source.id,
-		item.processColumn.id,
-		item.levelColumn.id,
-		item.attributeColumn.id,
-		item.scoreColumn.id,
+		item.source,
+		item.processColumn,
+		item.levelColumn,
+		item.attributeColumn,
+		item.scoreColumn,
 	]);
 
 	//Render correct graph
@@ -107,16 +102,18 @@ const DashboardItem = ({
 				<div className='pl-1 mr-10 overflow-hidden'>{item.type}</div>
 				<div className='absolute top-0 right-0 h-6 bg-gray-800'>
 					<div className='flex pt-0.5'>
-						<RefreshIcon
-							onClick={(e) => {
-								onSave(item.id).then((newId) => {
-									loadItemData(newId);
-								});
-								e.preventDefault();
-								e.stopPropagation();
-							}}
-							className='w-5 h-5 mr-1 cursor-pointer'
-						></RefreshIcon>
+						{isDefined && (
+							<RefreshIcon
+								onClick={(e) => {
+									onSave(item.id).then((newId) => {
+										loadItemData(newId);
+									});
+									e.preventDefault();
+									e.stopPropagation();
+								}}
+								className='w-5 h-5 mr-1 cursor-pointer'
+							></RefreshIcon>
+						)}
 						<UploadIcon
 							onClick={(e) => {
 								onSelectItem(item.id);

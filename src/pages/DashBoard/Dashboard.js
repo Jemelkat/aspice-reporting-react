@@ -57,6 +57,7 @@ const DashBoard = () => {
 
 	//Saves dashboard to DB
 	const saveDashboardHandler = async (selectedId = null) => {
+		debugger;
 		//save
 		try {
 			//Find index on which the current selected ID is
@@ -81,8 +82,11 @@ const DashBoard = () => {
 		setDashboardLoading(true);
 		getDashboard()
 			.then((response) => {
-				parseLoadedItems(response.data.dashboardItems);
-				setDashboardId(response.data.id);
+				debugger;
+				if (response.data) {
+					parseLoadedItems(response.data.dashboardItems);
+					setDashboardId(response.data.id);
+				}
 				setDashboardLoading(false);
 			})
 			.catch(() => {

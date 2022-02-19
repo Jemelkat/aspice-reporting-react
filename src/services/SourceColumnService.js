@@ -6,7 +6,6 @@ export const getColumnsForSource = (sourceId) => {
 
 export default class SourceColumnService {
 	static getColumDistinctValues(sourceId, columnId) {
-		debugger;
 		return axiosInstance.get(`/source/${sourceId}/values`, {
 			params: { columnId: columnId },
 		});

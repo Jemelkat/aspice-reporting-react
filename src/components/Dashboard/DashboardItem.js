@@ -2,10 +2,10 @@ import {PencilIcon, RefreshIcon, UploadIcon} from "@heroicons/react/solid";
 import {useEffect, useRef, useState} from "react";
 import {useAlert} from "react-alert";
 import {typeEnum} from "../../helpers/ClassHelper";
-import {getItemData} from "../../services/DashboardService";
 import Loader from "../UI/Loader/Loader";
 import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";
+import DashboardService from "../../services/DashboardService";
 
 const DashboardItem = ({
 	item,
@@ -40,7 +40,7 @@ const DashboardItem = ({
 		debugger;
 		setIsLoading(true);
 		try {
-			const response = await getItemData(requestedItem.id);
+			const response = await DashboardService.getItemData(requestedItem.id);
 			const responseData = response.data;
 			let graphData = [];
 			debugger;

@@ -4,12 +4,12 @@ import {useEffect, useState} from "react";
 import ItemSettingsMenu from "../../components/ComponentSettings/ItemSettingsMenu";
 import DashBoardMenu from "../../components/Dashboard/DashboardMenu";
 import useCanvas from "../../hooks/useCanvas";
-import {getDashboard, saveDashboard} from "../../services/DashboardService";
 import {useAlert} from "react-alert";
 import Loader from "../../components/UI/Loader/Loader";
 import DashboardCanvas from "../../components/Dashboard/DashboardCanvas";
 import {createItemFromExisting} from "../../helpers/ClassHelper";
 import ExportItemDialog from "../../components/Dashboard/ExportItemDialog";
+import DashboardService from "../../services/DashboardService";
 
 const DashBoard = () => {
 	const {
@@ -69,7 +69,7 @@ const DashBoard = () => {
 					throw new Error("Dashboard data integrity error.");
 				}
 			}
-			const response = await saveDashboard(dashboardId, items);
+			const response = await DashboardService.saveDashboard(dashboardId, items);
 			alert.info("Dashboard saved");
 			return updateIdsOnSaveHandler(response.data.dashboardItems, index);
 		} catch (e) {
@@ -80,7 +80,7 @@ const DashBoard = () => {
 
 	useEffect(() => {
 		setDashboardLoading(true);
-		getDashboard()
+		DashboardService.getDashboard()
 			.then((response) => {
 				if (response.data) {
 					parseLoadedItems(response.data.dashboardItems);

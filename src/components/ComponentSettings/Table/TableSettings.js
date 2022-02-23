@@ -52,6 +52,7 @@ const TableSettings = ({
 			columns.forEach((column) =>
 				array.push({ value: column.id, label: column.columnName })
 			);
+		array.push({ value: null, label: "None" });
 		return array;
 	};
 
@@ -64,16 +65,15 @@ const TableSettings = ({
 		initialVals = {
 			...initialVals,
 			fontSize: selectedItem.fontSize,
-			processColumn: selectedItem.processColumn.sourceColumn.id,
+			processColumn: selectedItem.processColumn?.id,
 			processWidth: selectedItem.processWidth,
-			levelColumn: selectedItem.levelColumn.id,
+			levelColumn: selectedItem.levelColumn?.id,
 			levelLimit: selectedItem.levelLimit,
-			criterionColumn: selectedItem.criterionColumn.id,
+			criterionColumn: selectedItem.criterionColumn?.id,
 			criterionWidth: selectedItem.criterionWidth,
-			scoreColumn: selectedItem.scoreColumn.id,
+			scoreColumn: selectedItem.scoreColumn?.id,
 		};
 	}
-	console.log(initialVals);
 	return (
 		<div>
 			<Formik
@@ -101,32 +101,57 @@ const TableSettings = ({
 									}
 									onSelect={(e) => {
 										let updatedSelected = selectedItem;
-										updatedSelected.source.id = e.value;
-										updatedSelected.source.sourceName = e.label;
-										//Change selected coluns to NONE on source change
-										if (selectedItem.type === typeEnum.CAPABILITY_TABLE) {
-											updatedSelected.processColumn.sourceColumn.id = null;
-											updatedSelected.processColumn.sourceColumn.columnName =
-												null;
-											updatedSelected.levelColumn.id = null;
-											updatedSelected.criterionColumn.id = null;
-											updatedSelected.scoreColumn.id = null;
-											updatedSelected.levelColumn.columnName = null;
-											updatedSelected.criterionColumn.columnName = null;
-											updatedSelected.scoreColumn.columnName = null;
-										} else if (
-											selectedItem.type === typeEnum.SIMPLE_TABLE &&
-											updatedSelected.tableColumns &&
-											updatedSelected.tableColumns.length > 0
-										) {
-											debugger;
-											updatedSelected.tableColumns.map((column) => {
-												debugger;
-												column.sourceColumn.id = null;
-												column.sourceColumn.columnName = null;
-											});
+										if (e.value === null) {
+											if (e.value !== updatedSelected.source) {
+												//Reset all item columns
+												updatedSelected.source = null;
+												//Change selected coluns to NONE on source change
+												if (selectedItem.type === typeEnum.CAPABILITY_TABLE) {
+													updatedSelected.processColumn.sourceColumn = null;
+													updatedSelected.levelColumn = null;
+													updatedSelected.criterionColumn = null;
+													updatedSelected.scoreColumn = null;
+												} else if (
+													selectedItem.type === typeEnum.SIMPLE_TABLE &&
+													updatedSelected.tableColumns &&
+													updatedSelected.tableColumns.length > 0
+												) {
+													updatedSelected.tableColumns.map((column) => {
+														column.sourceColumn.id = null;
+														column.sourceColumn.columnName = null;
+													});
+												}
+												onItemUpdate(updatedSelected);
+												setSelectData([]);
+											}
+										} else {
+											if (
+												!updatedSelected.source?.id ||
+												e.value !== updatedSelected.source.id
+											) {
+												updatedSelected.source = {
+													id: e.value,
+													sourceName: e.label,
+												};
+												//Change selected coluns to NONE on source change
+												if (selectedItem.type === typeEnum.CAPABILITY_TABLE) {
+													updatedSelected.processColumn = null;
+													updatedSelected.levelColumn = null;
+													updatedSelected.criterionColumn = null;
+													updatedSelected.scoreColumn = null;
+												} else if (
+													selectedItem.type === typeEnum.SIMPLE_TABLE &&
+													updatedSelected.tableColumns &&
+													updatedSelected.tableColumns.length > 0
+												) {
+													updatedSelected.tableColumns.map((column) => {
+														column.sourceColumn = null;
+													});
+												}
+												onItemUpdate(updatedSelected);
+												setSelectData([]);
+											}
 										}
-										onItemUpdate(updatedSelected);
 									}}
 									isMulti={false}
 									isLoading={sourcesLoading}

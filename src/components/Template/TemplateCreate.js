@@ -36,7 +36,6 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 			const response = await saveTemplate(formValues, items, mode);
 			parseAndSetComponents(response.data.templateItems);
 			alert.info("Template saved");
-			history.push("/template");
 		} catch (e) {
 			alert.error("Error saving template.");
 		}
@@ -55,6 +54,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		//EDIT - load template for reseting
 		if (mode === "edit") {
 			setTemplateLoading(true);
+			debugger;
 			axiosInstance
 				.get("/templates/get", { params: { templateId: templateId } })
 				.then((response) => {
@@ -80,8 +80,8 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 					alert.info("Template loaded.");
 				})
 				.catch(() => {
-					alert.error("Error getting template date.");
-					history.push("/report");
+					alert.error("Error getting template data.");
+					history.push("/template");
 				});
 		} else {
 			setTemplateLoading(false);

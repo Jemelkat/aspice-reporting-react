@@ -96,6 +96,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			return;
 		}
 		try {
+			debugger;
 			const response = await generateReport(saveResponse.data.id);
 			alert.info("Report generated");
 
@@ -108,8 +109,12 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			return response;
 		} catch (e) {
 			setProcessing(false);
-			alert.error("Error generating report.");
-			throw e;
+			debugger;
+			if (e.response.data && e.response.data.message) {
+				alert.error(e.response.data.message);
+			} else {
+				alert.error("Error generating report.");
+			}
 		}
 	};
 

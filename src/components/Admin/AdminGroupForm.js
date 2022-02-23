@@ -109,7 +109,7 @@ const AdminGroupForm = (props) => {
 						options={usersDataSelect}
 						component={CustomSelect}
 						placeholder='Select multi languages...'
-						isMulti={true}
+						isMulti={false}
 					/>
 					<div className='flex justify-center mt-4 space-x-2 space'>
 						<Button type='submit' className='mt-2' dark={true}>

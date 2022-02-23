@@ -33,6 +33,8 @@ export const createItemFromExisting = (item) => {
 				item.type,
 				item.fontSize ? item.fontSize : 9,
 				item.source ? item.source : null,
+				item.assessorColumn ? item.assessorColumn : null,
+				item.assessorFilter ? item.assessorFilter : null,
 				item.processColumn ? item.processColumn : null,
 				item.processWidth ? item.processWidth : 50,
 				item.levelColumn ? item.levelColumn : null,
@@ -51,7 +53,10 @@ export const createItemFromExisting = (item) => {
 				item.type,
 				item.orientation ? item.orientation : "HORIZONTAL",
 				item.source ? item.source : null,
+				item.assessorColumn ? item.assessorColumn : null,
+				item.assessorFilter ? item.assessorFilter : [],
 				item.processColumn ? item.processColumn : null,
+				item.processFilter ? item.processFilter : [],
 				item.levelColumn ? item.levelColumn : null,
 				item.attributeColumn ? item.attributeColumn : null,
 				item.scoreColumn ? item.scoreColumn : null
@@ -65,6 +70,8 @@ export const createItemFromExisting = (item) => {
 				item.height,
 				item.type,
 				item.source ? item.source : null,
+				item.assessorColumn ? item.assessorColumn : null,
+				item.assessorFilter ? item.assessorFilter : null,
 				item.processColumn ? item.processColumn : null,
 				item.levelColumn ? item.levelColumn : null,
 				item.attributeColumn ? item.attributeColumn : null,
@@ -122,28 +129,16 @@ export class SimpleTable extends Item {
 		tableColumns = null
 	) {
 		super(id, x, y, width, height, type);
-		this.source = {
-			id: source ? source.id : null,
-			name: source ? source.name : null,
-		};
+		this.source = source;
 		this.tableColumns = tableColumns
 			? tableColumns.map((column) => {
 					return {
 						id: column.id ? column.id : null,
-						sourceColumn: {
-							id:
-								column.sourceColumn && column.sourceColumn.id
-									? column.sourceColumn.id
-									: null,
-							columnName:
-								column.sourceColumn && column.sourceColumn.columnName
-									? column.sourceColumn.columnName
-									: null,
-						},
+						sourceColumn: column.sourceColumn,
 						width: column.width ? column.width : 50,
 					};
 			  })
-			: null;
+			: [];
 	}
 }
 
@@ -157,6 +152,8 @@ export class CapabilityTable extends Item {
 		type,
 		fontSize = 10,
 		source = null,
+		assessorColumn = null,
+		assessorFilter = [],
 		processColumn = null,
 		processWidth = 100,
 		levelColumn = null,
@@ -167,38 +164,16 @@ export class CapabilityTable extends Item {
 	) {
 		super(id, x, y, width, height, type);
 		this.fontSize = fontSize;
-		this.source = {
-			id: source ? source.id : null,
-			name: source ? source.name : null,
-		};
-		this.processColumn = {
-			width: processColumn && processColumn.width ? processColumn.width : 100,
-			sourceColumn: {
-				id:
-					processColumn && processColumn.sourceColumn
-						? processColumn.sourceColumn.id
-						: null,
-				columnName:
-					processColumn && processColumn.sourceColumn
-						? processColumn.sourceColumn.columnName
-						: null,
-			},
-		};
+		this.source = source;
+		this.assessorColumn = assessorColumn;
+		this.assessorFilter = assessorFilter;
+		this.processColumn = processColumn;
 		this.processWidth = processWidth;
-		this.levelColumn = {
-			id: levelColumn ? levelColumn.id : null,
-			columnName: levelColumn ? levelColumn.columnName : null,
-		};
+		this.levelColumn = levelColumn;
 		this.levelLimit = levelLimit;
-		this.criterionColumn = {
-			id: criterionColumn ? criterionColumn.id : null,
-			columnName: criterionColumn ? criterionColumn.columnName : null,
-		};
+		this.criterionColumn = criterionColumn;
 		this.criterionWidth = criterionWidth;
-		this.scoreColumn = {
-			id: scoreColumn ? scoreColumn.id : null,
-			columnName: scoreColumn ? scoreColumn.columnName : null,
-		};
+		this.scoreColumn = scoreColumn;
 	}
 }
 
@@ -212,33 +187,24 @@ export class CapabilityBarGraph extends Item {
 		type,
 		orientation = "HORIZONTAL",
 		source = null,
+		assessorColumn = null,
+		assessorFilter = [],
 		processColumn = null,
+		processFilter = [],
 		levelColumn = null,
 		attributeColumn = null,
 		scoreColumn = null
 	) {
 		super(id, x, y, width, height, type);
 		this.orientation = orientation;
-		this.source = {
-			id: source ? source.id : null,
-			name: source ? source.name : null,
-		};
-		this.processColumn = {
-			id: processColumn ? processColumn.id : null,
-			columnName: processColumn ? processColumn.columnName : null,
-		};
-		this.levelColumn = {
-			id: levelColumn ? levelColumn.id : null,
-			columnName: levelColumn ? levelColumn.columnName : null,
-		};
-		this.attributeColumn = {
-			id: attributeColumn ? attributeColumn.id : null,
-			columnName: attributeColumn ? attributeColumn.columnName : null,
-		};
-		this.scoreColumn = {
-			id: scoreColumn ? scoreColumn.id : null,
-			columnName: scoreColumn ? scoreColumn.columnName : null,
-		};
+		this.source = source;
+		this.assessorColumn = assessorColumn;
+		this.assessorFilter = assessorFilter;
+		this.processColumn = processColumn;
+		this.processFilter = processFilter;
+		this.levelColumn = levelColumn;
+		this.attributeColumn = attributeColumn;
+		this.scoreColumn = scoreColumn;
 	}
 }
 
@@ -251,32 +217,21 @@ export class LevelPieGraph extends Item {
 		height,
 		type,
 		source = null,
+		assessorColumn = null,
+		assessorFilter = null,
 		processColumn = null,
 		levelColumn = null,
 		attributeColumn = null,
 		scoreColumn = null
 	) {
 		super(id, x, y, width, height, type);
-		this.source = {
-			id: source ? source.id : null,
-			name: source ? source.name : null,
-		};
-		this.processColumn = {
-			id: processColumn ? processColumn.id : null,
-			columnName: processColumn ? processColumn.columnName : null,
-		};
-		this.levelColumn = {
-			id: levelColumn ? levelColumn.id : null,
-			columnName: levelColumn ? levelColumn.columnName : null,
-		};
-		this.attributeColumn = {
-			id: attributeColumn ? attributeColumn.id : null,
-			columnName: attributeColumn ? attributeColumn.columnName : null,
-		};
-		this.scoreColumn = {
-			id: scoreColumn ? scoreColumn.id : null,
-			columnName: scoreColumn ? scoreColumn.columnName : null,
-		};
+		this.source = source;
+		this.assessorColumn = assessorColumn;
+		this.assessorFilter = assessorFilter;
+		this.processColumn = processColumn;
+		this.levelColumn = levelColumn;
+		this.attributeColumn = attributeColumn;
+		this.scoreColumn = scoreColumn;
 	}
 }
 

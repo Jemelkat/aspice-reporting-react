@@ -12,6 +12,8 @@ import { useRef } from "react";
 import TableSettings from "../ComponentSettings/Table/TableSettings";
 import CapabilityBarGraphSettings from "../ComponentSettings/Graph/CapabilityBarGraphSettings";
 import LevelPieGraphSettings from "../ComponentSettings/Graph/LevelPieGraphSettings";
+import CapabilityTableSettigs from "../ComponentSettings/Table/CapabilityTableSettings";
+import SimpleTableSettings from "../ComponentSettings/Table/SimpleTableSettings";
 
 const CanvasRightMenu = ({
 	simple = false,
@@ -50,28 +52,36 @@ const CanvasRightMenu = ({
 				);
 			case typeEnum.SIMPLE_TABLE:
 				return (
-					<TableSettings
-						simple
-						sourceId={
-							selectedItem.source && selectedItem.source.id
-								? selectedItem.source.id
-								: null
-						}
+					// <TableSettings
+					// 	simple
+					// 	sourceId={
+					// 		selectedItem.source && selectedItem.source.id
+					// 			? selectedItem.source.id
+					// 			: null
+					// 	}
+					// 	selectedItem={selectedItem}
+					// 	onItemUpdate={onItemUpdate}
+					// ></TableSettings>
+					<SimpleTableSettings
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
-					></TableSettings>
+					></SimpleTableSettings>
 				);
 			case typeEnum.CAPABILITY_TABLE:
 				return (
-					<TableSettings
-						sourceId={
-							selectedItem.source && selectedItem.source.id
-								? selectedItem.source.id
-								: null
-						}
+					<CapabilityTableSettigs
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
-					></TableSettings>
+					></CapabilityTableSettigs>
+					// <TableSettings
+					// 	sourceId={
+					// 		selectedItem.source && selectedItem.source.id
+					// 			? selectedItem.source.id
+					// 			: null
+					// 	}
+					// 	selectedItem={selectedItem}
+					// 	onItemUpdate={onItemUpdate}
+					// ></TableSettings>
 				);
 
 			default:

@@ -3,7 +3,10 @@ import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../UI/Form/FormSelect";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
-import { getColumnsForSource } from "../../../services/SourceColumnService";
+import SourceColumnService, {
+	getColumnsForSource,
+} from "../../../services/SourceColumnService";
+import { InformationCircleIcon } from "@heroicons/react/solid";
 
 const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -11,10 +14,15 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [columnsData, setColumnsData] = useState([]);
 	const [columnsLoading, setColumnsLoading] = useState(false);
 	const [columnsError, setColumnsError] = useState(false);
+	const [assessorFilter, setAssessorFilter] = useState({
+		data: [],
+		loading: false,
+		error: false,
+	});
 
 	//Load columns if source is defined on load
 	useEffect(() => {
-		getColumnsHandler(selectedItem.source.id);
+		selectedItem.source?.id && getColumnsHandler(selectedItem.source.id);
 	}, [selectedItem]);
 
 	//Parse sources
@@ -35,6 +43,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			columns.forEach((column) =>
 				array.push({ value: column.id, label: column.columnName })
 			);
+		array.push({ value: null, label: "None" });
 		return array;
 	};
 
@@ -54,6 +63,37 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				setColumnsLoading(false);
 				setColumnsError(true);
 			}
+			//Get filter values for assessor
+			if (selectedItem.assessorColumn?.id) {
+				getAssessorFilterData(sourceId, selectedItem.assessorColumn.id);
+			}
+		}
+	};
+
+	//Gets distinct values from assessor column
+	const getAssessorFilterData = async (sourceId, columnId) => {
+		setAssessorFilter({ data: [], loading: true, error: false });
+		try {
+			const response = await SourceColumnService.getColumDistinctValues(
+				sourceId,
+				columnId
+			);
+			const newData = response.data.map((filter) => ({
+				value: filter,
+				label: filter,
+			}));
+			setAssessorFilter((prevState) => ({
+				...prevState,
+				data: newData,
+				loading: false,
+			}));
+		} catch (e) {
+			alert.error("Error getting assessor column values.");
+			setAssessorFilter((prevState) => ({
+				...prevState,
+				loading: false,
+				error: true,
+			}));
 		}
 	};
 
@@ -61,17 +101,16 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 		<Formik
 			enableReinitialize={true}
 			initialValues={{
-				sourceFormId: selectedItem.source && selectedItem.source.id,
-				processColumn:
-					selectedItem.processColumn && selectedItem.processColumn.id,
-				levelColumn: selectedItem.levelColumn && selectedItem.levelColumn.id,
-				attributeColumn:
-					selectedItem.attributeColumn && selectedItem.attributeColumn.id,
-				scoreColumn: selectedItem.scoreColumn && selectedItem.scoreColumn.id,
+				sourceFormId: selectedItem.source?.id,
+				assessorColumn: selectedItem.assessorColumn?.id,
+				assessorFilter: selectedItem.assessorFilter,
+				processColumn: selectedItem.processColumn?.id,
+				levelColumn: selectedItem.levelColumn?.id,
+				attributeColumn: selectedItem.attributeColumn?.id,
+				scoreColumn: selectedItem.scoreColumn?.id,
 			}}
-			validationSchema={Yup.object().shape({})}
 		>
-			{() => (
+			{({ values }) => (
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
@@ -85,31 +124,112 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										? "Loading..."
 										: sourcesError
 										? "Error!"
-										: sourcesData && sourcesData.length > 0
+										: sourcesData && sourcesData.length > 1
 										? "Select source"
 										: "No sources"
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									if (updatedSelected.source.id !== e.value) {
-										setColumnsError(false);
-										updatedSelected.source.id = e.value;
-										//Load columns for new source
-										getColumnsHandler(e.value);
-										//Change selected coluns to NONE on source change
-										updatedSelected.processColumn.id = null;
-										updatedSelected.levelColumn.id = null;
-										updatedSelected.attributeColumn.id = null;
-										updatedSelected.scoreColumn.id = null;
-										updatedSelected.processColumn.columnName = null;
-										updatedSelected.levelColumn.columnName = null;
-										updatedSelected.attributeColumn.columnName = null;
-										updatedSelected.scoreColumn.columnName = null;
-										onItemUpdate(updatedSelected);
+									setColumnsError(false);
+									//Change selected coluns to NONE on source change
+									updatedSelected.processColumn = null;
+									updatedSelected.assessorColumn = null;
+									updatedSelected.levelColumn = null;
+									updatedSelected.attributeColumn = null;
+									updatedSelected.scoreColumn = null;
+									updatedSelected.assessorFilter = null;
+									//Reset filters
+									onItemUpdate(updatedSelected);
+									setAssessorFilter({
+										data: [],
+										loading: false,
+										error: false,
+									});
+
+									if (e.value === null) {
+										if (e.value !== updatedSelected.source) {
+											updatedSelected.source = null;
+											setColumnsData([]);
+										}
+									} else {
+										if (
+											!updatedSelected.source?.id ||
+											e.value !== updatedSelected.source.id
+										) {
+											updatedSelected.source = {
+												id: e.value,
+												sourceName: e.label,
+											};
+											//Load columns for new source
+
+											getColumnsHandler(e.value);
+										}
 									}
 								}}
 								isMulti={false}
 								isLoading={sourcesLoading}
+							/>
+							<label className='font-medium'>Assessor</label>
+							<Field
+								name='assessorColumn'
+								options={columnsData}
+								component={FormSelect}
+								placeholder={
+									columnsLoading
+										? "Loading..."
+										: columnsError
+										? "Error!"
+										: columnsData.length > 1
+										? "Select assessor"
+										: "No columns"
+								}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									if (e.value !== null) {
+										updatedSelected.assessorColumn = {
+											id: e.value,
+											columnName: e.label,
+										};
+										getAssessorFilterData(values.sourceFormId, e.value);
+									} else {
+										updatedSelected.assessorColumn = null;
+										setAssessorFilter({
+											data: [],
+											loading: false,
+											error: false,
+										});
+									}
+
+									updatedSelected.assessorFilter = null;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
+								isLoading={columnsLoading}
+							/>
+							<label className='flex items-center pt-1 text-sm'>
+								Optional filter by assessor
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+							</label>
+							<Field
+								name='assessorFilter'
+								options={assessorFilter.data}
+								component={FormSelect}
+								placeholder={
+									columnsLoading
+										? "Loading..."
+										: assessorFilter.error
+										? "Error!"
+										: assessorFilter.data.length > 0
+										? "Filter values"
+										: ""
+								}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.assessorFilter = e.value;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
+								isLoading={columnsLoading}
 							/>
 							<label className='font-medium'>Process column:</label>
 							<Field
@@ -127,8 +247,14 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.processColumn.id = e.value;
-									updatedSelected.processColumn.columnName = e.label;
+									if (e.value !== null) {
+										updatedSelected.processColumn = {
+											id: e.value,
+											columnName: e.label,
+										};
+									} else {
+										updatedSelected.processColumn = null;
+									}
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
@@ -150,8 +276,14 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.levelColumn.id = e.value;
-									updatedSelected.levelColumn.columnName = e.label;
+									if (e.value !== null) {
+										updatedSelected.levelColumn = {
+											id: e.value,
+											columnName: e.label,
+										};
+									} else {
+										updatedSelected.levelColumn = null;
+									}
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
@@ -173,8 +305,14 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.attributeColumn.id = e.value;
-									updatedSelected.attributeColumn.columnName = e.label;
+									if (e.value !== null) {
+										updatedSelected.attributeColumn = {
+											id: e.value,
+											columnName: e.label,
+										};
+									} else {
+										updatedSelected.attributeColumn = null;
+									}
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
@@ -196,8 +334,14 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.scoreColumn.id = e.value;
-									updatedSelected.scoreColumn.columnName = e.label;
+									if (e.value !== null) {
+										updatedSelected.scoreColumn = {
+											id: e.value,
+											columnName: e.label,
+										};
+									} else {
+										updatedSelected.scoreColumn = null;
+									}
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}

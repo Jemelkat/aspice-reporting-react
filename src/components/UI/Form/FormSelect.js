@@ -31,6 +31,13 @@ export const FormSelect = ({
 		return newValue == undefined ? null : newValue;
 	};
 
+	const styles = {
+		menu: (base) => ({
+			...base,
+			marginTop: 0,
+		}),
+	};
+
 	return (
 		<>
 			<Select
@@ -45,6 +52,8 @@ export const FormSelect = ({
 				options={options}
 				isMulti={isMulti}
 				isLoading={isLoading}
+				maxMenuHeight={200}
+				styles={styles}
 			/>
 
 			{error ? <div className='text-red-500 col-span-full'>{error}</div> : null}

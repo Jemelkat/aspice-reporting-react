@@ -47,7 +47,7 @@ const DashBoard = () => {
 			setItems(newItems);
 			if (selectedIdIndex !== -1) {
 				setSelectedItem(newItems[selectedIdIndex]);
-				return newItems[selectedIdIndex].id;
+				return newItems[selectedIdIndex];
 			} else {
 				selectItemHandler(null);
 				return null;
@@ -81,8 +81,10 @@ const DashBoard = () => {
 		setDashboardLoading(true);
 		getDashboard()
 			.then((response) => {
-				parseLoadedItems(response.data.dashboardItems);
-				setDashboardId(response.data.id);
+				if (response.data) {
+					parseLoadedItems(response.data.dashboardItems);
+					setDashboardId(response.data.id);
+				}
 				setDashboardLoading(false);
 			})
 			.catch(() => {

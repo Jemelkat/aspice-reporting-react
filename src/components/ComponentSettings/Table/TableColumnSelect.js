@@ -18,9 +18,16 @@ const TableColumnSelect = ({
 			component={FormSelect}
 			placeholder={columnsError ? "Error" : "Select column"}
 			onSelect={(e) => {
-				if (selectedItem.tableColumns.length > 0) {
-					selectedItem.tableColumns[index].sourceColumn.id = e.value;
-					selectedItem.tableColumns[index].sourceColumn.columnName = e.label;
+				let updatedSelected = selectedItem;
+				if (updatedSelected.tableColumns.length > 0) {
+					if (e.value !== null) {
+						updatedSelected.tableColumns[index].sourceColumn = {
+							id: e.value,
+							columnName: e.label,
+						};
+					} else {
+						updatedSelected.tableColumns[index].sourceColumn = null;
+					}
 					onItemUpdate(selectedItem);
 				} else {
 					return;

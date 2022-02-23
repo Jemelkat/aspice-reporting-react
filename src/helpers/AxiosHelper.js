@@ -1,6 +1,6 @@
 import axios from "axios";
-import { makeUseAxios } from "axios-hooks";
-import { getAuthHeaderToken } from "./AuthHelper";
+import {makeUseAxios} from "axios-hooks";
+import {getAuthHeaderToken} from "./AuthHelper";
 
 //All request should use this axios instance
 export const axiosInstance = axios.create({

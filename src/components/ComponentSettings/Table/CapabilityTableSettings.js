@@ -1,10 +1,8 @@
-import { InformationCircleIcon } from "@heroicons/react/solid";
-import { Field, Formik, Form } from "formik";
-import { useEffect, useState } from "react";
-import { useAxios } from "../../../helpers/AxiosHelper";
-import SourceColumnService, {
-	getColumnsForSource,
-} from "../../../services/SourceColumnService";
+import {InformationCircleIcon} from "@heroicons/react/solid";
+import {Field, Form, Formik} from "formik";
+import {useEffect, useState} from "react";
+import {useAxios} from "../../../helpers/AxiosHelper";
+import SourceColumnService from "../../../services/SourceColumnService";
 import FormInput from "../../UI/Form/FormInput";
 import FormSelect from "../../UI/Form/FormSelect";
 
@@ -60,7 +58,7 @@ const CapabilityTableSettigs = ({
 			//Load new columns for source
 			try {
 				setColumnsLoading(true);
-				const response = await getColumnsForSource(sourceId);
+				const response = await SourceColumnService.getColumnsForSource(sourceId);
 				setColumnsData(parseColumns(response.data));
 				setColumnsLoading(false);
 			} catch (e) {

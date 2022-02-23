@@ -1,4 +1,4 @@
-import { axiosInstance } from "./AxiosHelper";
+import {axiosInstance} from "./AxiosHelper";
 
 export const login = (username, password) => {
 	return axiosInstance

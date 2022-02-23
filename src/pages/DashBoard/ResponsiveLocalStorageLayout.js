@@ -1,5 +1,5 @@
 import React from "react";
-import { WidthProvider, Responsive } from "react-grid-layout";
+import {Responsive, WidthProvider} from "react-grid-layout";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const originalLayouts = getFromLS("layouts") || {};

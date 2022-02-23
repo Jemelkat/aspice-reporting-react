@@ -1,7 +1,7 @@
-import { Disclosure, Transition } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/solid";
+import {Disclosure, Transition} from "@headlessui/react";
+import {ChevronUpIcon} from "@heroicons/react/solid";
 
-const CanvasPanelDisclosure = ({ dark = false, ...props }) => {
+const SidebarDisclosure = ({ dark = false, ...props }) => {
 	return (
 		<Disclosure>
 			{({ open }) => (
@@ -38,4 +38,4 @@ const CanvasPanelDisclosure = ({ dark = false, ...props }) => {
 	);
 };
 
-export default CanvasPanelDisclosure;
+export default SidebarDisclosure;

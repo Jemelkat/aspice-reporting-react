@@ -1,9 +1,8 @@
-import { PencilIcon, RefreshIcon, UploadIcon } from "@heroicons/react/solid";
-import { useEffect, useState, useRef } from "react";
-import { useAlert } from "react-alert";
-import { Redirect } from "react-router-dom";
-import { typeEnum } from "../../helpers/ClassHelper";
-import { getItemData } from "../../services/DashboardService";
+import {PencilIcon, RefreshIcon, UploadIcon} from "@heroicons/react/solid";
+import {useEffect, useRef, useState} from "react";
+import {useAlert} from "react-alert";
+import {typeEnum} from "../../helpers/ClassHelper";
+import {getItemData} from "../../services/DashboardService";
 import Loader from "../UI/Loader/Loader";
 import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";

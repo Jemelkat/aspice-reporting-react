@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Select from "react-select";
 
 export const FormSelect = ({
@@ -28,7 +27,7 @@ export const FormSelect = ({
 		} else {
 			newValue = isMulti ? [] : null;
 		}
-		return newValue == undefined ? null : newValue;
+		return newValue === undefined ? null : newValue;
 	};
 
 	const styles = {

@@ -1,5 +1,5 @@
-import { getAuthHeaderToken } from "../helpers/AuthHelper";
-import { axiosInstance } from "../helpers/AxiosHelper";
+import {getAuthHeaderToken} from "../helpers/AuthHelper";
+import {axiosInstance} from "../helpers/AxiosHelper";
 
 export const deleteSource = (sourceId) => {
 	return axiosInstance.delete("/source/delete", {

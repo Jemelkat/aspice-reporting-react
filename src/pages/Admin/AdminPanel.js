@@ -1,8 +1,8 @@
 import Sidebar from "../../components/UI/Sidebar/Sidebar";
-import SidebarLinks from "../../components/UI/Sidebar/SidebarLinks";
+import SidebarLink from "../../components/UI/Sidebar/SidebarLink";
 import SidebarLinkItem from "../../components/UI/Sidebar/SidebarLinkItem";
 import AdminUser from "../../components/Admin/AdminUser";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import {Route, Switch, useRouteMatch} from "react-router-dom";
 import AdminGroup from "../../components/Admin/AdminGroup";
 
 const AdminPanel = () => {
@@ -11,7 +11,7 @@ const AdminPanel = () => {
 	return (
 		<div className='flex'>
 			<Sidebar>
-				<SidebarLinks sidebarName='Admin panel'>
+				<SidebarLink sidebarName='Admin panel'>
 					<SidebarLinkItem link={`${url}/users`} text='Users'>
 						<svg
 							width='20'
@@ -36,7 +36,7 @@ const AdminPanel = () => {
 							<path d='M960 0l960 384v128h-128q0 26-20.5 45t-48.5 19h-1526q-28 0-48.5-19t-20.5-45h-128v-128zm-704 640h256v768h128v-768h256v768h128v-768h256v768h128v-768h256v768h59q28 0 48.5 19t20.5 45v64h-1664v-64q0-26 20.5-45t48.5-19h59v-768zm1595 960q28 0 48.5 19t20.5 45v128h-1920v-128q0-26 20.5-45t48.5-19h1782z'></path>
 						</svg>
 					</SidebarLinkItem>
-				</SidebarLinks>
+				</SidebarLink>
 			</Sidebar>
 			<Switch>
 				<Route exact path={`${path}/groups`}>

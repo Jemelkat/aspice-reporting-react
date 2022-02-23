@@ -1,15 +1,14 @@
-import { useMemo, useState } from "react";
-import { useAlert } from "react-alert";
-import { axiosInstance } from "../../helpers/AxiosHelper";
+import {useMemo, useState} from "react";
+import {useAlert} from "react-alert";
 import Button from "../UI/Button";
 import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
 import Table from "../UI/Table/Table";
 import TableMenuButton from "../UI/Table/TableMenuButton";
 import TableMenuItem from "../UI/Table/TableMenuItem";
-import Title from "../UI/Title";
+import PageTitle from "../UI/PageTitle";
 import ShareDialog from "../UI/Dialog/ShareDialog";
-import SourceService, { deleteSource } from "../../services/SourceService";
-import { saveAs } from "file-saver";
+import SourceService, {deleteSource} from "../../services/SourceService";
+import {saveAs} from "file-saver";
 
 class SourceObject {
 	constructor(data) {
@@ -134,7 +133,7 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 
 	return (
 		<>
-			<Title text='Sources'></Title>
+			<PageTitle text='Sources'></PageTitle>
 			{/*Table options*/}
 			<div className='flex justify-end px-2 py-4'>
 				<Button className='mr-2' onClick={() => onAddSource(true)} dark={true}>

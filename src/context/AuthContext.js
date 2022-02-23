@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect } from "react";
-import { getLoggedUser } from "../helpers/AuthHelper";
+import {createContext, useEffect, useState} from "react";
+import {getLoggedUser} from "../helpers/AuthHelper";
 
 export const AuthContext = createContext();
 

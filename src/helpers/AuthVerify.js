@@ -1,4 +1,4 @@
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 //Verifies if token is not expired with every redirect
 
 const parseJwt = (token) => {

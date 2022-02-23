@@ -1,5 +1,5 @@
-import { Transition } from "@headlessui/react";
-import { Fragment, useEffect } from "react";
+import {Transition} from "@headlessui/react";
+import {useEffect} from "react";
 
 const Loader = ({ fullscreen, dark, size = "normal", ...props }) => {
 	useEffect(() => {}, []);

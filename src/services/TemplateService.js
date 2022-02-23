@@ -1,4 +1,4 @@
-import { axiosInstance } from "../helpers/AxiosHelper";
+import {axiosInstance} from "../helpers/AxiosHelper";
 
 export const saveTemplate = async (formValues, items) => {
 	return axiosInstance.post("/templates/save", {

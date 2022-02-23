@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { axiosInstance } from "../../helpers/AxiosHelper";
-import { useHistory } from "react-router";
+import {useEffect, useState} from "react";
+import {axiosInstance} from "../../helpers/AxiosHelper";
+import {useHistory} from "react-router";
 import Loader from "../UI/Loader/Loader";
-import CanvasRightMenu from "../Canvas/CanvasRightMenu";
-import TemplateMenuLeft from "./TemplateMenuLeft";
-import { useAlert } from "react-alert";
+import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
+import TemplateMenu from "./TemplateMenu";
+import {useAlert} from "react-alert";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
-import { saveTemplate } from "../../services/TemplateService";
-import { createItemFromExisting, Item } from "../../helpers/ClassHelper";
+import {saveTemplate} from "../../services/TemplateService";
+import {createItemFromExisting} from "../../helpers/ClassHelper";
 
 const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	const [templateData, setTemplateData] = useState(null);
@@ -98,11 +98,11 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 			) : (
 				<div className='flex bg-gray-200'>
 					{/*Left sidebar*/}
-					<TemplateMenuLeft
+					<TemplateMenu
 						data={templateData}
 						onSave={saveTemplateHandler}
 						onAddComponent={addItemHandler}
-					></TemplateMenuLeft>
+					></TemplateMenu>
 					{/*Canvas*/}
 					<Canvas
 						items={items}
@@ -112,14 +112,14 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 						onDeleteItem={deleteItemHandler}
 					></Canvas>
 					{/*Right sidebar */}
-					<CanvasRightMenu
+					<ItemSettingsMenu
 						show={showSelected}
 						onClose={hideSettings}
 						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}
 						onItemUpdate={updateItemHandler}
-					></CanvasRightMenu>
+					></ItemSettingsMenu>
 				</div>
 			)}
 		</>

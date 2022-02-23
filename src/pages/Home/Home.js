@@ -1,9 +1,9 @@
-import Title from "../../components/UI/Title";
+import PageTitle from "../../components/UI/PageTitle";
 
 function Home() {
 	return (
 		<>
-			<Title text='Home'></Title>
+			<PageTitle text='Home'></PageTitle>
 			<div>Domovska stranka</div>
 		</>
 	);

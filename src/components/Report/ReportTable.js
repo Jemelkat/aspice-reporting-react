@@ -1,15 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { axiosInstance, useAxios } from "../../helpers/AxiosHelper";
+import {useEffect, useMemo, useState} from "react";
+import {Link} from "react-router-dom";
+import {axiosInstance, useAxios} from "../../helpers/AxiosHelper";
 import Button from "../UI/Button";
 import Table from "../UI/Table/Table";
-import Title from "../UI/Title";
-import { useRouteMatch } from "react-router";
+import PageTitle from "../UI/PageTitle";
+import {useRouteMatch} from "react-router";
 import TableMenuButton from "../UI/Table/TableMenuButton";
 import TableMenuItem from "../UI/Table/TableMenuItem";
 import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
-import { useAlert } from "react-alert";
-import ShareDialog from "../UI/Dialog/ShareDialog";
+import {useAlert} from "react-alert";
 
 class ReportObject {
 	constructor(data) {
@@ -123,7 +122,7 @@ const ReportTable = (props) => {
 
 	return (
 		<>
-			<Title text='Reports'></Title>
+			<PageTitle text='Reports'></PageTitle>
 			<div className='flex justify-end px-2 py-4'>
 				<Link to={`${url}/create`}>
 					<Button className='mr-2' dark={true}>

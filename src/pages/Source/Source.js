@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useAxios } from "../../helpers/AxiosHelper";
+import {useState} from "react";
+import {useAxios} from "../../helpers/AxiosHelper";
 import SourceTable from "../../components/Source/SourceTable";
 import SourceUpload from "../../components/Source/SourceUpload";
-import { useAlert } from "react-alert";
+import {useAlert} from "react-alert";
 
 const Source = () => {
 	const [isOpen, setIsOpen] = useState(false);

@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react";
-import { useAlert } from "react-alert";
-import { useDropzone } from "react-dropzone";
-import { uploadSource } from "../../services/SourceService";
+import {useCallback, useState} from "react";
+import {useAlert} from "react-alert";
+import {useDropzone} from "react-dropzone";
+import {uploadSource} from "../../services/SourceService";
 import MyDialog from "../UI/Dialog/MyDialog";
 import Loader from "../UI/Loader/Loader";
 

@@ -1,14 +1,13 @@
-import { isObject } from "formik";
-import { useState } from "react";
-import { useAlert } from "react-alert";
+import {useState} from "react";
+import {useAlert} from "react-alert";
 import {
-	CapabilityBarGraph,
-	CapabilityTable,
-	createItemFromExisting,
-	LevelPieGraph,
-	SimpleTable,
-	Text,
-	typeEnum,
+    CapabilityBarGraph,
+    CapabilityTable,
+    createItemFromExisting,
+    LevelPieGraph,
+    SimpleTable,
+    Text,
+    typeEnum,
 } from "../helpers/ClassHelper";
 
 const useCanvas = () => {

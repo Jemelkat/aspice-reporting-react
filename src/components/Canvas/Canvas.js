@@ -1,4 +1,4 @@
-import RndCanvasItem from "../UI/Canvas/RndCanvasItem";
+import CanvasItem from "./CanvasItem";
 
 const Canvas = ({ items, onMove, onResize, onSelect, selectedItem }) => {
 	return (
@@ -13,14 +13,14 @@ const Canvas = ({ items, onMove, onResize, onSelect, selectedItem }) => {
 				{/*Generate stored components to canvas */}
 				{items.map((i) => {
 					return (
-						<RndCanvasItem
+						<CanvasItem
 							key={i.id}
 							item={i}
 							onMove={onMove}
 							onResize={onResize}
 							onSelect={onSelect}
 							isSelected={selectedItem && selectedItem.id === i.id}
-						></RndCanvasItem>
+						></CanvasItem>
 					);
 				})}
 			</div>

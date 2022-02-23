@@ -1,7 +1,7 @@
-import { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router";
-import { getLoggedUser, login, register } from "../../helpers/AuthHelper";
-import { AuthContext } from "../../context/AuthContext";
+import {useContext, useEffect, useState} from "react";
+import {useHistory} from "react-router";
+import {getLoggedUser, login, register} from "../../helpers/AuthHelper";
+import {AuthContext} from "../../context/AuthContext";
 
 function LoginForm(props) {
 	const [username, setUsername] = useState("");

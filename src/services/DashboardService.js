@@ -1,4 +1,4 @@
-import { axiosInstance } from "../helpers/AxiosHelper";
+import {axiosInstance} from "../helpers/AxiosHelper";
 
 export const saveDashboard = async (dashboardId, items) => {
 	return axiosInstance.post("dashboard/save", {

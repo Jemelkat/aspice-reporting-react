@@ -1,4 +1,4 @@
-import { Menu } from "@headlessui/react";
+import {Menu} from "@headlessui/react";
 
 const TableMenuItem = (props) => {
 	return (

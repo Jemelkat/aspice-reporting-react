@@ -1,15 +1,16 @@
 import "../../../node_modules/react-grid-layout/css/styles.css";
 import "../../..//node_modules/react-resizable/css/styles.css";
-import { useEffect, useState } from "react";
-import CanvasRightMenu from "../../components/Canvas/CanvasRightMenu";
+import {useEffect, useState} from "react";
+import ItemSettingsMenu from "../../components/ComponentSettings/ItemSettingsMenu";
 import DashBoardMenu from "../../components/Dashboard/DashboardMenu";
 import useCanvas from "../../hooks/useCanvas";
-import { getDashboard, saveDashboard } from "../../services/DashboardService";
-import { useAlert } from "react-alert";
+import {getDashboard, saveDashboard} from "../../services/DashboardService";
+import {useAlert} from "react-alert";
 import Loader from "../../components/UI/Loader/Loader";
 import DashboardCanvas from "../../components/Dashboard/DashboardCanvas";
-import { createItemFromExisting } from "../../helpers/ClassHelper";
+import {createItemFromExisting} from "../../helpers/ClassHelper";
 import ExportItemDialog from "../../components/Dashboard/ExportItemDialog";
+
 const DashBoard = () => {
 	const {
 		items,
@@ -119,14 +120,14 @@ const DashBoard = () => {
 							onExport={() => setShowExportDialog(true)}
 						></DashboardCanvas>
 
-						<CanvasRightMenu
+						<ItemSettingsMenu
 							simple
 							show={showSelected}
 							onClose={() => selectItemHandler(null)}
 							selectedItem={selectedItem}
 							onDeleteItem={deleteItemHandler}
 							onItemUpdate={updateItemHandler}
-						></CanvasRightMenu>
+						></ItemSettingsMenu>
 
 						{showExportDialog && (
 							<ExportItemDialog

@@ -1,10 +1,10 @@
-import { Rnd } from "react-rnd";
-import { typeEnum } from "../../../helpers/ClassHelper";
-import { ReactComponent as SVGBarHorizontal } from "../../../assets/barchart-horizontal.svg";
-import { ReactComponent as SVGBarVertical } from "../../../assets/barchart-vertical.svg";
-import { ReactComponent as SVGPie } from "../../../assets/piechart.svg";
+import {Rnd} from "react-rnd";
+import {typeEnum} from "../../helpers/ClassHelper";
+import {ReactComponent as SVGBarHorizontal} from "../../assets/barchart-horizontal.svg";
+import {ReactComponent as SVGBarVertical} from "../../assets/barchart-vertical.svg";
+import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
 
-const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
+const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 	const renderContent = () => {
 		switch (item.type) {
 			case typeEnum.TEXT:
@@ -156,4 +156,4 @@ const RndCanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 	);
 };
 
-export default RndCanvasItem;
+export default CanvasItem;

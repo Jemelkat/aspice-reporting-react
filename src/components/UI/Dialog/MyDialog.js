@@ -1,16 +1,15 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useRef } from "react";
+import {Dialog, Transition} from "@headlessui/react";
+import {Fragment, useRef} from "react";
 
 function MyDialog({ isOpen, onClose, title, description, ...props }) {
 	let completeButtonRef = useRef(null);
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog
-				className='w-36r'
 				initialFocus={completeButtonRef}
 				onClose={onClose}
 				as='div'
-				className='fixed inset-0 z-10 flex items-center justify-center overflow-y-auto'
+				className='w-36r fixed inset-0 z-10 flex items-center justify-center overflow-y-auto'
 			>
 				<div className='flex items-center justify-center'>
 					<Dialog.Overlay className='fixed inset-0 bg-gray-800 opacity-50' />

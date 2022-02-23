@@ -1,5 +1,5 @@
-import { Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import {Transition} from "@headlessui/react";
+import {Fragment, useEffect, useState} from "react";
 
 const Sidebar = ({ className, show = true, position = "left", children }) => {
 	const [isScrolled, setIsScrolled] = useState(false);

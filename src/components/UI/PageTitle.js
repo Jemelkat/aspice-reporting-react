@@ -1,4 +1,4 @@
-const Title = (props) => {
+const PageTitle = (props) => {
 	return (
 		<div className='divide-y drop-shadow-sm divide-gray-800 pb-4'>
 			<h1 className='text-3xl font-bold text-gray-800'>{props.text}</h1>
@@ -7,4 +7,4 @@ const Title = (props) => {
 	);
 };
 
-export default Title;
+export default PageTitle;

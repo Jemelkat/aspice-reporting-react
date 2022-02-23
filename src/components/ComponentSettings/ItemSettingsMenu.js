@@ -1,21 +1,19 @@
 import Sidebar from "../UI/Sidebar/Sidebar";
-import SidebarLinks from "../UI/Sidebar/SidebarLinks";
-import { Field, Form, Formik } from "formik";
+import SidebarLink from "../UI/Sidebar/SidebarLink";
+import {Form, Formik} from "formik";
 import FormHidden from "../UI/Form/FormHidden";
 import FormInput from "../UI/Form/FormInput";
 import Button from "../UI/Button";
-import { useEffect } from "react";
-import { typeEnum } from "../../helpers/ClassHelper";
-import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
-import TextSettings from "../ComponentSettings/Text/TextSettings";
-import { useRef } from "react";
-import TableSettings from "../ComponentSettings/Table/TableSettings";
-import CapabilityBarGraphSettings from "../ComponentSettings/Graph/CapabilityBarGraphSettings";
-import LevelPieGraphSettings from "../ComponentSettings/Graph/LevelPieGraphSettings";
-import CapabilityTableSettigs from "../ComponentSettings/Table/CapabilityTableSettings";
-import SimpleTableSettings from "../ComponentSettings/Table/SimpleTableSettings";
+import {useEffect, useRef} from "react";
+import {typeEnum} from "../../helpers/ClassHelper";
+import SidebarDisclosure from "../UI/Sidebar/SidebarDisclosure";
+import TextSettings from "./Text/TextSettings";
+import CapabilityBarGraphSettings from "./Graph/CapabilityBarGraphSettings";
+import LevelPieGraphSettings from "./Graph/LevelPieGraphSettings";
+import CapabilityTableSettigs from "./Table/CapabilityTableSettings";
+import SimpleTableSettings from "./Table/SimpleTableSettings";
 
-const CanvasRightMenu = ({
+const ItemSettingsMenu = ({
 	simple = false,
 	selectedItem,
 	show,
@@ -52,16 +50,6 @@ const CanvasRightMenu = ({
 				);
 			case typeEnum.SIMPLE_TABLE:
 				return (
-					// <TableSettings
-					// 	simple
-					// 	sourceId={
-					// 		selectedItem.source && selectedItem.source.id
-					// 			? selectedItem.source.id
-					// 			: null
-					// 	}
-					// 	selectedItem={selectedItem}
-					// 	onItemUpdate={onItemUpdate}
-					// ></TableSettings>
 					<SimpleTableSettings
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
@@ -73,15 +61,6 @@ const CanvasRightMenu = ({
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
 					></CapabilityTableSettigs>
-					// <TableSettings
-					// 	sourceId={
-					// 		selectedItem.source && selectedItem.source.id
-					// 			? selectedItem.source.id
-					// 			: null
-					// 	}
-					// 	selectedItem={selectedItem}
-					// 	onItemUpdate={onItemUpdate}
-					// ></TableSettings>
 				);
 
 			default:
@@ -120,7 +99,7 @@ const CanvasRightMenu = ({
 					</span>
 					{selectedItem && (
 						<>
-							<SidebarLinks sidebarName='Edit component'></SidebarLinks>
+							<SidebarLink sidebarName='Edit component'></SidebarLink>
 							{!simple && (
 								<Formik
 									enableReinitialize={true}
@@ -145,7 +124,7 @@ const CanvasRightMenu = ({
 								>
 									{({ values }) => (
 										<Form className='flex flex-col'>
-											<CanvasPanelDisclosure name='Basic information'>
+											<SidebarDisclosure name='Basic information'>
 												<FormHidden name='id'></FormHidden>
 												<div className='grid grid-cols-2 p-4 gap-y-2'>
 													<FormInput
@@ -193,7 +172,7 @@ const CanvasRightMenu = ({
 														Move to Bottom
 													</Button>
 												</div>
-											</CanvasPanelDisclosure>
+											</SidebarDisclosure>
 										</Form>
 									)}
 								</Formik>
@@ -219,4 +198,4 @@ const CanvasRightMenu = ({
 	);
 };
 
-export default CanvasRightMenu;
+export default ItemSettingsMenu;

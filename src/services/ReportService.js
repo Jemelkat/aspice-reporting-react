@@ -1,6 +1,6 @@
 import axios from "axios";
-import { getAuthHeaderToken } from "../helpers/AuthHelper";
-import { axiosInstance } from "../helpers/AxiosHelper";
+import {getAuthHeaderToken} from "../helpers/AuthHelper";
+import {axiosInstance} from "../helpers/AxiosHelper";
 
 export const saveReport = async (formValues, items) => {
 	return axiosInstance.post("reports/save", {

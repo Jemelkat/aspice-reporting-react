@@ -1,13 +1,13 @@
-import { Field, Form, Formik } from "formik";
+import {Field, Form, Formik} from "formik";
 import Button from "../UI/Button";
 import MyDialog from "../UI/Dialog/MyDialog";
 import FormSelect from "../UI/Form/FormSelect";
 import * as Yup from "yup";
-import { Tab } from "@headlessui/react";
-import { useEffect, useState } from "react";
-import { getAllSimple } from "../../services/ReportService";
+import {Tab} from "@headlessui/react";
+import {useEffect, useState} from "react";
+import {getAllSimple} from "../../services/ReportService";
 import TemplateService from "../../services/TemplateService";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 const ExportItemDialog = ({ item, showDialog, onClose }) => {
 	//0 - report, 1 - template

@@ -1,13 +1,13 @@
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import Title from "../../components/UI/Title";
+import {useContext} from "react";
+import {AuthContext} from "../../context/AuthContext";
+import PageTitle from "../../components/UI/PageTitle";
 
 function Profile() {
 	const { loggedUser } = useContext(AuthContext);
 
 	return loggedUser.user ? (
 		<>
-			<Title text='Profile'></Title>
+			<PageTitle text='Profile'></PageTitle>
 			<div>
 				<div>ID : {loggedUser.user.id}</div>
 				<div>USERNAME : {loggedUser.user.username}</div>

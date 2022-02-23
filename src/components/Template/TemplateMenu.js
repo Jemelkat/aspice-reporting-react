@@ -1,25 +1,25 @@
-import { Form, Formik } from "formik";
+import {Form, Formik} from "formik";
 import Button from "../UI/Button";
-import CanvasPanelDisclosure from "../UI/Canvas/CanvasPanelDisclosure";
+import SidebarDisclosure from "../UI/Sidebar/SidebarDisclosure";
 import FormHidden from "../UI/Form/FormHidden";
 import FormInput from "../UI/Form/FormInput";
 import Sidebar from "../UI/Sidebar/Sidebar";
-import SidebarLinks from "../UI/Sidebar/SidebarLinks";
+import SidebarLink from "../UI/Sidebar/SidebarLink";
 import * as Yup from "yup";
-import { PlusIcon } from "@heroicons/react/solid";
-import { typeEnum } from "../../helpers/ClassHelper";
+import {PlusIcon} from "@heroicons/react/solid";
+import {typeEnum} from "../../helpers/ClassHelper";
 import SidebarCanvasItem from "../UI/Sidebar/SidebarCanvasItem";
-import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
-import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
-import { ReactComponent as SVGSimpleTable } from "../../assets/simple-table.svg";
-import { ReactComponent as SVGCapabilityTable } from "../../assets/capability-table.svg";
+import {ReactComponent as SVGBarHorizontal} from "../../assets/barchart-horizontal.svg";
+import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
+import {ReactComponent as SVGSimpleTable} from "../../assets/simple-table.svg";
+import {ReactComponent as SVGCapabilityTable} from "../../assets/capability-table.svg";
 
-const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
+const TemplateMenu = ({ data, onSave, onAddComponent }) => {
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
 			<div className='sticky top-0 flex justify-start h-screen'>
 				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
-					<SidebarLinks sidebarName='Template'>
+					<SidebarLink sidebarName='Template'>
 						<Formik
 							enableReinitialize={true}
 							initialValues={{
@@ -47,13 +47,13 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 								</Button>
 							</Form>
 						</Formik>
-					</SidebarLinks>
-					<SidebarLinks sidebarName='Items'>
+					</SidebarLink>
+					<SidebarLink sidebarName='Items'>
 						<span className='w-full pt-2 pb-2 pl-5 pr-5 text-sm text-center'>
 							Click on item to add it to template
 						</span>
-					</SidebarLinks>
-					<CanvasPanelDisclosure name='Text components' dark>
+					</SidebarLink>
+					<SidebarDisclosure name='Text components' dark>
 						<div
 							className='flex flex-row p-2 m-2 bg-gray-100'
 							onClick={() => onAddComponent(typeEnum.TEXT)}
@@ -61,8 +61,8 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
 							TEXT
 						</div>
-					</CanvasPanelDisclosure>
-					<CanvasPanelDisclosure name='Graph components' dark>
+					</SidebarDisclosure>
+					<SidebarDisclosure name='Graph components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
 							<SidebarCanvasItem
 								mini
@@ -83,8 +83,8 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 								<SVGPie></SVGPie>
 							</SidebarCanvasItem>
 						</div>
-					</CanvasPanelDisclosure>
-					<CanvasPanelDisclosure name='Table components' dark>
+					</SidebarDisclosure>
+					<SidebarDisclosure name='Table components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
 							<SidebarCanvasItem
 								mini
@@ -105,11 +105,11 @@ const TemplateMenuLeft = ({ data, onSave, onAddComponent }) => {
 								<SVGCapabilityTable />
 							</SidebarCanvasItem>
 						</div>
-					</CanvasPanelDisclosure>
+					</SidebarDisclosure>
 				</Sidebar>
 			</div>
 		</div>
 	);
 };
 
-export default TemplateMenuLeft;
+export default TemplateMenu;

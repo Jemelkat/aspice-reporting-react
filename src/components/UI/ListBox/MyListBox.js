@@ -1,10 +1,10 @@
 import {
-	ChevronDoubleLeftIcon,
-	ChevronDoubleRightIcon,
-	ChevronLeftIcon,
-	ChevronRightIcon,
+    ChevronDoubleLeftIcon,
+    ChevronDoubleRightIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
 } from "@heroicons/react/solid";
-import React, { useState } from "react";
+import React, {useState} from "react";
 import DualListBox from "react-dual-listbox";
 
 const options = [

@@ -1,5 +1,5 @@
-import { ChevronDoubleUpIcon } from "@heroicons/react/solid";
-import { useSortBy, useTable } from "react-table";
+import {ChevronDoubleUpIcon} from "@heroicons/react/solid";
+import {useSortBy, useTable} from "react-table";
 
 function Table({ columns, data, isLoading, initSortColumn }) {
 	// Use the state and functions returned from useTable to build your UI

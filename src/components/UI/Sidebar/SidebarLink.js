@@ -1,4 +1,4 @@
-const SidebarLinks = (props) => {
+const SidebarLink = (props) => {
 	return (
 		<>
 			<div className='flex items-center justify-center pt-4 text-lg font-semibold text-gray-800 uppercase'>
@@ -9,4 +9,4 @@ const SidebarLinks = (props) => {
 	);
 };
 
-export default SidebarLinks;
+export default SidebarLink;

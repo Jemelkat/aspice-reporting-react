@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Responsive } from "react-grid-layout";
-import { SizeMe } from "react-sizeme";
-import { getFromLS, saveToLS } from "../../services/LocalStorageService";
+import {useState} from "react";
+import {Responsive} from "react-grid-layout";
+import {SizeMe} from "react-sizeme";
+import {getFromLS, saveToLS} from "../../services/LocalStorageService";
 import DashboardItem from "./DashboardItem";
 
 const DashboardCanvas = ({

@@ -1,6 +1,6 @@
-import Sidebar from "../../components/UI/Sidebar/Sidebar";
-import SidebarLink from "../../components/UI/Sidebar/SidebarLink";
-import SidebarLinkItem from "../../components/UI/Sidebar/SidebarLinkItem";
+import Sidebar from "../../ui/Sidebar/Sidebar";
+import SidebarLink from "../../ui/Sidebar/SidebarLink";
+import SidebarLinkItem from "../../ui/Sidebar/SidebarLinkItem";
 import AdminUser from "../../components/Admin/AdminUser";
 import {Route, Switch, useRouteMatch} from "react-router-dom";
 import AdminGroup from "../../components/Admin/AdminGroup";

@@ -1,12 +1,12 @@
 import {useMemo, useState} from "react";
 import {useAlert} from "react-alert";
-import Button from "../UI/Button";
-import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
-import Table from "../UI/Table/Table";
-import TableMenuButton from "../UI/Table/TableMenuButton";
-import TableMenuItem from "../UI/Table/TableMenuItem";
-import PageTitle from "../UI/PageTitle";
-import ShareDialog from "../UI/Dialog/ShareDialog";
+import Button from "../../ui/Button";
+import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
+import Table from "../../ui/Table/Table";
+import TableMenuButton from "../../ui/Table/TableMenuButton";
+import TableMenuItem from "../../ui/Table/TableMenuItem";
+import PageTitle from "../../ui/PageTitle";
+import ShareDialog from "../../ui/Dialog/ShareDialog";
 import SourceService from "../../services/SourceService";
 import {saveAs} from "file-saver";
 

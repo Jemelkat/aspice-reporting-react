@@ -1,5 +1,5 @@
 import {Field} from "formik";
-import FormSelect from "../../UI/Form/FormSelect";
+import FormSelect from "../../../ui/Form/FormSelect";
 
 const TableColumnSelect = ({
 	name,

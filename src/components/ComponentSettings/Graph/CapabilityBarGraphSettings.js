@@ -1,10 +1,10 @@
 import {Field, Form, Formik} from "formik";
 import {useAxios} from "../../../helpers/AxiosHelper";
-import FormSelect from "../../UI/Form/FormSelect";
+import FormSelect from "../../../ui/Form/FormSelect";
 import {useEffect, useState} from "react";
 import {InformationCircleIcon} from "@heroicons/react/outline";
 import {useAlert} from "react-alert";
-import HorizontalLine from "../../UI/HorizontalLine";
+import HorizontalLine from "../../../ui/HorizontalLine";
 import SourceColumnService from "../../../services/SourceColumnService";
 
 const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {

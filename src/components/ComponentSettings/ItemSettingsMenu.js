@@ -1,12 +1,12 @@
-import Sidebar from "../UI/Sidebar/Sidebar";
-import SidebarLink from "../UI/Sidebar/SidebarLink";
+import Sidebar from "../../ui/Sidebar/Sidebar";
+import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import {Form, Formik} from "formik";
-import FormHidden from "../UI/Form/FormHidden";
-import FormInput from "../UI/Form/FormInput";
-import Button from "../UI/Button";
+import FormHidden from "../../ui/Form/FormHidden";
+import FormInput from "../../ui/Form/FormInput";
+import Button from "../../ui/Button";
 import {useEffect, useRef} from "react";
 import {typeEnum} from "../../helpers/ClassHelper";
-import SidebarDisclosure from "../UI/Sidebar/SidebarDisclosure";
+import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import TextSettings from "./Text/TextSettings";
 import CapabilityBarGraphSettings from "./Graph/CapabilityBarGraphSettings";
 import LevelPieGraphSettings from "./Graph/LevelPieGraphSettings";

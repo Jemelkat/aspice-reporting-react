@@ -1,13 +1,13 @@
 import {useMemo, useState} from "react";
 import {Link} from "react-router-dom";
 import {axiosInstance, useAxios} from "../../helpers/AxiosHelper";
-import Button from "../UI/Button";
-import Table from "../UI/Table/Table";
-import PageTitle from "../UI/PageTitle";
+import Button from "../../ui/Button";
+import Table from "../../ui/Table/Table";
+import PageTitle from "../../ui/PageTitle";
 import {useRouteMatch} from "react-router";
-import TableMenuItem from "../UI/Table/TableMenuItem";
-import TableMenuButton from "../UI/Table/TableMenuButton";
-import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
+import TableMenuItem from "../../ui/Table/TableMenuItem";
+import TableMenuButton from "../../ui/Table/TableMenuButton";
+import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
 import {useAlert} from "react-alert";
 
 class TemplateObject {

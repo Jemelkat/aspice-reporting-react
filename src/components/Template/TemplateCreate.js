@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {axiosInstance} from "../../helpers/AxiosHelper";
 import {useHistory} from "react-router";
-import Loader from "../UI/Loader/Loader";
+import Loader from "../../ui/Loader/Loader";
 import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
 import TemplateMenu from "./TemplateMenu";
 import {useAlert} from "react-alert";

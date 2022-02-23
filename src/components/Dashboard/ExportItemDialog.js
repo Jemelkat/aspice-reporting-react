@@ -1,7 +1,7 @@
 import {Field, Form, Formik} from "formik";
-import Button from "../UI/Button";
-import MyDialog from "../UI/Dialog/MyDialog";
-import FormSelect from "../UI/Form/FormSelect";
+import Button from "../../ui/Button";
+import MyDialog from "../../ui/Dialog/MyDialog";
+import FormSelect from "../../ui/Form/FormSelect";
 import * as Yup from "yup";
 import {Tab} from "@headlessui/react";
 import {useEffect, useState} from "react";

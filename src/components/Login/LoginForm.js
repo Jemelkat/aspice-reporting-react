@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import AuthService from "../../services/AuthService";
-import Loader from "../UI/Loader/Loader";
+import Loader from "../../ui/Loader/Loader";
 
 function LoginForm(props) {
 	const [username, setUsername] = useState("");

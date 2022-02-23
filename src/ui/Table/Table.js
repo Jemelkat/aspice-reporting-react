@@ -2,7 +2,7 @@ import {ChevronDoubleUpIcon} from "@heroicons/react/solid";
 import {useSortBy, useTable} from "react-table";
 
 function Table({ columns, data, isLoading, initSortColumn }) {
-	// Use the state and functions returned from useTable to build your UI
+	// Use the state and functions returned from useTable to build your ui
 	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
 		useTable(
 			{
@@ -20,7 +20,7 @@ function Table({ columns, data, isLoading, initSortColumn }) {
 			useSortBy
 		);
 
-	// Render the UI for your table
+	// Render the ui for your table
 	return (
 		<table {...getTableProps()} className='flex-grow rounded-lg shadow-xl'>
 			<thead className='bg-gray-800'>

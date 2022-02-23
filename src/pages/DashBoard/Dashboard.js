@@ -5,7 +5,7 @@ import ItemSettingsMenu from "../../components/ComponentSettings/ItemSettingsMen
 import DashBoardMenu from "../../components/Dashboard/DashboardMenu";
 import useCanvas from "../../hooks/useCanvas";
 import {useAlert} from "react-alert";
-import Loader from "../../components/UI/Loader/Loader";
+import Loader from "../../ui/Loader/Loader";
 import DashboardCanvas from "../../components/Dashboard/DashboardCanvas";
 import {createItemFromExisting} from "../../helpers/ClassHelper";
 import ExportItemDialog from "../../components/Dashboard/ExportItemDialog";

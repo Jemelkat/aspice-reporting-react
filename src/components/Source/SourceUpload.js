@@ -2,8 +2,8 @@ import {useCallback, useState} from "react";
 import {useAlert} from "react-alert";
 import {useDropzone} from "react-dropzone";
 import SourceService, {uploadSource} from "../../services/SourceService";
-import MyDialog from "../UI/Dialog/MyDialog";
-import Loader from "../UI/Loader/Loader";
+import MyDialog from "../../ui/Dialog/MyDialog";
+import Loader from "../../ui/Loader/Loader";
 
 const SourceUpload = ({ isOpen, onOpenChange, onRefetch }) => {
 	const [progress, setProgress] = useState(0);

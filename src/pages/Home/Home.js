@@ -1,4 +1,4 @@
-import PageTitle from "../../components/UI/PageTitle";
+import PageTitle from "../../ui/PageTitle";
 
 function Home() {
 	return (

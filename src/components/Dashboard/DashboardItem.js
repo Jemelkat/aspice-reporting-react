@@ -2,7 +2,7 @@ import {PencilIcon, RefreshIcon, UploadIcon} from "@heroicons/react/solid";
 import {useEffect, useRef, useState} from "react";
 import {useAlert} from "react-alert";
 import {typeEnum} from "../../helpers/ClassHelper";
-import Loader from "../UI/Loader/Loader";
+import Loader from "../../ui/Loader/Loader";
 import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";
 import DashboardService from "../../services/DashboardService";

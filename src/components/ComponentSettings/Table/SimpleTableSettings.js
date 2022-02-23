@@ -2,10 +2,10 @@ import {Field, Form, Formik} from "formik";
 import {useEffect, useState} from "react";
 import {useAxios} from "../../../helpers/AxiosHelper";
 import SourceColumnService, {getColumnsForSource} from "../../../services/SourceColumnService";
-import Button from "../../UI/Button";
-import SidebarDisclosure from "../../UI/Sidebar/SidebarDisclosure";
-import FormInput from "../../UI/Form/FormInput";
-import FormSelect from "../../UI/Form/FormSelect";
+import Button from "../../../ui/Button";
+import SidebarDisclosure from "../../../ui/Sidebar/SidebarDisclosure";
+import FormInput from "../../../ui/Form/FormInput";
+import FormSelect from "../../../ui/Form/FormSelect";
 import TableColumnSelect from "./TableColumnSelect";
 
 const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {

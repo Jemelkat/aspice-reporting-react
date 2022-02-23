@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import * as Yup from "yup";
 import {useAxios} from "../../../helpers/AxiosHelper";
 import {typeEnum} from "../../../helpers/ClassHelper";
-import FormSelect from "../../UI/Form/FormSelect";
+import FormSelect from "../../../ui/Form/FormSelect";
 import CapabilityTableSettigs from "./CapabilityTableSettings";
 import SimpleTableSettings from "./SimpleTableSettings";
 

@@ -3,8 +3,8 @@ import {Field, Form, Formik} from "formik";
 import {useEffect, useState} from "react";
 import {useAxios} from "../../../helpers/AxiosHelper";
 import SourceColumnService from "../../../services/SourceColumnService";
-import FormInput from "../../UI/Form/FormInput";
-import FormSelect from "../../UI/Form/FormSelect";
+import FormInput from "../../../ui/Form/FormInput";
+import FormSelect from "../../../ui/Form/FormSelect";
 
 const CapabilityTableSettigs = ({
 	selectedItem,

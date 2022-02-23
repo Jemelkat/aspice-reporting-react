@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useAxios} from "../../helpers/AxiosHelper";
-import Loader from "../UI/Loader/Loader";
+import Loader from "../../ui/Loader/Loader";
 import {useHistory} from "react-router";
 import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
 import ReportMenu from "./ReportMenu";

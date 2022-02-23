@@ -1,8 +1,8 @@
-import Button from "../UI/Button";
-import Sidebar from "../UI/Sidebar/Sidebar";
-import SidebarLink from "../UI/Sidebar/SidebarLink";
+import Button from "../../ui/Button";
+import Sidebar from "../../ui/Sidebar/Sidebar";
+import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import {typeEnum} from "../../helpers/ClassHelper";
-import SidebarCanvasItem from "../UI/Sidebar/SidebarCanvasItem";
+import SidebarCanvasItem from "../../ui/Sidebar/SidebarCanvasItem";
 import {ReactComponent as SVGBarHorizontal} from "../../assets/barchart-horizontal.svg";
 import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
 

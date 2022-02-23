@@ -1,6 +1,6 @@
 import {Field, Form, Formik} from "formik";
-import SidebarDisclosure from "../../UI/Sidebar/SidebarDisclosure";
-import FormInput from "../../UI/Form/FormInput";
+import SidebarDisclosure from "../../../ui/Sidebar/SidebarDisclosure";
+import FormInput from "../../../ui/Form/FormInput";
 import * as Yup from "yup";
 import {ChromePicker} from "react-color";
 import {useEffect, useState} from "react";

@@ -13,7 +13,6 @@ import Login from "./pages/Login/Login";
 import Nav from "./components/Nav/Nav";
 import PageContainer from "./components/UI/PageContainer";
 import PrivateRoute from "./routes/PrivateRoute";
-import Profile from "./pages/Profile/Profile";
 import Report from "./pages/Report/Report";
 import Source from "./pages/Source/Source";
 import Template from "./pages/Template/Template";
@@ -56,11 +55,6 @@ function App() {
 								<>
 									<PrivateRoute path='/dashboard'>
 										<DashBoard />
-									</PrivateRoute>
-									<PrivateRoute path='/profile'>
-										<PageContainer>
-											<Profile />
-										</PageContainer>
 									</PrivateRoute>
 									<PrivateRoute path='/source'>
 										<PageContainer>

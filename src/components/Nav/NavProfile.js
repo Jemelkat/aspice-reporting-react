@@ -51,7 +51,6 @@ function NavProfile() {
 				leaveTo='transform opacity-0 scale-95'
 			>
 				<Menu.Items className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-xl py-1 bg-white z-10'>
-					<NavProfileItem link='/profile' text='Profile'></NavProfileItem>
 					<NavProfileItem link='/admin/users' text='Admin'></NavProfileItem>
 					<NavProfileItem
 						link='#'

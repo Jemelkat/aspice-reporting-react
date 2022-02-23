@@ -1,6 +1,5 @@
 import {withRouter} from "react-router-dom";
 //Verifies if token is not expired with every redirect
-
 const parseJwt = (token) => {
 	try {
 		return JSON.parse(atob(token.split(".")[1]));

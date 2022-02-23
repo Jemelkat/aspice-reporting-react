@@ -1,6 +1,6 @@
 import axios from "axios";
-import {getAuthHeaderToken} from "../helpers/AuthHelper";
 import {axiosInstance} from "../helpers/AxiosHelper";
+import AuthService from "./AuthService";
 
 export default class ReportService {
 	static saveReport = async (formValues, items) => {
@@ -28,7 +28,7 @@ export default class ReportService {
 	static generateReport = async (reportId) => {
 		return axios.get("http://localhost:8080/reports/generate", {
 			headers: {
-				Authorization: getAuthHeaderToken(),
+				Authorization: AuthService.getAuthHeaderToken(),
 				Accept: "application/pdf",
 			},
 			responseType: "blob",

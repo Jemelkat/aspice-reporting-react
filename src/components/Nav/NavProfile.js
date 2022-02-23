@@ -3,8 +3,8 @@ import {Fragment, useContext} from "react";
 import NavProfileItem from "./NavProfileItem";
 import Avatar, {genConfig} from "react-nice-avatar";
 import {useHistory} from "react-router";
-import {logout} from "../../helpers/AuthHelper";
 import {AuthContext} from "../../context/AuthContext";
+import AuthService from "../../services/AuthService";
 
 function NavProfile() {
 	let history = useHistory();
@@ -29,7 +29,7 @@ function NavProfile() {
 	const myConfig = genConfig(config);
 
 	const logoutHandler = () => {
-		logout();
+		AuthService.logout();
 		history.push();
 		removeLoggedUser();
 	};

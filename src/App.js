@@ -17,14 +17,14 @@ import Profile from "./pages/Profile/Profile";
 import Report from "./pages/Report/Report";
 import Source from "./pages/Source/Source";
 import Template from "./pages/Template/Template";
-import {logout} from "./helpers/AuthHelper";
 import {useContext} from "react";
+import AuthService from "./services/AuthService";
 
 function App() {
 	const { loggedUser, removeLoggedUser } = useContext(AuthContext);
 
 	const logoutHandler = () => {
-		logout();
+		AuthService.logout();
 		removeLoggedUser();
 	};
 

@@ -1,12 +1,12 @@
-import {getAuthHeaderToken} from "../helpers/AuthHelper";
 import {axiosInstance} from "../helpers/AxiosHelper";
+import AuthService from "./AuthService";
 
 export default class SourceService {
     static download(sourceId) {
         const requestOptions = {
             method: "GET",
             headers: {
-                Authorization: getAuthHeaderToken(),
+                Authorization: AuthService.getAuthHeaderToken(),
                 Accept: "text/csv",
             },
             responseType: "blob",
@@ -28,7 +28,7 @@ export default class SourceService {
             method: "POST",
             headers: {
                 "Content-Type": "multipart/form-data",
-                Authorization: getAuthHeaderToken(),
+                Authorization: AuthService.getAuthHeaderToken(),
             },
             onUploadProgress: function (event) {
                 onProgress(event);

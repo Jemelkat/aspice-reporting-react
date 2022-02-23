@@ -9,7 +9,7 @@ function MyDialog({ isOpen, onClose, title, description, ...props }) {
 				initialFocus={completeButtonRef}
 				onClose={onClose}
 				as='div'
-				className='w-36r fixed inset-0 z-10 flex items-center justify-center overflow-y-auto'
+				className='fixed inset-0 z-10 flex items-center justify-center overflow-y-auto'
 			>
 				<div className='flex items-center justify-center'>
 					<Dialog.Overlay className='fixed inset-0 bg-gray-800 opacity-50' />

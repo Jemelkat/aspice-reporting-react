@@ -1,7 +1,7 @@
 import {useCallback, useState} from "react";
 import {useAlert} from "react-alert";
 import {useDropzone} from "react-dropzone";
-import {uploadSource} from "../../services/SourceService";
+import SourceService, {uploadSource} from "../../services/SourceService";
 import MyDialog from "../UI/Dialog/MyDialog";
 import Loader from "../UI/Loader/Loader";
 
@@ -31,7 +31,7 @@ const SourceUpload = ({ isOpen, onOpenChange, onRefetch }) => {
 	const upload = (acceptedFiles) => {
 		setProgress(0);
 		setisUploading(true);
-		uploadSource(acceptedFiles, (event) => {
+		SourceService.uploadSource(acceptedFiles, (event) => {
 			const newProgress = Math.round((100 * event.loaded) / event.total);
 			setProgress(newProgress);
 			if (newProgress === 100) {

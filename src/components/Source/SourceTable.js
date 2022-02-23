@@ -7,7 +7,7 @@ import TableMenuButton from "../UI/Table/TableMenuButton";
 import TableMenuItem from "../UI/Table/TableMenuItem";
 import PageTitle from "../UI/PageTitle";
 import ShareDialog from "../UI/Dialog/ShareDialog";
-import SourceService, {deleteSource} from "../../services/SourceService";
+import SourceService from "../../services/SourceService";
 import {saveAs} from "file-saver";
 
 class SourceObject {
@@ -110,7 +110,7 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 	const deleteSourceHandler = async () => {
 		try {
 			setIsDeleting(true);
-			const response = await deleteSource(selectedRow.id);
+			const response = await SourceService.deleteSource(selectedRow.id);
 			alert.info(response.data.message);
 			setShowDeleteDialog(false);
 			setIsDeleting(false);

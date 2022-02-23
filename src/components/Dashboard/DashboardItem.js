@@ -37,14 +37,48 @@ const DashboardItem = ({
 	};
 
 	//Loads dashboard item graph data from server
-	const loadItemData = async (id) => {
+	const loadItemData = async (requestedItem) => {
+		debugger;
 		setIsLoading(true);
 		try {
-			const response = await getItemData(id);
+			const response = await getItemData(requestedItem.id);
 			const responseData = response.data;
 			let graphData = [];
-			for (const property in responseData) {
-				graphData.push({ name: property, value: responseData[property] });
+			debugger;
+
+			for (let i = 0; i < responseData.length; i++) {
+				const data = responseData[i];
+				switch (requestedItem.type) {
+					/*Capability graph needs data in format 
+					{process: XXX
+					assessor1: xxx
+					assessor2: xxx..}*/
+					case typeEnum.CAPABILITY_BAR_GRAPH: {
+						var exists = graphData.find((obj) => {
+							return obj?.process === data.process;
+						});
+						if (exists) {
+							graphData = graphData.map((obj) => {
+								if (obj.process === data.process) {
+									return { ...obj, [data.assessor]: parseInt(data.level) };
+								} else {
+									return obj;
+								}
+							});
+						} else {
+							graphData.push({
+								process: data.process,
+								[data.assessor]: parseInt(data.level),
+							});
+						}
+					}
+					/*Pie graph needs data in format 
+					{name: xxx,
+					value: xxx}*/
+					case typeEnum.LEVEL_PIE_GRAPH: {
+						graphData.push({ name: data.level, value: data.count });
+					}
+				}
 			}
 			setData(graphData);
 			setIsLoading(false);
@@ -67,7 +101,7 @@ const DashboardItem = ({
 		if (firstUpdate.current) {
 			firstUpdate.current = false;
 			if (defined) {
-				loadItemData(item.id);
+				loadItemData(item);
 			}
 		}
 	}, [
@@ -105,8 +139,9 @@ const DashboardItem = ({
 						{isDefined && (
 							<RefreshIcon
 								onClick={(e) => {
-									onSave(item.id).then((newId) => {
-										loadItemData(newId);
+									onSave(item.id).then((newItem) => {
+										debugger;
+										loadItemData(newItem);
 									});
 									e.preventDefault();
 									e.stopPropagation();
@@ -165,8 +200,8 @@ const DashboardItem = ({
 					<div className='flex flex-col items-center justify-center h-full'>
 						<RefreshIcon
 							onClick={(e) => {
-								onSave(item.id).then((newId) => {
-									loadItemData(newId);
+								onSave(item.id).then((newItem) => {
+									loadItemData(newItem);
 								});
 								e.stopPropagation();
 								e.preventDefault();

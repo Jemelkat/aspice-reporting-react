@@ -33,6 +33,8 @@ export const createItemFromExisting = (item) => {
 				item.type,
 				item.fontSize ? item.fontSize : 9,
 				item.source ? item.source : null,
+				item.assessorColumn ? item.assessorColumn : null,
+				item.assessorFilter ? item.assessorFilter : null,
 				item.processColumn ? item.processColumn : null,
 				item.processWidth ? item.processWidth : 50,
 				item.levelColumn ? item.levelColumn : null,
@@ -68,6 +70,8 @@ export const createItemFromExisting = (item) => {
 				item.height,
 				item.type,
 				item.source ? item.source : null,
+				item.assessorColumn ? item.assessorColumn : null,
+				item.assessorFilter ? item.assessorFilter : null,
 				item.processColumn ? item.processColumn : null,
 				item.levelColumn ? item.levelColumn : null,
 				item.attributeColumn ? item.attributeColumn : null,
@@ -148,6 +152,8 @@ export class CapabilityTable extends Item {
 		type,
 		fontSize = 10,
 		source = null,
+		assessorColumn = null,
+		assessorFilter = [],
 		processColumn = null,
 		processWidth = 100,
 		levelColumn = null,
@@ -159,6 +165,8 @@ export class CapabilityTable extends Item {
 		super(id, x, y, width, height, type);
 		this.fontSize = fontSize;
 		this.source = source;
+		this.assessorColumn = assessorColumn;
+		this.assessorFilter = assessorFilter;
 		this.processColumn = processColumn;
 		this.processWidth = processWidth;
 		this.levelColumn = levelColumn;
@@ -209,6 +217,8 @@ export class LevelPieGraph extends Item {
 		height,
 		type,
 		source = null,
+		assessorColumn = null,
+		assessorFilter = null,
 		processColumn = null,
 		levelColumn = null,
 		attributeColumn = null,
@@ -216,6 +226,8 @@ export class LevelPieGraph extends Item {
 	) {
 		super(id, x, y, width, height, type);
 		this.source = source;
+		this.assessorColumn = assessorColumn;
+		this.assessorFilter = assessorFilter;
 		this.processColumn = processColumn;
 		this.levelColumn = levelColumn;
 		this.attributeColumn = attributeColumn;

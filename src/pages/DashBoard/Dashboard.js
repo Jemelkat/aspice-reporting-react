@@ -47,7 +47,7 @@ const DashBoard = () => {
 			setItems(newItems);
 			if (selectedIdIndex !== -1) {
 				setSelectedItem(newItems[selectedIdIndex]);
-				return newItems[selectedIdIndex].id;
+				return newItems[selectedIdIndex];
 			} else {
 				selectItemHandler(null);
 				return null;
@@ -57,7 +57,6 @@ const DashBoard = () => {
 
 	//Saves dashboard to DB
 	const saveDashboardHandler = async (selectedId = null) => {
-		debugger;
 		//save
 		try {
 			//Find index on which the current selected ID is
@@ -82,7 +81,6 @@ const DashBoard = () => {
 		setDashboardLoading(true);
 		getDashboard()
 			.then((response) => {
-				debugger;
 				if (response.data) {
 					parseLoadedItems(response.data.dashboardItems);
 					setDashboardId(response.data.id);

@@ -26,7 +26,7 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 					<>
 						<XAxis
 							type='category'
-							dataKey='name'
+							dataKey='process'
 							minTickGap={-20}
 							height={30}
 							angle={-90}
@@ -57,11 +57,19 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 							}}
 							height={15}
 						></XAxis>
-						<YAxis type='category' dataKey='name' minTickGap={10} width={100} />
+						<YAxis
+							type='category'
+							dataKey='process'
+							minTickGap={-10}
+							width={100}
+						/>
 					</>
 				)}
 				<Tooltip />
-				<Bar dataKey='value' fill='#4572a7' />
+				{data &&
+					Object.getOwnPropertyNames(data[0])
+						.filter((property) => property !== "process")
+						.map((barNames) => <Bar dataKey={barNames} fill='#4572a7' />)}
 			</BarChart>
 		</ResponsiveContainer>
 	);

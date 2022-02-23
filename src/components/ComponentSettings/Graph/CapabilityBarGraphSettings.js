@@ -187,7 +187,6 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									debugger;
 									if (e.value === null) {
 										if (e.value !== updatedSelected.source) {
 											//Reset all item columns
@@ -251,13 +250,8 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={sourcesLoading}
 							/>
-							<label className='flex items-center pt-1 text-sm'>
-								Optional filter by assessor
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
-							</label>
-							<label className='flex items-center pt-1 text-sm'>
-								Assessor column
-							</label>
+							<HorizontalLine />
+							<label className='font-medium'> Assessor column</label>
 							<Field
 								name='assessorColumn'
 								options={columnsData}
@@ -295,7 +289,8 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<label className='flex items-center pt-1 text-sm'>
-								Filter by assessor
+								Optional filter by assessor
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
 								name='assessorFilter'

@@ -1,8 +1,8 @@
 import {useState} from "react";
 import {Responsive} from "react-grid-layout";
 import {SizeMe} from "react-sizeme";
-import {getFromLS, saveToLS} from "../../services/LocalStorageService";
 import DashboardItem from "./DashboardItem";
+import LocalStorageService from "../../services/LocalStorageService";
 
 const DashboardCanvas = ({
 	items,
@@ -15,13 +15,13 @@ const DashboardCanvas = ({
 	onExport,
 }) => {
 	const getLayouts = (key) => {
-		let LSLayouts = getFromLS(key);
+		let LSLayouts = LocalStorageService.getFromLS(key);
 		try {
 			LSLayouts = JSON.parse(LSLayouts) || {};
 		} catch (e) {}
 	};
 	const saveLayout = (key, value) => {
-		saveToLS(
+		LocalStorageService.saveToLS(
 			key,
 			JSON.stringify({
 				["layouts"]: value,

@@ -7,7 +7,7 @@ import TemplateMenu from "./TemplateMenu";
 import {useAlert} from "react-alert";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
-import {saveTemplate} from "../../services/TemplateService";
+import TemplateService from "../../services/TemplateService";
 import {createItemFromExisting} from "../../helpers/ClassHelper";
 
 const TemplateCreate = ({ mode, templateId, addItem = null }) => {
@@ -33,7 +33,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	//Saves template to DB
 	const saveTemplateHandler = async (formValues) => {
 		try {
-			const response = await saveTemplate(formValues, items, mode);
+			const response = await TemplateService.saveTemplate(formValues, items, mode);
 			parseAndSetComponents(response.data.templateItems);
 			alert.info("Template saved");
 		} catch (e) {

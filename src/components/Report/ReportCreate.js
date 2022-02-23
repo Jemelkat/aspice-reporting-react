@@ -10,7 +10,7 @@ import {useAlert} from "react-alert";
 import {Tab} from "@headlessui/react";
 import PDFPreview from "../Canvas/PDFPreview";
 import {saveAs} from "file-saver";
-import {generateReport, getReport, saveReport,} from "../../services/ReportService";
+import ReportService from "../../services/ReportService";
 import {createItemFromExisting,} from "../../helpers/ClassHelper";
 
 const ReportCreate = ({ mode, reportId, addItem = null }) => {
@@ -59,7 +59,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		//TODO: add validation
 		setProcessing(true);
 		try {
-			const response = await saveReport(formValues, items, mode);
+			const response = await ReportService.saveReport(formValues, items, mode);
 			parseAndSetComponents(response.data.reportItems);
 			setReportData(response.data);
 			setProcessing(false);
@@ -88,7 +88,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		}
 		try {
 			debugger;
-			const response = await generateReport(saveResponse.data.id);
+			const response = await ReportService.generateReport(saveResponse.data.id);
 			alert.info("Report generated");
 
 			const pdfFile = new Blob([response.data], {
@@ -131,7 +131,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	useEffect(() => {
 		if (mode === "edit") {
 			setReportLoading(true);
-			getReport(reportId)
+			ReportService.getReport(reportId)
 				.then((response) => {
 					let loadedItems = response.data;
 					//Add new item if report was redirected from dashboard

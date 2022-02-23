@@ -5,9 +5,9 @@ import FormSelect from "../UI/Form/FormSelect";
 import * as Yup from "yup";
 import {Tab} from "@headlessui/react";
 import {useEffect, useState} from "react";
-import {getAllSimple} from "../../services/ReportService";
 import TemplateService from "../../services/TemplateService";
 import {useHistory} from "react-router-dom";
+import ReportService from "../../services/ReportService";
 
 const ExportItemDialog = ({ item, showDialog, onClose }) => {
 	//0 - report, 1 - template
@@ -27,7 +27,7 @@ const ExportItemDialog = ({ item, showDialog, onClose }) => {
 	const fetchReports = async () => {
 		setReportData({ data: [], loading: true, error: false });
 		try {
-			const response = await getAllSimple();
+			const response = await ReportService.getAllSimple();
 			const newData = response.data.map(({ id, reportName }) => ({
 				value: id,
 				label: reportName,

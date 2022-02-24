@@ -1,6 +1,5 @@
-import { Field } from "formik";
-import { useEffect } from "react";
-import FormSelect from "../../UI/Form/FormSelect";
+import {Field} from "formik";
+import FormSelect from "../../../ui/Form/FormSelect";
 
 const TableColumnSelect = ({
 	name,

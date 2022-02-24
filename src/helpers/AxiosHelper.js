@@ -1,6 +1,6 @@
 import axios from "axios";
-import { makeUseAxios } from "axios-hooks";
-import { getAuthHeaderToken } from "./AuthHelper";
+import {makeUseAxios} from "axios-hooks";
+import AuthService from "../services/AuthService";
 
 //All request should use this axios instance
 export const axiosInstance = axios.create({
@@ -16,7 +16,7 @@ export const useAxios = makeUseAxios({
 const axiosAuthInterceptor = axiosInstance.interceptors.request.use(
 	async (config) => {
 		config.headers = {
-			Authorization: getAuthHeaderToken(),
+			Authorization: AuthService.getAuthHeaderToken(),
 		};
 
 		return config;

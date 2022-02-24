@@ -1,13 +1,12 @@
-import { useMemo, useState } from "react";
+import {useMemo, useState} from "react";
 
-import Table from "../UI/Table/Table";
-import TableMenuButton from "../UI/Table/TableMenuButton";
-import TableMenuItem from "../UI/Table/TableMenuItem";
+import Table from "../../ui/Table/Table";
+import TableMenuButton from "../../ui/Table/TableMenuButton";
+import TableMenuItem from "../../ui/Table/TableMenuItem";
 import AdminUserForm from "./AdminUserForm";
-import MyDialog from "../UI/Dialog/MyDialog";
-import Button from "../UI/Button";
-import { useAxios } from "../../helpers/AxiosHelper";
-import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
+import MyDialog from "../../ui/Dialog/MyDialog";
+import {useAxios} from "../../helpers/AxiosHelper";
+import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
 
 class User {
 	constructor(userData) {

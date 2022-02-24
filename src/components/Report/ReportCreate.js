@@ -1,26 +1,17 @@
-import { useEffect, useState } from "react";
-import { useAxios } from "../../helpers/AxiosHelper";
-import Loader from "../UI/Loader/Loader";
-import { useHistory } from "react-router";
-import CanvasRightMenu from "../Canvas/CanvasRightMenu";
-import ReportMenuLeft from "./ReportMenuLeft";
+import {useEffect, useState} from "react";
+import {useAxios} from "../../helpers/AxiosHelper";
+import Loader from "../../ui/Loader/Loader";
+import {useHistory} from "react-router";
+import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
+import ReportMenu from "./ReportMenu";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
-import { useAlert } from "react-alert";
-import { Tab } from "@headlessui/react";
+import {useAlert} from "react-alert";
+import {Tab} from "@headlessui/react";
 import PDFPreview from "../Canvas/PDFPreview";
-import { saveAs } from "file-saver";
-import {
-	generateReport,
-	getReport,
-	saveReport,
-} from "../../services/ReportService";
-import {
-	CapabilityTable,
-	createItemFromExisting,
-	Item,
-	typeEnum,
-} from "../../helpers/ClassHelper";
+import {saveAs} from "file-saver";
+import ReportService from "../../services/ReportService";
+import {createItemFromExisting,} from "../../helpers/ClassHelper";
 
 const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	const [reportData, setReportData] = useState(null);
@@ -68,7 +59,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		//TODO: add validation
 		setProcessing(true);
 		try {
-			const response = await saveReport(formValues, items, mode);
+			const response = await ReportService.saveReport(formValues, items, mode);
 			parseAndSetComponents(response.data.reportItems);
 			setReportData(response.data);
 			setProcessing(false);
@@ -97,7 +88,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		}
 		try {
 			debugger;
-			const response = await generateReport(saveResponse.data.id);
+			const response = await ReportService.generateReport(saveResponse.data.id);
 			alert.info("Report generated");
 
 			const pdfFile = new Blob([response.data], {
@@ -140,7 +131,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	useEffect(() => {
 		if (mode === "edit") {
 			setReportLoading(true);
-			getReport(reportId)
+			ReportService.getReport(reportId)
 				.then((response) => {
 					let loadedItems = response.data;
 					//Add new item if report was redirected from dashboard
@@ -181,7 +172,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			) : (
 				<div className='flex bg-gray-200'>
 					{/*Left sidebar */}
-					<ReportMenuLeft
+					<ReportMenu
 						data={reportData}
 						onSave={saveReportHandler}
 						onAddComponent={addItemHandler}
@@ -189,7 +180,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 						onReportGenerate={generateReportHandler}
 						onDownloadReport={downloadReportHandler}
 						isProcessing={isProcessing}
-					></ReportMenuLeft>
+					></ReportMenu>
 					{/*Canvas*/}
 					<div className='overflow-x-auto overflow-y-hidden'>
 						<Tab.Group
@@ -247,14 +238,14 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 						</Tab.Group>
 					</div>
 					{/*Right sidebar */}
-					<CanvasRightMenu
+					<ItemSettingsMenu
 						show={showSelected}
 						onClose={() => selectItemHandler(null)}
 						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}
 						onItemUpdate={updateItemHandler}
-					></CanvasRightMenu>
+					></ItemSettingsMenu>
 				</div>
 			)}
 		</>

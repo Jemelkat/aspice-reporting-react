@@ -1,7 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { getLoggedUser, login, register } from "../../helpers/AuthHelper";
 import { AuthContext } from "../../context/AuthContext";
+import AuthService from "../../services/AuthService";
+import Loader from "../../ui/Loader/Loader";
 
 function LoginForm(props) {
 	const [username, setUsername] = useState("");
@@ -30,9 +31,9 @@ function LoginForm(props) {
 		setIsLoading(true);
 		e.preventDefault();
 		if (isLogin) {
-			login(username, password)
+			AuthService.login(username, password)
 				.then((response) => {
-					setLoggedUser(getLoggedUser());
+					setLoggedUser(AuthService.getLoggedUser());
 					setIsLoading(false);
 					history.push("/home");
 				})
@@ -51,7 +52,7 @@ function LoginForm(props) {
 					}
 				});
 		} else {
-			register(username, email, password)
+			AuthService.register(username, email, password)
 				.then((response) => {
 					setIsLoading(false);
 					history.push("/home");
@@ -75,62 +76,65 @@ function LoginForm(props) {
 
 	return (
 		<>
-			<form className='flex flex-col p-10' onSubmit={submitHandler}>
-				<div>
-					<span className='pb-10 text-2xl'>
-						{isLogin ? "Login" : "Register"}
-					</span>
-					{isLoading && (
-						<div className='w-5 h-5 border-t-2 border-b-2 border-purple-500 rounded-full animate-spin'></div>
-					)}
-				</div>
-				<span>{error.errorMessage}</span>
-				<label className='text-xl' htmlFor='username'>
-					Username
-				</label>
-				<input
-					className='px-3 py-2'
-					type='text'
-					id='username'
-					required
-					onChange={(e) => {
-						setUsername(e.target.value);
-					}}
-				></input>
-				{!isLogin && (
+			<form className={`flex flex-col p-10 ${isLogin ? "h-80" : "h-96"} w-72`} onSubmit={submitHandler}>
+				{isLoading ? (
+					<Loader>{isLogin ? "Loging in..." : "Registering..."}</Loader>
+				) : (
 					<>
-						<label className='text-xl' htmlFor='email'>
-							Email
+						<div>
+							<span className='pb-10 text-2xl'>
+								{isLogin ? "Login" : "Register"}
+							</span>
+						</div>
+						<span>{error.errorMessage}</span>
+						<label className='text-xl' htmlFor='username'>
+							Username
 						</label>
 						<input
-							className='px-3 py-2'
+							className='px-3 py-2 border border-gray-800 rounded'
 							type='text'
-							id='email'
+							id='username'
 							required
 							onChange={(e) => {
-								setEmail(e.target.value);
+								setUsername(e.target.value);
 							}}
 						></input>
+						{!isLogin && (
+							<>
+								<label className='text-xl' htmlFor='email'>
+									Email
+								</label>
+								<input
+									className='px-3 py-2 border border-gray-800 rounded'
+									type='text'
+									id='email'
+									required
+									onChange={(e) => {
+										setEmail(e.target.value);
+									}}
+								></input>
+							</>
+						)}
+						<label className='text-xl' htmlFor='password'>
+							Password
+						</label>
+						<input
+							className='px-3 py-2 border border-gray-800 rounded'
+							type='password'
+							id='password'
+							required
+							onChange={(e) => {
+								setPassword(e.target.value);
+							}}
+						></input>
+						<button
+							className='py-3 mt-5 text-xl border-2 border-black'
+							type='submit'
+						>
+							{isLogin ? "Login" : "Register"}
+						</button>
 					</>
 				)}
-				<label className='text-xl' htmlFor='password'>
-					Password
-				</label>
-				<input
-					className='px-3 py-2'
-					type='password'
-					id='password'
-					required
-					onChange={(e) => {
-						setPassword(e.target.value);
-					}}
-				></input>
-				<button
-					className='py-3 mt-5 text-xl border-2 border-black'
-					type='submit'
-				>
-					{isLogin ? "Login" : "Register"}
-				</button>
 			</form>
 		</>
 	);

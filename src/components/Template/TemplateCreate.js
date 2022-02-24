@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { axiosInstance } from "../../helpers/AxiosHelper";
-import { useHistory } from "react-router";
-import Loader from "../UI/Loader/Loader";
-import CanvasRightMenu from "../Canvas/CanvasRightMenu";
-import TemplateMenuLeft from "./TemplateMenuLeft";
-import { useAlert } from "react-alert";
+import {useEffect, useState} from "react";
+import {axiosInstance} from "../../helpers/AxiosHelper";
+import {useHistory} from "react-router";
+import Loader from "../../ui/Loader/Loader";
+import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
+import TemplateMenu from "./TemplateMenu";
+import {useAlert} from "react-alert";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
-import { saveTemplate } from "../../services/TemplateService";
-import { createItemFromExisting, Item } from "../../helpers/ClassHelper";
+import TemplateService from "../../services/TemplateService";
+import {createItemFromExisting} from "../../helpers/ClassHelper";
 
 const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	const [templateData, setTemplateData] = useState(null);
@@ -33,7 +33,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	//Saves template to DB
 	const saveTemplateHandler = async (formValues) => {
 		try {
-			const response = await saveTemplate(formValues, items, mode);
+			const response = await TemplateService.saveTemplate(formValues, items, mode);
 			parseAndSetComponents(response.data.templateItems);
 			alert.info("Template saved");
 		} catch (e) {
@@ -98,11 +98,11 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 			) : (
 				<div className='flex bg-gray-200'>
 					{/*Left sidebar*/}
-					<TemplateMenuLeft
+					<TemplateMenu
 						data={templateData}
 						onSave={saveTemplateHandler}
 						onAddComponent={addItemHandler}
-					></TemplateMenuLeft>
+					></TemplateMenu>
 					{/*Canvas*/}
 					<Canvas
 						items={items}
@@ -112,14 +112,14 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 						onDeleteItem={deleteItemHandler}
 					></Canvas>
 					{/*Right sidebar */}
-					<CanvasRightMenu
+					<ItemSettingsMenu
 						show={showSelected}
 						onClose={hideSettings}
 						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}
 						onItemUpdate={updateItemHandler}
-					></CanvasRightMenu>
+					></ItemSettingsMenu>
 				</div>
 			)}
 		</>

@@ -1,12 +1,9 @@
-import { Field, Form, Formik } from "formik";
-import { useAxios } from "../../../helpers/AxiosHelper";
-import FormSelect from "../../UI/Form/FormSelect";
-import * as Yup from "yup";
-import { useEffect, useState } from "react";
-import SourceColumnService, {
-	getColumnsForSource,
-} from "../../../services/SourceColumnService";
-import { InformationCircleIcon } from "@heroicons/react/solid";
+import {Field, Form, Formik} from "formik";
+import {useAxios} from "../../../helpers/AxiosHelper";
+import FormSelect from "../../../ui/Form/FormSelect";
+import {useEffect, useState} from "react";
+import SourceColumnService from "../../../services/SourceColumnService";
+import {InformationCircleIcon} from "@heroicons/react/solid";
 
 const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -56,7 +53,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			//Load new columns for source
 			try {
 				setColumnsLoading(true);
-				const response = await getColumnsForSource(sourceId);
+				const response = await SourceColumnService.getColumnsForSource(sourceId);
 				setColumnsData(parseColumns(response.data));
 				setColumnsLoading(false);
 			} catch (e) {

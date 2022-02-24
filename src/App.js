@@ -1,30 +1,29 @@
 import "./App.css";
 
-import { Route, Switch } from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 
 import AdminPanel from "./pages/Admin/AdminPanel";
 import AdminRoute from "./routes/AdminRoute";
-import { AuthContext } from "./context/AuthContext";
+import {AuthContext} from "./context/AuthContext";
 import AuthVerify from "./helpers/AuthVerify";
 import DashBoard from "./pages/DashBoard/Dashboard";
 import Home from "./pages/Home/Home";
-import Loader from "./components/UI/Loader/Loader";
+import Loader from "./ui/Loader/Loader";
 import Login from "./pages/Login/Login";
 import Nav from "./components/Nav/Nav";
-import PageContainer from "./components/UI/PageContainer";
+import PageContainer from "./ui/PageContainer";
 import PrivateRoute from "./routes/PrivateRoute";
-import Profile from "./pages/Profile/Profile";
 import Report from "./pages/Report/Report";
 import Source from "./pages/Source/Source";
 import Template from "./pages/Template/Template";
-import { logout } from "./helpers/AuthHelper";
-import { useContext } from "react";
+import {useContext} from "react";
+import AuthService from "./services/AuthService";
 
 function App() {
 	const { loggedUser, removeLoggedUser } = useContext(AuthContext);
 
 	const logoutHandler = () => {
-		logout();
+		AuthService.logout();
 		removeLoggedUser();
 	};
 
@@ -56,11 +55,6 @@ function App() {
 								<>
 									<PrivateRoute path='/dashboard'>
 										<DashBoard />
-									</PrivateRoute>
-									<PrivateRoute path='/profile'>
-										<PageContainer>
-											<Profile />
-										</PageContainer>
 									</PrivateRoute>
 									<PrivateRoute path='/source'>
 										<PageContainer>

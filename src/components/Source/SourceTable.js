@@ -1,15 +1,14 @@
-import { useMemo, useState } from "react";
-import { useAlert } from "react-alert";
-import { axiosInstance } from "../../helpers/AxiosHelper";
-import Button from "../UI/Button";
-import ConfirmDialog from "../UI/Dialog/ConfirmDialog";
-import Table from "../UI/Table/Table";
-import TableMenuButton from "../UI/Table/TableMenuButton";
-import TableMenuItem from "../UI/Table/TableMenuItem";
-import Title from "../UI/Title";
-import ShareDialog from "../UI/Dialog/ShareDialog";
-import SourceService, { deleteSource } from "../../services/SourceService";
-import { saveAs } from "file-saver";
+import {useMemo, useState} from "react";
+import {useAlert} from "react-alert";
+import Button from "../../ui/Button";
+import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
+import Table from "../../ui/Table/Table";
+import TableMenuButton from "../../ui/Table/TableMenuButton";
+import TableMenuItem from "../../ui/Table/TableMenuItem";
+import PageTitle from "../../ui/PageTitle";
+import ShareDialog from "../../ui/Dialog/ShareDialog";
+import SourceService from "../../services/SourceService";
+import {saveAs} from "file-saver";
 
 class SourceObject {
 	constructor(data) {
@@ -111,7 +110,7 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 	const deleteSourceHandler = async () => {
 		try {
 			setIsDeleting(true);
-			const response = await deleteSource(selectedRow.id);
+			const response = await SourceService.deleteSource(selectedRow.id);
 			alert.info(response.data.message);
 			setShowDeleteDialog(false);
 			setIsDeleting(false);
@@ -134,7 +133,7 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 
 	return (
 		<>
-			<Title text='Sources'></Title>
+			<PageTitle text='Sources'></PageTitle>
 			{/*Table options*/}
 			<div className='flex justify-end px-2 py-4'>
 				<Button className='mr-2' onClick={() => onAddSource(true)} dark={true}>

@@ -1,12 +1,11 @@
-import { Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
-import { useAlert } from "react-alert";
-import { useAxios } from "../../../helpers/AxiosHelper";
-import { getColumnsForSource } from "../../../services/SourceColumnService";
-import Button from "../../UI/Button";
-import CanvasPanelDisclosure from "../../UI/Canvas/CanvasPanelDisclosure";
-import FormInput from "../../UI/Form/FormInput";
-import FormSelect from "../../UI/Form/FormSelect";
+import {Field, Form, Formik} from "formik";
+import {useEffect, useState} from "react";
+import {useAxios} from "../../../helpers/AxiosHelper";
+import SourceColumnService, {getColumnsForSource} from "../../../services/SourceColumnService";
+import Button from "../../../ui/Button";
+import SidebarDisclosure from "../../../ui/Sidebar/SidebarDisclosure";
+import FormInput from "../../../ui/Form/FormInput";
+import FormSelect from "../../../ui/Form/FormSelect";
 import TableColumnSelect from "./TableColumnSelect";
 
 const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
@@ -52,7 +51,7 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 			//Load new columns for source
 			try {
 				setColumnsLoading(true);
-				const response = await getColumnsForSource(sourceId);
+				const response = await SourceColumnService.getColumnsForSource(sourceId);
 				setColumnsData(parseColumns(response.data));
 				setColumnsLoading(false);
 			} catch (e) {
@@ -153,7 +152,7 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 						selectedItem.tableColumns.length > 0 ? (
 							selectedItem.tableColumns.map((column, index) => {
 								return (
-									<CanvasPanelDisclosure
+									<SidebarDisclosure
 										key={index}
 										name={`Column ${column.name ? column.name : index}`}
 									>
@@ -195,7 +194,7 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 												Remove column
 											</Button>
 										</div>
-									</CanvasPanelDisclosure>
+									</SidebarDisclosure>
 								);
 							})
 						) : (

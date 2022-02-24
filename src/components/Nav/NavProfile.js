@@ -1,10 +1,10 @@
-import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useContext } from "react";
+import {Menu, Transition} from "@headlessui/react";
+import {Fragment, useContext} from "react";
 import NavProfileItem from "./NavProfileItem";
-import Avatar, { genConfig } from "react-nice-avatar";
-import { useHistory } from "react-router";
-import { logout } from "../../helpers/AuthHelper";
-import { AuthContext } from "../../context/AuthContext";
+import Avatar, {genConfig} from "react-nice-avatar";
+import {useHistory} from "react-router";
+import {AuthContext} from "../../context/AuthContext";
+import AuthService from "../../services/AuthService";
 
 function NavProfile() {
 	let history = useHistory();
@@ -29,7 +29,7 @@ function NavProfile() {
 	const myConfig = genConfig(config);
 
 	const logoutHandler = () => {
-		logout();
+		AuthService.logout();
 		history.push();
 		removeLoggedUser();
 	};
@@ -51,7 +51,6 @@ function NavProfile() {
 				leaveTo='transform opacity-0 scale-95'
 			>
 				<Menu.Items className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-xl py-1 bg-white z-10'>
-					<NavProfileItem link='/profile' text='Profile'></NavProfileItem>
 					<NavProfileItem link='/admin/users' text='Admin'></NavProfileItem>
 					<NavProfileItem
 						link='#'

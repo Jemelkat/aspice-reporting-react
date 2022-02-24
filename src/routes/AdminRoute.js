@@ -1,7 +1,7 @@
-import { useContext } from "react";
+import {useContext} from "react";
 
-import { Redirect, Route } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import {Redirect, Route} from "react-router-dom";
+import {AuthContext} from "../context/AuthContext";
 
 function AdminRoute({ children, ...rest }) {
 	const { loggedUser } = useContext(AuthContext);

@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect } from "react";
-import { getLoggedUser } from "../helpers/AuthHelper";
+import {createContext, useEffect, useState} from "react";
+import AuthService from "../services/AuthService";
 
 export const AuthContext = createContext();
 
@@ -26,9 +26,9 @@ export const AuthContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		setLoggedUser({
-			user: getLoggedUser(),
-			isAdmin: getLoggedUser()
-				? getLoggedUser().roles.includes("ROLE_ADMIN")
+			user: AuthService.getLoggedUser(),
+			isAdmin: AuthService.getLoggedUser()
+				? AuthService.getLoggedUser().roles.includes("ROLE_ADMIN")
 				: false,
 			isLoading: false,
 		});

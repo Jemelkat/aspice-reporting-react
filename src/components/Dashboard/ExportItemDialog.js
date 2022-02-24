@@ -1,13 +1,13 @@
-import { Field, Form, Formik } from "formik";
-import Button from "../UI/Button";
-import MyDialog from "../UI/Dialog/MyDialog";
-import FormSelect from "../UI/Form/FormSelect";
+import {Field, Form, Formik} from "formik";
+import Button from "../../ui/Button";
+import MyDialog from "../../ui/Dialog/MyDialog";
+import FormSelect from "../../ui/Form/FormSelect";
 import * as Yup from "yup";
-import { Tab } from "@headlessui/react";
-import { useEffect, useState } from "react";
-import { getAllSimple } from "../../services/ReportService";
+import {Tab} from "@headlessui/react";
+import {useEffect, useState} from "react";
 import TemplateService from "../../services/TemplateService";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
+import ReportService from "../../services/ReportService";
 
 const ExportItemDialog = ({ item, showDialog, onClose }) => {
 	//0 - report, 1 - template
@@ -27,7 +27,7 @@ const ExportItemDialog = ({ item, showDialog, onClose }) => {
 	const fetchReports = async () => {
 		setReportData({ data: [], loading: true, error: false });
 		try {
-			const response = await getAllSimple();
+			const response = await ReportService.getAllSimple();
 			const newData = response.data.map(({ id, reportName }) => ({
 				value: id,
 				label: reportName,

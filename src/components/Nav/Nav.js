@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import {useContext, useState} from "react";
 import NavPrimary from "./NavPrimary";
 import NavButton from "./NavButton";
 import NavColapsed from "./NavColapsed";
 import NavColapsedItem from "./NavColapsedItem";
 import NavPrimaryItem from "./NavPrimaryItem";
 import NavProfile from "./NavProfile";
-import { AuthContext } from "../../context/AuthContext";
+import {AuthContext} from "../../context/AuthContext";
 
 function Nav() {
 	const [isOpen, setIsOpen] = useState(false);

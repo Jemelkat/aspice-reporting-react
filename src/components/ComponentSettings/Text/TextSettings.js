@@ -1,9 +1,9 @@
-import { Field, Form, Formik } from "formik";
-import CanvasPanelDisclosure from "../../UI/Canvas/CanvasPanelDisclosure";
-import FormInput from "../../UI/Form/FormInput";
+import {Field, Form, Formik} from "formik";
+import SidebarDisclosure from "../../../ui/Sidebar/SidebarDisclosure";
+import FormInput from "../../../ui/Form/FormInput";
 import * as Yup from "yup";
-import { ChromePicker } from "react-color";
-import { useEffect, useState } from "react";
+import {ChromePicker} from "react-color";
+import {useEffect, useState} from "react";
 
 const TextSettings = ({ selectedItem, onItemUpdate }) => {
 	const [color, setColor] = useState(selectedItem.textStyle.color);
@@ -54,7 +54,7 @@ const TextSettings = ({ selectedItem, onItemUpdate }) => {
 			>
 				{({ handleChange }) => (
 					<Form className='flex flex-col'>
-						<CanvasPanelDisclosure name='Text style'>
+						<SidebarDisclosure name='Text style'>
 							<div className='grid grid-cols-2 pt-2 pb-2 pl-4 pr-4'>
 								<FormInput
 									label='Font size:'
@@ -131,7 +131,7 @@ const TextSettings = ({ selectedItem, onItemUpdate }) => {
 									></ChromePicker>
 								</div>
 							</div>
-						</CanvasPanelDisclosure>
+						</SidebarDisclosure>
 						<div className='flex flex-col pl-4 pr-4'>
 							<label className='mt-2' htmlFor='template'>
 								Text:

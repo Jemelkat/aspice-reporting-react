@@ -1,7 +1,7 @@
-import {useCallback, useState} from "react";
-import {useAlert} from "react-alert";
-import {useDropzone} from "react-dropzone";
-import SourceService, {uploadSource} from "../../services/SourceService";
+import { useCallback, useState } from "react";
+import { useAlert } from "react-alert";
+import { useDropzone } from "react-dropzone";
+import SourceService, { uploadSource } from "../../services/SourceService";
 import MyDialog from "../../ui/Dialog/MyDialog";
 import Loader from "../../ui/Loader/Loader";
 
@@ -13,7 +13,7 @@ const SourceUpload = ({ isOpen, onOpenChange, onRefetch }) => {
 		if (acceptedFiles.length === 1) {
 			onUploadHandler(acceptedFiles);
 		} else {
-			alert.info("This file format is not supported.");
+			alert.error("This file format is not supported.");
 		}
 	};
 	const { getRootProps, getInputProps } = useDropzone({
@@ -40,18 +40,18 @@ const SourceUpload = ({ isOpen, onOpenChange, onRefetch }) => {
 			}
 		})
 			.then(() => {
-				setisUploading(false);
-				setIsStoring(false);
 				//Get all sources after upload
 				onRefetch();
 				//Close dropwindow
 				onOpenChange(false);
+				setisUploading(false);
+				setIsStoring(false);
 				alert.info("New source added.");
 			})
 			.catch((e) => {
 				setisUploading(false);
 				setIsStoring(false);
-				if (e.response.data && e.response.data.message) {
+				if (e.response?.data && e.response.data?.message) {
 					alert.error(e.response.data.message);
 				} else {
 					alert.error("Error saving file.");
@@ -64,7 +64,7 @@ const SourceUpload = ({ isOpen, onOpenChange, onRefetch }) => {
 			isOpen={isOpen}
 			onClose={() => onOpenChange(false)}
 			title='Upload new source'
-			description='Suported file formats are .csv, .xls and .xlsx.'
+			description='Supported file formats are .csv, .xls and .xlsx.'
 		>
 			<div
 				className={`w-full flex items-center justify-center border-2 border-gray-800 border-dashed cursor-pointer h-36 bg-opacity-10 rounded-xl focus:border-dashed border-opacity-70s`}

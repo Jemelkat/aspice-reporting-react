@@ -1,4 +1,11 @@
-import {Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip,} from "recharts";
+import {
+	Cell,
+	Legend,
+	Pie,
+	PieChart,
+	ResponsiveContainer,
+	Tooltip,
+} from "recharts";
 
 const DashboardPieChart = ({ data }) => {
 	const COLORS = [

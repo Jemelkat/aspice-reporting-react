@@ -1,9 +1,9 @@
-import {Field, Form, Formik} from "formik";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import {useEffect, useState} from "react";
-import {InformationCircleIcon} from "@heroicons/react/outline";
-import {useAlert} from "react-alert";
+import { useEffect, useState } from "react";
+import { InformationCircleIcon } from "@heroicons/react/outline";
+import { useAlert } from "react-alert";
 import HorizontalLine from "../../../ui/HorizontalLine";
 import SourceColumnService from "../../../services/SourceColumnService";
 
@@ -62,7 +62,9 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			//Load new columns for source
 			try {
 				setColumnsLoading(true);
-				const response = await SourceColumnService.getColumnsForSource(sourceId);
+				const response = await SourceColumnService.getColumnsForSource(
+					sourceId
+				);
 				setColumnsData(parseColumns(response.data));
 				setColumnsLoading(false);
 			} catch (e) {
@@ -168,7 +170,6 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}}
 								isMulti={false}
 							/>
-							<HorizontalLine />
 							<label className='font-medium'>Source</label>
 							<Field
 								name='sourceFormId'

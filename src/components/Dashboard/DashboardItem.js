@@ -1,7 +1,7 @@
-import {PencilIcon, RefreshIcon, UploadIcon} from "@heroicons/react/solid";
-import {useEffect, useRef, useState} from "react";
-import {useAlert} from "react-alert";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { PencilIcon, RefreshIcon, UploadIcon } from "@heroicons/react/solid";
+import { useEffect, useRef, useState } from "react";
+import { useAlert } from "react-alert";
+import { typeEnum } from "../../helpers/ClassHelper";
 import Loader from "../../ui/Loader/Loader";
 import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";
@@ -75,7 +75,7 @@ const DashboardItem = ({
 					{name: xxx,
 					value: xxx}*/
 					case typeEnum.LEVEL_PIE_GRAPH: {
-						graphData.push({ name: data.level, value: data.count });
+						graphData.push({ name: data.level, value: parseInt(data.count) });
 					}
 				}
 			}

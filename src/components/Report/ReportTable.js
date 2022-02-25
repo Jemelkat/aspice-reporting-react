@@ -1,23 +1,21 @@
-import {useEffect, useMemo, useState} from "react";
-import {Link} from "react-router-dom";
-import {axiosInstance, useAxios} from "../../helpers/AxiosHelper";
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { axiosInstance, useAxios } from "../../helpers/AxiosHelper";
 import Button from "../../ui/Button";
 import Table from "../../ui/Table/Table";
 import PageTitle from "../../ui/PageTitle";
-import {useRouteMatch} from "react-router";
+import { useRouteMatch } from "react-router";
 import TableMenuButton from "../../ui/Table/TableMenuButton";
 import TableMenuItem from "../../ui/Table/TableMenuItem";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 
 class ReportObject {
 	constructor(data) {
 		this.id = data.id;
 		this.reportName = data.reportName;
-		this.reportCreated = new Date(data.reportCreated).toLocaleString();
-		this.reportUpdated = data.reportLastUpdated
-			? new Date(data.reportLastUpdated).toLocaleString()
-			: "";
+		this.reportCreated = data.reportCreated;
+		this.reportUpdated = data.reportLastUpdated;
 		this.reportTemplateName = data.reportTemplate
 			? data.reportTemplate.templateName
 			: "";
@@ -147,7 +145,7 @@ const ReportTable = (props) => {
 				title={`Do you want to delete report: ${
 					selectedRow ? selectedRow.reportName : ""
 				}?`}
-				description='This report will be completely removed - all shared groups will lose access to this report.'
+				description='This report will be completely removed.'
 				isOpen={showDeleteDialog}
 				isProcessing={isProcessing}
 				processingText={"Deleting report..."}

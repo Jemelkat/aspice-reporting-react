@@ -1,23 +1,21 @@
-import {useMemo, useState} from "react";
-import {Link} from "react-router-dom";
-import {axiosInstance, useAxios} from "../../helpers/AxiosHelper";
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { axiosInstance, useAxios } from "../../helpers/AxiosHelper";
 import Button from "../../ui/Button";
 import Table from "../../ui/Table/Table";
 import PageTitle from "../../ui/PageTitle";
-import {useRouteMatch} from "react-router";
+import { useRouteMatch } from "react-router";
 import TableMenuItem from "../../ui/Table/TableMenuItem";
 import TableMenuButton from "../../ui/Table/TableMenuButton";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 
 class TemplateObject {
 	constructor(data) {
 		this.id = data.id;
 		this.templateName = data.templateName;
-		this.templateCreated = new Date(data.templateCreated).toLocaleString();
-		this.templateLastUpdated = data.templateLastUpdated
-			? new Date(data.templateLastUpdated).toLocaleString()
-			: "";
+		this.templateCreated = data.templateCreated;
+		this.templateLastUpdated = data.templateLastUpdated;
 		this.shared = data.shared ? "Yes" : "";
 		this.sharedBy = data.sharedBy;
 	}
@@ -137,7 +135,7 @@ const TemplateTable = (props) => {
 				title={`Do you want to delete template: ${
 					selectedRow ? selectedRow.templateName : ""
 				}?`}
-				description='This template will be completely removed - all shared groups will lose access to this template.'
+				description='This template will be completely removed - all reports will lose access to this template.'
 				isOpen={showDeleteDialog}
 				onClose={() => setShowDeleteDialog(false)}
 				onOk={() => {

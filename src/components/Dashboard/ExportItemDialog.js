@@ -1,12 +1,12 @@
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import Button from "../../ui/Button";
 import MyDialog from "../../ui/Dialog/MyDialog";
 import FormSelect from "../../ui/Form/FormSelect";
 import * as Yup from "yup";
-import {Tab} from "@headlessui/react";
-import {useEffect, useState} from "react";
+import { Tab } from "@headlessui/react";
+import { useEffect, useState } from "react";
 import TemplateService from "../../services/TemplateService";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import ReportService from "../../services/ReportService";
 
 const ExportItemDialog = ({ item, showDialog, onClose }) => {
@@ -80,19 +80,19 @@ const ExportItemDialog = ({ item, showDialog, onClose }) => {
 		return canvasItem;
 	};
 
-	const addItemHandler = (selecteId) => {
+	const addItemHandler = (selectedId) => {
 		debugger;
 		if (selected === 0) {
 			push({
 				pathname: "/report/create",
-				state: { mode: "edit", reportId: selecteId, item: getItemForCanvas() },
+				state: { mode: "edit", reportId: selectedId, item: getItemForCanvas() },
 			});
 		} else {
 			push({
 				pathname: "/template/create",
 				state: {
 					mode: "edit",
-					templateId: selecteId,
+					templateId: selectedId,
 					item: getItemForCanvas(),
 				},
 			});
@@ -118,7 +118,7 @@ const ExportItemDialog = ({ item, showDialog, onClose }) => {
 				onSubmit={(values) => addItemHandler(values.id)}
 			>
 				{({ errors, setFieldValue }) => (
-					<Form className='flex justify-center flex-col items-center'>
+					<Form className='flex flex-col items-center justify-center'>
 						<div className='w-64'>
 							<Tab.Group
 								onChange={(index) => {

@@ -1,4 +1,4 @@
-import {axiosInstance} from "../helpers/AxiosHelper";
+import { axiosInstance } from "../helpers/AxiosHelper";
 
 export default class TemplateService {
 	static getAllSimple = async () => {
@@ -10,6 +10,12 @@ export default class TemplateService {
 			id: formValues.id,
 			templateName: formValues.templateName,
 			templateItems: items.map((i) => ({ ...i })),
+		});
+	};
+
+	static getTemplate = async (templateId) => {
+		return axiosInstance.get("/templates/get", {
+			params: { templateId: templateId },
 		});
 	};
 }

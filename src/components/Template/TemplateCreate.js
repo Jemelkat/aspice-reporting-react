@@ -1,14 +1,14 @@
-import {useEffect, useState} from "react";
-import {axiosInstance} from "../../helpers/AxiosHelper";
-import {useHistory} from "react-router";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "../../helpers/AxiosHelper";
+import { useHistory } from "react-router";
 import Loader from "../../ui/Loader/Loader";
 import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
 import TemplateMenu from "./TemplateMenu";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
 import TemplateService from "../../services/TemplateService";
-import {createItemFromExisting} from "../../helpers/ClassHelper";
+import { createItemFromExisting } from "../../helpers/ClassHelper";
 
 const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	const [templateData, setTemplateData] = useState(null);
@@ -33,7 +33,11 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	//Saves template to DB
 	const saveTemplateHandler = async (formValues) => {
 		try {
-			const response = await TemplateService.saveTemplate(formValues, items, mode);
+			const response = await TemplateService.saveTemplate(
+				formValues,
+				items,
+				mode
+			);
 			parseAndSetComponents(response.data.templateItems);
 			alert.info("Template saved");
 		} catch (e) {
@@ -55,8 +59,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		if (mode === "edit") {
 			setTemplateLoading(true);
 			debugger;
-			axiosInstance
-				.get("/templates/get", { params: { templateId: templateId } })
+			TemplateService.getTemplate(templateId)
 				.then((response) => {
 					let loadedItems = response.data;
 					//Add new item if template was redirected from dashboard
@@ -66,13 +69,13 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 							addedItemId =
 								Math.max.apply(
 									null,
-									loadedItems.reportItems.map((item) => item.id)
+									loadedItems.templateItems.map((item) => item.id)
 								) + 1;
 						}
 						//Set new ID to added item as max + 1 or 0 if template is empty
 						let updatedAddItem = addItem;
 						updatedAddItem.id = addedItemId;
-						loadedItems.reportItems.push(updatedAddItem);
+						loadedItems.templateItems.push(updatedAddItem);
 					}
 					setTemplateData(loadedItems);
 					parseAndSetComponents(loadedItems.templateItems);

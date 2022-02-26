@@ -1,7 +1,7 @@
-import {InformationCircleIcon} from "@heroicons/react/solid";
-import {Field, Form, Formik} from "formik";
-import {useEffect, useState} from "react";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { InformationCircleIcon } from "@heroicons/react/solid";
+import { Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import SourceColumnService from "../../../services/SourceColumnService";
 import FormInput from "../../../ui/Form/FormInput";
 import FormSelect from "../../../ui/Form/FormSelect";
@@ -58,7 +58,9 @@ const CapabilityTableSettigs = ({
 			//Load new columns for source
 			try {
 				setColumnsLoading(true);
-				const response = await SourceColumnService.getColumnsForSource(sourceId);
+				const response = await SourceColumnService.getColumnsForSource(
+					sourceId
+				);
 				setColumnsData(parseColumns(response.data));
 				setColumnsLoading(false);
 			} catch (e) {
@@ -110,6 +112,7 @@ const CapabilityTableSettigs = ({
 				processColumn: selectedItem.processColumn?.id,
 				processWidth: selectedItem.processWidth,
 				levelColumn: selectedItem.levelColumn?.id,
+				specificLevel: selectedItem.specificLevel,
 				levelLimit: selectedItem.levelLimit,
 				criterionColumn: selectedItem.criterionColumn?.id,
 				criterionWidth: selectedItem.criterionWidth,
@@ -335,6 +338,27 @@ const CapabilityTableSettigs = ({
 										onItemUpdate(newSelected);
 									}
 								}}
+							/>
+							<label></label>
+							<label>Specific level:</label>
+							<Field
+								name='specificLevel'
+								options={[
+									{ label: "None", value: null },
+									{ label: "1", value: 1 },
+									{ label: "2", value: 2 },
+									{ label: "3", value: 3 },
+									{ label: "4", value: 4 },
+									{ label: "5", value: 5 },
+								]}
+								component={FormSelect}
+								placeholder={"Chose level"}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.specificLevel = e.value;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
 							/>
 							<div className='mt-2 mb-2 border border-black border-opacity-50'></div>
 							<label className='font-medium'>Performance criterion:</label>

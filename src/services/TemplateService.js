@@ -9,6 +9,7 @@ export default class TemplateService {
 		return axiosInstance.post("/templates/save", {
 			id: formValues.id,
 			templateName: formValues.templateName,
+			orientation: formValues.orientation,
 			templateItems: items.map((i) => ({ ...i })),
 		});
 	};

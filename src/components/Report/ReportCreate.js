@@ -88,7 +88,6 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			return;
 		}
 		try {
-			debugger;
 			const response = await ReportService.generateReport(saveResponse.data.id);
 			alert.info("Report generated");
 
@@ -101,7 +100,6 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			return response;
 		} catch (e) {
 			setProcessing(false);
-			debugger;
 			if (e.response.data && e.response.data.message) {
 				alert.error(e.response.data.message);
 			} else {
@@ -120,6 +118,10 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	const applyTemplateHandler = (templateId) => {
 		if (templateId !== "")
 			getTemplate({ params: { templateId: templateId } }).then((response) => {
+				setReportData((prevState) => ({
+					...prevState,
+					orientation: response.data.orientation,
+				}));
 				parseAndSetComponents(response.data.templateItems);
 				selectItemHandler(null);
 			});

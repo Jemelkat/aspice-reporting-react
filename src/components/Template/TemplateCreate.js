@@ -40,6 +40,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 				mode
 			);
 			parseAndSetComponents(response.data.templateItems);
+			setTemplateData(response.data);
 			alert.info("Template saved");
 		} catch (e) {
 			alert.error("Error saving template.");

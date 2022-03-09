@@ -13,6 +13,8 @@ import { createItemFromExisting } from "../../helpers/ClassHelper";
 const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	const [templateData, setTemplateData] = useState(null);
 	const [templateLoading, setTemplateLoading] = useState(true);
+	const [isProcessing, setProcessing] = useState(false);
+
 	const history = useHistory();
 	const alert = useAlert();
 	const {
@@ -32,6 +34,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 
 	//Saves template to DB
 	const saveTemplateHandler = async (formValues) => {
+		setProcessing(true);
 		try {
 			const response = await TemplateService.saveTemplate(
 				formValues,
@@ -40,9 +43,15 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 			);
 			parseAndSetComponents(response.data.templateItems);
 			setTemplateData(response.data);
+			setProcessing(false);
 			alert.info("Template saved");
 		} catch (e) {
-			alert.error("Error saving template.");
+			setProcessing(false);
+			if (e.response.data && e.response.data.message) {
+				alert.error(e.response.data.message);
+			} else {
+				alert.error("Error saving template.");
+			}
 		}
 	};
 
@@ -59,7 +68,6 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		//EDIT - load template for reseting
 		if (mode === "edit") {
 			setTemplateLoading(true);
-			debugger;
 			TemplateService.getTemplate(templateId)
 				.then((response) => {
 					let loadedItems = response.data;
@@ -115,6 +123,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 						onOrientationChange={orientationChangeHandler}
 						onSave={saveTemplateHandler}
 						onAddComponent={addItemHandler}
+						isProcessing={isProcessing}
 					></TemplateMenu>
 					{/*Canvas*/}
 					<Canvas

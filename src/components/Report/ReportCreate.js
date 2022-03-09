@@ -57,7 +57,6 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 
 	//Saves report to DB
 	const saveReportHandler = async (formValues) => {
-		//TODO: add validation
 		setProcessing(true);
 		try {
 			const response = await ReportService.saveReport(formValues, items, mode);

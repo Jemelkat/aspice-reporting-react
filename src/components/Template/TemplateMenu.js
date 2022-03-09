@@ -20,6 +20,7 @@ const TemplateMenu = ({
 	onOrientationChange,
 	onSave,
 	onAddComponent,
+	isProcessing,
 }) => {
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
@@ -67,7 +68,11 @@ const TemplateMenu = ({
 										component={FormSelect}
 										isMulti={false}
 									/>
-									<Button dark={true} type='submit' className='mt-4'>
+									<Button
+										dark={true}
+										type={!isProcessing && "submit"}
+										className='mt-4'
+									>
 										Save
 									</Button>
 								</Form>

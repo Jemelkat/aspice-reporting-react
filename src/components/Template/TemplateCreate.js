@@ -19,7 +19,6 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		items,
 		setItems,
 		showSelected,
-		hideSettings,
 		selectedItem,
 		moveItemHandler,
 		resizeItemHandler,
@@ -120,7 +119,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 					{/*Right sidebar */}
 					<ItemSettingsMenu
 						show={showSelected}
-						onClose={hideSettings}
+						onClose={() => selectItemHandler(null)}
 						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}

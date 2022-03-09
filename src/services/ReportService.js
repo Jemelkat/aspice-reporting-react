@@ -32,7 +32,7 @@ export default class ReportService {
 		return axios.get("http://localhost:8080/reports/generate", {
 			headers: {
 				Authorization: AuthService.getAuthHeaderToken(),
-				Accept: "application/pdf",
+				//Accept: "application/pdf",
 			},
 			responseType: "blob",
 			params: { reportId: reportId },

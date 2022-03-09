@@ -154,7 +154,7 @@ export class CapabilityTable extends Item {
 		fontSize = 10,
 		source = null,
 		assessorColumn = null,
-		assessorFilter = [],
+		assessorFilter = null,
 		processColumn = null,
 		processWidth = 100,
 		levelColumn = null,

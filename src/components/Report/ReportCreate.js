@@ -57,7 +57,6 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 
 	//Saves report to DB
 	const saveReportHandler = async (formValues) => {
-		//TODO: add validation
 		setProcessing(true);
 		try {
 			const response = await ReportService.saveReport(formValues, items, mode);
@@ -99,9 +98,10 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			setProcessing(false);
 			return response;
 		} catch (e) {
+			const responseData = JSON.parse(await e.response.data.text());
 			setProcessing(false);
-			if (e.response.data && e.response.data.message) {
-				alert.error(e.response.data.message);
+			if (responseData?.message) {
+				alert.error(responseData.message);
 			} else {
 				alert.error("Error generating report.");
 			}

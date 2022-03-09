@@ -13,13 +13,14 @@ import { createItemFromExisting } from "../../helpers/ClassHelper";
 const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	const [templateData, setTemplateData] = useState(null);
 	const [templateLoading, setTemplateLoading] = useState(true);
+	const [isProcessing, setProcessing] = useState(false);
+
 	const history = useHistory();
 	const alert = useAlert();
 	const {
 		items,
 		setItems,
 		showSelected,
-		hideSettings,
 		selectedItem,
 		moveItemHandler,
 		resizeItemHandler,
@@ -33,6 +34,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 
 	//Saves template to DB
 	const saveTemplateHandler = async (formValues) => {
+		setProcessing(true);
 		try {
 			const response = await TemplateService.saveTemplate(
 				formValues,
@@ -41,9 +43,15 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 			);
 			parseAndSetComponents(response.data.templateItems);
 			setTemplateData(response.data);
+			setProcessing(false);
 			alert.info("Template saved");
 		} catch (e) {
-			alert.error("Error saving template.");
+			setProcessing(false);
+			if (e.response.data && e.response.data.message) {
+				alert.error(e.response.data.message);
+			} else {
+				alert.error("Error saving template.");
+			}
 		}
 	};
 
@@ -60,7 +68,6 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		//EDIT - load template for reseting
 		if (mode === "edit") {
 			setTemplateLoading(true);
-			debugger;
 			TemplateService.getTemplate(templateId)
 				.then((response) => {
 					let loadedItems = response.data;
@@ -93,6 +100,14 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		}
 	}, []);
 
+	const orientationChangeHandler = (orientation) => {
+		setTemplateData((prevState) => ({
+			...prevState,
+			orientation: orientation,
+		}));
+		orientationHandler(orientation);
+	};
+
 	return (
 		<>
 			{templateLoading && mode === "edit" ? (
@@ -105,14 +120,16 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 					{/*Left sidebar*/}
 					<TemplateMenu
 						data={templateData}
-						onOrientationChange={orientationHandler}
+						onOrientationChange={orientationChangeHandler}
 						onSave={saveTemplateHandler}
 						onAddComponent={addItemHandler}
+						isProcessing={isProcessing}
 					></TemplateMenu>
 					{/*Canvas*/}
 					<Canvas
 						items={items}
 						onMove={moveItemHandler}
+						orientation={templateData?.orientation}
 						onSelect={selectItemHandler}
 						onResize={resizeItemHandler}
 						onDeleteItem={deleteItemHandler}
@@ -120,7 +137,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 					{/*Right sidebar */}
 					<ItemSettingsMenu
 						show={showSelected}
-						onClose={hideSettings}
+						onClose={() => selectItemHandler(null)}
 						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}

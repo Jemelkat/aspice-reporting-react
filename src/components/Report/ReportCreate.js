@@ -1,17 +1,17 @@
-import {useEffect, useState} from "react";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useEffect, useState } from "react";
+import { useAxios } from "../../helpers/AxiosHelper";
 import Loader from "../../ui/Loader/Loader";
-import {useHistory} from "react-router";
+import { useHistory } from "react-router";
 import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
 import ReportMenu from "./ReportMenu";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
-import {useAlert} from "react-alert";
-import {Tab} from "@headlessui/react";
+import { useAlert } from "react-alert";
+import { Tab } from "@headlessui/react";
 import PDFPreview from "../Canvas/PDFPreview";
-import {saveAs} from "file-saver";
+import { saveAs } from "file-saver";
 import ReportService from "../../services/ReportService";
-import {createItemFromExisting,} from "../../helpers/ClassHelper";
+import { createItemFromExisting } from "../../helpers/ClassHelper";
 
 const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	const [reportData, setReportData] = useState(null);
@@ -33,6 +33,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		addItemHandler,
 		layerItemHandler,
 		updateItemHandler,
+		orientationHandler,
 	} = useCanvas();
 
 	//Get current template - used for reseting of data
@@ -87,7 +88,6 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			return;
 		}
 		try {
-			debugger;
 			const response = await ReportService.generateReport(saveResponse.data.id);
 			alert.info("Report generated");
 
@@ -100,7 +100,6 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			return response;
 		} catch (e) {
 			setProcessing(false);
-			debugger;
 			if (e.response.data && e.response.data.message) {
 				alert.error(e.response.data.message);
 			} else {
@@ -119,6 +118,10 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	const applyTemplateHandler = (templateId) => {
 		if (templateId !== "")
 			getTemplate({ params: { templateId: templateId } }).then((response) => {
+				setReportData((prevState) => ({
+					...prevState,
+					orientation: response.data.orientation,
+				}));
 				parseAndSetComponents(response.data.templateItems);
 				selectItemHandler(null);
 			});
@@ -126,6 +129,12 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			setItems([]);
 			selectItemHandler(null);
 		}
+	};
+
+	const orientationChangeHandler = (orientation) => {
+		debugger;
+		setReportData((prevState) => ({ ...prevState, orientation: orientation }));
+		orientationHandler(orientation);
 	};
 
 	useEffect(() => {
@@ -174,6 +183,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 					{/*Left sidebar */}
 					<ReportMenu
 						data={reportData}
+						onOrientationChange={orientationChangeHandler}
 						onSave={saveReportHandler}
 						onAddComponent={addItemHandler}
 						onTemplateChange={applyTemplateHandler}
@@ -221,6 +231,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 									{/*Canvas */}
 									<Canvas
 										items={items}
+										orientation={reportData?.orientation}
 										selectedItem={selectedItem}
 										onMove={moveItemHandler}
 										onSelect={selectItemHandler}

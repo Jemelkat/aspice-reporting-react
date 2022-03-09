@@ -39,6 +39,7 @@ export const createItemFromExisting = (item) => {
 				item.processWidth ? item.processWidth : 50,
 				item.levelColumn ? item.levelColumn : null,
 				item.levelLimit >= 0 ? item.levelLimit : 5,
+				item.specificLevel ? item.specificLevel : null,
 				item.criterionColumn ? item.criterionColumn : null,
 				item.criterionWidth ? item.criterionWidth : 25,
 				item.scoreColumn ? item.scoreColumn : null
@@ -158,6 +159,7 @@ export class CapabilityTable extends Item {
 		processWidth = 100,
 		levelColumn = null,
 		levelLimit = 5,
+		specificLevel = null,
 		criterionColumn = null,
 		criterionWidth = 25,
 		scoreColumn = null
@@ -170,6 +172,7 @@ export class CapabilityTable extends Item {
 		this.processColumn = processColumn;
 		this.processWidth = processWidth;
 		this.levelColumn = levelColumn;
+		this.specificLevel = specificLevel;
 		this.levelLimit = levelLimit;
 		this.criterionColumn = criterionColumn;
 		this.criterionWidth = criterionWidth;

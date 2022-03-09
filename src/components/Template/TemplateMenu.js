@@ -1,4 +1,4 @@
-import {Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import Button from "../../ui/Button";
 import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import FormHidden from "../../ui/Form/FormHidden";
@@ -6,15 +6,21 @@ import FormInput from "../../ui/Form/FormInput";
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import * as Yup from "yup";
-import {PlusIcon} from "@heroicons/react/solid";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { PlusIcon } from "@heroicons/react/solid";
+import { typeEnum } from "../../helpers/ClassHelper";
 import SidebarCanvasItem from "../../ui/Sidebar/SidebarCanvasItem";
-import {ReactComponent as SVGBarHorizontal} from "../../assets/barchart-horizontal.svg";
-import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
-import {ReactComponent as SVGSimpleTable} from "../../assets/simple-table.svg";
-import {ReactComponent as SVGCapabilityTable} from "../../assets/capability-table.svg";
+import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
+import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
+import { ReactComponent as SVGSimpleTable } from "../../assets/simple-table.svg";
+import { ReactComponent as SVGCapabilityTable } from "../../assets/capability-table.svg";
+import FormSelect from "../../ui/Form/FormSelect";
 
-const TemplateMenu = ({ data, onSave, onAddComponent }) => {
+const TemplateMenu = ({
+	data,
+	onOrientationChange,
+	onSave,
+	onAddComponent,
+}) => {
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
 			<div className='sticky top-0 flex justify-start h-screen'>
@@ -24,6 +30,7 @@ const TemplateMenu = ({ data, onSave, onAddComponent }) => {
 							enableReinitialize={true}
 							initialValues={{
 								id: data ? data.id : null,
+								orientation: data?.orientation ? data.orientation : "VERTICAL",
 								templateName: data ? data.templateName : "",
 							}}
 							validationSchema={Yup.object({
@@ -34,18 +41,37 @@ const TemplateMenu = ({ data, onSave, onAddComponent }) => {
 								setSubmitting(false);
 							}}
 						>
-							<Form className='flex flex-col p-4'>
-								<FormHidden name='id'></FormHidden>
-								<FormInput
-									label='Template name'
-									name='templateName'
-									type='text'
-									placeholder='Template name...'
-								/>
-								<Button dark={true} type='submit' className='mt-4'>
-									Save
-								</Button>
-							</Form>
+							{({ values }) => (
+								<Form className='flex flex-col p-4'>
+									<FormHidden name='id'></FormHidden>
+									<FormInput
+										label='Template name'
+										name='templateName'
+										type='text'
+										placeholder='Template name...'
+									/>
+									<label className='mt-2' htmlFor='template'>
+										Orientation
+									</label>
+									<Field
+										name='orientation'
+										options={[
+											{ value: "VERTICAL", label: "VERTICAL" },
+											{ value: "HORIZONTAL", label: "HORIZONTAL" },
+										]}
+										onSelect={(e) => {
+											if (e.value !== values.orientation) {
+												onOrientationChange(e.value);
+											}
+										}}
+										component={FormSelect}
+										isMulti={false}
+									/>
+									<Button dark={true} type='submit' className='mt-4'>
+										Save
+									</Button>
+								</Form>
+							)}
 						</Formik>
 					</SidebarLink>
 					<SidebarLink sidebarName='Items'>

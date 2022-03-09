@@ -1,5 +1,5 @@
 import axios from "axios";
-import {axiosInstance} from "../helpers/AxiosHelper";
+import { axiosInstance } from "../helpers/AxiosHelper";
 import AuthService from "./AuthService";
 
 export default class ReportService {
@@ -7,18 +7,21 @@ export default class ReportService {
 		return axiosInstance.post("reports/save", {
 			id: formValues.id,
 			reportName: formValues.reportName,
+			orientation: formValues.orientation,
 			reportItems: items.map((i) => ({ ...i })),
 			reportTemplate:
 				formValues.templateId !== ""
 					? {
-						id: formValues.templateId,
-					}
+							id: formValues.templateId,
+					  }
 					: null,
 		});
 	};
 
 	static getReport = async (reportId) => {
-		return axiosInstance.get("/reports/get", { params: { reportId: reportId } });
+		return axiosInstance.get("/reports/get", {
+			params: { reportId: reportId },
+		});
 	};
 
 	static getAllSimple = async () => {

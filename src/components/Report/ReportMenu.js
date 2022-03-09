@@ -1,4 +1,4 @@
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import Button from "../../ui/Button";
 import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import FormHidden from "../../ui/Form/FormHidden";
@@ -6,19 +6,20 @@ import FormInput from "../../ui/Form/FormInput";
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import * as Yup from "yup";
-import {PlusIcon} from "@heroicons/react/solid";
+import { PlusIcon } from "@heroicons/react/solid";
 import FormSelect from "../../ui/Form/FormSelect";
-import {useAxios} from "../../helpers/AxiosHelper";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { useAxios } from "../../helpers/AxiosHelper";
+import { typeEnum } from "../../helpers/ClassHelper";
 import SidebarCanvasItem from "../../ui/Sidebar/SidebarCanvasItem";
-import {ReactComponent as SVGBarHorizontal} from "../../assets/barchart-horizontal.svg";
-import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
-import {ReactComponent as SVGSimpleTable} from "../../assets/simple-table.svg";
-import {ReactComponent as SVGCapabilityTable} from "../../assets/capability-table.svg";
+import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
+import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
+import { ReactComponent as SVGSimpleTable } from "../../assets/simple-table.svg";
+import { ReactComponent as SVGCapabilityTable } from "../../assets/capability-table.svg";
 
 const ReportMenu = ({
 	data,
 	onSave,
+	onOrientationChange,
 	onAddComponent,
 	onTemplateChange,
 	onReportGenerate,
@@ -50,6 +51,7 @@ const ReportMenu = ({
 							initialValues={{
 								id: data ? data.id : "",
 								reportName: data ? data.reportName : "",
+								orientation: data?.orientation ? data.orientation : "VERTICAL",
 								templateId: data
 									? data.reportTemplate
 										? data.reportTemplate.id
@@ -72,6 +74,23 @@ const ReportMenu = ({
 										name='reportName'
 										type='text'
 										placeholder='Report name...'
+									/>
+									<label className='mt-2' htmlFor='template'>
+										Orientation
+									</label>
+									<Field
+										name='orientation'
+										options={[
+											{ value: "VERTICAL", label: "VERTICAL" },
+											{ value: "HORIZONTAL", label: "HORIZONTAL" },
+										]}
+										onSelect={(e) => {
+											if (e.value !== values.orientation) {
+												onOrientationChange(e.value);
+											}
+										}}
+										component={FormSelect}
+										isMulti={false}
 									/>
 									<label className='mt-2' htmlFor='template'>
 										Based on template

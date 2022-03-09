@@ -28,6 +28,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		addItemHandler,
 		layerItemHandler,
 		updateItemHandler,
+		orientationHandler,
 	} = useCanvas();
 
 	//Saves template to DB
@@ -39,6 +40,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 				mode
 			);
 			parseAndSetComponents(response.data.templateItems);
+			setTemplateData(response.data);
 			alert.info("Template saved");
 		} catch (e) {
 			alert.error("Error saving template.");
@@ -103,6 +105,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 					{/*Left sidebar*/}
 					<TemplateMenu
 						data={templateData}
+						onOrientationChange={orientationHandler}
 						onSave={saveTemplateHandler}
 						onAddComponent={addItemHandler}
 					></TemplateMenu>

@@ -1,13 +1,14 @@
-import {useState} from "react";
-import {useAlert} from "react-alert";
+import { parse } from "postcss";
+import { useState } from "react";
+import { useAlert } from "react-alert";
 import {
-    CapabilityBarGraph,
-    CapabilityTable,
-    createItemFromExisting,
-    LevelPieGraph,
-    SimpleTable,
-    Text,
-    typeEnum,
+	CapabilityBarGraph,
+	CapabilityTable,
+	createItemFromExisting,
+	LevelPieGraph,
+	SimpleTable,
+	Text,
+	typeEnum,
 } from "../helpers/ClassHelper";
 
 const useCanvas = () => {
@@ -204,6 +205,32 @@ const useCanvas = () => {
 		}
 	};
 
+	//Fixes items position when orientation changes - items wont be outside of canvas
+	const orientationHandler = (orientation) => {
+		const DPI = window.devicePixelRatio * 96;
+		const upscale = (297 * DPI) / 25.4 / ((210 * DPI) / 25.4);
+		const downscale = (210 * DPI) / 25.4 / ((297 * DPI) / 25.4);
+		let newItems = [];
+		if (orientation === "VERTICAL") {
+			items.map((i) => {
+				i.width = parseInt(i.width * downscale);
+				i.height = parseInt(i.height * upscale);
+				i.x = parseInt(i.x * downscale);
+				i.y = parseInt(i.y * upscale);
+				newItems.push(i);
+			});
+		} else {
+			items.map((i) => {
+				i.width = parseInt(i.width * upscale);
+				i.height = parseInt(i.height * downscale);
+				i.x = parseInt(i.x * upscale);
+				i.y = parseInt(i.y * downscale);
+				newItems.push(i);
+			});
+		}
+		setItems(newItems);
+	};
+
 	return {
 		items,
 		setItems,
@@ -219,6 +246,7 @@ const useCanvas = () => {
 		layerItemHandler,
 		updateItemHandler,
 		parseLoadedItems,
+		orientationHandler,
 	};
 };
 

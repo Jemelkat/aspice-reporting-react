@@ -1,10 +1,12 @@
-import {Rnd} from "react-rnd";
-import {typeEnum} from "../../helpers/ClassHelper";
-import {ReactComponent as SVGBarHorizontal} from "../../assets/barchart-horizontal.svg";
-import {ReactComponent as SVGBarVertical} from "../../assets/barchart-vertical.svg";
-import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
+import { Rnd } from "react-rnd";
+import { typeEnum } from "../../helpers/ClassHelper";
+import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
+import { ReactComponent as SVGBarVertical } from "../../assets/barchart-vertical.svg";
+import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
+import { useEffect, useRef } from "react";
 
 const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
+	const itemRef = useRef(null);
 	const renderContent = () => {
 		switch (item.type) {
 			case typeEnum.TEXT:
@@ -117,8 +119,17 @@ const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 		}
 	};
 
+	//Hooks to update size and position on orientation change
+	useEffect(() => {
+		itemRef.current.updatePosition({ x: item.x, y: item.y });
+	}, [item.x, item.y]);
+	useEffect(() => {
+		itemRef.current.updateSize({ width: item.width, height: item.height });
+	}, [item.height, item.width]);
+
 	return (
 		<Rnd
+			ref={itemRef}
 			className='overflow-hidden'
 			default={{
 				x: item.x,

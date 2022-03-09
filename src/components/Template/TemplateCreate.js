@@ -92,6 +92,14 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		}
 	}, []);
 
+	const orientationChangeHandler = (orientation) => {
+		setTemplateData((prevState) => ({
+			...prevState,
+			orientation: orientation,
+		}));
+		orientationHandler(orientation);
+	};
+
 	return (
 		<>
 			{templateLoading && mode === "edit" ? (
@@ -104,7 +112,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 					{/*Left sidebar*/}
 					<TemplateMenu
 						data={templateData}
-						onOrientationChange={orientationHandler}
+						onOrientationChange={orientationChangeHandler}
 						onSave={saveTemplateHandler}
 						onAddComponent={addItemHandler}
 					></TemplateMenu>
@@ -112,6 +120,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 					<Canvas
 						items={items}
 						onMove={moveItemHandler}
+						orientation={templateData?.orientation}
 						onSelect={selectItemHandler}
 						onResize={resizeItemHandler}
 						onDeleteItem={deleteItemHandler}

@@ -31,6 +31,14 @@ const DashboardItem = ({
 					item.levelColumn?.id &&
 					item.attributeColumn?.id &&
 					item.scoreColumn?.id;
+				break;
+			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
+				result =
+					item.sources?.length > 0 &&
+					item.processColumn &&
+					item.attributeColumn &&
+					item.scoreColumn;
+				break;
 		}
 		return result;
 	};

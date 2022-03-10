@@ -160,6 +160,20 @@ const useCanvas = () => {
 				setBarX(newBarX + 6);
 				break;
 			}
+			case typeEnum.SOURCE_LEVEL_BAR_GRAPH: {
+				const newBarX =
+					barX >= currentColumns ? 0 : barX + 6 > currentColumns ? 0 : barX;
+				item = new SourceLevelBarGraph(
+					nextItemId(),
+					newBarX,
+					Infinity,
+					6,
+					6,
+					typeEnum.SOURCE_LEVEL_BAR_GRAPH
+				);
+				setBarX(newBarX + 6);
+				break;
+			}
 			case typeEnum.LEVEL_PIE_GRAPH: {
 				const newPieX =
 					pieX >= currentColumns ? 0 : pieX + 4 > currentColumns ? 0 : pieX;

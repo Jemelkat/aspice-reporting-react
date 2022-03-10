@@ -1,10 +1,10 @@
 import Button from "../../ui/Button";
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { typeEnum } from "../../helpers/ClassHelper";
 import SidebarCanvasItem from "../../ui/Sidebar/SidebarCanvasItem";
-import {ReactComponent as SVGBarHorizontal} from "../../assets/barchart-horizontal.svg";
-import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
+import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
+import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
 
 const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
 	return (
@@ -32,6 +32,14 @@ const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
 							}}
 						>
 							<SVGBarHorizontal></SVGBarHorizontal>
+						</SidebarCanvasItem>
+						<SidebarCanvasItem
+							name={"Sources level bar"}
+							onClick={() => {
+								onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH, currentColumns);
+							}}
+						>
+							<SVGBarHorizontal />
 						</SidebarCanvasItem>
 						<SidebarCanvasItem
 							name={"Level pie graph"}

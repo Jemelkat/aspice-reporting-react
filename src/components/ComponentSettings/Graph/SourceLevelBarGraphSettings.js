@@ -136,10 +136,10 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			initialValues={{
 				orientation: selectedItem.orientation,
 				sources: selectedItem?.sources.map((i) => i.id),
-				assessorColumn: selectedItem.assessorColumn?.id,
-				processColumn: selectedItem.processColumn?.id,
-				attributeColumn: selectedItem.attributeColumn?.id,
-				scoreColumn: selectedItem.scoreColumn?.id,
+				assessorColumn: selectedItem.assessorColumn,
+				processColumn: selectedItem.processColumn,
+				attributeColumn: selectedItem.attributeColumn,
+				scoreColumn: selectedItem.scoreColumn,
 			}}
 		>
 			{({ values }) => (

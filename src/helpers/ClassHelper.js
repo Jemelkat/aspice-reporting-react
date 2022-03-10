@@ -239,9 +239,7 @@ export class SourceLevelBarGraph extends Item {
 		orientation = "HORIZONTAL",
 		sources = [],
 		assessorColumn = null,
-		assessorFilter = null,
 		processColumn = null,
-		processFilter = [],
 		attributeColumn = null,
 		scoreColumn = null
 	) {
@@ -249,9 +247,7 @@ export class SourceLevelBarGraph extends Item {
 		this.orientation = orientation;
 		this.sources = sources;
 		this.assessorColumn = assessorColumn;
-		this.assessorFilter = assessorFilter;
 		this.processColumn = processColumn;
-		this.processFilter = processFilter;
 		this.attributeColumn = attributeColumn;
 		this.scoreColumn = scoreColumn;
 	}

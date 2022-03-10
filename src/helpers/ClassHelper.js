@@ -1,3 +1,5 @@
+import SourceLevelBarGraphSettings from "../components/ComponentSettings/Graph/SourceLevelBarGraphSettings";
+
 export const createItemFromExisting = (item) => {
 	switch (item.type) {
 		case typeEnum.TEXT:
@@ -59,6 +61,21 @@ export const createItemFromExisting = (item) => {
 				item.processColumn ? item.processColumn : null,
 				item.processFilter ? item.processFilter : [],
 				item.levelColumn ? item.levelColumn : null,
+				item.attributeColumn ? item.attributeColumn : null,
+				item.scoreColumn ? item.scoreColumn : null
+			);
+		case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
+			return new SourceLevelBarGraph(
+				item.id,
+				item.x,
+				item.y,
+				item.width,
+				item.height,
+				item.type,
+				item.orientation ? item.orientation : "HORIZONTAL",
+				item.sources ? item.sources : [],
+				item.assessorColumn ? item.assessorColumn : null,
+				item.processColumn ? item.processColumn : null,
 				item.attributeColumn ? item.attributeColumn : null,
 				item.scoreColumn ? item.scoreColumn : null
 			);
@@ -211,6 +228,35 @@ export class CapabilityBarGraph extends Item {
 	}
 }
 
+export class SourceLevelBarGraph extends Item {
+	constructor(
+		id,
+		x,
+		y,
+		width,
+		height,
+		type,
+		orientation = "HORIZONTAL",
+		sources = [],
+		assessorColumn = null,
+		assessorFilter = null,
+		processColumn = null,
+		processFilter = [],
+		attributeColumn = null,
+		scoreColumn = null
+	) {
+		super(id, x, y, width, height, type);
+		this.orientation = orientation;
+		this.sources = sources;
+		this.assessorColumn = assessorColumn;
+		this.assessorFilter = assessorFilter;
+		this.processColumn = processColumn;
+		this.processFilter = processFilter;
+		this.attributeColumn = attributeColumn;
+		this.scoreColumn = scoreColumn;
+	}
+}
+
 export class LevelPieGraph extends Item {
 	constructor(
 		id,
@@ -243,5 +289,6 @@ export const typeEnum = Object.freeze({
 	TEXT: "TEXT",
 	SIMPLE_TABLE: "SIMPLE_TABLE",
 	CAPABILITY_TABLE: "CAPABILITY_TABLE",
+	SOURCE_LEVEL_BAR_GRAPH: "SOURCE_LEVEL_BAR_GRAPH",
 	LEVEL_PIE_GRAPH: "LEVEL_PIE_GRAPH",
 });

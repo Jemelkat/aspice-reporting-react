@@ -49,7 +49,11 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		let newComponents = [];
 		setItems([]);
 		if (components) {
-			newComponents = components.map((i) => createItemFromExisting(i));
+			debugger;
+			newComponents = components.map((i) => {
+				debugger;
+				return createItemFromExisting(i);
+			});
 			setItems(newComponents);
 			selectItemHandler(null);
 		}
@@ -140,8 +144,10 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	useEffect(() => {
 		if (mode === "edit") {
 			setReportLoading(true);
+			debugger;
 			ReportService.getReport(reportId)
 				.then((response) => {
+					debugger;
 					let loadedItems = response.data;
 					//Add new item if report was redirected from dashboard
 					if (addItem) {

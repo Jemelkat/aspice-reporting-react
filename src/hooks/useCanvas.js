@@ -7,6 +7,8 @@ import {
 	createItemFromExisting,
 	LevelPieGraph,
 	SimpleTable,
+	SourceLevelBarGraph,
+	SourcesLevelBarGraph,
 	Text,
 	typeEnum,
 } from "../helpers/ClassHelper";
@@ -91,6 +93,16 @@ const useCanvas = () => {
 					200,
 					200,
 					typeEnum.CAPABILITY_BAR_GRAPH
+				);
+				break;
+			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
+				item = new SourceLevelBarGraph(
+					nextItemId(),
+					0,
+					0,
+					200,
+					200,
+					typeEnum.SOURCE_LEVEL_BAR_GRAPH
 				);
 				break;
 			case typeEnum.SIMPLE_TABLE:

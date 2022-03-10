@@ -1,11 +1,11 @@
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import FormInput from "../../ui/Form/FormInput";
 import CustomSelect from "../../ui/Form/FormSelect";
 import * as Yup from "yup";
 import FormHidden from "../../ui/Form/FormHidden";
-import {useEffect} from "react/cjs/react.development";
-import {useState} from "react";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useEffect } from "react/cjs/react.development";
+import { useState } from "react";
+import { useAxios } from "../../helpers/AxiosHelper";
 import Button from "../../ui/Button";
 
 const AdminGroupForm = (props) => {
@@ -107,7 +107,7 @@ const AdminGroupForm = (props) => {
 						options={usersDataSelect}
 						component={CustomSelect}
 						placeholder='Select multi languages...'
-						isMulti={false}
+						isMulti={true}
 					/>
 					<div className='flex justify-center mt-4 space-x-2 space'>
 						<Button type='submit' className='mt-2' dark={true}>

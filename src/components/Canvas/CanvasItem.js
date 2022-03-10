@@ -43,6 +43,25 @@ const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 						</div>
 					</div>
 				);
+			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
+				return (
+					<div className='w-full h-full'>
+						{item.orientation === "HORIZONTAL" ? (
+							<SVGBarHorizontal></SVGBarHorizontal>
+						) : (
+							<SVGBarVertical></SVGBarVertical>
+						)}
+						<div
+							style={{
+								fontFamily: "DejaVu",
+								whiteSpace: "pre-line",
+							}}
+							className='absolute w-32 -mt-4 -ml-16 text-center bg-white border border-black top-1/2 left-1/2'
+						>
+							SOURCES LEVEL BAR GRAPH
+						</div>
+					</div>
+				);
 			case typeEnum.CAPABILITY_TABLE:
 				return (
 					<div
@@ -114,6 +133,7 @@ const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 						</div>
 					</div>
 				);
+
 			default:
 				return <div>UNKNOWN ITEM TYPE</div>;
 		}

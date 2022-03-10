@@ -184,6 +184,15 @@ const ReportMenu = ({
 							</SidebarCanvasItem>
 							<SidebarCanvasItem
 								mini
+								name={"Sources level bar"}
+								onClick={() => {
+									onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH);
+								}}
+							>
+								<SVGBarHorizontal />
+							</SidebarCanvasItem>
+							<SidebarCanvasItem
+								mini
 								name={"Level pie"}
 								onClick={() => {
 									onAddComponent(typeEnum.LEVEL_PIE_GRAPH);

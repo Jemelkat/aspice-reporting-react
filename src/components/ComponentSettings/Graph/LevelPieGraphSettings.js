@@ -1,9 +1,9 @@
-import {Field, Form, Formik} from "formik";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import SourceColumnService from "../../../services/SourceColumnService";
-import {InformationCircleIcon} from "@heroicons/react/solid";
+import { InformationCircleIcon } from "@heroicons/react/solid";
 
 const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -53,7 +53,9 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			//Load new columns for source
 			try {
 				setColumnsLoading(true);
-				const response = await SourceColumnService.getColumnsForSource(sourceId);
+				const response = await SourceColumnService.getColumnsForSource(
+					sourceId
+				);
 				setColumnsData(parseColumns(response.data));
 				setColumnsLoading(false);
 			} catch (e) {
@@ -126,40 +128,42 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No sources"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									setColumnsError(false);
-									//Change selected coluns to NONE on source change
-									updatedSelected.processColumn = null;
-									updatedSelected.assessorColumn = null;
-									updatedSelected.levelColumn = null;
-									updatedSelected.attributeColumn = null;
-									updatedSelected.scoreColumn = null;
-									updatedSelected.assessorFilter = null;
-									//Reset filters
-									onItemUpdate(updatedSelected);
-									setAssessorFilter({
-										data: [],
-										loading: false,
-										error: false,
-									});
+									if (e.value !== selectedItem.source?.id) {
+										let updatedSelected = selectedItem;
+										setColumnsError(false);
+										//Change selected coluns to NONE on source change
+										updatedSelected.processColumn = null;
+										updatedSelected.assessorColumn = null;
+										updatedSelected.levelColumn = null;
+										updatedSelected.attributeColumn = null;
+										updatedSelected.scoreColumn = null;
+										updatedSelected.assessorFilter = null;
+										//Reset filters
+										onItemUpdate(updatedSelected);
+										setAssessorFilter({
+											data: [],
+											loading: false,
+											error: false,
+										});
 
-									if (e.value === null) {
-										if (e.value !== updatedSelected.source) {
-											updatedSelected.source = null;
-											setColumnsData([]);
-										}
-									} else {
-										if (
-											!updatedSelected.source?.id ||
-											e.value !== updatedSelected.source.id
-										) {
-											updatedSelected.source = {
-												id: e.value,
-												sourceName: e.label,
-											};
-											//Load columns for new source
+										if (e.value === null) {
+											if (e.value !== updatedSelected.source) {
+												updatedSelected.source = null;
+												setColumnsData([]);
+											}
+										} else {
+											if (
+												!updatedSelected.source?.id ||
+												e.value !== updatedSelected.source.id
+											) {
+												updatedSelected.source = {
+													id: e.value,
+													sourceName: e.label,
+												};
+												//Load columns for new source
 
-											getColumnsHandler(e.value);
+												getColumnsHandler(e.value);
+											}
 										}
 									}
 								}}
@@ -181,24 +185,26 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.assessorColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-										getAssessorFilterData(values.sourceFormId, e.value);
-									} else {
-										updatedSelected.assessorColumn = null;
-										setAssessorFilter({
-											data: [],
-											loading: false,
-											error: false,
-										});
-									}
+									if (e.value !== selectedItem.assessorColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.assessorColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+											getAssessorFilterData(values.sourceFormId, e.value);
+										} else {
+											updatedSelected.assessorColumn = null;
+											setAssessorFilter({
+												data: [],
+												loading: false,
+												error: false,
+											});
+										}
 
-									updatedSelected.assessorFilter = null;
-									onItemUpdate(updatedSelected);
+										updatedSelected.assessorFilter = null;
+										onItemUpdate(updatedSelected);
+									}
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -243,16 +249,18 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.processColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.processColumn = null;
+									if (e.value !== selectedItem.processColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.processColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+										} else {
+											updatedSelected.processColumn = null;
+										}
+										onItemUpdate(updatedSelected);
 									}
-									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -272,16 +280,18 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.levelColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.levelColumn = null;
+									if (e.value !== selectedItem.levelColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.levelColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+										} else {
+											updatedSelected.levelColumn = null;
+										}
+										onItemUpdate(updatedSelected);
 									}
-									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -301,16 +311,18 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.attributeColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.attributeColumn = null;
+									if (e.value !== selectedItem.attributeColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.attributeColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+										} else {
+											updatedSelected.attributeColumn = null;
+										}
+										onItemUpdate(updatedSelected);
 									}
-									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -330,16 +342,18 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.scoreColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.scoreColumn = null;
+									if (e.value !== selectedItem.scoreColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.scoreColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+										} else {
+											updatedSelected.scoreColumn = null;
+										}
+										onItemUpdate(updatedSelected);
 									}
-									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}

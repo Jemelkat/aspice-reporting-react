@@ -3,6 +3,7 @@ import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import { typeEnum } from "../../helpers/ClassHelper";
 import SidebarCanvasItem from "../../ui/Sidebar/SidebarCanvasItem";
+import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
 import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
 import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
 
@@ -39,7 +40,7 @@ const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
 								onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH, currentColumns);
 							}}
 						>
-							<SVGBarHorizontal />
+							<SVGSourceBarHorizontal />
 						</SidebarCanvasItem>
 						<SidebarCanvasItem
 							name={"Level pie graph"}

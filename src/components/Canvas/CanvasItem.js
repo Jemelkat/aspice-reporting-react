@@ -1,5 +1,7 @@
 import { Rnd } from "react-rnd";
 import { typeEnum } from "../../helpers/ClassHelper";
+import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
+import { ReactComponent as SVGSourceBarVertical } from "../../assets/barchart-vertical-sources.svg";
 import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
 import { ReactComponent as SVGBarVertical } from "../../assets/barchart-vertical.svg";
 import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
@@ -47,9 +49,9 @@ const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 				return (
 					<div className='w-full h-full'>
 						{item.orientation === "HORIZONTAL" ? (
-							<SVGBarHorizontal></SVGBarHorizontal>
+							<SVGSourceBarHorizontal></SVGSourceBarHorizontal>
 						) : (
-							<SVGBarVertical></SVGBarVertical>
+							<SVGSourceBarVertical></SVGSourceBarVertical>
 						)}
 						<div
 							style={{

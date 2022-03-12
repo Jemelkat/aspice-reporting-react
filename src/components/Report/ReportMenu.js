@@ -11,6 +11,7 @@ import FormSelect from "../../ui/Form/FormSelect";
 import { useAxios } from "../../helpers/AxiosHelper";
 import { typeEnum } from "../../helpers/ClassHelper";
 import SidebarCanvasItem from "../../ui/Sidebar/SidebarCanvasItem";
+import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
 import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
 import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
 import { ReactComponent as SVGSimpleTable } from "../../assets/simple-table.svg";
@@ -163,12 +164,18 @@ const ReportMenu = ({
 						</span>
 					</SidebarLink>
 					<SidebarDisclosure name='Text components' dark>
-						<div
-							className='flex flex-row p-2 m-2 bg-gray-100'
-							onClick={() => onAddComponent(typeEnum.TEXT)}
-						>
-							<PlusIcon className='w-5 h-5 mr-1'></PlusIcon>
-							TEXT
+						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
+							<SidebarCanvasItem
+								mini
+								name={"Text"}
+								onClick={() => {
+									onAddComponent(typeEnum.TEXT);
+								}}
+							>
+								<div className='flex items-center justify-center h-full overflow-hidden text-sm text-center'>
+									Simple text
+								</div>
+							</SidebarCanvasItem>
 						</div>
 					</SidebarDisclosure>
 					<SidebarDisclosure name='Graph components' dark>
@@ -189,7 +196,7 @@ const ReportMenu = ({
 									onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH);
 								}}
 							>
-								<SVGBarHorizontal />
+								<SVGSourceBarHorizontal />
 							</SidebarCanvasItem>
 							<SidebarCanvasItem
 								mini

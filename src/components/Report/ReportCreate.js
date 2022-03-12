@@ -49,9 +49,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		let newComponents = [];
 		setItems([]);
 		if (components) {
-			debugger;
 			newComponents = components.map((i) => {
-				debugger;
 				return createItemFromExisting(i);
 			});
 			setItems(newComponents);

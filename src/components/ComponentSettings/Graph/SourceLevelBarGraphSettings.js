@@ -7,6 +7,7 @@ import { useAlert } from "react-alert";
 import HorizontalLine from "../../../ui/HorizontalLine";
 import SourceColumnService from "../../../services/SourceColumnService";
 import DataService from "../../../services/DataService";
+import FormInput from "../../../ui/Form/FormInput";
 
 const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -14,25 +15,14 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [columnsData, setColumnsData] = useState([]);
 	const [columnsLoading, setColumnsLoading] = useState(false);
 	const [columnsError, setColumnsError] = useState(false);
-	const [processFilter, setProcessFilter] = useState({
-		data: [],
-		loading: false,
-		error: false,
-	});
-	const [assessorFilter, setAssessorFilter] = useState({
-		data: [],
-		loading: false,
-		error: false,
-	});
 
 	const alert = useAlert();
 
 	//Load columns if source is defined on load
 	useEffect(() => {
-		debugger;
 		selectedItem.sources.length > 0 &&
 			getColumnsHandler(selectedItem.sources.map((s) => s.id));
-	}, [selectedItem]);
+	}, [selectedItem.sources]);
 
 	//Parse sources
 	const parseSources = (sources) => {
@@ -41,92 +31,58 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			sources.forEach((source) =>
 				array.push({ value: source.id, label: source.sourceName })
 			);
-		array.push({ value: null, label: "None" });
 		return array;
 	};
 
 	//Load new columns data on source change
 	const getColumnsHandler = async (sourceId) => {
-		debugger;
 		setColumnsError(false);
 		if (sourceId === null) {
 			setColumnsData([]);
-			setProcessFilter({ data: [], loading: false, error: false });
 		} else {
 			//Load new columns for source
 			try {
+				console.log("calling");
 				setColumnsLoading(true);
 				const response = await SourceColumnService.getColumnsForSources(
 					sourceId
 				);
+				//Reset selected columns when changed
+				updateSelectedColumns(response.data);
+
 				setColumnsData(DataService.parseSimpleSelectData(response.data));
 				setColumnsLoading(false);
 			} catch (e) {
 				setColumnsLoading(false);
 				setColumnsError(true);
-			}
-			//Get filter values for process
-			if (selectedItem.processColumn?.id) {
-				getProcessFilterData(sourceId, selectedItem.processColumn.id);
-			}
-			//Get filter values for assessor
-			if (selectedItem.assessorColumn?.id) {
-				getAssessorFilterData(sourceId, selectedItem.assessorColumn.id);
+				alert.error("Error getting columns for selected sources.");
 			}
 		}
 	};
 
-	//Gets distinct values from process column
-	const getProcessFilterData = async (sourceId, columnId) => {
-		setProcessFilter({ data: [], loading: true, error: false });
-		try {
-			const response = await SourceColumnService.getColumDistinctValues(
-				sourceId,
-				columnId
-			);
-			const newData = response.data.map((filter) => ({
-				value: filter,
-				label: filter,
-			}));
-			setProcessFilter((prevState) => ({
-				...prevState,
-				data: newData,
-				loading: false,
-			}));
-		} catch (e) {
-			alert.error("Error getting process column values.");
-			setProcessFilter((prevState) => ({
-				...prevState,
-				loading: false,
-				error: true,
-			}));
+	//Set selected columns to null if they dont exist in any source
+	const updateSelectedColumns = (columnsData) => {
+		let newSelected = selectedItem;
+		let changed = false;
+		if (!columnsData.includes(newSelected.assessorColumn)) {
+			newSelected.assessorColumn = null;
+			changed = true;
 		}
-	};
+		if (!columnsData.includes(newSelected.processColumn)) {
+			newSelected.processColumn = null;
+			changed = true;
+		}
+		if (!columnsData.includes(newSelected.attributeColumn)) {
+			newSelected.attributeColumn = null;
+			changed = true;
+		}
+		if (!columnsData.includes(newSelected.scoreColumn)) {
+			newSelected.scoreColumn = null;
+			changed = true;
+		}
 
-	//Gets distinct values from assessor column
-	const getAssessorFilterData = async (sourceId, columnId) => {
-		setAssessorFilter({ data: [], loading: true, error: false });
-		try {
-			const response = await SourceColumnService.getColumDistinctValues(
-				sourceId,
-				columnId
-			);
-			const newData = response.data.map((filter) => ({
-				value: filter,
-				label: filter,
-			}));
-			setAssessorFilter((prevState) => ({
-				...prevState,
-				data: newData,
-				loading: false,
-			}));
-		} catch (e) {
-			alert.error("Error getting assessor column values.");
-			setAssessorFilter((prevState) => ({
-				...prevState,
-				loading: false,
-				error: true,
-			}));
+		if (changed) {
+			onItemUpdate(newSelected);
 		}
 	};
 
@@ -186,8 +142,6 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 											};
 										});
 										onItemUpdate(updatedSelected);
-										const selectedArray = e.map((selected) => selected.value);
-										getColumnsHandler(selectedArray);
 									}
 								}}
 								isMulti={true}
@@ -220,6 +174,11 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
+							<label className='flex items-center pt-1 text-sm'>
+								Optional filter by assessor
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+							</label>
+							<FormInput name='processFilter' type='text' />
 							<HorizontalLine />
 							<label className='font-medium'>Process column:</label>
 							<Field
@@ -247,6 +206,11 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
+							<label className='flex items-center pt-1 text-sm'>
+								Optional filter by process
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+							</label>
+							<FormInput name='processFilter' type='text' />
 							<HorizontalLine />
 							<label className='font-medium'>Attribute column</label>
 							<Field
@@ -274,6 +238,7 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
+							<HorizontalLine />
 							<label className='font-medium'>Score/Value</label>
 							<Field
 								name='scoreColumn'

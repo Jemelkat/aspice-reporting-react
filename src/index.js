@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import {AuthContextProvider} from "./context/AuthContext";
-import {BrowserRouter} from "react-router-dom";
-import {positions, Provider as AlertProvider, transitions} from "react-alert";
+import { AuthContextProvider } from "./context/AuthContext";
+import { BrowserRouter } from "react-router-dom";
+import { positions, Provider as AlertProvider, transitions } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import "react-dual-listbox/lib/react-dual-listbox.css";
 import "@fortawesome/fontawesome-free/css/all.css";
@@ -13,7 +13,7 @@ import "@fortawesome/fontawesome-free/css/all.css";
 // optional configuration
 const options = {
 	position: positions.BOTTOM_CENTER,
-	timeout: 2000,
+	timeout: 5000,
 	offset: "3px",
 	transition: transitions.SCALE,
 };

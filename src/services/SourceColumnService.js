@@ -11,7 +11,6 @@ export default class SourceColumnService {
 	};
 
 	static getColumnsForSources = (sources) => {
-		debugger;
 		return axiosInstance.get(`/source/columns`, {
 			params: { sources: sources.join(",") },
 		});

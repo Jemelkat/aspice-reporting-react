@@ -142,10 +142,8 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	useEffect(() => {
 		if (mode === "edit") {
 			setReportLoading(true);
-			debugger;
 			ReportService.getReport(reportId)
 				.then((response) => {
-					debugger;
 					let loadedItems = response.data;
 					//Add new item if report was redirected from dashboard
 					if (addItem) {

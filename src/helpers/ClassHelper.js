@@ -75,7 +75,9 @@ export const createItemFromExisting = (item) => {
 				item.orientation ? item.orientation : "HORIZONTAL",
 				item.sources ? item.sources : [],
 				item.assessorColumn ? item.assessorColumn : null,
+				item.assessorFilter ? item.assessorFilter : null,
 				item.processColumn ? item.processColumn : null,
+				item.processFilter ? item.processFilter : [],
 				item.attributeColumn ? item.attributeColumn : null,
 				item.scoreColumn ? item.scoreColumn : null
 			);
@@ -239,7 +241,9 @@ export class SourceLevelBarGraph extends Item {
 		orientation = "HORIZONTAL",
 		sources = [],
 		assessorColumn = null,
+		assessorFilter = null,
 		processColumn = null,
+		processFilter = [],
 		attributeColumn = null,
 		scoreColumn = null
 	) {
@@ -247,7 +251,9 @@ export class SourceLevelBarGraph extends Item {
 		this.orientation = orientation;
 		this.sources = sources;
 		this.assessorColumn = assessorColumn;
+		this.assessorFilter = assessorFilter;
 		this.processColumn = processColumn;
+		this.processFilter = processFilter;
 		this.attributeColumn = attributeColumn;
 		this.scoreColumn = scoreColumn;
 	}

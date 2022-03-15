@@ -76,9 +76,10 @@ export const createItemFromExisting = (item) => {
 				item.assessorColumn ? item.assessorColumn : null,
 				item.assessorFilter ? item.assessorFilter : null,
 				item.processColumn ? item.processColumn : null,
-				item.levelColumn ? item.levelColumn : null,
+				item.criterionColumn ? item.criterionColumn : null,
 				item.attributeColumn ? item.attributeColumn : null,
-				item.scoreColumn ? item.scoreColumn : null
+				item.scoreColumn ? item.scoreColumn : null,
+				item.scoreFunction ? item.scoreFunction : "AVG"
 			);
 		default:
 			return null;
@@ -227,18 +228,20 @@ export class LevelPieGraph extends Item {
 		assessorColumn = null,
 		assessorFilter = null,
 		processColumn = null,
-		levelColumn = null,
+		criterionColumn = null,
 		attributeColumn = null,
-		scoreColumn = null
+		scoreColumn = null,
+		scoreFunction = "AVG"
 	) {
 		super(id, x, y, width, height, type);
 		this.source = source;
 		this.assessorColumn = assessorColumn;
 		this.assessorFilter = assessorFilter;
 		this.processColumn = processColumn;
-		this.levelColumn = levelColumn;
+		this.criterionColumn = criterionColumn;
 		this.attributeColumn = attributeColumn;
 		this.scoreColumn = scoreColumn;
+		this.scoreFunction = scoreFunction;
 	}
 }
 

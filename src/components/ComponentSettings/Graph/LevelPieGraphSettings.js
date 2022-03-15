@@ -1,9 +1,10 @@
-import {Field, Form, Formik} from "formik";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import SourceColumnService from "../../../services/SourceColumnService";
-import {InformationCircleIcon} from "@heroicons/react/solid";
+import { InformationCircleIcon } from "@heroicons/react/solid";
+import HorizontalLine from "../../../ui/HorizontalLine";
 
 const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -53,7 +54,9 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			//Load new columns for source
 			try {
 				setColumnsLoading(true);
-				const response = await SourceColumnService.getColumnsForSource(sourceId);
+				const response = await SourceColumnService.getColumnsForSource(
+					sourceId
+				);
 				setColumnsData(parseColumns(response.data));
 				setColumnsLoading(false);
 			} catch (e) {
@@ -102,9 +105,10 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				assessorColumn: selectedItem.assessorColumn?.id,
 				assessorFilter: selectedItem.assessorFilter,
 				processColumn: selectedItem.processColumn?.id,
-				levelColumn: selectedItem.levelColumn?.id,
+				criterionColumn: selectedItem.criterionColumn?.id,
 				attributeColumn: selectedItem.attributeColumn?.id,
 				scoreColumn: selectedItem.scoreColumn?.id,
+				scoreFunction: selectedItem.scoreFunction,
 			}}
 		>
 			{({ values }) => (
@@ -166,6 +170,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={sourcesLoading}
 							/>
+							<HorizontalLine />
 							<label className='font-medium'>Assessor</label>
 							<Field
 								name='assessorColumn'
@@ -228,7 +233,8 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
-							<label className='font-medium'>Process column:</label>
+							<HorizontalLine />
+							<label className='font-medium'>Process</label>
 							<Field
 								name='processColumn'
 								options={columnsData}
@@ -257,9 +263,10 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
-							<label className='font-medium'>Capability level:</label>
+							<HorizontalLine />
+							<label className='font-medium'>Performance criterion</label>
 							<Field
-								name='levelColumn'
+								name='criterionColumn'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -274,19 +281,20 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.levelColumn = {
+										updatedSelected.criterionColumn = {
 											id: e.value,
 											columnName: e.label,
 										};
 									} else {
-										updatedSelected.levelColumn = null;
+										updatedSelected.criterionColumn = null;
 									}
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
-							<label className='font-medium'>Attribute column:</label>
+							<HorizontalLine />
+							<label className='font-medium'>Process attribute</label>
 							<Field
 								name='attributeColumn'
 								options={columnsData}
@@ -315,6 +323,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
+							<HorizontalLine />
 							<label className='font-medium'>Score/Value:</label>
 							<Field
 								name='scoreColumn'
@@ -343,6 +352,25 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
+							/>
+							<label className='flex items-center pt-1 text-sm'>
+								Aggregate function
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+							</label>
+							<Field
+								name='scoreFunction'
+								options={[
+									{ value: "MAX", label: "MAX" },
+									{ value: "AVG", label: "AVG" },
+									{ value: "MIN", label: "MIN" },
+								]}
+								component={FormSelect}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.scoreFunction = e.value;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
 							/>
 						</div>
 					</div>

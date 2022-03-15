@@ -27,7 +27,7 @@ const DashboardItem = ({
 				result =
 					item.source?.id &&
 					item.processColumn?.id &&
-					item.levelColumn?.id &&
+					item.criterionColumn?.id &&
 					item.attributeColumn?.id &&
 					item.scoreColumn?.id;
 				break;

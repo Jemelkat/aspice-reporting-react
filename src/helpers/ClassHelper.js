@@ -1,4 +1,5 @@
 export const createItemFromExisting = (item) => {
+	debugger;
 	switch (item.type) {
 		case typeEnum.TEXT:
 			return new Text(
@@ -58,7 +59,7 @@ export const createItemFromExisting = (item) => {
 				item.assessorFilter ? item.assessorFilter : [],
 				item.processColumn ? item.processColumn : null,
 				item.processFilter ? item.processFilter : [],
-				item.levelColumn ? item.levelColumn : null,
+				item.criterionColumn ? item.criterionColumn : null,
 				item.attributeColumn ? item.attributeColumn : null,
 				item.scoreColumn ? item.scoreColumn : null,
 				item.scoreFunction ? item.scoreFunction : "AVG"
@@ -195,7 +196,7 @@ export class CapabilityBarGraph extends Item {
 		assessorFilter = [],
 		processColumn = null,
 		processFilter = [],
-		levelColumn = null,
+		criterionColumn = null,
 		attributeColumn = null,
 		scoreColumn = null,
 		scoreFunction = "AVG"
@@ -207,7 +208,7 @@ export class CapabilityBarGraph extends Item {
 		this.assessorFilter = assessorFilter;
 		this.processColumn = processColumn;
 		this.processFilter = processFilter;
-		this.levelColumn = levelColumn;
+		this.criterionColumn = criterionColumn;
 		this.attributeColumn = attributeColumn;
 		this.scoreColumn = scoreColumn;
 		this.scoreFunction = scoreFunction;

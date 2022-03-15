@@ -146,7 +146,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				assessorFilter: selectedItem.assessorFilter.map((i) => i),
 				processColumn: selectedItem.processColumn?.id,
 				processFilter: selectedItem.processFilter.map((i) => i),
-				levelColumn: selectedItem.levelColumn?.id,
+				criterionColumn: selectedItem.criterionColumn?.id,
 				attributeColumn: selectedItem.attributeColumn?.id,
 				scoreColumn: selectedItem.scoreColumn?.id,
 				scoreFunction: selectedItem.scoreFunction,
@@ -251,7 +251,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={sourcesLoading}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'> Assessor column</label>
+							<label className='font-medium'> Assessor</label>
 							<Field
 								name='assessorColumn'
 								options={columnsData}
@@ -316,7 +316,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'>Process column:</label>
+							<label className='font-medium'>Process</label>
 							<Field
 								name='processColumn'
 								options={columnsData}
@@ -382,9 +382,9 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={processFilter.loading}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'>Capability level</label>
+							<label className='font-medium'>Performance criterion</label>
 							<Field
-								name='levelColumn'
+								name='criterionColumn'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -399,12 +399,12 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.levelColumn = {
+										updatedSelected.criterionColumn = {
 											id: e.value,
 											columnName: e.label,
 										};
 									} else {
-										updatedSelected.levelColumn = null;
+										updatedSelected.criterionColumn = null;
 									}
 									onItemUpdate(updatedSelected);
 								}}
@@ -412,7 +412,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'>Attribute column</label>
+							<label className='font-medium'>Process atribute</label>
 							<Field
 								name='attributeColumn'
 								options={columnsData}

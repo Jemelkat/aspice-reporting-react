@@ -149,6 +149,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				levelColumn: selectedItem.levelColumn?.id,
 				attributeColumn: selectedItem.attributeColumn?.id,
 				scoreColumn: selectedItem.scoreColumn?.id,
+				scoreFunction: selectedItem.scoreFunction,
 			}}
 		>
 			{({ values }) => (
@@ -410,6 +411,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
+							<HorizontalLine />
 							<label className='font-medium'>Attribute column</label>
 							<Field
 								name='attributeColumn'
@@ -439,6 +441,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
+							<HorizontalLine />
 							<label className='font-medium'>Score/Value</label>
 							<Field
 								name='scoreColumn'
@@ -467,6 +470,25 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
+							/>
+							<label className='flex items-center pt-1 text-sm'>
+								Aggregate function
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+							</label>
+							<Field
+								name='scoreFunction'
+								options={[
+									{ value: "MAX", label: "MAX" },
+									{ value: "AVG", label: "AVG" },
+									{ value: "MIN", label: "MIN" },
+								]}
+								component={FormSelect}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.scoreFunction = e.value;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
 							/>
 						</div>
 					</div>

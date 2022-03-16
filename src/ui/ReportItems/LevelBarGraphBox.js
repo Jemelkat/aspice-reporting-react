@@ -1,5 +1,5 @@
 import SidebarCanvasItem from "../Sidebar/SidebarCanvasItem";
-import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
+import {ReactComponent as SVGBarHorizontal} from "../../assets/barchart-horizontal.svg";
 
 const LevelBarGraphBox = ({ mini, onClickFunction }) => {
 	return (

@@ -1,4 +1,4 @@
-import { ReactComponent as SVGCapabilityTable } from "../../assets/capability-table.svg";
+import {ReactComponent as SVGCapabilityTable} from "../../assets/capability-table.svg";
 import SidebarCanvasItem from "../Sidebar/SidebarCanvasItem";
 
 const CapabilityTableBox = ({ mini = false, onClick }) => {

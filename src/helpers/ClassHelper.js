@@ -1,5 +1,3 @@
-import SourceLevelBarGraphSettings from "../components/ComponentSettings/Graph/SourceLevelBarGraphSettings";
-
 export const createItemFromExisting = (item) => {
 	debugger;
 	switch (item.type) {

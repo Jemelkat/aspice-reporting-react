@@ -1,9 +1,9 @@
-import { Field, Form, Formik } from "formik";
-import { useAxios } from "../../../helpers/AxiosHelper";
+import {Field, Form, Formik} from "formik";
+import {useAxios} from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import SourceColumnService from "../../../services/SourceColumnService";
-import { InformationCircleIcon } from "@heroicons/react/solid";
+import {InformationCircleIcon} from "@heroicons/react/solid";
 import HorizontalLine from "../../../ui/HorizontalLine";
 
 const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {

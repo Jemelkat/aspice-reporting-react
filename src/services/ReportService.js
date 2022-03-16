@@ -1,5 +1,5 @@
 import axios from "axios";
-import { axiosInstance } from "../helpers/AxiosHelper";
+import {axiosInstance} from "../helpers/AxiosHelper";
 import AuthService from "./AuthService";
 
 export default class ReportService {

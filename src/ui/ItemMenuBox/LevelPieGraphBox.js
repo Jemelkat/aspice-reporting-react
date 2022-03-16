@@ -1,5 +1,5 @@
 import SidebarCanvasItem from "../Sidebar/SidebarCanvasItem";
-import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
+import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
 
 const LevelPieGraphBox = ({ mini = false, onClick }) => {
 	return (

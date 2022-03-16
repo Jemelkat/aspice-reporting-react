@@ -1,4 +1,4 @@
-import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
+import {ReactComponent as SVGSourceBarHorizontal} from "../../assets/barchart-horizontal-sources.svg";
 import SidebarCanvasItem from "../Sidebar/SidebarCanvasItem";
 
 const SourceLevelBarGraphBox = ({ mini = false, onClick }) => {

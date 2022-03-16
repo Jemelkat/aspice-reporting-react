@@ -1,4 +1,4 @@
-import { ReactComponent as SVGSimpleTable } from "../../assets/simple-table.svg";
+import {ReactComponent as SVGSimpleTable} from "../../assets/simple-table.svg";
 import SidebarCanvasItem from "../Sidebar/SidebarCanvasItem";
 
 const SimpleTableBox = ({ mini = false, onClick }) => {

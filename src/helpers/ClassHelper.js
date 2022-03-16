@@ -1,6 +1,7 @@
 import SourceLevelBarGraphSettings from "../components/ComponentSettings/Graph/SourceLevelBarGraphSettings";
 
 export const createItemFromExisting = (item) => {
+	debugger;
 	switch (item.type) {
 		case typeEnum.TEXT:
 			return new Text(
@@ -44,7 +45,8 @@ export const createItemFromExisting = (item) => {
 				item.specificLevel ? item.specificLevel : null,
 				item.criterionColumn ? item.criterionColumn : null,
 				item.criterionWidth ? item.criterionWidth : 25,
-				item.scoreColumn ? item.scoreColumn : null
+				item.scoreColumn ? item.scoreColumn : null,
+				item.scoreFunction ? item.scoreFunction : "AVG"
 			);
 		case typeEnum.CAPABILITY_BAR_GRAPH:
 			return new CapabilityBarGraph(
@@ -60,9 +62,10 @@ export const createItemFromExisting = (item) => {
 				item.assessorFilter ? item.assessorFilter : [],
 				item.processColumn ? item.processColumn : null,
 				item.processFilter ? item.processFilter : [],
-				item.levelColumn ? item.levelColumn : null,
+				item.criterionColumn ? item.criterionColumn : null,
 				item.attributeColumn ? item.attributeColumn : null,
-				item.scoreColumn ? item.scoreColumn : null
+				item.scoreColumn ? item.scoreColumn : null,
+				item.scoreFunction ? item.scoreFunction : "AVG"
 			);
 		case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
 			return new SourceLevelBarGraph(
@@ -93,9 +96,10 @@ export const createItemFromExisting = (item) => {
 				item.assessorColumn ? item.assessorColumn : null,
 				item.assessorFilter ? item.assessorFilter : null,
 				item.processColumn ? item.processColumn : null,
-				item.levelColumn ? item.levelColumn : null,
+				item.criterionColumn ? item.criterionColumn : null,
 				item.attributeColumn ? item.attributeColumn : null,
-				item.scoreColumn ? item.scoreColumn : null
+				item.scoreColumn ? item.scoreColumn : null,
+				item.scoreFunction ? item.scoreFunction : "AVG"
 			);
 		default:
 			return null;
@@ -181,7 +185,8 @@ export class CapabilityTable extends Item {
 		specificLevel = null,
 		criterionColumn = null,
 		criterionWidth = 25,
-		scoreColumn = null
+		scoreColumn = null,
+		scoreFunction = "AVG"
 	) {
 		super(id, x, y, width, height, type);
 		this.fontSize = fontSize;
@@ -196,6 +201,7 @@ export class CapabilityTable extends Item {
 		this.criterionColumn = criterionColumn;
 		this.criterionWidth = criterionWidth;
 		this.scoreColumn = scoreColumn;
+		this.scoreFunction = scoreFunction;
 	}
 }
 
@@ -213,9 +219,10 @@ export class CapabilityBarGraph extends Item {
 		assessorFilter = [],
 		processColumn = null,
 		processFilter = [],
-		levelColumn = null,
+		criterionColumn = null,
 		attributeColumn = null,
-		scoreColumn = null
+		scoreColumn = null,
+		scoreFunction = "AVG"
 	) {
 		super(id, x, y, width, height, type);
 		this.orientation = orientation;
@@ -224,9 +231,10 @@ export class CapabilityBarGraph extends Item {
 		this.assessorFilter = assessorFilter;
 		this.processColumn = processColumn;
 		this.processFilter = processFilter;
-		this.levelColumn = levelColumn;
+		this.criterionColumn = criterionColumn;
 		this.attributeColumn = attributeColumn;
 		this.scoreColumn = scoreColumn;
+		this.scoreFunction = scoreFunction;
 	}
 }
 
@@ -271,18 +279,20 @@ export class LevelPieGraph extends Item {
 		assessorColumn = null,
 		assessorFilter = null,
 		processColumn = null,
-		levelColumn = null,
+		criterionColumn = null,
 		attributeColumn = null,
-		scoreColumn = null
+		scoreColumn = null,
+		scoreFunction = "AVG"
 	) {
 		super(id, x, y, width, height, type);
 		this.source = source;
 		this.assessorColumn = assessorColumn;
 		this.assessorFilter = assessorFilter;
 		this.processColumn = processColumn;
-		this.levelColumn = levelColumn;
+		this.criterionColumn = criterionColumn;
 		this.attributeColumn = attributeColumn;
 		this.scoreColumn = scoreColumn;
+		this.scoreFunction = scoreFunction;
 	}
 }
 

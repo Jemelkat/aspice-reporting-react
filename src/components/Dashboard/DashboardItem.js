@@ -24,11 +24,18 @@ const DashboardItem = ({
 		let result = false;
 		switch (item.type) {
 			case typeEnum.LEVEL_PIE_GRAPH:
+				result =
+					item.source?.id &&
+					item.processColumn?.id &&
+					item.criterionColumn?.id &&
+					item.attributeColumn?.id &&
+					item.scoreColumn?.id;
+				break;
 			case typeEnum.CAPABILITY_BAR_GRAPH:
 				result =
 					item.source?.id &&
 					item.processColumn?.id &&
-					item.levelColumn?.id &&
+					item.criterionColumn?.id &&
 					item.attributeColumn?.id &&
 					item.scoreColumn?.id;
 				break;
@@ -55,6 +62,13 @@ const DashboardItem = ({
 				const data = responseData[i];
 				switch (requestedItem.type) {
 					/*Capability graph needs data in format 
+					{process: XXX
+					assessor1: xxx
+					assessor2: xxx..}*/
+					case typeEnum.CAPABILITY_BAR_GRAPH:
+						{
+							var exists = graphData.find((obj) => {
+								return obj?.process === data.process;
 					{process: name
 					assessor1: score
 					assessor2: score..}*/
@@ -75,6 +89,20 @@ const DashboardItem = ({
 								process: data.process,
 								[data.assessor]: parseInt(data.level),
 							});
+							if (exists) {
+								graphData = graphData.map((obj) => {
+									if (obj.process === data.process) {
+										return { ...obj, [data.assessor]: parseInt(data.level) };
+									} else {
+										return obj;
+									}
+								});
+							} else {
+								graphData.push({
+									process: data.process,
+									[data.assessor]: parseInt(data.level),
+								});
+							}
 						}
 						break;
 					}
@@ -93,7 +121,7 @@ const DashboardItem = ({
 					/*Pie graph needs data in format 
 					{name: xxx,
 					value: xxx}*/
-					case typeEnum.LEVEL_PIE_GRAPH: {
+					case typeEnum.LEVEL_PIE_GRAPH:
 						graphData.push({ name: data.level, value: parseInt(data.count) });
 						break;
 					}

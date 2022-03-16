@@ -1,6 +1,7 @@
 import { InformationCircleIcon } from "@heroicons/react/solid";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
+import { useAlert } from "react-alert";
 import { useAxios } from "../../../helpers/AxiosHelper";
 import SourceColumnService from "../../../services/SourceColumnService";
 import FormInput from "../../../ui/Form/FormInput";
@@ -21,6 +22,7 @@ const CapabilityTableSettigs = ({
 		loading: false,
 		error: false,
 	});
+	const alert = useAlert();
 
 	//Load columns if source is defined on load
 	useEffect(() => {
@@ -117,6 +119,7 @@ const CapabilityTableSettigs = ({
 				criterionColumn: selectedItem.criterionColumn?.id,
 				criterionWidth: selectedItem.criterionWidth,
 				scoreColumn: selectedItem.scoreColumn?.id,
+				scoreFunction: selectedItem.scoreFunction,
 			}}
 		>
 			{({ values, handleChange }) => (
@@ -430,6 +433,25 @@ const CapabilityTableSettigs = ({
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
+							/>
+							<label className='flex items-center pt-1 text-sm'>
+								Aggregate function
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+							</label>
+							<Field
+								name='scoreFunction'
+								options={[
+									{ value: "MAX", label: "MAX" },
+									{ value: "AVG", label: "AVG" },
+									{ value: "MIN", label: "MIN" },
+								]}
+								component={FormSelect}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.scoreFunction = e.value;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
 							/>
 						</div>
 					</div>

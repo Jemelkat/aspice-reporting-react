@@ -29,7 +29,7 @@ const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
 						<SidebarCanvasItem
 							name={"Capability bar graph"}
 							onClick={() => {
-								onAddComponent(typeEnum.CAPABILITY_BAR_GRAPH, currentColumns);
+								onAddComponent(typeEnum.LEVEL_BAR_GRAPH, currentColumns);
 							}}
 						>
 							<SVGBarHorizontal></SVGBarHorizontal>

@@ -184,7 +184,7 @@ const ReportMenu = ({
 								mini
 								name={"Capability bar"}
 								onClick={() => {
-									onAddComponent(typeEnum.CAPABILITY_BAR_GRAPH);
+									onAddComponent(typeEnum.LEVEL_BAR_GRAPH);
 								}}
 							>
 								<SVGBarHorizontal />

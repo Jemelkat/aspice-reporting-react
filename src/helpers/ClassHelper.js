@@ -48,8 +48,8 @@ export const createItemFromExisting = (item) => {
 				item.scoreColumn ? item.scoreColumn : null,
 				item.scoreFunction ? item.scoreFunction : "AVG"
 			);
-		case typeEnum.CAPABILITY_BAR_GRAPH:
-			return new CapabilityBarGraph(
+		case typeEnum.LEVEL_BAR_GRAPH:
+			return new LevelBarGraph(
 				item.id,
 				item.x,
 				item.y,
@@ -205,7 +205,7 @@ export class CapabilityTable extends Item {
 	}
 }
 
-export class CapabilityBarGraph extends Item {
+export class LevelBarGraph extends Item {
 	constructor(
 		id,
 		x,
@@ -297,7 +297,7 @@ export class LevelPieGraph extends Item {
 }
 
 export const typeEnum = Object.freeze({
-	CAPABILITY_BAR_GRAPH: "CAPABILITY_BAR_GRAPH",
+	LEVEL_BAR_GRAPH: "LEVEL_BAR_GRAPH",
 	TEXT: "TEXT",
 	SIMPLE_TABLE: "SIMPLE_TABLE",
 	CAPABILITY_TABLE: "CAPABILITY_TABLE",

@@ -2,7 +2,7 @@ import { parse } from "postcss";
 import { useState } from "react";
 import { useAlert } from "react-alert";
 import {
-	CapabilityBarGraph,
+	LevelBarGraph,
 	CapabilityTable,
 	createItemFromExisting,
 	LevelPieGraph,
@@ -85,14 +85,14 @@ const useCanvas = () => {
 			case typeEnum.TEXT:
 				item = new Text(nextItemId(), 0, 0, 150, 50, typeEnum.TEXT);
 				break;
-			case typeEnum.CAPABILITY_BAR_GRAPH:
-				item = new CapabilityBarGraph(
+			case typeEnum.LEVEL_BAR_GRAPH:
+				item = new LevelBarGraph(
 					nextItemId(),
 					0,
 					0,
 					200,
 					200,
-					typeEnum.CAPABILITY_BAR_GRAPH
+					typeEnum.LEVEL_BAR_GRAPH
 				);
 				break;
 			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
@@ -146,16 +146,16 @@ const useCanvas = () => {
 	const addItemDashboardHandler = (type, currentColumns) => {
 		let item;
 		switch (type) {
-			case typeEnum.CAPABILITY_BAR_GRAPH: {
+			case typeEnum.LEVEL_BAR_GRAPH: {
 				const newBarX =
 					barX >= currentColumns ? 0 : barX + 6 > currentColumns ? 0 : barX;
-				item = new CapabilityBarGraph(
+				item = new LevelBarGraph(
 					nextItemId(),
 					newBarX,
 					Infinity,
 					6,
 					6,
-					typeEnum.CAPABILITY_BAR_GRAPH
+					typeEnum.LEVEL_BAR_GRAPH
 				);
 				setBarX(newBarX + 6);
 				break;

@@ -26,7 +26,7 @@ const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 				};
 
 				return <div style={style}>{item.textArea}</div>;
-			case typeEnum.CAPABILITY_BAR_GRAPH:
+			case typeEnum.LEVEL_BAR_GRAPH:
 				return (
 					<div className='w-full h-full'>
 						{item.orientation === "HORIZONTAL" ? (

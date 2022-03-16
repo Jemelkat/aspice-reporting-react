@@ -35,7 +35,7 @@ const ItemSettingsMenu = ({
 						onItemUpdate={onItemUpdate}
 					></TextSettings>
 				);
-			case typeEnum.CAPABILITY_BAR_GRAPH:
+			case typeEnum.LEVEL_BAR_GRAPH:
 				return (
 					<CapabilityBarGraphSettings
 						selectedItem={selectedItem}

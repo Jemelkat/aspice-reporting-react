@@ -43,7 +43,8 @@ export const createItemFromExisting = (item) => {
 				item.specificLevel ? item.specificLevel : null,
 				item.criterionColumn ? item.criterionColumn : null,
 				item.criterionWidth ? item.criterionWidth : 25,
-				item.scoreColumn ? item.scoreColumn : null
+				item.scoreColumn ? item.scoreColumn : null,
+				item.scoreFunction ? item.scoreFunction : "AVG"
 			);
 		case typeEnum.CAPABILITY_BAR_GRAPH:
 			return new CapabilityBarGraph(
@@ -165,7 +166,8 @@ export class CapabilityTable extends Item {
 		specificLevel = null,
 		criterionColumn = null,
 		criterionWidth = 25,
-		scoreColumn = null
+		scoreColumn = null,
+		scoreFunction = "AVG"
 	) {
 		super(id, x, y, width, height, type);
 		this.fontSize = fontSize;
@@ -180,6 +182,7 @@ export class CapabilityTable extends Item {
 		this.criterionColumn = criterionColumn;
 		this.criterionWidth = criterionWidth;
 		this.scoreColumn = scoreColumn;
+		this.scoreFunction = scoreFunction;
 	}
 }
 

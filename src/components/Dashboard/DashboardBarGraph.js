@@ -45,6 +45,8 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 								angle: -90,
 							}}
 							width={45}
+							domain={[0, 5]}
+							tickCount={6}
 						/>
 					</>
 				) : (
@@ -58,6 +60,8 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 								dy: 20,
 							}}
 							height={15}
+							domain={[0, 5]}
+							tickCount={6}
 						></XAxis>
 						<YAxis
 							type='category'

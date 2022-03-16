@@ -1,11 +1,11 @@
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
-import { Form, Formik } from "formik";
+import {Form, Formik} from "formik";
 import FormHidden from "../../ui/Form/FormHidden";
 import FormInput from "../../ui/Form/FormInput";
 import Button from "../../ui/Button";
-import { useEffect, useRef } from "react";
-import { typeEnum } from "../../helpers/ClassHelper";
+import {useEffect, useRef} from "react";
+import {typeEnum} from "../../helpers/ClassHelper";
 import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import TextSettings from "./Text/TextSettings";
 import CapabilityBarGraphSettings from "./Graph/CapabilityBarGraphSettings";
@@ -35,7 +35,7 @@ const ItemSettingsMenu = ({
 						onItemUpdate={onItemUpdate}
 					></TextSettings>
 				);
-			case typeEnum.CAPABILITY_BAR_GRAPH:
+			case typeEnum.LEVEL_BAR_GRAPH:
 				return (
 					<CapabilityBarGraphSettings
 						selectedItem={selectedItem}

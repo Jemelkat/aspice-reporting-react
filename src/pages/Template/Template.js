@@ -1,8 +1,8 @@
 import TemplateTable from "../../components/Template/TemplateTable";
-import { Route, Switch, useRouteMatch } from "react-router";
+import {Route, Switch, useRouteMatch} from "react-router";
 import TemplateCreate from "../../components/Template/TemplateCreate";
 import PageContainer from "../../ui/PageContainer";
-import { useState } from "react";
+import {useState} from "react";
 
 const Template = (props) => {
 	const { path } = useRouteMatch();
@@ -24,7 +24,6 @@ const Template = (props) => {
 		setAddItem(null);
 	};
 
-	console.log(props);
 	return (
 		<>
 			<Switch>

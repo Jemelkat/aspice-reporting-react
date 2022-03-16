@@ -1,7 +1,7 @@
 import {Field, Form, Formik} from "formik";
 import {useEffect, useState} from "react";
 import {useAxios} from "../../../helpers/AxiosHelper";
-import SourceColumnService, {getColumnsForSource} from "../../../services/SourceColumnService";
+import SourceColumnService from "../../../services/SourceColumnService";
 import Button from "../../../ui/Button";
 import SidebarDisclosure from "../../../ui/Sidebar/SidebarDisclosure";
 import FormInput from "../../../ui/Form/FormInput";

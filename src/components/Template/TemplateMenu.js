@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from "formik";
+import {Field, Form, Formik} from "formik";
 import Button from "../../ui/Button";
 import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import FormHidden from "../../ui/Form/FormHidden";
@@ -6,15 +6,14 @@ import FormInput from "../../ui/Form/FormInput";
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import * as Yup from "yup";
-import { PlusIcon } from "@heroicons/react/solid";
-import { typeEnum } from "../../helpers/ClassHelper";
-import SidebarCanvasItem from "../../ui/Sidebar/SidebarCanvasItem";
-import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
-import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
-import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
-import { ReactComponent as SVGSimpleTable } from "../../assets/simple-table.svg";
-import { ReactComponent as SVGCapabilityTable } from "../../assets/capability-table.svg";
+import {typeEnum} from "../../helpers/ClassHelper";
 import FormSelect from "../../ui/Form/FormSelect";
+import CapabilityTableBox from "../../ui/ItemMenuBox/CapabilityTableBox";
+import SimpleTextBox from "../../ui/ItemMenuBox/SimpleTextBox";
+import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
+import SourceLevelBarGraphBox from "../../ui/ItemMenuBox/SourceLevelBarGraphBox";
+import SimpleTableBox from "../../ui/ItemMenuBox/SimpleTableBox";
+import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 
 const TemplateMenu = ({
 	data,
@@ -87,70 +86,50 @@ const TemplateMenu = ({
 					</SidebarLink>
 					<SidebarDisclosure name='Text components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
-							<SidebarCanvasItem
+							<SimpleTextBox
 								mini
-								name={"Text"}
 								onClick={() => {
 									onAddComponent(typeEnum.TEXT);
 								}}
-							>
-								<div className='flex items-center justify-center h-full overflow-hidden text-sm text-center'>
-									Simple text
-								</div>
-							</SidebarCanvasItem>
+							></SimpleTextBox>
 						</div>
 					</SidebarDisclosure>
 					<SidebarDisclosure name='Graph components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
-							<SidebarCanvasItem
+							<LevelBarGraphBox
 								mini
-								name={"Capability bar"}
 								onClick={() => {
-									onAddComponent(typeEnum.CAPABILITY_BAR_GRAPH);
+									onAddComponent(typeEnum.LEVEL_BAR_GRAPH);
 								}}
-							>
-								<SVGBarHorizontal></SVGBarHorizontal>
-							</SidebarCanvasItem>
-							<SidebarCanvasItem
+							></LevelBarGraphBox>
+							<SourceLevelBarGraphBox
 								mini
-								name={"Sources level bar"}
 								onClick={() => {
 									onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH);
 								}}
-							>
-								<SVGSourceBarHorizontal />
-							</SidebarCanvasItem>
-							<SidebarCanvasItem
+							></SourceLevelBarGraphBox>
+							<LevelPieGraphBox
 								mini
-								name={"Level pie"}
 								onClick={() => {
 									onAddComponent(typeEnum.LEVEL_PIE_GRAPH);
 								}}
-							>
-								<SVGPie></SVGPie>
-							</SidebarCanvasItem>
+							></LevelPieGraphBox>
 						</div>
 					</SidebarDisclosure>
 					<SidebarDisclosure name='Table components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
-							<SidebarCanvasItem
+							<SimpleTableBox
 								mini
-								name={"Table"}
 								onClick={() => {
 									onAddComponent(typeEnum.SIMPLE_TABLE);
 								}}
-							>
-								<SVGSimpleTable />
-							</SidebarCanvasItem>
-							<SidebarCanvasItem
+							></SimpleTableBox>
+							<CapabilityTableBox
 								mini
-								name={"Capability table"}
 								onClick={() => {
 									onAddComponent(typeEnum.CAPABILITY_TABLE);
 								}}
-							>
-								<SVGCapabilityTable />
-							</SidebarCanvasItem>
+							></CapabilityTableBox>
 						</div>
 					</SidebarDisclosure>
 				</Sidebar>

@@ -1,11 +1,11 @@
-import { Rnd } from "react-rnd";
-import { typeEnum } from "../../helpers/ClassHelper";
-import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
-import { ReactComponent as SVGSourceBarVertical } from "../../assets/barchart-vertical-sources.svg";
-import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
-import { ReactComponent as SVGBarVertical } from "../../assets/barchart-vertical.svg";
-import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
-import { useEffect, useRef } from "react";
+import {Rnd} from "react-rnd";
+import {typeEnum} from "../../helpers/ClassHelper";
+import {ReactComponent as SVGSourceBarHorizontal} from "../../assets/barchart-horizontal-sources.svg";
+import {ReactComponent as SVGSourceBarVertical} from "../../assets/barchart-vertical-sources.svg";
+import {ReactComponent as SVGBarHorizontal} from "../../assets/barchart-horizontal.svg";
+import {ReactComponent as SVGBarVertical} from "../../assets/barchart-vertical.svg";
+import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
+import {useEffect, useRef} from "react";
 
 const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 	const itemRef = useRef(null);
@@ -26,7 +26,7 @@ const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 				};
 
 				return <div style={style}>{item.textArea}</div>;
-			case typeEnum.CAPABILITY_BAR_GRAPH:
+			case typeEnum.LEVEL_BAR_GRAPH:
 				return (
 					<div className='w-full h-full'>
 						{item.orientation === "HORIZONTAL" ? (

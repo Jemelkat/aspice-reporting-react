@@ -1,11 +1,10 @@
 import Button from "../../ui/Button";
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
-import { typeEnum } from "../../helpers/ClassHelper";
-import SidebarCanvasItem from "../../ui/Sidebar/SidebarCanvasItem";
-import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
-import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
-import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
+import {typeEnum} from "../../helpers/ClassHelper";
+import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
+import SourceLevelBarGraphBox from "../../ui/ItemMenuBox/SourceLevelBarGraphBox";
+import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 
 const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
 	return (
@@ -26,30 +25,21 @@ const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
 						<span className='w-full pt-2 pb-2 pl-5 pr-5 text-sm text-center'>
 							Click on item to add it to dashboard
 						</span>
-						<SidebarCanvasItem
-							name={"Capability bar graph"}
+						<LevelBarGraphBox
 							onClick={() => {
-								onAddComponent(typeEnum.CAPABILITY_BAR_GRAPH, currentColumns);
+								onAddComponent(typeEnum.LEVEL_BAR_GRAPH, currentColumns);
 							}}
-						>
-							<SVGBarHorizontal></SVGBarHorizontal>
-						</SidebarCanvasItem>
-						<SidebarCanvasItem
-							name={"Sources level bar"}
+						></LevelBarGraphBox>
+						<SourceLevelBarGraphBox
 							onClick={() => {
 								onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH, currentColumns);
 							}}
-						>
-							<SVGSourceBarHorizontal />
-						</SidebarCanvasItem>
-						<SidebarCanvasItem
-							name={"Level pie graph"}
+						></SourceLevelBarGraphBox>
+						<LevelPieGraphBox
 							onClick={() => {
 								onAddComponent(typeEnum.LEVEL_PIE_GRAPH, currentColumns);
 							}}
-						>
-							<SVGPie></SVGPie>
-						</SidebarCanvasItem>
+						></LevelPieGraphBox>
 					</div>
 				</Sidebar>
 			</div>

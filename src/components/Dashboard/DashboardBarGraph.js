@@ -1,13 +1,4 @@
-import {
-	Bar,
-	BarChart,
-	CartesianGrid,
-	Legend,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from "recharts";
+import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis,} from "recharts";
 import colors from "../../helpers/ColorsHelper";
 
 const DashboardBarGraph = ({ data, isHorizontal }) => {

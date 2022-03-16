@@ -1,4 +1,14 @@
-import {Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis,} from "recharts";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Legend,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
+import colors from "../../helpers/ColorsHelper";
 
 const DashboardBarGraph = ({ data, isHorizontal }) => {
 	return (
@@ -35,6 +45,8 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 								angle: -90,
 							}}
 							width={45}
+							domain={[0, 5]}
+							tickCount={6}
 						/>
 					</>
 				) : (
@@ -48,6 +60,8 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 								dy: 20,
 							}}
 							height={15}
+							domain={[0, 5]}
+							tickCount={6}
 						></XAxis>
 						<YAxis
 							type='category'
@@ -61,7 +75,10 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 				{data &&
 					Object.getOwnPropertyNames(data[0])
 						.filter((property) => property !== "process")
-						.map((barNames) => <Bar dataKey={barNames} fill='#4572a7' />)}
+						.map((barNames, index) => (
+							<Bar dataKey={barNames} fill={colors[index % 12]} />
+						))}
+				<Legend layout='horizontal' verticalAlign='top' align='center' />
 			</BarChart>
 		</ResponsiveContainer>
 	);

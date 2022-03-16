@@ -1,4 +1,4 @@
-import {axiosInstance} from "../helpers/AxiosHelper";
+import { axiosInstance } from "../helpers/AxiosHelper";
 
 export default class AuthService {
 	static login = (username, password) => {

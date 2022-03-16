@@ -186,64 +186,66 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No sources"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value === null) {
-										if (e.value !== updatedSelected.source) {
-											//Reset all item columns
-											updatedSelected.source = null;
-											updatedSelected.processColumn = null;
-											updatedSelected.assessorColumn = null;
-											updatedSelected.levelColumn = null;
-											updatedSelected.attributeColumn = null;
-											updatedSelected.scoreColumn = null;
-											//Reset filters
-											updatedSelected.processFilter = [];
-											updatedSelected.assessorFilter = [];
-											onItemUpdate(updatedSelected);
-											setColumnsData([]);
-											setProcessFilter({
-												data: [],
-												loading: false,
-												error: false,
-											});
-											setAssessorFilter({
-												data: [],
-												loading: false,
-												error: false,
-											});
-										}
-									} else {
-										if (
-											!updatedSelected.source?.id ||
-											e.value !== updatedSelected.source.id
-										) {
-											updatedSelected.source = {
-												id: e.value,
-												sourceName: e.label,
-											};
-											//Load columns for new source
-											setColumnsError(false);
-											getColumnsHandler(e.value);
-											//Change selected coluns to NONE on source change
-											updatedSelected.processColumn = null;
-											updatedSelected.assessorColumn = null;
-											updatedSelected.levelColumn = null;
-											updatedSelected.attributeColumn = null;
-											updatedSelected.scoreColumn = null;
-											//Reset filters
-											updatedSelected.processFilter = [];
-											updatedSelected.assessorFilter = [];
-											onItemUpdate(updatedSelected);
-											setProcessFilter({
-												data: [],
-												loading: false,
-												error: false,
-											});
-											setAssessorFilter({
-												data: [],
-												loading: false,
-												error: false,
-											});
+									if (e.value !== selectedItem.source?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value === null) {
+											if (e.value !== updatedSelected.source) {
+												//Reset all item columns
+												updatedSelected.source = null;
+												updatedSelected.processColumn = null;
+												updatedSelected.assessorColumn = null;
+												updatedSelected.levelColumn = null;
+												updatedSelected.attributeColumn = null;
+												updatedSelected.scoreColumn = null;
+												//Reset filters
+												updatedSelected.processFilter = [];
+												updatedSelected.assessorFilter = [];
+												onItemUpdate(updatedSelected);
+												setColumnsData([]);
+												setProcessFilter({
+													data: [],
+													loading: false,
+													error: false,
+												});
+												setAssessorFilter({
+													data: [],
+													loading: false,
+													error: false,
+												});
+											}
+										} else {
+											if (
+												!updatedSelected.source?.id ||
+												e.value !== updatedSelected.source.id
+											) {
+												updatedSelected.source = {
+													id: e.value,
+													sourceName: e.label,
+												};
+												//Load columns for new source
+												setColumnsError(false);
+												getColumnsHandler(e.value);
+												//Change selected coluns to NONE on source change
+												updatedSelected.processColumn = null;
+												updatedSelected.assessorColumn = null;
+												updatedSelected.levelColumn = null;
+												updatedSelected.attributeColumn = null;
+												updatedSelected.scoreColumn = null;
+												//Reset filters
+												updatedSelected.processFilter = [];
+												updatedSelected.assessorFilter = [];
+												onItemUpdate(updatedSelected);
+												setProcessFilter({
+													data: [],
+													loading: false,
+													error: false,
+												});
+												setAssessorFilter({
+													data: [],
+													loading: false,
+													error: false,
+												});
+											}
 										}
 									}
 								}}
@@ -266,24 +268,26 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.assessorColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-										getAssessorFilterData(values.sourceFormId, e.value);
-									} else {
-										updatedSelected.assessorColumn = null;
-										setAssessorFilter({
-											data: [],
-											loading: false,
-											error: false,
-										});
-									}
+									if (e.value !== selectedItem.assessorColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.assessorColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+											getAssessorFilterData(values.sourceFormId, e.value);
+										} else {
+											updatedSelected.assessorColumn = null;
+											setAssessorFilter({
+												data: [],
+												loading: false,
+												error: false,
+											});
+										}
 
-									updatedSelected.assessorFilter = [];
-									onItemUpdate(updatedSelected);
+										updatedSelected.assessorFilter = [];
+										onItemUpdate(updatedSelected);
+									}
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -331,23 +335,25 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.processColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-										getProcessFilterData(values.sourceFormId, e.value);
-									} else {
-										updatedSelected.processColumn = null;
-										setProcessFilter({
-											data: [],
-											loading: false,
-											error: false,
-										});
+									if (e.value !== selectedItem.processColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.processColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+											getProcessFilterData(values.sourceFormId, e.value);
+										} else {
+											updatedSelected.processColumn = null;
+											setProcessFilter({
+												data: [],
+												loading: false,
+												error: false,
+											});
+										}
+										updatedSelected.processFilter = [];
+										onItemUpdate(updatedSelected);
 									}
-									updatedSelected.processFilter = [];
-									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -406,7 +412,6 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									} else {
 										updatedSelected.criterionColumn = null;
 									}
-									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -427,16 +432,18 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.attributeColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.attributeColumn = null;
+									if (e.value !== selectedItem.attributeColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.attributeColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+										} else {
+											updatedSelected.attributeColumn = null;
+										}
+										onItemUpdate(updatedSelected);
 									}
-									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -457,16 +464,18 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.scoreColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.scoreColumn = null;
+									if (e.value !== selectedItem.scoreColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.scoreColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+										} else {
+											updatedSelected.scoreColumn = null;
+										}
+										onItemUpdate(updatedSelected);
 									}
-									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}

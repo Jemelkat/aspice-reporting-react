@@ -1,4 +1,4 @@
-import {useField} from "formik";
+import { useField } from "formik";
 
 const FormInput = ({ label, ...props }) => {
 	// useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -8,7 +8,7 @@ const FormInput = ({ label, ...props }) => {
 		<>
 			{label && <label htmlFor={props.id || props.name}>{label}</label>}
 			<input
-				className='bg-gray-100 border-2 border-gray-300'
+				className='px-3 py-1 border border-gray-400 rounded'
 				{...field}
 				{...props}
 			/>

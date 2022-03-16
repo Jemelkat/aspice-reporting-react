@@ -1,5 +1,7 @@
 import { Rnd } from "react-rnd";
 import { typeEnum } from "../../helpers/ClassHelper";
+import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
+import { ReactComponent as SVGSourceBarVertical } from "../../assets/barchart-vertical-sources.svg";
 import { ReactComponent as SVGBarHorizontal } from "../../assets/barchart-horizontal.svg";
 import { ReactComponent as SVGBarVertical } from "../../assets/barchart-vertical.svg";
 import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
@@ -40,6 +42,25 @@ const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 							className='absolute w-32 -mt-4 -ml-16 text-center bg-white border border-black top-1/2 left-1/2'
 						>
 							CAPABILITY BAR GRAPH
+						</div>
+					</div>
+				);
+			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
+				return (
+					<div className='w-full h-full'>
+						{item.orientation === "HORIZONTAL" ? (
+							<SVGSourceBarHorizontal></SVGSourceBarHorizontal>
+						) : (
+							<SVGSourceBarVertical></SVGSourceBarVertical>
+						)}
+						<div
+							style={{
+								fontFamily: "DejaVu",
+								whiteSpace: "pre-line",
+							}}
+							className='absolute w-32 -mt-4 -ml-16 text-center bg-white border border-black top-1/2 left-1/2'
+						>
+							SOURCES LEVEL BAR GRAPH
 						</div>
 					</div>
 				);
@@ -114,6 +135,7 @@ const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 						</div>
 					</div>
 				);
+
 			default:
 				return <div>UNKNOWN ITEM TYPE</div>;
 		}

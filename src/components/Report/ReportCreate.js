@@ -49,7 +49,9 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		let newComponents = [];
 		setItems([]);
 		if (components) {
-			newComponents = components.map((i) => createItemFromExisting(i));
+			newComponents = components.map((i) => {
+				return createItemFromExisting(i);
+			});
 			setItems(newComponents);
 			selectItemHandler(null);
 		}

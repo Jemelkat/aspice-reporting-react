@@ -1,4 +1,3 @@
-import { parse } from "postcss";
 import { useState } from "react";
 import { useAlert } from "react-alert";
 import {
@@ -8,7 +7,6 @@ import {
 	LevelPieGraph,
 	SimpleTable,
 	SourceLevelBarGraph,
-	SourcesLevelBarGraph,
 	Text,
 	typeEnum,
 } from "../helpers/ClassHelper";

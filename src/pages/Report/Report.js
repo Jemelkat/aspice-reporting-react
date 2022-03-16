@@ -23,7 +23,6 @@ const Report = (props) => {
 		setAddItem(null);
 	};
 
-	console.log(props);
 	return (
 		<>
 			<Switch>

@@ -24,7 +24,6 @@ const Template = (props) => {
 		setAddItem(null);
 	};
 
-	console.log(props);
 	return (
 		<>
 			<Switch>

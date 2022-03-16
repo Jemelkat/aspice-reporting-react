@@ -66,9 +66,11 @@ const DashboardItem = ({
 					assessor1: xxx
 					assessor2: xxx..}*/
 					case typeEnum.CAPABILITY_BAR_GRAPH:
-						{
-							var exists = graphData.find((obj) => {
-								return obj?.process === data.process;
+						var exists = graphData.find((obj) => {
+							return obj?.process === data.process;
+						});
+						break;
+					/*
 					{process: name
 					assessor1: score
 					assessor2: score..}*/
@@ -124,7 +126,6 @@ const DashboardItem = ({
 					case typeEnum.LEVEL_PIE_GRAPH:
 						graphData.push({ name: data.level, value: parseInt(data.count) });
 						break;
-					}
 				}
 			}
 			setData(graphData);

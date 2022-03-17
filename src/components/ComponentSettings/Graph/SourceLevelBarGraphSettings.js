@@ -1,9 +1,9 @@
-import {Field, Form, Formik} from "formik";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import {useEffect, useState} from "react";
-import {InformationCircleIcon} from "@heroicons/react/outline";
-import {useAlert} from "react-alert";
+import { useEffect, useState } from "react";
+import { InformationCircleIcon } from "@heroicons/react/outline";
+import { useAlert } from "react-alert";
 import HorizontalLine from "../../../ui/HorizontalLine";
 import SourceColumnService from "../../../services/SourceColumnService";
 import DataService from "../../../services/DataService";
@@ -132,10 +132,13 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				processColumn: selectedItem.processColumn,
 				processFilter: selectedItem.processFilter,
 				attributeColumn: selectedItem.attributeColumn,
+				criterionColumn: selectedItem.criterionColumn,
 				scoreColumn: selectedItem.scoreColumn,
+				scoreFunction: selectedItem.scoreFunction,
+				mergeScores: selectedItem.mergeScores,
 			}}
 		>
-			{({ values, setFieldValue }) => (
+			{({ values, handleChange }) => (
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
@@ -272,7 +275,7 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isMulti={true}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'>Attribute column</label>
+							<label className='font-medium'>Process attribute</label>
 							<Field
 								name='attributeColumn'
 								options={columnsData}
@@ -294,6 +297,32 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										updatedSelected.attributeColumn = null;
 									}
 									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
+								isLoading={columnsLoading}
+							/>
+							<HorizontalLine />
+							<label className='font-medium'>Performance criterion</label>
+							<Field
+								name='criterionColumn'
+								options={columnsData}
+								component={FormSelect}
+								placeholder={
+									columnsLoading
+										? "Loading..."
+										: columnsError
+										? "Error!"
+										: columnsData.length > 0
+										? "Select column"
+										: "No columns"
+								}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									if (e.value !== null) {
+										updatedSelected.criterionColumn = e.value;
+									} else {
+										updatedSelected.criterionColumn = null;
+									}
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -324,6 +353,45 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
+							/>
+							<label className='flex items-center pt-1 text-sm'>
+								Aggregate function
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+							</label>
+							<Field
+								name='scoreFunction'
+								options={[
+									{ value: "MAX", label: "MAX" },
+									{ value: "AVG", label: "AVG" },
+									{ value: "MIN", label: "MIN" },
+								]}
+								component={FormSelect}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.scoreFunction = e.value;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
+							/>
+
+							<label className='flex items-center pt-1 text-sm'>
+								Merge scores
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+							</label>
+							<Field
+								name='mergeScores'
+								options={[
+									{ value: null, label: "No merge" },
+									{ value: "MAX", label: "MAX" },
+									{ value: "MIN", label: "MIN" },
+								]}
+								component={FormSelect}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.mergeScores = e.value;
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={false}
 							/>
 						</div>
 					</div>

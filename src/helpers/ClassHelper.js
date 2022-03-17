@@ -80,7 +80,10 @@ export const createItemFromExisting = (item) => {
 				item.processColumn ? item.processColumn : null,
 				item.processFilter ? item.processFilter : [],
 				item.attributeColumn ? item.attributeColumn : null,
-				item.scoreColumn ? item.scoreColumn : null
+				item.criterionColumn ? item.criterionColumn : null,
+				item.scoreColumn ? item.scoreColumn : null,
+				item.scoreFunction ? item.scoreFunction : "AVG",
+				item.mergeScores ? item.mergeScores : null
 			);
 		case typeEnum.LEVEL_PIE_GRAPH:
 			return new LevelPieGraph(
@@ -251,7 +254,10 @@ export class SourceLevelBarGraph extends Item {
 		processColumn = null,
 		processFilter = [],
 		attributeColumn = null,
-		scoreColumn = null
+		criterionColumn = null,
+		scoreColumn = null,
+		scoreFunction = "AVG",
+		mergeScores = null
 	) {
 		super(id, x, y, width, height, type);
 		this.orientation = orientation;
@@ -261,7 +267,10 @@ export class SourceLevelBarGraph extends Item {
 		this.processColumn = processColumn;
 		this.processFilter = processFilter;
 		this.attributeColumn = attributeColumn;
+		this.criterionColumn = criterionColumn;
 		this.scoreColumn = scoreColumn;
+		this.scoreFunction = scoreFunction;
+		this.mergeScores = mergeScores;
 	}
 }
 

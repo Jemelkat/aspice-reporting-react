@@ -1,4 +1,13 @@
-import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis,} from "recharts";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Legend,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
 import colors from "../../helpers/ColorsHelper";
 
 const DashboardBarGraph = ({ data, isHorizontal }) => {
@@ -64,6 +73,7 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 				)}
 				<Tooltip />
 				{data &&
+					data.length > 0 &&
 					Object.getOwnPropertyNames(data[0])
 						.filter((property) => property !== "process")
 						.map((barNames, index) => (

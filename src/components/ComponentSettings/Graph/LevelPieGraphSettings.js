@@ -1,9 +1,9 @@
-import {Field, Form, Formik} from "formik";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import SourceColumnService from "../../../services/SourceColumnService";
-import {InformationCircleIcon} from "@heroicons/react/solid";
+import { InformationCircleIcon } from "@heroicons/react/solid";
 import HorizontalLine from "../../../ui/HorizontalLine";
 
 const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
@@ -270,35 +270,6 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'>Performance criterion</label>
-							<Field
-								name='criterionColumn'
-								options={columnsData}
-								component={FormSelect}
-								placeholder={
-									columnsLoading
-										? "Loading..."
-										: columnsError
-										? "Error!"
-										: columnsData.length > 0
-										? "Select column"
-										: "No columns"
-								}
-								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.criterionColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.criterionColumn = null;
-									}
-								}}
-								isMulti={false}
-								isLoading={columnsLoading}
-							/>
-							<HorizontalLine />
 							<label className='font-medium'>Process attribute</label>
 							<Field
 								name='attributeColumn'
@@ -325,6 +296,35 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 											updatedSelected.attributeColumn = null;
 										}
 										onItemUpdate(updatedSelected);
+									}
+								}}
+								isMulti={false}
+								isLoading={columnsLoading}
+							/>
+							<HorizontalLine />
+							<label className='font-medium'>Performance criterion</label>
+							<Field
+								name='criterionColumn'
+								options={columnsData}
+								component={FormSelect}
+								placeholder={
+									columnsLoading
+										? "Loading..."
+										: columnsError
+										? "Error!"
+										: columnsData.length > 0
+										? "Select column"
+										: "No columns"
+								}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									if (e.value !== null) {
+										updatedSelected.criterionColumn = {
+											id: e.value,
+											columnName: e.label,
+										};
+									} else {
+										updatedSelected.criterionColumn = null;
 									}
 								}}
 								isMulti={false}

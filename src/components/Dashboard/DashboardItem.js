@@ -1,7 +1,7 @@
-import {PencilIcon, RefreshIcon, UploadIcon} from "@heroicons/react/solid";
-import {useEffect, useRef, useState} from "react";
-import {useAlert} from "react-alert";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { PencilIcon, RefreshIcon, UploadIcon } from "@heroicons/react/solid";
+import { useEffect, useRef, useState } from "react";
+import { useAlert } from "react-alert";
+import { typeEnum } from "../../helpers/ClassHelper";
 import Loader from "../../ui/Loader/Loader";
 import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";
@@ -61,19 +61,10 @@ const DashboardItem = ({
 			for (let i = 0; i < responseData.length; i++) {
 				const data = responseData[i];
 				switch (requestedItem.type) {
-					/*Capability graph needs data in format 
+					/*Level graph needs data in format 
 					{process: XXX
 					assessor1: xxx
 					assessor2: xxx..}*/
-					case typeEnum.LEVEL_BAR_GRAPH:
-						var exists = graphData.find((obj) => {
-							return obj?.process === data.process;
-						});
-						break;
-					/*
-					{process: name
-					assessor1: score
-					assessor2: score..}*/
 					case typeEnum.LEVEL_BAR_GRAPH: {
 						var exists = graphData.find((obj) => {
 							return obj?.process === data.process;
@@ -91,20 +82,6 @@ const DashboardItem = ({
 								process: data.process,
 								[data.assessor]: parseInt(data.level),
 							});
-							if (exists) {
-								graphData = graphData.map((obj) => {
-									if (obj.process === data.process) {
-										return { ...obj, [data.assessor]: parseInt(data.level) };
-									} else {
-										return obj;
-									}
-								});
-							} else {
-								graphData.push({
-									process: data.process,
-									[data.assessor]: parseInt(data.level),
-								});
-							}
 						}
 						break;
 					}

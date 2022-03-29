@@ -482,7 +482,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<label className='flex items-center pt-1 text-sm'>
-								Aggregate function
+								Merge assesors scores
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
@@ -491,6 +491,7 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									{ value: "MAX", label: "MAX" },
 									{ value: "AVG", label: "AVG" },
 									{ value: "MIN", label: "MIN" },
+									{ value: "NONE", label: "No merge" },
 								]}
 								component={FormSelect}
 								onSelect={(e) => {

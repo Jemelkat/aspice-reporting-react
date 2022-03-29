@@ -135,6 +135,7 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				criterionColumn: selectedItem.criterionColumn,
 				scoreColumn: selectedItem.scoreColumn,
 				scoreFunction: selectedItem.scoreFunction,
+				mergeLevels: selectedItem.mergeLevels,
 				mergeScores: selectedItem.mergeScores,
 			}}
 		>
@@ -361,9 +362,9 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							<Field
 								name='scoreFunction'
 								options={[
+									{ value: "MIN", label: "MIN" },
 									{ value: "MAX", label: "MAX" },
 									{ value: "AVG", label: "AVG" },
-									{ value: "MIN", label: "MIN" },
 								]}
 								component={FormSelect}
 								onSelect={(e) => {
@@ -373,7 +374,30 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}}
 								isMulti={false}
 							/>
-
+							<div className='flex flex-row items-center pl-0.5 pt-1 text-sm'>
+								<FormInput
+									name='mergeLevels'
+									type='checkbox'
+									onChange={(e) => {
+										handleChange(e);
+										let updatedSelected = selectedItem;
+										updatedSelected.mergeLevels = e.target.checked;
+										if (e.target.checked) {
+											if (
+												updatedSelected.scoreFunction !== "MIN" &&
+												updatedSelected.scoreFunction !== "MAX"
+											) {
+												updatedSelected.scoreFunction = "MIN";
+											}
+										}
+										onItemUpdate(updatedSelected);
+									}}
+								/>
+								<div className='flex items-center justify-center'>
+									<label className='pl-1'>Merge by levels </label>
+									<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+								</div>
+							</div>
 							<label className='flex items-center pt-1 text-sm'>
 								Merge scores
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
@@ -381,7 +405,7 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							<Field
 								name='mergeScores'
 								options={[
-									{ value: null, label: "No merge" },
+									{ value: "NONE", label: "NONE" },
 									{ value: "MAX", label: "MAX" },
 									{ value: "MIN", label: "MIN" },
 								]}

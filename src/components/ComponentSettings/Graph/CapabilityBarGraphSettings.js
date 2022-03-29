@@ -6,6 +6,7 @@ import { InformationCircleIcon } from "@heroicons/react/outline";
 import { useAlert } from "react-alert";
 import HorizontalLine from "../../../ui/HorizontalLine";
 import SourceColumnService from "../../../services/SourceColumnService";
+import FormInput from "../../../ui/Form/FormInput";
 
 const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -150,9 +151,10 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				attributeColumn: selectedItem.attributeColumn?.id,
 				scoreColumn: selectedItem.scoreColumn?.id,
 				scoreFunction: selectedItem.scoreFunction,
+				mergeLevels: selectedItem.mergeLevels,
 			}}
 		>
-			{({ values }) => (
+			{({ values, handleChange }) => (
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
@@ -482,17 +484,24 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<label className='flex items-center pt-1 text-sm'>
-								Merge assesors scores
+								Merge assesors
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
 								name='scoreFunction'
-								options={[
-									{ value: "MAX", label: "MAX" },
-									{ value: "AVG", label: "AVG" },
-									{ value: "MIN", label: "MIN" },
-									{ value: "NONE", label: "No merge" },
-								]}
+								options={
+									selectedItem.mergeLevels
+										? [
+												{ value: "MIN", label: "MIN" },
+												{ value: "MAX", label: "MAX" },
+										  ]
+										: [
+												{ value: "MIN", label: "MIN" },
+												{ value: "MAX", label: "MAX" },
+												{ value: "AVG", label: "AVG" },
+												{ value: "NONE", label: "No merge" },
+										  ]
+								}
 								component={FormSelect}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
@@ -501,6 +510,30 @@ const CapabilityBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}}
 								isMulti={false}
 							/>
+							<div className='flex flex-row items-center pl-0.5 pt-1 text-sm'>
+								<FormInput
+									name='mergeLevels'
+									type='checkbox'
+									onChange={(e) => {
+										handleChange(e);
+										let updatedSelected = selectedItem;
+										updatedSelected.mergeLevels = e.target.checked;
+										if (e.target.checked) {
+											if (
+												updatedSelected.scoreFunction !== "MIN" &&
+												updatedSelected.scoreFunction !== "MAX"
+											) {
+												updatedSelected.scoreFunction = "MIN";
+											}
+										}
+										onItemUpdate(updatedSelected);
+									}}
+								/>
+								<div className='flex items-center justify-center'>
+									<label className='pl-1'>Merge by levels </label>
+									<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+								</div>
+							</div>
 						</div>
 					</div>
 				</Form>

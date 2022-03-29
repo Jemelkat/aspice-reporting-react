@@ -63,7 +63,10 @@ export const createItemFromExisting = (item) => {
 				item.criterionColumn ? item.criterionColumn : null,
 				item.attributeColumn ? item.attributeColumn : null,
 				item.scoreColumn ? item.scoreColumn : null,
-				item.scoreFunction ? item.scoreFunction : "AVG"
+				item.scoreFunction ? item.scoreFunction : "AVG",
+				item.mergeLevels !== null && item.mergeLevels !== undefined
+					? item.mergeLevels
+					: false
 			);
 		case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
 			return new SourceLevelBarGraph(
@@ -83,7 +86,10 @@ export const createItemFromExisting = (item) => {
 				item.criterionColumn ? item.criterionColumn : null,
 				item.scoreColumn ? item.scoreColumn : null,
 				item.scoreFunction ? item.scoreFunction : "AVG",
-				item.mergeScores ? item.mergeScores : null
+				item.mergeLevels !== null && item.mergeLevels !== undefined
+					? item.mergeLevels
+					: false,
+				item.mergeScores ? item.mergeScores : "NONE"
 			);
 		case typeEnum.LEVEL_PIE_GRAPH:
 			return new LevelPieGraph(
@@ -223,7 +229,8 @@ export class LevelBarGraph extends Item {
 		criterionColumn = null,
 		attributeColumn = null,
 		scoreColumn = null,
-		scoreFunction = "AVG"
+		scoreFunction = "NONE",
+		mergeLevels = false
 	) {
 		super(id, x, y, width, height, type);
 		this.orientation = orientation;
@@ -236,6 +243,7 @@ export class LevelBarGraph extends Item {
 		this.attributeColumn = attributeColumn;
 		this.scoreColumn = scoreColumn;
 		this.scoreFunction = scoreFunction;
+		this.mergeLevels = mergeLevels;
 	}
 }
 
@@ -257,6 +265,7 @@ export class SourceLevelBarGraph extends Item {
 		criterionColumn = null,
 		scoreColumn = null,
 		scoreFunction = "AVG",
+		mergeLevels = null,
 		mergeScores = null
 	) {
 		super(id, x, y, width, height, type);
@@ -270,6 +279,7 @@ export class SourceLevelBarGraph extends Item {
 		this.criterionColumn = criterionColumn;
 		this.scoreColumn = scoreColumn;
 		this.scoreFunction = scoreFunction;
+		this.mergeLevels = mergeLevels;
 		this.mergeScores = mergeScores;
 	}
 }

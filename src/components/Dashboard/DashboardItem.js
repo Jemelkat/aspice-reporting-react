@@ -34,9 +34,11 @@ const DashboardItem = ({
 			case typeEnum.LEVEL_BAR_GRAPH:
 				result =
 					item.sources?.length > 0 &&
-					item.processColumn &&
-					item.attributeColumn &&
-					item.scoreColumn;
+					item.processColumnName &&
+					item.assessorColumnName &&
+					item.attributeColumnName &&
+					item.criterionColumnName &&
+					item.scoreColumnName;
 				break;
 		}
 		return result;
@@ -112,10 +114,12 @@ const DashboardItem = ({
 		}
 	}, [
 		item.source,
-		item.processColumn,
-		item.levelColumn,
-		item.attributeColumn,
-		item.scoreColumn,
+		item.processColumnName,
+		item.levelColumnName,
+		item.attributeColumnName,
+		item.scoreColumnName,
+		item.assessorColumnName,
+		item.criterionColumnName,
 	]);
 
 	//Render correct graph

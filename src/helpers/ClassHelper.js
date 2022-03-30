@@ -55,18 +55,18 @@ export const createItemFromExisting = (item) => {
 				item.type,
 				item.orientation ? item.orientation : "HORIZONTAL",
 				item.sources ? item.sources : [],
-				item.assessorColumn ? item.assessorColumn : null,
-				item.assessorFilter ? item.assessorFilter : null,
-				item.processColumn ? item.processColumn : null,
+				item.assessorColumnName ? item.assessorColumnName : null,
+				item.assessorFilter ? item.assessorFilter : [],
+				item.processColumnName ? item.processColumnName : null,
 				item.processFilter ? item.processFilter : [],
-				item.attributeColumn ? item.attributeColumn : null,
-				item.criterionColumn ? item.criterionColumn : null,
-				item.scoreColumn ? item.scoreColumn : null,
-				item.scoreFunction ? item.scoreFunction : "AVG",
-				item.mergeLevels !== null && item.mergeLevels !== undefined
-					? item.mergeLevels
+				item.attributeColumnName ? item.attributeColumnName : null,
+				item.criterionColumnName ? item.criterionColumnName : null,
+				item.scoreColumnName ? item.scoreColumnName : null,
+				item.aggregateScoresFunction ? item.aggregateScoresFunction : "NONE",
+				item.aggregateLevels != null && item.aggregateLevels != undefined
+					? item.aggregateLevels
 					: false,
-				item.mergeScores ? item.mergeScores : "NONE"
+				item.aggregateSourcesFunction ? item.aggregateSourcesFunction : "NONE"
 			);
 		case typeEnum.LEVEL_PIE_GRAPH:
 			return new LevelPieGraph(
@@ -199,30 +199,30 @@ export class LevelBarGraph extends Item {
 		type,
 		orientation = "HORIZONTAL",
 		sources = [],
-		assessorColumn = null,
-		assessorFilter = null,
-		processColumn = null,
+		assessorColumnName = null,
+		assessorFilter = [],
+		processColumnName = null,
 		processFilter = [],
-		attributeColumn = null,
-		criterionColumn = null,
-		scoreColumn = null,
-		scoreFunction = "AVG",
-		mergeLevels = null,
-		mergeScores = null
+		attributeColumnName = null,
+		criterionColumnName = null,
+		scoreColumnName = null,
+		aggregateScoresFunction = "NONE",
+		aggregateLevels = false,
+		aggregateSourcesFunction = "NONE"
 	) {
 		super(id, x, y, width, height, type);
 		this.orientation = orientation;
 		this.sources = sources;
-		this.assessorColumn = assessorColumn;
+		this.assessorColumnName = assessorColumnName;
 		this.assessorFilter = assessorFilter;
-		this.processColumn = processColumn;
+		this.processColumnName = processColumnName;
 		this.processFilter = processFilter;
-		this.attributeColumn = attributeColumn;
-		this.criterionColumn = criterionColumn;
-		this.scoreColumn = scoreColumn;
-		this.scoreFunction = scoreFunction;
-		this.mergeLevels = mergeLevels;
-		this.mergeScores = mergeScores;
+		this.attributeColumnName = attributeColumnName;
+		this.criterionColumnName = criterionColumnName;
+		this.scoreColumnName = scoreColumnName;
+		this.aggregateScoresFunction = aggregateScoresFunction;
+		this.aggregateLevels = aggregateLevels;
+		this.aggregateSourcesFunction = aggregateSourcesFunction;
 	}
 }
 

@@ -99,20 +99,20 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const updateSelectedColumns = (columnsData) => {
 		let newSelected = selectedItem;
 		let changed = false;
-		if (!columnsData.includes(newSelected.assessorColumn)) {
-			newSelected.assessorColumn = null;
+		if (!columnsData.includes(newSelected.assessorColumnName)) {
+			newSelected.assessorColumnName = null;
 			changed = true;
 		}
-		if (!columnsData.includes(newSelected.processColumn)) {
-			newSelected.processColumn = null;
+		if (!columnsData.includes(newSelected.processColumnName)) {
+			newSelected.processColumnName = null;
 			changed = true;
 		}
-		if (!columnsData.includes(newSelected.attributeColumn)) {
-			newSelected.attributeColumn = null;
+		if (!columnsData.includes(newSelected.attributeColumnName)) {
+			newSelected.attributeColumnName = null;
 			changed = true;
 		}
-		if (!columnsData.includes(newSelected.scoreColumn)) {
-			newSelected.scoreColumn = null;
+		if (!columnsData.includes(newSelected.scoreColumnName)) {
+			newSelected.scoreColumnName = null;
 			changed = true;
 		}
 
@@ -127,16 +127,16 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			initialValues={{
 				orientation: selectedItem.orientation,
 				sources: selectedItem?.sources.map((i) => i.id),
-				assessorColumn: selectedItem.assessorColumn,
+				assessorColumnName: selectedItem.assessorColumnName,
 				assessorFilter: selectedItem.assessorFilter,
-				processColumn: selectedItem.processColumn,
+				processColumnName: selectedItem.processColumnName,
 				processFilter: selectedItem.processFilter,
-				attributeColumn: selectedItem.attributeColumn,
-				criterionColumn: selectedItem.criterionColumn,
-				scoreColumn: selectedItem.scoreColumn,
-				scoreFunction: selectedItem.scoreFunction,
-				mergeLevels: selectedItem.mergeLevels,
-				mergeScores: selectedItem.mergeScores,
+				attributeColumnName: selectedItem.attributeColumnName,
+				criterionColumnName: selectedItem.criterionColumnName,
+				scoreColumnName: selectedItem.scoreColumnName,
+				aggregateScoresFunction: selectedItem.aggregateScoresFunction,
+				aggregateLevels: selectedItem.aggregateLevels,
+				aggregateSourcesFunction: selectedItem.aggregateSourcesFunction,
 			}}
 		>
 			{({ values, handleChange }) => (
@@ -191,7 +191,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							<HorizontalLine />
 							<label className='font-medium'> Assessor column</label>
 							<Field
-								name='assessorColumn'
+								name='assessorColumnName'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -206,9 +206,9 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.assessorColumn = e.value;
+										updatedSelected.assessorColumnName = e.value;
 									} else {
-										updatedSelected.assessorColumn = null;
+										updatedSelected.assessorColumnName = null;
 									}
 									onItemUpdate(updatedSelected);
 								}}
@@ -219,21 +219,29 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								Optional filter by assessor
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
-							<FormInput
-								label=''
+							<Field
 								name='assessorFilter'
-								type='text'
+								options={[
+									{ value: "MIN", label: "MIN" },
+									{ value: "MAX", label: "MAX" },
+									{ value: "AVG", label: "AVG" },
+									{ value: "NONE", label: "NONE" },
+								]}
+								component={FormSelect}
 								placeholder='Type assessor...'
-								onChange={(e) => {
+								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.assessorFilter = e.target.value;
+									updatedSelected.assessorFilter = e.map(
+										(filter) => filter.value
+									);
 									onItemUpdate(updatedSelected);
 								}}
+								isMulti={true}
 							/>
 							<HorizontalLine />
 							<label className='font-medium'>Process column:</label>
 							<Field
-								name='processColumn'
+								name='processColumnName'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -248,9 +256,9 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.processColumn = e.value;
+										updatedSelected.processColumnName = e.value;
 									} else {
-										updatedSelected.processColumn = null;
+										updatedSelected.processColumnName = null;
 									}
 									onItemUpdate(updatedSelected);
 								}}
@@ -278,7 +286,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							<HorizontalLine />
 							<label className='font-medium'>Process attribute</label>
 							<Field
-								name='attributeColumn'
+								name='attributeColumnName'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -293,9 +301,9 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.attributeColumn = e.value;
+										updatedSelected.attributeColumnName = e.value;
 									} else {
-										updatedSelected.attributeColumn = null;
+										updatedSelected.attributeColumnName = null;
 									}
 									onItemUpdate(updatedSelected);
 								}}
@@ -305,7 +313,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							<HorizontalLine />
 							<label className='font-medium'>Performance criterion</label>
 							<Field
-								name='criterionColumn'
+								name='criterionColumnName'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -320,9 +328,9 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.criterionColumn = e.value;
+										updatedSelected.criterionColumnName = e.value;
 									} else {
-										updatedSelected.criterionColumn = null;
+										updatedSelected.criterionColumnName = null;
 									}
 								}}
 								isMulti={false}
@@ -331,7 +339,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							<HorizontalLine />
 							<label className='font-medium'>Score/Value</label>
 							<Field
-								name='scoreColumn'
+								name='scoreColumnName'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -346,9 +354,9 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.scoreColumn = e.value;
+										updatedSelected.scoreColumnName = e.value;
 									} else {
-										updatedSelected.scoreColumn = null;
+										updatedSelected.scoreColumnName = null;
 									}
 									onItemUpdate(updatedSelected);
 								}}
@@ -360,7 +368,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
-								name='scoreFunction'
+								name='aggregateScoresFunction'
 								options={[
 									{ value: "MIN", label: "MIN" },
 									{ value: "MAX", label: "MAX" },
@@ -370,25 +378,25 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								component={FormSelect}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.scoreFunction = e.value;
+									updatedSelected.aggregateScoresFunction = e.value;
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 							/>
 							<div className='flex flex-row items-center pl-0.5 pt-1 text-sm'>
 								<FormInput
-									name='mergeLevels'
+									name='aggregateLevels'
 									type='checkbox'
 									onChange={(e) => {
 										handleChange(e);
 										let updatedSelected = selectedItem;
-										updatedSelected.mergeLevels = e.target.checked;
+										updatedSelected.aggregateLevels = e.target.checked;
 										if (e.target.checked) {
 											if (
-												updatedSelected.scoreFunction !== "MIN" &&
-												updatedSelected.scoreFunction !== "MAX"
+												updatedSelected.aggregateScoresFunction !== "MIN" &&
+												updatedSelected.aggregateScoresFunction !== "MAX"
 											) {
-												updatedSelected.scoreFunction = "MIN";
+												updatedSelected.aggregateScoresFunction = "MIN";
 											}
 										}
 										onItemUpdate(updatedSelected);
@@ -404,7 +412,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
-								name='mergeScores'
+								name='aggregateSourcesFunction'
 								options={[
 									{ value: "NONE", label: "NONE" },
 									{ value: "MAX", label: "MAX" },
@@ -413,7 +421,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								component={FormSelect}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.mergeScores = e.value;
+									updatedSelected.aggregateSourcesFunction = e.value;
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}

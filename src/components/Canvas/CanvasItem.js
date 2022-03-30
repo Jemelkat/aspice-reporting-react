@@ -26,25 +26,6 @@ const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 				};
 
 				return <div style={style}>{item.textArea}</div>;
-			case typeEnum.LEVEL_BAR_GRAPH:
-				return (
-					<div className='w-full h-full'>
-						{item.orientation === "HORIZONTAL" ? (
-							<SVGBarHorizontal></SVGBarHorizontal>
-						) : (
-							<SVGBarVertical></SVGBarVertical>
-						)}
-						<div
-							style={{
-								fontFamily: "DejaVu",
-								whiteSpace: "pre-line",
-							}}
-							className='absolute w-32 -mt-4 -ml-16 text-center bg-white border border-black top-1/2 left-1/2'
-						>
-							CAPABILITY BAR GRAPH
-						</div>
-					</div>
-				);
 			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
 				return (
 					<div className='w-full h-full'>

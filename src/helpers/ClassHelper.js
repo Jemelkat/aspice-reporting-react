@@ -1,5 +1,4 @@
 export const createItemFromExisting = (item) => {
-	debugger;
 	switch (item.type) {
 		case typeEnum.TEXT:
 			return new Text(
@@ -45,28 +44,6 @@ export const createItemFromExisting = (item) => {
 				item.criterionWidth ? item.criterionWidth : 25,
 				item.scoreColumn ? item.scoreColumn : null,
 				item.scoreFunction ? item.scoreFunction : "AVG"
-			);
-		case typeEnum.LEVEL_BAR_GRAPH:
-			return new LevelBarGraph(
-				item.id,
-				item.x,
-				item.y,
-				item.width,
-				item.height,
-				item.type,
-				item.orientation ? item.orientation : "HORIZONTAL",
-				item.source ? item.source : null,
-				item.assessorColumn ? item.assessorColumn : null,
-				item.assessorFilter ? item.assessorFilter : [],
-				item.processColumn ? item.processColumn : null,
-				item.processFilter ? item.processFilter : [],
-				item.criterionColumn ? item.criterionColumn : null,
-				item.attributeColumn ? item.attributeColumn : null,
-				item.scoreColumn ? item.scoreColumn : null,
-				item.scoreFunction ? item.scoreFunction : "AVG",
-				item.mergeLevels !== null && item.mergeLevels !== undefined
-					? item.mergeLevels
-					: false
 			);
 		case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
 			return new SourceLevelBarGraph(
@@ -212,41 +189,6 @@ export class CapabilityTable extends Item {
 	}
 }
 
-export class LevelBarGraph extends Item {
-	constructor(
-		id,
-		x,
-		y,
-		width,
-		height,
-		type,
-		orientation = "HORIZONTAL",
-		source = null,
-		assessorColumn = null,
-		assessorFilter = [],
-		processColumn = null,
-		processFilter = [],
-		criterionColumn = null,
-		attributeColumn = null,
-		scoreColumn = null,
-		scoreFunction = "NONE",
-		mergeLevels = false
-	) {
-		super(id, x, y, width, height, type);
-		this.orientation = orientation;
-		this.source = source;
-		this.assessorColumn = assessorColumn;
-		this.assessorFilter = assessorFilter;
-		this.processColumn = processColumn;
-		this.processFilter = processFilter;
-		this.criterionColumn = criterionColumn;
-		this.attributeColumn = attributeColumn;
-		this.scoreColumn = scoreColumn;
-		this.scoreFunction = scoreFunction;
-		this.mergeLevels = mergeLevels;
-	}
-}
-
 export class SourceLevelBarGraph extends Item {
 	constructor(
 		id,
@@ -314,7 +256,6 @@ export class LevelPieGraph extends Item {
 }
 
 export const typeEnum = Object.freeze({
-	LEVEL_BAR_GRAPH: "LEVEL_BAR_GRAPH",
 	TEXT: "TEXT",
 	SIMPLE_TABLE: "SIMPLE_TABLE",
 	CAPABILITY_TABLE: "CAPABILITY_TABLE",

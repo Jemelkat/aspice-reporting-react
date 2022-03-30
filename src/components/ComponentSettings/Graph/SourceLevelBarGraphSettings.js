@@ -365,6 +365,7 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									{ value: "MIN", label: "MIN" },
 									{ value: "MAX", label: "MAX" },
 									{ value: "AVG", label: "AVG" },
+									{ value: "NONE", label: "NONE" },
 								]}
 								component={FormSelect}
 								onSelect={(e) => {

@@ -31,14 +31,6 @@ const DashboardItem = ({
 					item.attributeColumn?.id &&
 					item.scoreColumn?.id;
 				break;
-			case typeEnum.LEVEL_BAR_GRAPH:
-				result =
-					item.source?.id &&
-					item.processColumn?.id &&
-					item.criterionColumn?.id &&
-					item.attributeColumn?.id &&
-					item.scoreColumn?.id;
-				break;
 			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
 				result =
 					item.sources?.length > 0 &&
@@ -65,7 +57,7 @@ const DashboardItem = ({
 					{process: XXX
 					assessor1: xxx
 					assessor2: xxx..}*/
-					case typeEnum.LEVEL_BAR_GRAPH: {
+					case typeEnum.SOURCE_LEVEL_BAR_GRAPH: {
 						var exists = graphData.find((obj) => {
 							return obj?.process === data.process;
 						});
@@ -83,18 +75,7 @@ const DashboardItem = ({
 								[data.assessor]: parseInt(data.level),
 							});
 						}
-						break;
-					}
-					case typeEnum.SOURCE_LEVEL_BAR_GRAPH: {
-						//Convert all string level values to integers
-						const object = Object.keys(data).map((key) => {
-							if (key === "process") {
-								return [key, data[key]];
-							} else {
-								return [key, parseInt(data[key])];
-							}
-						});
-						graphData.push(Object.fromEntries(new Map(object)));
+						console.log(graphData);
 						break;
 					}
 					/*Pie graph needs data in format 
@@ -140,7 +121,6 @@ const DashboardItem = ({
 	//Render correct graph
 	const renderGraph = () => {
 		switch (item.type) {
-			case typeEnum.LEVEL_BAR_GRAPH:
 			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
 				return (
 					<DashboardBarGraph

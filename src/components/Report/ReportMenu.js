@@ -9,7 +9,6 @@ import * as Yup from "yup";
 import FormSelect from "../../ui/Form/FormSelect";
 import {useAxios} from "../../helpers/AxiosHelper";
 import {typeEnum} from "../../helpers/ClassHelper";
-import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
 import SourceLevelBarGraphBox from "../../ui/ItemMenuBox/SourceLevelBarGraphBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 import SimpleTextBox from "../../ui/ItemMenuBox/SimpleTextBox";
@@ -174,12 +173,6 @@ const ReportMenu = ({
 					</SidebarDisclosure>
 					<SidebarDisclosure name='Graph components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
-							<LevelBarGraphBox
-								mini
-								onClick={() => {
-									onAddComponent(typeEnum.LEVEL_BAR_GRAPH);
-								}}
-							></LevelBarGraphBox>
 							<SourceLevelBarGraphBox
 								mini
 								onClick={() => {

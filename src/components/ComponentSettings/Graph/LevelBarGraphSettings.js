@@ -44,7 +44,7 @@ const allProcesses = [
 	{ value: "SYS.5", label: "SYS.5" },
 ];
 
-const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
+const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);
@@ -426,4 +426,4 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	);
 };
 
-export default SourceLevelBarGraphSettings;
+export default LevelBarGraphSettings;

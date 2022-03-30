@@ -10,7 +10,7 @@ import {typeEnum} from "../../helpers/ClassHelper";
 import FormSelect from "../../ui/Form/FormSelect";
 import CapabilityTableBox from "../../ui/ItemMenuBox/CapabilityTableBox";
 import SimpleTextBox from "../../ui/ItemMenuBox/SimpleTextBox";
-import SourceLevelBarGraphBox from "../../ui/ItemMenuBox/SourceLevelBarGraphBox";
+import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
 import SimpleTableBox from "../../ui/ItemMenuBox/SimpleTableBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 
@@ -95,12 +95,12 @@ const TemplateMenu = ({
 					</SidebarDisclosure>
 					<SidebarDisclosure name='Graph components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
-							<SourceLevelBarGraphBox
+							<LevelBarGraphBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH);
+									onAddComponent(typeEnum.LEVEL_BAR_GRAPH);
 								}}
-							></SourceLevelBarGraphBox>
+							></LevelBarGraphBox>
 							<LevelPieGraphBox
 								mini
 								onClick={() => {

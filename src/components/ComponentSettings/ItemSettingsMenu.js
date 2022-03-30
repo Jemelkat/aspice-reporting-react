@@ -11,7 +11,7 @@ import TextSettings from "./Text/TextSettings";
 import LevelPieGraphSettings from "./Graph/LevelPieGraphSettings";
 import CapabilityTableSettigs from "./Table/CapabilityTableSettings";
 import SimpleTableSettings from "./Table/SimpleTableSettings";
-import SourceLevelBarGraphSettings from "./Graph/SourceLevelBarGraphSettings";
+import LevelBarGraphSettings from "./Graph/LevelBarGraphSettings";
 
 const ItemSettingsMenu = ({
 	simple = false,
@@ -34,12 +34,12 @@ const ItemSettingsMenu = ({
 						onItemUpdate={onItemUpdate}
 					></TextSettings>
 				);
-			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
+			case typeEnum.LEVEL_BAR_GRAPH:
 				return (
-					<SourceLevelBarGraphSettings
+					<LevelBarGraphSettings
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
-					></SourceLevelBarGraphSettings>
+					></LevelBarGraphSettings>
 				);
 			case typeEnum.LEVEL_PIE_GRAPH:
 				return (

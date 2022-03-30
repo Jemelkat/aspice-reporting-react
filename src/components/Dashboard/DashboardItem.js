@@ -31,7 +31,7 @@ const DashboardItem = ({
 					item.attributeColumn?.id &&
 					item.scoreColumn?.id;
 				break;
-			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
+			case typeEnum.LEVEL_BAR_GRAPH:
 				result =
 					item.sources?.length > 0 &&
 					item.processColumn &&
@@ -57,7 +57,7 @@ const DashboardItem = ({
 					{process: XXX
 					assessor1: xxx
 					assessor2: xxx..}*/
-					case typeEnum.SOURCE_LEVEL_BAR_GRAPH: {
+					case typeEnum.LEVEL_BAR_GRAPH: {
 						var exists = graphData.find((obj) => {
 							return obj?.process === data.process;
 						});
@@ -121,7 +121,7 @@ const DashboardItem = ({
 	//Render correct graph
 	const renderGraph = () => {
 		switch (item.type) {
-			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
+			case typeEnum.LEVEL_BAR_GRAPH:
 				return (
 					<DashboardBarGraph
 						data={data}

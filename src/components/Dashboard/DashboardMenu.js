@@ -2,7 +2,7 @@ import Button from "../../ui/Button";
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import {typeEnum} from "../../helpers/ClassHelper";
-import SourceLevelBarGraphBox from "../../ui/ItemMenuBox/SourceLevelBarGraphBox";
+import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 
 const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
@@ -24,11 +24,11 @@ const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
 						<span className='w-full pt-2 pb-2 pl-5 pr-5 text-sm text-center'>
 							Click on item to add it to dashboard
 						</span>
-						<SourceLevelBarGraphBox
+						<LevelBarGraphBox
 							onClick={() => {
-								onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH, currentColumns);
+								onAddComponent(typeEnum.LEVEL_BAR_GRAPH, currentColumns);
 							}}
-						></SourceLevelBarGraphBox>
+						></LevelBarGraphBox>
 						<LevelPieGraphBox
 							onClick={() => {
 								onAddComponent(typeEnum.LEVEL_PIE_GRAPH, currentColumns);

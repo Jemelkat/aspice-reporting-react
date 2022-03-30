@@ -1,4 +1,4 @@
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import Button from "../../ui/Button";
 import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import FormHidden from "../../ui/Form/FormHidden";
@@ -7,9 +7,9 @@ import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import * as Yup from "yup";
 import FormSelect from "../../ui/Form/FormSelect";
-import {useAxios} from "../../helpers/AxiosHelper";
-import {typeEnum} from "../../helpers/ClassHelper";
-import SourceLevelBarGraphBox from "../../ui/ItemMenuBox/SourceLevelBarGraphBox";
+import { useAxios } from "../../helpers/AxiosHelper";
+import { typeEnum } from "../../helpers/ClassHelper";
+import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 import SimpleTextBox from "../../ui/ItemMenuBox/SimpleTextBox";
 import CapabilityTableBox from "../../ui/ItemMenuBox/CapabilityTableBox";
@@ -173,12 +173,12 @@ const ReportMenu = ({
 					</SidebarDisclosure>
 					<SidebarDisclosure name='Graph components' dark>
 						<div className='grid grid-cols-2 pt-4 mr-auto justify-items-center'>
-							<SourceLevelBarGraphBox
+							<LevelBarGraphBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH);
+									onAddComponent(typeEnum.LEVEL_BAR_GRAPH);
 								}}
-							></SourceLevelBarGraphBox>
+							></LevelBarGraphBox>
 							<LevelPieGraphBox
 								mini
 								onClick={() => {

@@ -187,6 +187,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}}
 								isMulti={true}
 								isLoading={sourcesLoading}
+								ordering={true}
 							/>
 							<HorizontalLine />
 							<label className='font-medium'> Assessor column</label>
@@ -221,12 +222,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							</label>
 							<Field
 								name='assessorFilter'
-								options={[
-									{ value: "MIN", label: "MIN" },
-									{ value: "MAX", label: "MAX" },
-									{ value: "AVG", label: "AVG" },
-									{ value: "NONE", label: "NONE" },
-								]}
+								options={[{ value: "test", label: "test" }]}
 								component={FormSelect}
 								placeholder='Type assessor...'
 								onSelect={(e) => {

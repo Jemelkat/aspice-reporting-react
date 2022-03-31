@@ -481,25 +481,29 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 								</div>
 							</div>
-							<label className='flex items-center pt-1 text-sm'>
-								Aggregate sources
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
-							</label>
-							<Field
-								name='aggregateSourcesFunction'
-								options={[
-									{ value: "NONE", label: "NONE" },
-									{ value: "MAX", label: "MAX" },
-									{ value: "MIN", label: "MIN" },
-								]}
-								component={FormSelect}
-								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									updatedSelected.aggregateSourcesFunction = e.value;
-									onItemUpdate(updatedSelected);
-								}}
-								isMulti={false}
-							/>
+							{selectedItem.sources.length > 1 && (
+								<>
+									<label className='flex items-center pt-1 text-sm'>
+										Aggregate sources
+										<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+									</label>
+									<Field
+										name='aggregateSourcesFunction'
+										options={[
+											{ value: "NONE", label: "NONE" },
+											{ value: "MAX", label: "MAX" },
+											{ value: "MIN", label: "MIN" },
+										]}
+										component={FormSelect}
+										onSelect={(e) => {
+											let updatedSelected = selectedItem;
+											updatedSelected.aggregateSourcesFunction = e.value;
+											onItemUpdate(updatedSelected);
+										}}
+										isMulti={false}
+									/>
+								</>
+							)}
 						</div>
 					</div>
 				</Form>

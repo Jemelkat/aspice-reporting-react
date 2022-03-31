@@ -438,7 +438,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<label className='flex items-center pt-1 text-sm'>
-								Aggregate function
+								Aggregate scores
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
@@ -477,12 +477,12 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									}}
 								/>
 								<div className='flex items-center justify-center'>
-									<label className='pl-1'>Merge by levels </label>
+									<label className='pl-1'>Aggregate by levels </label>
 									<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 								</div>
 							</div>
 							<label className='flex items-center pt-1 text-sm'>
-								Merge scores
+								Aggregate sources
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field

@@ -3,8 +3,11 @@ import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
 import { useEffect, useState } from "react";
 import SourceColumnService from "../../../services/SourceColumnService";
-import { InformationCircleIcon } from "@heroicons/react/solid";
+import { InformationCircleIcon } from "@heroicons/react/outline";
 import HorizontalLine from "../../../ui/HorizontalLine";
+import { useAlert } from "react-alert";
+import FormInput from "../../../ui/Form/FormInput";
+import DataService from "../../../services/DataService";
 
 const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -17,47 +20,43 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 		loading: false,
 		error: false,
 	});
+	const alert = useAlert();
 
 	//Load columns if source is defined on load
 	useEffect(() => {
-		selectedItem.source?.id && getColumnsHandler(selectedItem.source.id);
-	}, [selectedItem]);
-
-	//Parse sources
-	const parseSources = (sources) => {
-		let array = [];
-		if (sources)
-			sources.forEach((source) =>
-				array.push({ value: source.id, label: source.sourceName })
-			);
-		array.push({ value: null, label: "None" });
-		return array;
-	};
-
-	//Parse columns
-	const parseColumns = (columns) => {
-		let array = [];
-		if (columns)
-			columns.forEach((column) =>
-				array.push({ value: column.id, label: column.columnName })
-			);
-		array.push({ value: null, label: "None" });
-		return array;
-	};
+		getColumnsHandler(selectedItem.source);
+	}, [selectedItem.source]);
 
 	//Load new columns data on source change
-	const getColumnsHandler = async (sourceId) => {
+	const getColumnsHandler = async (source) => {
 		setColumnsError(false);
-		if (sourceId === null) {
+		if (!source?.id || source === null) {
+			let updatedSelected = selectedItem;
+			//Change selected coluns to NONE on source change
+			updatedSelected.processColumn = null;
+			updatedSelected.assessorColumn = null;
+			updatedSelected.levelColumn = null;
+			updatedSelected.attributeColumn = null;
+			updatedSelected.scoreColumn = null;
+			updatedSelected.assessorFilter = [];
+			//Reset filters
+			setColumnsError(false);
 			setColumnsData([]);
+			onItemUpdate(updatedSelected);
+			setAssessorFilter({
+				data: [],
+				loading: false,
+				error: false,
+			});
 		} else {
+			const sourceId = source.id;
 			//Load new columns for source
 			try {
 				setColumnsLoading(true);
 				const response = await SourceColumnService.getColumnsForSource(
 					sourceId
 				);
-				setColumnsData(parseColumns(response.data));
+				setColumnsData(DataService.parseColumnsSelectData(response.data));
 				setColumnsLoading(false);
 			} catch (e) {
 				setColumnsLoading(false);
@@ -72,28 +71,38 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 
 	//Gets distinct values from assessor column
 	const getAssessorFilterData = async (sourceId, columnId) => {
-		setAssessorFilter({ data: [], loading: true, error: false });
 		try {
 			const response = await SourceColumnService.getColumDistinctValues(
 				sourceId,
 				columnId
 			);
+			debugger;
 			const newData = response.data.map((filter) => ({
 				value: filter,
 				label: filter,
 			}));
-			setAssessorFilter((prevState) => ({
-				...prevState,
+			const newFilters = selectedItem.assessorFilter.filter((filter) =>
+				response.data.includes(filter)
+			);
+			let updatedSelected = selectedItem;
+			selectedItem.assessorFilter = newFilters;
+			onItemUpdate(updatedSelected);
+			setAssessorFilter({
 				data: newData,
 				loading: false,
-			}));
+				error: false,
+			});
 		} catch (e) {
-			alert.error("Error getting assessor column values.");
-			setAssessorFilter((prevState) => ({
-				...prevState,
+			if (e.response?.data && e.response.data?.message) {
+				alert.error(e.response.data.message);
+			} else {
+				alert.error("Error getting assessor filter values.");
+			}
+			setAssessorFilter({
+				data: [],
 				loading: false,
 				error: true,
-			}));
+			});
 		}
 	};
 
@@ -108,17 +117,18 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				criterionColumn: selectedItem.criterionColumn?.id,
 				attributeColumn: selectedItem.attributeColumn?.id,
 				scoreColumn: selectedItem.scoreColumn?.id,
-				scoreFunction: selectedItem.scoreFunction,
+				aggregateScoresFunction: selectedItem.aggregateScoresFunction,
+				aggregateLevels: selectedItem.aggregateLevels,
 			}}
 		>
-			{({ values }) => (
+			{({ values, handleChange }) => (
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
 							<label className='font-medium'>Source:</label>
 							<Field
 								name='sourceFormId'
-								options={parseSources(sourcesData)}
+								options={DataService.parseSourcesSelectData(sourcesData)}
 								component={FormSelect}
 								placeholder={
 									sourcesLoading
@@ -132,26 +142,9 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									if (e.value !== selectedItem.source?.id) {
 										let updatedSelected = selectedItem;
-										setColumnsError(false);
-										//Change selected coluns to NONE on source change
-										updatedSelected.processColumn = null;
-										updatedSelected.assessorColumn = null;
-										updatedSelected.levelColumn = null;
-										updatedSelected.attributeColumn = null;
-										updatedSelected.scoreColumn = null;
-										updatedSelected.assessorFilter = null;
-										//Reset filters
-										onItemUpdate(updatedSelected);
-										setAssessorFilter({
-											data: [],
-											loading: false,
-											error: false,
-										});
-
 										if (e.value === null) {
 											if (e.value !== updatedSelected.source) {
 												updatedSelected.source = null;
-												setColumnsData([]);
 											}
 										} else {
 											if (
@@ -162,11 +155,15 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 													id: e.value,
 													sourceName: e.label,
 												};
-												//Load columns for new source
-
-												getColumnsHandler(e.value);
+												updatedSelected.processColumn = null;
+												updatedSelected.assessorColumn = null;
+												updatedSelected.levelColumn = null;
+												updatedSelected.attributeColumn = null;
+												updatedSelected.scoreColumn = null;
+												updatedSelected.assessorFilter = [];
 											}
 										}
+										onItemUpdate(updatedSelected);
 									}
 								}}
 								isMulti={false}
@@ -205,7 +202,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 											});
 										}
 
-										updatedSelected.assessorFilter = null;
+										updatedSelected.assessorFilter = [];
 										onItemUpdate(updatedSelected);
 									}
 								}}
@@ -231,10 +228,12 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.assessorFilter = e.value;
+									updatedSelected.assessorFilter = e.map(
+										(filter) => filter.value
+									);
 									onItemUpdate(updatedSelected);
 								}}
-								isMulti={false}
+								isMulti={true}
 								isLoading={columnsLoading}
 							/>
 							<HorizontalLine />
@@ -363,24 +362,55 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<label className='flex items-center pt-1 text-sm'>
-								Aggregate function
+								Aggregate scores
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
-								name='scoreFunction'
-								options={[
-									{ value: "MAX", label: "MAX" },
-									{ value: "AVG", label: "AVG" },
-									{ value: "MIN", label: "MIN" },
-								]}
+								name='aggregateScoresFunction'
+								options={
+									selectedItem.aggregateLevels
+										? [
+												{ value: "MIN", label: "MIN" },
+												{ value: "MAX", label: "MAX" },
+										  ]
+										: [
+												{ value: "MIN", label: "MIN" },
+												{ value: "MAX", label: "MAX" },
+												{ value: "AVG", label: "AVG" },
+										  ]
+								}
 								component={FormSelect}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.scoreFunction = e.value;
+									updatedSelected.aggregateScoresFunction = e.value;
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 							/>
+							<div className='flex flex-row items-center pl-0.5 pt-1 text-sm'>
+								<FormInput
+									name='aggregateLevels'
+									type='checkbox'
+									onChange={(e) => {
+										handleChange(e);
+										let updatedSelected = selectedItem;
+										updatedSelected.aggregateLevels = e.target.checked;
+										if (e.target.checked) {
+											if (
+												updatedSelected.aggregateScoresFunction !== "MIN" &&
+												updatedSelected.aggregateScoresFunction !== "MAX"
+											) {
+												updatedSelected.aggregateScoresFunction = "MAX";
+											}
+										}
+										onItemUpdate(updatedSelected);
+									}}
+								/>
+								<div className='flex items-center justify-center'>
+									<label className='pl-1'>Aggregate by levels </label>
+									<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+								</div>
+							</div>
 						</div>
 					</div>
 				</Form>

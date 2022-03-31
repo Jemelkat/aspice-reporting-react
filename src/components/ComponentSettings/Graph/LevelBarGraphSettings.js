@@ -50,13 +50,16 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [columnsData, setColumnsData] = useState([]);
 	const [columnsLoading, setColumnsLoading] = useState(false);
 	const [columnsError, setColumnsError] = useState(false);
-
+	const [assessorFilter, setAssessorFilter] = useState({
+		data: [],
+		loading: false,
+		error: false,
+	});
 	const alert = useAlert();
 
 	//Load columns if source is defined on load
 	useEffect(() => {
-		selectedItem.sources.length > 0 &&
-			getColumnsHandler(selectedItem.sources.map((s) => s.id));
+		getColumnsHandler(selectedItem.sources.map((s) => s.id));
 	}, [selectedItem.sources]);
 
 	//Parse sources
@@ -72,12 +75,19 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	//Load new columns data on source change
 	const getColumnsHandler = async (sourceId) => {
 		setColumnsError(false);
-		if (sourceId === null) {
+		if (sourceId.length === 0) {
+			let updatedSelected = selectedItem;
+			updatedSelected.assessorColumnName = null;
+			updatedSelected.processColumnName = null;
+			updatedSelected.attributeColumnName = null;
+			updatedSelected.criterionColumnName = null;
+			updatedSelected.scoreColumnName = null;
 			setColumnsData([]);
+			setAssessorFilter({ data: [], loading: false, error: false });
+			onItemUpdate(updatedSelected);
 		} else {
 			//Load new columns for source
 			try {
-				console.log("calling");
 				setColumnsLoading(true);
 				const response = await SourceColumnService.getColumnsForSources(
 					sourceId
@@ -92,6 +102,11 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				setColumnsError(true);
 				alert.error("Error getting columns for selected sources.");
 			}
+
+			//Get filter values for assessors
+			if (selectedItem.assessorColumnName != null) {
+				getAssessorFilterData(sourceId, selectedItem.assessorColumnName);
+			}
 		}
 	};
 
@@ -101,6 +116,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 		let changed = false;
 		if (!columnsData.includes(newSelected.assessorColumnName)) {
 			newSelected.assessorColumnName = null;
+			setAssessorFilter({ data: [], loading: false, error: false });
 			changed = true;
 		}
 		if (!columnsData.includes(newSelected.processColumnName)) {
@@ -111,6 +127,10 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			newSelected.attributeColumnName = null;
 			changed = true;
 		}
+		if (!columnsData.includes(newSelected.criterionColumnName)) {
+			newSelected.criterionColumnName = null;
+			changed = true;
+		}
 		if (!columnsData.includes(newSelected.scoreColumnName)) {
 			newSelected.scoreColumnName = null;
 			changed = true;
@@ -118,6 +138,37 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 
 		if (changed) {
 			onItemUpdate(newSelected);
+		}
+	};
+
+	//Gets distinct values from assessor column
+	const getAssessorFilterData = async (sourceId, columnName) => {
+		setAssessorFilter({ data: [], loading: true, error: false });
+		try {
+			const response = await SourceColumnService.getValuesForSourcesAndColumn(
+				sourceId,
+				columnName
+			);
+			const newData = response.data.map((filter) => ({
+				value: filter,
+				label: filter,
+			}));
+			setAssessorFilter((prevState) => ({
+				...prevState,
+				data: newData,
+				loading: false,
+			}));
+		} catch (e) {
+			if (e.response.data && e.response.data.message) {
+				alert.error(e.response.data.message);
+			} else {
+				alert.error("Error getting assessor filter values.");
+			}
+			setAssessorFilter((prevState) => ({
+				...prevState,
+				loading: false,
+				error: true,
+			}));
 		}
 	};
 
@@ -176,6 +227,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
+									debugger;
 									if (!updatedSelected.sources.includes(e.value)) {
 										updatedSelected.sources = e.map((selected) => {
 											return {
@@ -208,9 +260,19 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
 										updatedSelected.assessorColumnName = e.value;
+										getAssessorFilterData(
+											updatedSelected.sources.map((source) => source.id),
+											e.value
+										);
 									} else {
 										updatedSelected.assessorColumnName = null;
+										setAssessorFilter({
+											data: [],
+											loading: false,
+											error: false,
+										});
 									}
+
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
@@ -222,9 +284,17 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							</label>
 							<Field
 								name='assessorFilter'
-								options={[{ value: "test", label: "test" }]}
+								options={assessorFilter.data}
 								component={FormSelect}
-								placeholder='Type assessor...'
+								placeholder={
+									columnsLoading
+										? "Loading..."
+										: assessorFilter.error
+										? "Error!"
+										: assessorFilter.data.length > 0
+										? "Select assessor"
+										: ""
+								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									updatedSelected.assessorFilter = e.map(
@@ -233,6 +303,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={true}
+								isLoading={assessorFilter.loading}
 							/>
 							<HorizontalLine />
 							<label className='font-medium'>Process column:</label>

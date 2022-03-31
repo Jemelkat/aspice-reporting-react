@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import {
 	Bar,
 	BarChart,
 	CartesianGrid,
+	Label,
 	Legend,
 	ResponsiveContainer,
 	Tooltip,
@@ -10,7 +12,21 @@ import {
 } from "recharts";
 import colors from "../../helpers/ColorsHelper";
 
+const maxWordLength = 10;
+
 const DashboardBarGraph = ({ data, isHorizontal }) => {
+	const [processNamesSize, setProcessNamesSize] = useState(0);
+	useEffect(() => {
+		debugger;
+		const longestName = Math.max(...data.map((it) => it["process"].length));
+		if (longestName > maxWordLength) {
+			setProcessNamesSize(0);
+		} else {
+			setProcessNamesSize(longestName * 5);
+		}
+	}, [data]);
+
+	console.log(processNamesSize);
 	return (
 		<ResponsiveContainer width='100%' height='95%'>
 			<BarChart
@@ -19,22 +35,32 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 					top: 15,
 					right: 15,
 					left: 5,
-					bottom: isHorizontal ? 50 : 25,
+					bottom: isHorizontal ? processNamesSize + 20 : 25,
 				}}
 				layout={isHorizontal ? "horizontal" : "vertical"}
 			>
 				<CartesianGrid vertical={!isHorizontal} horizontal={isHorizontal} />
 				{isHorizontal ? (
 					<>
-						<XAxis
+						{/* <XAxis
 							type='category'
 							dataKey='process'
-							minTickGap={-20}
-							height={30}
+							minTickGap={0}
+							height={processNamesSize + 10}
 							angle={-90}
-							dy={30}
+							dy={processNamesSize}
 							dx={0}
-						></XAxis>
+						> */}
+						<XAxis
+							dataKey='process'
+							textAnchor='end'
+							angle='-90'
+							height={processNamesSize > 0 ? processNamesSize : 10}
+							interval={0}
+							dy={processNamesSize > 0 ? 0 : processNamesSize + 100}
+						>
+							<Label value='Process' position='bottom' dy={processNamesSize} />
+						</XAxis>
 						<YAxis
 							type='number'
 							allowDecimals={false}
@@ -54,21 +80,20 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 						<XAxis
 							type='number'
 							allowDecimals={false}
-							label={{
-								value: "Level",
-								position: "outsideMiddle",
-								dy: 20,
-							}}
-							height={15}
+							height={1}
 							domain={[0, 5]}
 							tickCount={6}
-						></XAxis>
+						>
+							<Label value='Level' dy={20} position='outsideMiddle' />
+						</XAxis>
 						<YAxis
 							type='category'
 							dataKey='process'
-							minTickGap={-10}
-							width={100}
-						/>
+							textAnchor='end'
+							interval={"preserveStartEnd"}
+							minTickGap={20}
+							width={processNamesSize}
+						></YAxis>
 					</>
 				)}
 				<Tooltip />
@@ -77,7 +102,7 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 					Object.getOwnPropertyNames(data[0])
 						.filter((property) => property !== "process")
 						.map((barNames, index) => (
-							<Bar dataKey={barNames} fill={colors[index % 12]} />
+							<Bar dataKey={barNames} fill={colors[index % 12]}></Bar>
 						))}
 				<Legend layout='horizontal' verticalAlign='top' align='center' />
 			</BarChart>

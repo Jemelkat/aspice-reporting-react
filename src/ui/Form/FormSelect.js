@@ -20,7 +20,6 @@ export const FormSelect = ({
 	};
 
 	const getValue = () => {
-		debugger;
 		let newValue = [];
 		if (options) {
 			if (isMulti) {

@@ -1,12 +1,12 @@
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import Button from "../../ui/Button";
 import MyDialog from "../../ui/Dialog/MyDialog";
 import FormSelect from "../../ui/Form/FormSelect";
 import * as Yup from "yup";
-import {Tab} from "@headlessui/react";
-import {useEffect, useState} from "react";
+import { Tab } from "@headlessui/react";
+import { useEffect, useState } from "react";
 import TemplateService from "../../services/TemplateService";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import ReportService from "../../services/ReportService";
 
 const ExportItemDialog = ({ item, showDialog, onClose }) => {
@@ -81,7 +81,6 @@ const ExportItemDialog = ({ item, showDialog, onClose }) => {
 	};
 
 	const addItemHandler = (selectedId) => {
-		debugger;
 		if (selected === 0) {
 			push({
 				pathname: "/report/create",

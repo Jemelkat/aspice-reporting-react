@@ -1,5 +1,13 @@
 export default class DataService {
-	static parseColumnsSelectData(columns) {}
+	static parseColumnsSelectData(columns) {
+		let array = [];
+		if (columns)
+			columns.forEach((column) =>
+				array.push({ value: column.id, label: column.columnName })
+			);
+		array.push({ value: null, label: "None" });
+		return array;
+	}
 
 	static parseSimpleSelectData(data) {
 		let resultData = data.map((value) => ({
@@ -8,5 +16,15 @@ export default class DataService {
 		}));
 		resultData.push({ value: null, label: "None" });
 		return resultData;
+	}
+
+	static parseSourcesSelectData(sources) {
+		let array = [];
+		if (sources)
+			sources.forEach((source) =>
+				array.push({ value: source.id, label: source.sourceName })
+			);
+		array.push({ value: null, label: "None" });
+		return array;
 	}
 }

@@ -26,6 +26,7 @@ const DashboardItem = ({
 			case typeEnum.LEVEL_PIE_GRAPH:
 				result =
 					item.source?.id &&
+					item.assessorColumn?.id &&
 					item.processColumn?.id &&
 					item.criterionColumn?.id &&
 					item.attributeColumn?.id &&
@@ -113,13 +114,18 @@ const DashboardItem = ({
 			}
 		}
 	}, [
-		item.source,
-		item.processColumnName,
-		item.levelColumnName,
-		item.attributeColumnName,
-		item.scoreColumnName,
+		item.sources,
 		item.assessorColumnName,
+		item.processColumnName,
+		item.attributeColumnName,
 		item.criterionColumnName,
+		item.scoreColumnName,
+		item.source,
+		item.assessorColumn,
+		item.processColumn,
+		item.criterionColumn,
+		item.attributeColumn,
+		item.scoreColumn,
 	]);
 
 	//Render correct graph

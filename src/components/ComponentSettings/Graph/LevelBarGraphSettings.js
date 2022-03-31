@@ -116,6 +116,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 		let changed = false;
 		if (!columnsData.includes(newSelected.assessorColumnName)) {
 			newSelected.assessorColumnName = null;
+			newSelected.assessorFilter = [];
 			setAssessorFilter({ data: [], loading: false, error: false });
 			changed = true;
 		}
@@ -153,6 +154,12 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				value: filter,
 				label: filter,
 			}));
+			const newFilters = selectedItem.assessorFilter.filter((filter) =>
+				response.data.includes(filter)
+			);
+			let updatedSelected = selectedItem;
+			selectedItem.assessorFilter = newFilters;
+			onItemUpdate(updatedSelected);
 			setAssessorFilter((prevState) => ({
 				...prevState,
 				data: newData,

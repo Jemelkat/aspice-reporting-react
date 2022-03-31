@@ -1,5 +1,4 @@
 export const createItemFromExisting = (item) => {
-	debugger;
 	switch (item.type) {
 		case typeEnum.TEXT:
 			return new Text(
@@ -55,35 +54,19 @@ export const createItemFromExisting = (item) => {
 				item.height,
 				item.type,
 				item.orientation ? item.orientation : "HORIZONTAL",
-				item.source ? item.source : null,
-				item.assessorColumn ? item.assessorColumn : null,
-				item.assessorFilter ? item.assessorFilter : [],
-				item.processColumn ? item.processColumn : null,
-				item.processFilter ? item.processFilter : [],
-				item.criterionColumn ? item.criterionColumn : null,
-				item.attributeColumn ? item.attributeColumn : null,
-				item.scoreColumn ? item.scoreColumn : null,
-				item.scoreFunction ? item.scoreFunction : "AVG"
-			);
-		case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
-			return new SourceLevelBarGraph(
-				item.id,
-				item.x,
-				item.y,
-				item.width,
-				item.height,
-				item.type,
-				item.orientation ? item.orientation : "HORIZONTAL",
 				item.sources ? item.sources : [],
-				item.assessorColumn ? item.assessorColumn : null,
-				item.assessorFilter ? item.assessorFilter : null,
-				item.processColumn ? item.processColumn : null,
+				item.assessorColumnName ? item.assessorColumnName : null,
+				item.assessorFilter ? item.assessorFilter : [],
+				item.processColumnName ? item.processColumnName : null,
 				item.processFilter ? item.processFilter : [],
-				item.attributeColumn ? item.attributeColumn : null,
-				item.criterionColumn ? item.criterionColumn : null,
-				item.scoreColumn ? item.scoreColumn : null,
-				item.scoreFunction ? item.scoreFunction : "AVG",
-				item.mergeScores ? item.mergeScores : null
+				item.attributeColumnName ? item.attributeColumnName : null,
+				item.criterionColumnName ? item.criterionColumnName : null,
+				item.scoreColumnName ? item.scoreColumnName : null,
+				item.aggregateScoresFunction ? item.aggregateScoresFunction : "NONE",
+				item.aggregateLevels != null && item.aggregateLevels != undefined
+					? item.aggregateLevels
+					: false,
+				item.aggregateSourcesFunction ? item.aggregateSourcesFunction : "NONE"
 			);
 		case typeEnum.LEVEL_PIE_GRAPH:
 			return new LevelPieGraph(
@@ -215,62 +198,31 @@ export class LevelBarGraph extends Item {
 		height,
 		type,
 		orientation = "HORIZONTAL",
-		source = null,
-		assessorColumn = null,
-		assessorFilter = [],
-		processColumn = null,
-		processFilter = [],
-		criterionColumn = null,
-		attributeColumn = null,
-		scoreColumn = null,
-		scoreFunction = "AVG"
-	) {
-		super(id, x, y, width, height, type);
-		this.orientation = orientation;
-		this.source = source;
-		this.assessorColumn = assessorColumn;
-		this.assessorFilter = assessorFilter;
-		this.processColumn = processColumn;
-		this.processFilter = processFilter;
-		this.criterionColumn = criterionColumn;
-		this.attributeColumn = attributeColumn;
-		this.scoreColumn = scoreColumn;
-		this.scoreFunction = scoreFunction;
-	}
-}
-
-export class SourceLevelBarGraph extends Item {
-	constructor(
-		id,
-		x,
-		y,
-		width,
-		height,
-		type,
-		orientation = "HORIZONTAL",
 		sources = [],
-		assessorColumn = null,
-		assessorFilter = null,
-		processColumn = null,
+		assessorColumnName = null,
+		assessorFilter = [],
+		processColumnName = null,
 		processFilter = [],
-		attributeColumn = null,
-		criterionColumn = null,
-		scoreColumn = null,
-		scoreFunction = "AVG",
-		mergeScores = null
+		attributeColumnName = null,
+		criterionColumnName = null,
+		scoreColumnName = null,
+		aggregateScoresFunction = "NONE",
+		aggregateLevels = false,
+		aggregateSourcesFunction = "NONE"
 	) {
 		super(id, x, y, width, height, type);
 		this.orientation = orientation;
 		this.sources = sources;
-		this.assessorColumn = assessorColumn;
+		this.assessorColumnName = assessorColumnName;
 		this.assessorFilter = assessorFilter;
-		this.processColumn = processColumn;
+		this.processColumnName = processColumnName;
 		this.processFilter = processFilter;
-		this.attributeColumn = attributeColumn;
-		this.criterionColumn = criterionColumn;
-		this.scoreColumn = scoreColumn;
-		this.scoreFunction = scoreFunction;
-		this.mergeScores = mergeScores;
+		this.attributeColumnName = attributeColumnName;
+		this.criterionColumnName = criterionColumnName;
+		this.scoreColumnName = scoreColumnName;
+		this.aggregateScoresFunction = aggregateScoresFunction;
+		this.aggregateLevels = aggregateLevels;
+		this.aggregateSourcesFunction = aggregateSourcesFunction;
 	}
 }
 
@@ -304,10 +256,9 @@ export class LevelPieGraph extends Item {
 }
 
 export const typeEnum = Object.freeze({
-	LEVEL_BAR_GRAPH: "LEVEL_BAR_GRAPH",
 	TEXT: "TEXT",
 	SIMPLE_TABLE: "SIMPLE_TABLE",
 	CAPABILITY_TABLE: "CAPABILITY_TABLE",
-	SOURCE_LEVEL_BAR_GRAPH: "SOURCE_LEVEL_BAR_GRAPH",
+	LEVEL_BAR_GRAPH: "LEVEL_BAR_GRAPH",
 	LEVEL_PIE_GRAPH: "LEVEL_PIE_GRAPH",
 });

@@ -10,6 +10,7 @@ export const FormSelect = ({
 	isLoading = false,
 	onSelect,
 	error,
+	ordering,
 }) => {
 	const setValueHandler = (option) => {
 		form.setFieldValue(
@@ -19,11 +20,22 @@ export const FormSelect = ({
 	};
 
 	const getValue = () => {
-		let newValue;
+		debugger;
+		let newValue = [];
 		if (options) {
-			newValue = isMulti
-				? options.filter((option) => field.value.indexOf(option.value) >= 0)
-				: options.find((option) => option.value === field.value);
+			if (isMulti) {
+				if (ordering) {
+					field.value.forEach((value) => {
+						newValue.push(options.find((option) => option.value === value));
+					});
+				} else {
+					newValue = options.filter(
+						(option) => field.value.indexOf(option.value) >= 0
+					);
+				}
+			} else {
+				newValue = options.find((option) => option.value === field.value);
+			}
 		} else {
 			newValue = isMulti ? [] : null;
 		}

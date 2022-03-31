@@ -3,7 +3,6 @@ import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import {typeEnum} from "../../helpers/ClassHelper";
 import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
-import SourceLevelBarGraphBox from "../../ui/ItemMenuBox/SourceLevelBarGraphBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 
 const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
@@ -30,11 +29,6 @@ const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
 								onAddComponent(typeEnum.LEVEL_BAR_GRAPH, currentColumns);
 							}}
 						></LevelBarGraphBox>
-						<SourceLevelBarGraphBox
-							onClick={() => {
-								onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH, currentColumns);
-							}}
-						></SourceLevelBarGraphBox>
 						<LevelPieGraphBox
 							onClick={() => {
 								onAddComponent(typeEnum.LEVEL_PIE_GRAPH, currentColumns);

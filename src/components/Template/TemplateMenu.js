@@ -11,7 +11,6 @@ import FormSelect from "../../ui/Form/FormSelect";
 import CapabilityTableBox from "../../ui/ItemMenuBox/CapabilityTableBox";
 import SimpleTextBox from "../../ui/ItemMenuBox/SimpleTextBox";
 import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
-import SourceLevelBarGraphBox from "../../ui/ItemMenuBox/SourceLevelBarGraphBox";
 import SimpleTableBox from "../../ui/ItemMenuBox/SimpleTableBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 
@@ -102,12 +101,6 @@ const TemplateMenu = ({
 									onAddComponent(typeEnum.LEVEL_BAR_GRAPH);
 								}}
 							></LevelBarGraphBox>
-							<SourceLevelBarGraphBox
-								mini
-								onClick={() => {
-									onAddComponent(typeEnum.SOURCE_LEVEL_BAR_GRAPH);
-								}}
-							></SourceLevelBarGraphBox>
 							<LevelPieGraphBox
 								mini
 								onClick={() => {

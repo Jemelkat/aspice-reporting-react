@@ -44,19 +44,22 @@ const allProcesses = [
 	{ value: "SYS.5", label: "SYS.5" },
 ];
 
-const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
+const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);
 	const [columnsLoading, setColumnsLoading] = useState(false);
 	const [columnsError, setColumnsError] = useState(false);
-
+	const [assessorFilter, setAssessorFilter] = useState({
+		data: [],
+		loading: false,
+		error: false,
+	});
 	const alert = useAlert();
 
 	//Load columns if source is defined on load
 	useEffect(() => {
-		selectedItem.sources.length > 0 &&
-			getColumnsHandler(selectedItem.sources.map((s) => s.id));
+		getColumnsHandler(selectedItem.sources.map((s) => s.id));
 	}, [selectedItem.sources]);
 
 	//Parse sources
@@ -72,12 +75,19 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	//Load new columns data on source change
 	const getColumnsHandler = async (sourceId) => {
 		setColumnsError(false);
-		if (sourceId === null) {
+		if (sourceId.length === 0) {
+			let updatedSelected = selectedItem;
+			updatedSelected.assessorColumnName = null;
+			updatedSelected.processColumnName = null;
+			updatedSelected.attributeColumnName = null;
+			updatedSelected.criterionColumnName = null;
+			updatedSelected.scoreColumnName = null;
 			setColumnsData([]);
+			setAssessorFilter({ data: [], loading: false, error: false });
+			onItemUpdate(updatedSelected);
 		} else {
 			//Load new columns for source
 			try {
-				console.log("calling");
 				setColumnsLoading(true);
 				const response = await SourceColumnService.getColumnsForSources(
 					sourceId
@@ -92,6 +102,11 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				setColumnsError(true);
 				alert.error("Error getting columns for selected sources.");
 			}
+
+			//Get filter values for assessors
+			if (selectedItem.assessorColumnName != null) {
+				getAssessorFilterData(sourceId, selectedItem.assessorColumnName);
+			}
 		}
 	};
 
@@ -99,25 +114,68 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const updateSelectedColumns = (columnsData) => {
 		let newSelected = selectedItem;
 		let changed = false;
-		if (!columnsData.includes(newSelected.assessorColumn)) {
-			newSelected.assessorColumn = null;
+		if (!columnsData.includes(newSelected.assessorColumnName)) {
+			newSelected.assessorColumnName = null;
+			newSelected.assessorFilter = [];
+			setAssessorFilter({ data: [], loading: false, error: false });
 			changed = true;
 		}
-		if (!columnsData.includes(newSelected.processColumn)) {
-			newSelected.processColumn = null;
+		if (!columnsData.includes(newSelected.processColumnName)) {
+			newSelected.processColumnName = null;
 			changed = true;
 		}
-		if (!columnsData.includes(newSelected.attributeColumn)) {
-			newSelected.attributeColumn = null;
+		if (!columnsData.includes(newSelected.attributeColumnName)) {
+			newSelected.attributeColumnName = null;
 			changed = true;
 		}
-		if (!columnsData.includes(newSelected.scoreColumn)) {
-			newSelected.scoreColumn = null;
+		if (!columnsData.includes(newSelected.criterionColumnName)) {
+			newSelected.criterionColumnName = null;
+			changed = true;
+		}
+		if (!columnsData.includes(newSelected.scoreColumnName)) {
+			newSelected.scoreColumnName = null;
 			changed = true;
 		}
 
 		if (changed) {
 			onItemUpdate(newSelected);
+		}
+	};
+
+	//Gets distinct values from assessor column
+	const getAssessorFilterData = async (sourceId, columnName) => {
+		setAssessorFilter({ data: [], loading: true, error: false });
+		try {
+			const response = await SourceColumnService.getValuesForSourcesAndColumn(
+				sourceId,
+				columnName
+			);
+			const newData = response.data.map((filter) => ({
+				value: filter,
+				label: filter,
+			}));
+			const newFilters = selectedItem.assessorFilter.filter((filter) =>
+				response.data.includes(filter)
+			);
+			let updatedSelected = selectedItem;
+			selectedItem.assessorFilter = newFilters;
+			onItemUpdate(updatedSelected);
+			setAssessorFilter((prevState) => ({
+				...prevState,
+				data: newData,
+				loading: false,
+			}));
+		} catch (e) {
+			if (e.response.data && e.response.data.message) {
+				alert.error(e.response.data.message);
+			} else {
+				alert.error("Error getting assessor filter values.");
+			}
+			setAssessorFilter((prevState) => ({
+				...prevState,
+				loading: false,
+				error: true,
+			}));
 		}
 	};
 
@@ -127,15 +185,16 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			initialValues={{
 				orientation: selectedItem.orientation,
 				sources: selectedItem?.sources.map((i) => i.id),
-				assessorColumn: selectedItem.assessorColumn,
+				assessorColumnName: selectedItem.assessorColumnName,
 				assessorFilter: selectedItem.assessorFilter,
-				processColumn: selectedItem.processColumn,
+				processColumnName: selectedItem.processColumnName,
 				processFilter: selectedItem.processFilter,
-				attributeColumn: selectedItem.attributeColumn,
-				criterionColumn: selectedItem.criterionColumn,
-				scoreColumn: selectedItem.scoreColumn,
-				scoreFunction: selectedItem.scoreFunction,
-				mergeScores: selectedItem.mergeScores,
+				attributeColumnName: selectedItem.attributeColumnName,
+				criterionColumnName: selectedItem.criterionColumnName,
+				scoreColumnName: selectedItem.scoreColumnName,
+				aggregateScoresFunction: selectedItem.aggregateScoresFunction,
+				aggregateLevels: selectedItem.aggregateLevels,
+				aggregateSourcesFunction: selectedItem.aggregateSourcesFunction,
 			}}
 		>
 			{({ values, handleChange }) => (
@@ -175,6 +234,7 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
+									debugger;
 									if (!updatedSelected.sources.includes(e.value)) {
 										updatedSelected.sources = e.map((selected) => {
 											return {
@@ -186,11 +246,12 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								}}
 								isMulti={true}
 								isLoading={sourcesLoading}
+								ordering={true}
 							/>
 							<HorizontalLine />
 							<label className='font-medium'> Assessor column</label>
 							<Field
-								name='assessorColumn'
+								name='assessorColumnName'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -205,10 +266,20 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.assessorColumn = e.value;
+										updatedSelected.assessorColumnName = e.value;
+										getAssessorFilterData(
+											updatedSelected.sources.map((source) => source.id),
+											e.value
+										);
 									} else {
-										updatedSelected.assessorColumn = null;
+										updatedSelected.assessorColumnName = null;
+										setAssessorFilter({
+											data: [],
+											loading: false,
+											error: false,
+										});
 									}
+
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
@@ -218,21 +289,33 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								Optional filter by assessor
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
-							<FormInput
-								label=''
+							<Field
 								name='assessorFilter'
-								type='text'
-								placeholder='Type assessor...'
-								onChange={(e) => {
+								options={assessorFilter.data}
+								component={FormSelect}
+								placeholder={
+									columnsLoading
+										? "Loading..."
+										: assessorFilter.error
+										? "Error!"
+										: assessorFilter.data.length > 0
+										? "Select assessor"
+										: ""
+								}
+								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.assessorFilter = e.target.value;
+									updatedSelected.assessorFilter = e.map(
+										(filter) => filter.value
+									);
 									onItemUpdate(updatedSelected);
 								}}
+								isMulti={true}
+								isLoading={assessorFilter.loading}
 							/>
 							<HorizontalLine />
 							<label className='font-medium'>Process column:</label>
 							<Field
-								name='processColumn'
+								name='processColumnName'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -247,9 +330,9 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.processColumn = e.value;
+										updatedSelected.processColumnName = e.value;
 									} else {
-										updatedSelected.processColumn = null;
+										updatedSelected.processColumnName = null;
 									}
 									onItemUpdate(updatedSelected);
 								}}
@@ -277,7 +360,7 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							<HorizontalLine />
 							<label className='font-medium'>Process attribute</label>
 							<Field
-								name='attributeColumn'
+								name='attributeColumnName'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -292,9 +375,9 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.attributeColumn = e.value;
+										updatedSelected.attributeColumnName = e.value;
 									} else {
-										updatedSelected.attributeColumn = null;
+										updatedSelected.attributeColumnName = null;
 									}
 									onItemUpdate(updatedSelected);
 								}}
@@ -304,7 +387,7 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							<HorizontalLine />
 							<label className='font-medium'>Performance criterion</label>
 							<Field
-								name='criterionColumn'
+								name='criterionColumnName'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -319,9 +402,9 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.criterionColumn = e.value;
+										updatedSelected.criterionColumnName = e.value;
 									} else {
-										updatedSelected.criterionColumn = null;
+										updatedSelected.criterionColumnName = null;
 									}
 								}}
 								isMulti={false}
@@ -330,7 +413,7 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							<HorizontalLine />
 							<label className='font-medium'>Score/Value</label>
 							<Field
-								name='scoreColumn'
+								name='scoreColumnName'
 								options={columnsData}
 								component={FormSelect}
 								placeholder={
@@ -345,9 +428,9 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									if (e.value !== null) {
-										updatedSelected.scoreColumn = e.value;
+										updatedSelected.scoreColumnName = e.value;
 									} else {
-										updatedSelected.scoreColumn = null;
+										updatedSelected.scoreColumnName = null;
 									}
 									onItemUpdate(updatedSelected);
 								}}
@@ -355,44 +438,72 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<label className='flex items-center pt-1 text-sm'>
-								Aggregate function
+								Aggregate scores
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
-								name='scoreFunction'
+								name='aggregateScoresFunction'
 								options={[
+									{ value: "MIN", label: "MIN" },
 									{ value: "MAX", label: "MAX" },
 									{ value: "AVG", label: "AVG" },
-									{ value: "MIN", label: "MIN" },
+									{ value: "NONE", label: "NONE" },
 								]}
 								component={FormSelect}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.scoreFunction = e.value;
+									updatedSelected.aggregateScoresFunction = e.value;
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 							/>
-
-							<label className='flex items-center pt-1 text-sm'>
-								Merge scores
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
-							</label>
-							<Field
-								name='mergeScores'
-								options={[
-									{ value: null, label: "No merge" },
-									{ value: "MAX", label: "MAX" },
-									{ value: "MIN", label: "MIN" },
-								]}
-								component={FormSelect}
-								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									updatedSelected.mergeScores = e.value;
-									onItemUpdate(updatedSelected);
-								}}
-								isMulti={false}
-							/>
+							<div className='flex flex-row items-center pl-0.5 pt-1 text-sm'>
+								<FormInput
+									name='aggregateLevels'
+									type='checkbox'
+									onChange={(e) => {
+										handleChange(e);
+										let updatedSelected = selectedItem;
+										updatedSelected.aggregateLevels = e.target.checked;
+										if (e.target.checked) {
+											if (
+												updatedSelected.aggregateScoresFunction !== "MIN" &&
+												updatedSelected.aggregateScoresFunction !== "MAX"
+											) {
+												updatedSelected.aggregateScoresFunction = "MIN";
+											}
+										}
+										onItemUpdate(updatedSelected);
+									}}
+								/>
+								<div className='flex items-center justify-center'>
+									<label className='pl-1'>Aggregate by levels </label>
+									<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+								</div>
+							</div>
+							{selectedItem.sources.length > 1 && (
+								<>
+									<label className='flex items-center pt-1 text-sm'>
+										Aggregate sources
+										<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+									</label>
+									<Field
+										name='aggregateSourcesFunction'
+										options={[
+											{ value: "NONE", label: "NONE" },
+											{ value: "MAX", label: "MAX" },
+											{ value: "MIN", label: "MIN" },
+										]}
+										component={FormSelect}
+										onSelect={(e) => {
+											let updatedSelected = selectedItem;
+											updatedSelected.aggregateSourcesFunction = e.value;
+											onItemUpdate(updatedSelected);
+										}}
+										isMulti={false}
+									/>
+								</>
+							)}
 						</div>
 					</div>
 				</Form>
@@ -401,4 +512,4 @@ const SourceLevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	);
 };
 
-export default SourceLevelBarGraphSettings;
+export default LevelBarGraphSettings;

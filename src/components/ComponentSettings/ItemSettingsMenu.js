@@ -8,11 +8,10 @@ import {useEffect, useRef} from "react";
 import {typeEnum} from "../../helpers/ClassHelper";
 import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import TextSettings from "./Text/TextSettings";
-import CapabilityBarGraphSettings from "./Graph/CapabilityBarGraphSettings";
 import LevelPieGraphSettings from "./Graph/LevelPieGraphSettings";
 import CapabilityTableSettigs from "./Table/CapabilityTableSettings";
 import SimpleTableSettings from "./Table/SimpleTableSettings";
-import SourceLevelBarGraphSettings from "./Graph/SourceLevelBarGraphSettings";
+import LevelBarGraphSettings from "./Graph/LevelBarGraphSettings";
 
 const ItemSettingsMenu = ({
 	simple = false,
@@ -37,17 +36,10 @@ const ItemSettingsMenu = ({
 				);
 			case typeEnum.LEVEL_BAR_GRAPH:
 				return (
-					<CapabilityBarGraphSettings
+					<LevelBarGraphSettings
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
-					></CapabilityBarGraphSettings>
-				);
-			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
-				return (
-					<SourceLevelBarGraphSettings
-						selectedItem={selectedItem}
-						onItemUpdate={onItemUpdate}
-					></SourceLevelBarGraphSettings>
+					></LevelBarGraphSettings>
 				);
 			case typeEnum.LEVEL_PIE_GRAPH:
 				return (

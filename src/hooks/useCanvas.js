@@ -1,14 +1,13 @@
-import {useState} from "react";
-import {useAlert} from "react-alert";
+import { useState } from "react";
+import { useAlert } from "react-alert";
 import {
-    CapabilityTable,
-    createItemFromExisting,
-    LevelBarGraph,
-    LevelPieGraph,
-    SimpleTable,
-    SourceLevelBarGraph,
-    Text,
-    typeEnum,
+	CapabilityTable,
+	createItemFromExisting,
+	LevelPieGraph,
+	SimpleTable,
+	LevelBarGraph,
+	Text,
+	typeEnum,
 } from "../helpers/ClassHelper";
 
 const useCanvas = () => {
@@ -93,16 +92,6 @@ const useCanvas = () => {
 					typeEnum.LEVEL_BAR_GRAPH
 				);
 				break;
-			case typeEnum.SOURCE_LEVEL_BAR_GRAPH:
-				item = new SourceLevelBarGraph(
-					nextItemId(),
-					0,
-					0,
-					200,
-					200,
-					typeEnum.SOURCE_LEVEL_BAR_GRAPH
-				);
-				break;
 			case typeEnum.SIMPLE_TABLE:
 				item = new SimpleTable(
 					nextItemId(),
@@ -154,20 +143,6 @@ const useCanvas = () => {
 					6,
 					6,
 					typeEnum.LEVEL_BAR_GRAPH
-				);
-				setBarX(newBarX + 6);
-				break;
-			}
-			case typeEnum.SOURCE_LEVEL_BAR_GRAPH: {
-				const newBarX =
-					barX >= currentColumns ? 0 : barX + 6 > currentColumns ? 0 : barX;
-				item = new SourceLevelBarGraph(
-					nextItemId(),
-					newBarX,
-					Infinity,
-					6,
-					6,
-					typeEnum.SOURCE_LEVEL_BAR_GRAPH
 				);
 				setBarX(newBarX + 6);
 				break;

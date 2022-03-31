@@ -1,17 +1,49 @@
-import {InformationCircleIcon} from "@heroicons/react/solid";
-import {Field, Form, Formik} from "formik";
-import {useEffect, useState} from "react";
-import {useAlert} from "react-alert";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { InformationCircleIcon } from "@heroicons/react/outline";
+import { Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import { useAlert } from "react-alert";
+import { useAxios } from "../../../helpers/AxiosHelper";
+import DataService from "../../../services/DataService";
 import SourceColumnService from "../../../services/SourceColumnService";
 import FormInput from "../../../ui/Form/FormInput";
 import FormSelect from "../../../ui/Form/FormSelect";
 
-const CapabilityTableSettigs = ({
-	selectedItem,
-	onItemUpdate,
-	handleChange,
-}) => {
+const allProcesses = [
+	{ value: "ACQ.3", label: "ACQ.3" },
+	{ value: "ACQ.4", label: "ACQ.3" },
+	{ value: "ACQ.11", label: "ACQ.11" },
+	{ value: "ACQ.12", label: "ACQ.12" },
+	{ value: "ACQ.13", label: "ACQ.13" },
+	{ value: "ACQ.14", label: "ACQ.14" },
+	{ value: "ACQ.15", label: "ACQ.15" },
+	{ value: "MAN.3", label: "MAN.3" },
+	{ value: "MAN.5", label: "MAN.5" },
+	{ value: "MAN.6", label: "MAN.6" },
+	{ value: "PIM.3", label: "PIM.3" },
+	{ value: "REU.2", label: "REU.2" },
+	{ value: "SPL.1", label: "SPL.1" },
+	{ value: "SPL.2", label: "SPL.2" },
+	{ value: "SUP.1", label: "SUP.1" },
+	{ value: "SUP.2", label: "SUP.2" },
+	{ value: "SUP.4", label: "SUP.4" },
+	{ value: "SUP.7", label: "SUP.7" },
+	{ value: "SUP.8", label: "SUP.8" },
+	{ value: "SUP.9", label: "SUP.9" },
+	{ value: "SUP.10", label: "SUP.10" },
+	{ value: "SWE.1", label: "SWE.1" },
+	{ value: "SWE.2", label: "SWE.2" },
+	{ value: "SWE.3", label: "SWE.3" },
+	{ value: "SWE.4", label: "SWE.4" },
+	{ value: "SWE.5", label: "SWE.5" },
+	{ value: "SWE.6", label: "SWE.6" },
+	{ value: "SYS.1", label: "SYS.1" },
+	{ value: "SYS.2", label: "SYS.2" },
+	{ value: "SYS.3", label: "SYS.3" },
+	{ value: "SYS.4", label: "SYS.4" },
+	{ value: "SYS.5", label: "SYS.5" },
+];
+
+const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);
@@ -26,44 +58,36 @@ const CapabilityTableSettigs = ({
 
 	//Load columns if source is defined on load
 	useEffect(() => {
-		selectedItem.source?.id && getColumnsHandler(selectedItem.source.id);
-	}, [selectedItem]);
-
-	//Parse sources
-	const parseSources = (sources) => {
-		let array = [];
-		if (sources)
-			sources.forEach((source) =>
-				array.push({ value: source.id, label: source.sourceName })
-			);
-		array.push({ value: null, label: "None" });
-		return array;
-	};
-
-	//Parse columns
-	const parseColumns = (columns) => {
-		let array = [];
-		if (columns)
-			columns.forEach((column) =>
-				array.push({ value: column.id, label: column.columnName })
-			);
-		array.push({ value: null, label: "None" });
-		return array;
-	};
+		getColumnsHandler(selectedItem.source);
+	}, [selectedItem.source]);
 
 	//Load new columns data on source change
-	const getColumnsHandler = async (sourceId) => {
+	const getColumnsHandler = async (source) => {
 		setColumnsError(false);
-		if (sourceId === null) {
+		if (!source?.id || source === null) {
+			let updatedSelected = selectedItem;
+			//Change selected colu,s to NONE on source change
+			updatedSelected.processColumn = null;
+			updatedSelected.assessorColumn = null;
+			updatedSelected.levelColumn = null;
+			updatedSelected.criterionColumn = null;
+			updatedSelected.scoreColumn = null;
+			updatedSelected.assessorFilter = [];
 			setColumnsData([]);
+			onItemUpdate(updatedSelected);
+			setAssessorFilter({
+				data: [],
+				loading: false,
+				error: false,
+			});
 		} else {
 			//Load new columns for source
 			try {
 				setColumnsLoading(true);
 				const response = await SourceColumnService.getColumnsForSource(
-					sourceId
+					source.id
 				);
-				setColumnsData(parseColumns(response.data));
+				setColumnsData(DataService.parseColumnsSelectData(response.data));
 				setColumnsLoading(false);
 			} catch (e) {
 				setColumnsLoading(false);
@@ -71,7 +95,7 @@ const CapabilityTableSettigs = ({
 			}
 			//Get filter values for assessor
 			if (selectedItem.assessorColumn?.id) {
-				getAssessorFilterData(sourceId, selectedItem.assessorColumn.id);
+				getAssessorFilterData(source.id, selectedItem.assessorColumn.id);
 			}
 		}
 	};
@@ -94,7 +118,11 @@ const CapabilityTableSettigs = ({
 				loading: false,
 			}));
 		} catch (e) {
-			alert.error("Error getting assessor column values.");
+			if (e.response?.data && e.response.data?.message) {
+				alert.error(e.response.data.message);
+			} else {
+				alert.error("Error getting assessor filter values.");
+			}
 			setAssessorFilter((prevState) => ({
 				...prevState,
 				loading: false,
@@ -112,6 +140,7 @@ const CapabilityTableSettigs = ({
 				assessorFilter: selectedItem.assessorFilter,
 				fontSize: selectedItem.fontSize,
 				processColumn: selectedItem.processColumn?.id,
+				processFilter: selectedItem.processFilter,
 				processWidth: selectedItem.processWidth,
 				levelColumn: selectedItem.levelColumn?.id,
 				specificLevel: selectedItem.specificLevel,
@@ -119,7 +148,8 @@ const CapabilityTableSettigs = ({
 				criterionColumn: selectedItem.criterionColumn?.id,
 				criterionWidth: selectedItem.criterionWidth,
 				scoreColumn: selectedItem.scoreColumn?.id,
-				scoreFunction: selectedItem.scoreFunction,
+				aggregateScoresFunction: selectedItem.aggregateScoresFunction,
+				aggregateLevels: selectedItem.aggregateLevels,
 			}}
 		>
 			{({ values, handleChange }) => (
@@ -129,7 +159,7 @@ const CapabilityTableSettigs = ({
 							<label className='font-medium'>Source:</label>
 							<Field
 								name='sourceFormId'
-								options={parseSources(sourcesData)}
+								options={DataService.parseSourcesSelectData(sourcesData)}
 								component={FormSelect}
 								placeholder={
 									sourcesLoading
@@ -141,40 +171,29 @@ const CapabilityTableSettigs = ({
 										: "No sources"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									setColumnsError(false);
-									//Change selected coluns to NONE on source change
-									updatedSelected.processColumn = null;
-									updatedSelected.assessorColumn = null;
-									updatedSelected.levelColumn = null;
-									updatedSelected.attributeColumn = null;
-									updatedSelected.scoreColumn = null;
-									updatedSelected.assessorFilter = null;
-									//Reset filters
-									onItemUpdate(updatedSelected);
-									setAssessorFilter({
-										data: [],
-										loading: false,
-										error: false,
-									});
-
-									if (e.value === null) {
-										if (e.value !== updatedSelected.source) {
-											updatedSelected.source = null;
-											setColumnsData([]);
-										}
-									} else {
-										if (
-											!updatedSelected.source?.id ||
-											e.value !== updatedSelected.source.id
-										) {
-											updatedSelected.source = {
-												id: e.value,
-												sourceName: e.label,
-											};
-											//Load columns for new source
-
-											getColumnsHandler(e.value);
+									if (e.value !== selectedItem.source?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value === null) {
+											if (e.value !== updatedSelected.source) {
+												updatedSelected.source = null;
+											}
+										} else {
+											if (
+												!updatedSelected.source?.id ||
+												e.value !== updatedSelected.source.id
+											) {
+												updatedSelected.source = {
+													id: e.value,
+													sourceName: e.label,
+												};
+												updatedSelected.processColumn = null;
+												updatedSelected.assessorColumn = null;
+												updatedSelected.levelColumn = null;
+												updatedSelected.criterionColumn = null;
+												updatedSelected.scoreColumn = null;
+												updatedSelected.assessorFilter = [];
+											}
+											onItemUpdate(updatedSelected);
 										}
 									}
 								}}
@@ -196,24 +215,26 @@ const CapabilityTableSettigs = ({
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.assessorColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-										getAssessorFilterData(values.sourceFormId, e.value);
-									} else {
-										updatedSelected.assessorColumn = null;
-										setAssessorFilter({
-											data: [],
-											loading: false,
-											error: false,
-										});
-									}
+									if (e.value !== selectedItem.assessorColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.assessorColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+											getAssessorFilterData(values.sourceFormId, e.value);
+										} else {
+											updatedSelected.assessorColumn = null;
+											setAssessorFilter({
+												data: [],
+												loading: false,
+												error: false,
+											});
+										}
 
-									updatedSelected.assessorFilter = null;
-									onItemUpdate(updatedSelected);
+										updatedSelected.assessorFilter = [];
+										onItemUpdate(updatedSelected);
+									}
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -237,11 +258,13 @@ const CapabilityTableSettigs = ({
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.assessorFilter = e.value;
+									updatedSelected.assessorFilter = e.map(
+										(filter) => filter.value
+									);
 									onItemUpdate(updatedSelected);
 								}}
-								isMulti={false}
 								isLoading={columnsLoading}
+								isMulti={true}
 							/>
 							<FormInput
 								label='Text size:'
@@ -272,19 +295,39 @@ const CapabilityTableSettigs = ({
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.processColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.processColumn = null;
+									if (e.value !== selectedItem.processColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.processColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+										} else {
+											updatedSelected.processColumn = null;
+										}
+										onItemUpdate(updatedSelected);
 									}
-									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
+							/>
+							<label className='flex items-center pt-1 text-sm'>
+								Optional filter by process
+								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+							</label>
+							<Field
+								name='processFilter'
+								options={allProcesses}
+								component={FormSelect}
+								placeholder={"Select process"}
+								onSelect={(e) => {
+									let updatedSelected = selectedItem;
+									updatedSelected.processFilter = e.map(
+										(filter) => filter.value
+									);
+									onItemUpdate(updatedSelected);
+								}}
+								isMulti={true}
 							/>
 							<FormInput
 								label='Process column width'
@@ -357,9 +400,11 @@ const CapabilityTableSettigs = ({
 								component={FormSelect}
 								placeholder={"Chose level"}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									updatedSelected.specificLevel = e.value;
-									onItemUpdate(updatedSelected);
+									if (e.value !== selectedItem.specificLevel) {
+										let updatedSelected = selectedItem;
+										updatedSelected.specificLevel = e.value;
+										onItemUpdate(updatedSelected);
+									}
 								}}
 								isMulti={false}
 							/>
@@ -379,14 +424,16 @@ const CapabilityTableSettigs = ({
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.criterionColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.criterionColumn = null;
+									if (e.value !== selectedItem.criterionColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.criterionColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+										} else {
+											updatedSelected.criterionColumn = null;
+										}
 									}
 								}}
 								isMulti={false}
@@ -421,38 +468,71 @@ const CapabilityTableSettigs = ({
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.scoreColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.scoreColumn = null;
+									if (e.value !== selectedItem.scoreColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.scoreColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+										} else {
+											updatedSelected.scoreColumn = null;
+										}
 									}
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
 							<label className='flex items-center pt-1 text-sm'>
-								Aggregate function
+								Aggregate scores
 								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
-								name='scoreFunction'
-								options={[
-									{ value: "MAX", label: "MAX" },
-									{ value: "AVG", label: "AVG" },
-									{ value: "MIN", label: "MIN" },
-								]}
+								name='aggregateScoresFunction'
+								options={
+									selectedItem.aggregateLevels
+										? [
+												{ value: "MIN", label: "MIN" },
+												{ value: "MAX", label: "MAX" },
+										  ]
+										: [
+												{ value: "MIN", label: "MIN" },
+												{ value: "MAX", label: "MAX" },
+												{ value: "AVG", label: "AVG" },
+										  ]
+								}
 								component={FormSelect}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									updatedSelected.scoreFunction = e.value;
+									updatedSelected.aggregateScoresFunction = e.value;
 									onItemUpdate(updatedSelected);
 								}}
 								isMulti={false}
 							/>
+							<div className='flex flex-row items-center pl-0.5 pt-1 text-sm'>
+								<FormInput
+									name='aggregateLevels'
+									type='checkbox'
+									onChange={(e) => {
+										handleChange(e);
+										let updatedSelected = selectedItem;
+										updatedSelected.aggregateLevels = e.target.checked;
+										if (e.target.checked) {
+											if (
+												updatedSelected.aggregateScoresFunction !== "MIN" &&
+												updatedSelected.aggregateScoresFunction !== "MAX"
+											) {
+												updatedSelected.aggregateScoresFunction = "MAX";
+											}
+										}
+										onItemUpdate(updatedSelected);
+									}}
+								/>
+								<div className='flex items-center justify-center'>
+									<label className='pl-1'>Aggregate by levels </label>
+									<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+								</div>
+							</div>
 						</div>
 					</div>
 				</Form>

@@ -1,17 +1,17 @@
-import {useEffect, useState} from "react";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useEffect, useState } from "react";
+import { useAxios } from "../../helpers/AxiosHelper";
 import Loader from "../../ui/Loader/Loader";
-import {useHistory} from "react-router";
+import { useHistory } from "react-router";
 import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
 import ReportMenu from "./ReportMenu";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
-import {useAlert} from "react-alert";
-import {Tab} from "@headlessui/react";
+import { useAlert } from "react-alert";
+import { Tab } from "@headlessui/react";
 import PDFPreview from "../Canvas/PDFPreview";
-import {saveAs} from "file-saver";
+import { saveAs } from "file-saver";
 import ReportService from "../../services/ReportService";
-import {createItemFromExisting} from "../../helpers/ClassHelper";
+import { createItemFromExisting } from "../../helpers/ClassHelper";
 
 const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	const [reportData, setReportData] = useState(null);
@@ -69,7 +69,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			return response;
 		} catch (e) {
 			setProcessing(false);
-			if (e.response.data && e.response.data.message) {
+			if (e.response?.data && e.response?.data.message) {
 				alert.error(e.response.data.message);
 			} else {
 				alert.error("Error saving report.");
@@ -100,7 +100,10 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 			setProcessing(false);
 			return response;
 		} catch (e) {
-			const responseData = JSON.parse(await e.response.data.text());
+			let responseData = null;
+			if (e.response?.data.size > 0) {
+				responseData = JSON.parse(await e.response?.data.text());
+			}
 			setProcessing(false);
 			if (responseData?.message) {
 				alert.error(responseData.message);

@@ -39,8 +39,6 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			updatedSelected.attributeColumn = null;
 			updatedSelected.scoreColumn = null;
 			updatedSelected.assessorFilter = [];
-			//Reset filters
-			setColumnsError(false);
 			setColumnsData([]);
 			onItemUpdate(updatedSelected);
 			setAssessorFilter({
@@ -316,14 +314,16 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										: "No columns"
 								}
 								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									if (e.value !== null) {
-										updatedSelected.criterionColumn = {
-											id: e.value,
-											columnName: e.label,
-										};
-									} else {
-										updatedSelected.criterionColumn = null;
+									if (e.value !== selectedItem.criterionColumn?.id) {
+										let updatedSelected = selectedItem;
+										if (e.value !== null) {
+											updatedSelected.criterionColumn = {
+												id: e.value,
+												columnName: e.label,
+											};
+										} else {
+											updatedSelected.criterionColumn = null;
+										}
 									}
 								}}
 								isMulti={false}

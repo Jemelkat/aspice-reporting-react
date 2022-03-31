@@ -34,7 +34,7 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 				margin={{
 					top: 15,
 					right: 15,
-					left: 5,
+					left: isHorizontal ? 15 : processNamesSize + 30,
 					bottom: isHorizontal ? processNamesSize + 20 : 25,
 				}}
 				layout={isHorizontal ? "horizontal" : "vertical"}
@@ -42,15 +42,6 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 				<CartesianGrid vertical={!isHorizontal} horizontal={isHorizontal} />
 				{isHorizontal ? (
 					<>
-						{/* <XAxis
-							type='category'
-							dataKey='process'
-							minTickGap={0}
-							height={processNamesSize + 10}
-							angle={-90}
-							dy={processNamesSize}
-							dx={0}
-						> */}
 						<XAxis
 							dataKey='process'
 							textAnchor='end'
@@ -90,10 +81,17 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 							type='category'
 							dataKey='process'
 							textAnchor='end'
-							interval={"preserveStartEnd"}
-							minTickGap={20}
-							width={processNamesSize}
-						></YAxis>
+							interval={0}
+							width={processNamesSize > 0 ? processNamesSize : 5}
+							dx={processNamesSize > 0 ? 0 : processNamesSize - 100}
+						>
+							<Label
+								value='Process'
+								position='left'
+								angle={-90}
+								dx={-processNamesSize - 10}
+							/>
+						</YAxis>
 					</>
 				)}
 				<Tooltip />

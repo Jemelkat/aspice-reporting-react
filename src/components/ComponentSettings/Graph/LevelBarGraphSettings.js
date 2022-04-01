@@ -122,7 +122,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				loading: false,
 			}));
 		} catch (e) {
-			if (e.response.data && e.response.data?.message) {
+			if (e.response?.data && e.response.data?.message) {
 				alert.error(e.response.data.message);
 			} else {
 				alert.error("Error getting assessor filter values.");

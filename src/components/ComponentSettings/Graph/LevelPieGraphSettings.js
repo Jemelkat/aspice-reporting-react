@@ -59,6 +59,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			} catch (e) {
 				setColumnsLoading(false);
 				setColumnsError(true);
+				alert.error("Error getting columns for selected source.");
 			}
 			//Get filter values for assessor
 			if (selectedItem.assessorColumn?.id) {

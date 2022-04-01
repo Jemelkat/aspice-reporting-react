@@ -8,6 +8,7 @@ import FormInput from "../../../ui/Form/FormInput";
 import FormSelect from "../../../ui/Form/FormSelect";
 import TableColumnSelect from "./TableColumnSelect";
 import DataService from "../../../services/DataService";
+import { useAlert } from "react-alert";
 
 const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -15,7 +16,7 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 	const [columnsData, setColumnsData] = useState([]);
 	const [columnsLoading, setColumnsLoading] = useState(false);
 	const [columnsError, setColumnsError] = useState(false);
-
+	const alert = useAlert();
 	//Load columns if source is defined on load
 	useEffect(() => {
 		selectedItem.source?.id && getColumnsHandler(selectedItem.source.id);
@@ -38,6 +39,11 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 			} catch (e) {
 				setColumnsLoading(false);
 				setColumnsError(true);
+				if (e.response?.data && e.response.data?.message) {
+					alert.error(e.response.data.message);
+				} else {
+					alert.error("Error getting columns.");
+				}
 			}
 		}
 	};

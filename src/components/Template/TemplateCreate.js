@@ -1,13 +1,13 @@
-import {useEffect, useState} from "react";
-import {useHistory} from "react-router";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import Loader from "../../ui/Loader/Loader";
 import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
 import TemplateMenu from "./TemplateMenu";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
 import TemplateService from "../../services/TemplateService";
-import {createItemFromExisting} from "../../helpers/ClassHelper";
+import { createItemFromExisting } from "../../helpers/ClassHelper";
 
 const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	const [templateData, setTemplateData] = useState(null);
@@ -46,7 +46,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 			alert.info("Template saved");
 		} catch (e) {
 			setProcessing(false);
-			if (e.response.data && e.response.data.message) {
+			if (e.response?.data && e.response.data?.message) {
 				alert.error(e.response.data.message);
 			} else {
 				alert.error("Error saving template.");

@@ -58,6 +58,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 			} catch (e) {
 				setColumnsLoading(false);
 				setColumnsError(true);
+				alert.error("Error getting columns for selected sources.");
 			}
 			//Get filter values for assessor
 			if (selectedItem.assessorColumn?.id) {

@@ -98,7 +98,7 @@ const useCanvas = () => {
 					0,
 					0,
 					350,
-					200,
+					100,
 					typeEnum.SIMPLE_TABLE
 				);
 				break;

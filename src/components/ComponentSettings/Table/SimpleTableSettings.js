@@ -155,6 +155,7 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 							selectedItem.tableColumns.map((column, index) => {
 								return (
 									<SidebarDisclosure
+										dark
 										key={index}
 										name={`${
 											column.sourceColumn
@@ -214,6 +215,7 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 								onClick={() => {
 									addColumnHandler();
 								}}
+								dark
 							>
 								Add new column
 							</Button>

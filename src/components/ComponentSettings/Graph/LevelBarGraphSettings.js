@@ -8,41 +8,7 @@ import HorizontalLine from "../../../ui/HorizontalLine";
 import SourceColumnService from "../../../services/SourceColumnService";
 import DataService from "../../../services/DataService";
 import FormInput from "../../../ui/Form/FormInput";
-
-const allProcesses = [
-	{ value: "ACQ.3", label: "ACQ.3" },
-	{ value: "ACQ.4", label: "ACQ.3" },
-	{ value: "ACQ.11", label: "ACQ.11" },
-	{ value: "ACQ.12", label: "ACQ.12" },
-	{ value: "ACQ.13", label: "ACQ.13" },
-	{ value: "ACQ.14", label: "ACQ.14" },
-	{ value: "ACQ.15", label: "ACQ.15" },
-	{ value: "MAN.3", label: "MAN.3" },
-	{ value: "MAN.5", label: "MAN.5" },
-	{ value: "MAN.6", label: "MAN.6" },
-	{ value: "PIM.3", label: "PIM.3" },
-	{ value: "REU.2", label: "REU.2" },
-	{ value: "SPL.1", label: "SPL.1" },
-	{ value: "SPL.2", label: "SPL.2" },
-	{ value: "SUP.1", label: "SUP.1" },
-	{ value: "SUP.2", label: "SUP.2" },
-	{ value: "SUP.4", label: "SUP.4" },
-	{ value: "SUP.7", label: "SUP.7" },
-	{ value: "SUP.8", label: "SUP.8" },
-	{ value: "SUP.9", label: "SUP.9" },
-	{ value: "SUP.10", label: "SUP.10" },
-	{ value: "SWE.1", label: "SWE.1" },
-	{ value: "SWE.2", label: "SWE.2" },
-	{ value: "SWE.3", label: "SWE.3" },
-	{ value: "SWE.4", label: "SWE.4" },
-	{ value: "SWE.5", label: "SWE.5" },
-	{ value: "SWE.6", label: "SWE.6" },
-	{ value: "SYS.1", label: "SYS.1" },
-	{ value: "SYS.2", label: "SYS.2" },
-	{ value: "SYS.3", label: "SYS.3" },
-	{ value: "SYS.4", label: "SYS.4" },
-	{ value: "SYS.5", label: "SYS.5" },
-];
+import { allProcesses } from "../../../helpers/ProcessHelper";
 
 const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -61,16 +27,6 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 	useEffect(() => {
 		getColumnsHandler(selectedItem.sources.map((s) => s.id));
 	}, [selectedItem.sources]);
-
-	//Parse sources
-	const parseSources = (sources) => {
-		let array = [];
-		if (sources)
-			sources.forEach((source) =>
-				array.push({ value: source.id, label: source.sourceName })
-			);
-		return array;
-	};
 
 	//Load new columns data on source change
 	const getColumnsHandler = async (sourceId) => {
@@ -166,7 +122,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 				loading: false,
 			}));
 		} catch (e) {
-			if (e.response.data && e.response.data?.message) {
+			if (e.response?.data && e.response.data?.message) {
 				alert.error(e.response.data.message);
 			} else {
 				alert.error("Error getting assessor filter values.");
@@ -219,7 +175,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 							<label className='font-medium'>Source</label>
 							<Field
 								name='sources'
-								options={parseSources(sourcesData)}
+								options={DataService.parseSourcesSelectData(sourcesData)}
 								component={FormSelect}
 								placeholder={
 									values.sources

@@ -371,20 +371,27 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
-							<FormInput
-								label='Max level:'
-								name={`levelLimit`}
-								type='number'
-								onChange={(e) => {
-									handleChange(e);
-									if (e.target.value >= 0 && e.target.value <= 5) {
-										let newSelected = selectedItem;
-										newSelected.levelLimit = e.target.value;
-										onItemUpdate(newSelected);
+							<label>Max level:</label>
+							<Field
+								name='levelLimit'
+								options={[
+									{ label: "1", value: 1 },
+									{ label: "2", value: 2 },
+									{ label: "3", value: 3 },
+									{ label: "4", value: 4 },
+									{ label: "5", value: 5 },
+								]}
+								component={FormSelect}
+								onSelect={(e) => {
+									if (e.value !== selectedItem.levelLimit) {
+										let updatedSelected = selectedItem;
+										updatedSelected.levelLimit = e.value;
+										onItemUpdate(updatedSelected);
 									}
 								}}
+								isMulti={false}
 							/>
-							<label></label>
+
 							<label>Specific level:</label>
 							<Field
 								name='specificLevel'

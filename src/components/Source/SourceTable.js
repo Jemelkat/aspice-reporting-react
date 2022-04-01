@@ -1,5 +1,5 @@
-import {useMemo, useState} from "react";
-import {useAlert} from "react-alert";
+import { useMemo, useState } from "react";
+import { useAlert } from "react-alert";
 import Button from "../../ui/Button";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
 import Table from "../../ui/Table/Table";
@@ -8,7 +8,7 @@ import TableMenuItem from "../../ui/Table/TableMenuItem";
 import PageTitle from "../../ui/PageTitle";
 import ShareDialog from "../../ui/Dialog/ShareDialog";
 import SourceService from "../../services/SourceService";
-import {saveAs} from "file-saver";
+import { saveAs } from "file-saver";
 
 class SourceObject {
 	constructor(data) {
@@ -94,8 +94,15 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 							key='3'
 							addClasses='text-red-800'
 							onClickAction={() => {
-								setSelectedRow(row.original);
-								setShowDeleteDialog(true);
+								if (
+									row.original.shared === "" ||
+									row.original.sharedBy === "You"
+								) {
+									setSelectedRow(row.original);
+									setShowDeleteDialog(true);
+								} else {
+									alert.info("Only the owner of this source can delete it.");
+								}
 							}}
 						>
 							Delete
@@ -115,10 +122,14 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 			setShowDeleteDialog(false);
 			setIsDeleting(false);
 			onRefetch();
-		} catch (error) {
+		} catch (e) {
 			setShowDeleteDialog(false);
 			setIsDeleting(false);
-			alert.error("There was error deleting source!");
+			if (e.response?.data && e.response.data?.message) {
+				alert.error(e.response.data.message);
+			} else {
+				alert.error("There was error deleting source!");
+			}
 		}
 	};
 

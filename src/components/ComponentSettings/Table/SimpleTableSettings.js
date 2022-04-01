@@ -1,12 +1,13 @@
-import {Field, Form, Formik} from "formik";
-import {useEffect, useState} from "react";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import SourceColumnService from "../../../services/SourceColumnService";
 import Button from "../../../ui/Button";
 import SidebarDisclosure from "../../../ui/Sidebar/SidebarDisclosure";
 import FormInput from "../../../ui/Form/FormInput";
 import FormSelect from "../../../ui/Form/FormSelect";
 import TableColumnSelect from "./TableColumnSelect";
+import DataService from "../../../services/DataService";
 
 const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -20,28 +21,6 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 		selectedItem.source?.id && getColumnsHandler(selectedItem.source.id);
 	}, [selectedItem]);
 
-	//Parse sources
-	const parseSources = (sources) => {
-		let array = [];
-		if (sources)
-			sources.forEach((source) =>
-				array.push({ value: source.id, label: source.sourceName })
-			);
-		array.push({ value: null, label: "None" });
-		return array;
-	};
-
-	//Parse columns
-	const parseColumns = (columns) => {
-		let array = [];
-		if (columns)
-			columns.forEach((column) =>
-				array.push({ value: column.id, label: column.columnName })
-			);
-		array.push({ value: null, label: "None" });
-		return array;
-	};
-
 	//Load new columns data on source change
 	const getColumnsHandler = async (sourceId) => {
 		setColumnsError(false);
@@ -51,8 +30,10 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 			//Load new columns for source
 			try {
 				setColumnsLoading(true);
-				const response = await SourceColumnService.getColumnsForSource(sourceId);
-				setColumnsData(parseColumns(response.data));
+				const response = await SourceColumnService.getColumnsForSource(
+					sourceId
+				);
+				setColumnsData(DataService.parseColumnsSelectData(response.data));
 				setColumnsLoading(false);
 			} catch (e) {
 				setColumnsLoading(false);
@@ -103,7 +84,7 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 								<label className='font-medium'>Source:</label>
 								<Field
 									name='sourceFormId'
-									options={parseSources(sourcesData)}
+									options={DataService.parseSourcesSelectData(sourcesData)}
 									component={FormSelect}
 									placeholder={
 										sourcesLoading
@@ -153,8 +134,13 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 							selectedItem.tableColumns.map((column, index) => {
 								return (
 									<SidebarDisclosure
+										dark
 										key={index}
-										name={`Column ${column.name ? column.name : index}`}
+										name={`${
+											column.sourceColumn
+												? column.sourceColumn?.columnName
+												: "Column " + index
+										}`}
 									>
 										<div className='flex flex-col justify-center pl-4 pr-4'>
 											{selectedItem.source && (
@@ -208,6 +194,7 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 								onClick={() => {
 									addColumnHandler();
 								}}
+								dark
 							>
 								Add new column
 							</Button>

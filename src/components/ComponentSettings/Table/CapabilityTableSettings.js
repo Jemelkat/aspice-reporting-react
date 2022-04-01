@@ -149,7 +149,6 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 				criterionWidth: selectedItem.criterionWidth,
 				scoreColumn: selectedItem.scoreColumn?.id,
 				aggregateScoresFunction: selectedItem.aggregateScoresFunction,
-				aggregateLevels: selectedItem.aggregateLevels,
 			}}
 		>
 			{({ values, handleChange }) => (
@@ -483,56 +482,29 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
-							<label className='flex items-center pt-1 text-sm'>
-								Aggregate scores
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
-							</label>
-							<Field
-								name='aggregateScoresFunction'
-								options={
-									selectedItem.aggregateLevels
-										? [
-												{ value: "MIN", label: "MIN" },
-												{ value: "MAX", label: "MAX" },
-										  ]
-										: [
-												{ value: "MIN", label: "MIN" },
-												{ value: "MAX", label: "MAX" },
-												{ value: "AVG", label: "AVG" },
-										  ]
-								}
-								component={FormSelect}
-								onSelect={(e) => {
-									let updatedSelected = selectedItem;
-									updatedSelected.aggregateScoresFunction = e.value;
-									onItemUpdate(updatedSelected);
-								}}
-								isMulti={false}
-							/>
-							<div className='flex flex-row items-center pl-0.5 pt-1 text-sm'>
-								<FormInput
-									name='aggregateLevels'
-									type='checkbox'
-									onChange={(e) => {
-										handleChange(e);
-										let updatedSelected = selectedItem;
-										updatedSelected.aggregateLevels = e.target.checked;
-										if (e.target.checked) {
-											if (
-												updatedSelected.aggregateScoresFunction !== "MIN" &&
-												updatedSelected.aggregateScoresFunction !== "MAX"
-											) {
-												updatedSelected.aggregateScoresFunction = "MAX";
-											}
-										}
-										onItemUpdate(updatedSelected);
-									}}
-								/>
-								<div className='flex items-center justify-center'>
-									<label className='pl-1'>Aggregate by levels </label>
-									<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
-								</div>
-							</div>
+							{selectedItem.assessorFilter.length !== 1 && (
+								<>
+									<label className='flex items-center pt-1 text-sm'>
+										Aggregate scores
+										<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
+									</label>
+									<Field
+										name='aggregateScoresFunction'
+										options={[
+											{ value: "MIN", label: "MIN" },
+											{ value: "MAX", label: "MAX" },
+											{ value: "AVG", label: "AVG" },
+										]}
+										component={FormSelect}
+										onSelect={(e) => {
+											let updatedSelected = selectedItem;
+											updatedSelected.aggregateScoresFunction = e.value;
+											onItemUpdate(updatedSelected);
+										}}
+										isMulti={false}
+									/>
+								</>
+							)}
 						</div>
 					</div>
 				</Form>

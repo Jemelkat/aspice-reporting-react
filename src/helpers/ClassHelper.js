@@ -44,10 +44,7 @@ export const createItemFromExisting = (item) => {
 				item.criterionColumn ? item.criterionColumn : null,
 				item.criterionWidth ? item.criterionWidth : 25,
 				item.scoreColumn ? item.scoreColumn : null,
-				item.aggregateScoresFunction ? item.aggregateScoresFunction : "MAX",
-				item.aggregateLevels != null && item.aggregateLevels != undefined
-					? item.aggregateLevels
-					: false
+				item.aggregateScoresFunction ? item.aggregateScoresFunction : "MAX"
 			);
 		case typeEnum.LEVEL_BAR_GRAPH:
 			return new LevelBarGraph(
@@ -178,8 +175,7 @@ export class CapabilityTable extends Item {
 		criterionColumn = null,
 		criterionWidth = 25,
 		scoreColumn = null,
-		aggregateScoresFunction = "MAX",
-		aggregateLevels = false
+		aggregateScoresFunction = "MAX"
 	) {
 		super(id, x, y, width, height, type);
 		this.fontSize = fontSize;
@@ -196,7 +192,6 @@ export class CapabilityTable extends Item {
 		this.criterionWidth = criterionWidth;
 		this.scoreColumn = scoreColumn;
 		this.aggregateScoresFunction = aggregateScoresFunction;
-		this.aggregateLevels = aggregateLevels;
 	}
 }
 

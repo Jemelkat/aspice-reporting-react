@@ -34,8 +34,9 @@ export const createItemFromExisting = (item) => {
 				item.fontSize ? item.fontSize : 9,
 				item.source ? item.source : null,
 				item.assessorColumn ? item.assessorColumn : null,
-				item.assessorFilter ? item.assessorFilter : null,
+				item.assessorFilter ? item.assessorFilter : [],
 				item.processColumn ? item.processColumn : null,
+				item.processFilter ? item.processFilter : [],
 				item.processWidth ? item.processWidth : 50,
 				item.levelColumn ? item.levelColumn : null,
 				item.levelLimit >= 0 ? item.levelLimit : 5,
@@ -43,7 +44,7 @@ export const createItemFromExisting = (item) => {
 				item.criterionColumn ? item.criterionColumn : null,
 				item.criterionWidth ? item.criterionWidth : 25,
 				item.scoreColumn ? item.scoreColumn : null,
-				item.scoreFunction ? item.scoreFunction : "AVG"
+				item.aggregateScoresFunction ? item.aggregateScoresFunction : "MAX"
 			);
 		case typeEnum.LEVEL_BAR_GRAPH:
 			return new LevelBarGraph(
@@ -164,8 +165,9 @@ export class CapabilityTable extends Item {
 		fontSize = 10,
 		source = null,
 		assessorColumn = null,
-		assessorFilter = null,
+		assessorFilter = [],
 		processColumn = null,
+		processFilter = [],
 		processWidth = 100,
 		levelColumn = null,
 		levelLimit = 5,
@@ -173,7 +175,7 @@ export class CapabilityTable extends Item {
 		criterionColumn = null,
 		criterionWidth = 25,
 		scoreColumn = null,
-		scoreFunction = "AVG"
+		aggregateScoresFunction = "MAX"
 	) {
 		super(id, x, y, width, height, type);
 		this.fontSize = fontSize;
@@ -181,6 +183,7 @@ export class CapabilityTable extends Item {
 		this.assessorColumn = assessorColumn;
 		this.assessorFilter = assessorFilter;
 		this.processColumn = processColumn;
+		this.processFilter = processFilter;
 		this.processWidth = processWidth;
 		this.levelColumn = levelColumn;
 		this.specificLevel = specificLevel;
@@ -188,7 +191,7 @@ export class CapabilityTable extends Item {
 		this.criterionColumn = criterionColumn;
 		this.criterionWidth = criterionWidth;
 		this.scoreColumn = scoreColumn;
-		this.scoreFunction = scoreFunction;
+		this.aggregateScoresFunction = aggregateScoresFunction;
 	}
 }
 

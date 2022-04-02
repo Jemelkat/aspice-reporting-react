@@ -16,12 +16,16 @@ import ReactPaginate from "react-paginate";
 import { MinusIcon, PlusIcon } from "@heroicons/react/outline";
 
 const ReportCreate = ({ mode, reportId, addItem = null }) => {
-	const [reportData, setReportData] = useState(null);
 	const [reportLoading, setReportLoading] = useState(true);
 	const [previewData, setPreviewData] = useState(null);
 	const [isProcessing, setProcessing] = useState(false);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [numberOfPages, setNumberOfPages] = useState(1);
+	const [pagesData, setPagesData] = useState([
+		{ id: null, orientation: "VERTICAL", pageTemplate: null },
+	]);
+	const [reportData, setReportData] = useState({ id: null, reportName: "" });
+
 	const alert = useAlert();
 	let history = useHistory();
 	const {
@@ -47,26 +51,48 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		},
 		{ manual: true, useCache: false }
 	);
-
-	const parseAndSetComponents = (components) => {
-		let newComponents = [];
-		setItems([]);
-		if (components) {
-			newComponents = components.map((i) => {
-				return createItemFromExisting(i);
+	const parseAndSetItems = (reportPages) => {
+		let newItems = [];
+		let newPages = [];
+		for (let i = 0; i < reportPages.length; i++) {
+			const page = reportPages[i];
+			let pageItems = [];
+			if (page) {
+				pageItems = page.reportItems.map((i) => createItemFromExisting(i));
+			}
+			newItems.push(pageItems);
+			newPages.push({
+				id: page.id,
+				orientation: page.orientation,
+				pageTemplate: page.pageTemplate,
 			});
-			setItems(newComponents);
-			selectItemHandler(null);
 		}
+
+		setNumberOfPages(reportPages.length > 0 ? reportPages.length : 1);
+		setItems(newItems);
+		setPagesData(newPages);
+		selectItemHandler(null);
 	};
 
 	//Saves report to DB
 	const saveReportHandler = async (formValues) => {
 		setProcessing(true);
+		debugger;
 		try {
-			const response = await ReportService.saveReport(formValues, items, mode);
-			parseAndSetComponents(response.data.reportItems);
-			setReportData(response.data);
+			let report = {
+				id: formValues.id,
+				reportName: formValues.reportName,
+				reportPages: pagesData.map((page, index) => {
+					return { ...page, reportItems: items[index] };
+				}),
+			};
+			const response = await ReportService.saveReport(report);
+			debugger;
+			parseAndSetItems(response.data.reportPages);
+			setReportData({
+				id: response.data.id,
+				reportName: response.data.reportName,
+			});
 			setProcessing(false);
 			alert.info("Report saved");
 			return response;
@@ -123,26 +149,43 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		});
 	};
 
-	const applyTemplateHandler = (templateId) => {
+	const applyTemplateHandler = (templateId, page) => {
+		debugger;
 		if (templateId !== "")
 			getTemplate({ params: { templateId: templateId } }).then((response) => {
-				setReportData((prevState) => ({
-					...prevState,
+				let newItems = response.data.templateItems.map((i) =>
+					createItemFromExisting(i)
+				);
+				let newPage = {
+					id: null,
 					orientation: response.data.orientation,
-				}));
-				parseAndSetComponents(response.data.templateItems);
+					pageTemplate: templateId,
+				};
+
+				let newItemsCombined = [...items];
+				newItemsCombined.splice(page, 1, newItems);
+				let newPagesCombined = [...items];
+				newPagesCombined.splice(page, 1, newPage);
+				setItems(newItemsCombined);
+				setPagesData(newPagesCombined);
 				selectItemHandler(null);
 			});
 		else {
-			setItems([]);
+			let newItemsCombined = [...items];
+			newItemsCombined.splice(page, 1, []);
+			setItems(newItemsCombined);
 			selectItemHandler(null);
 		}
 	};
 
-	const orientationChangeHandler = (orientation) => {
-		debugger;
-		setReportData((prevState) => ({ ...prevState, orientation: orientation }));
-		orientationHandler(orientation);
+	const orientationChangeHandler = (newOrientation) => {
+		let newPageData = [...pagesData];
+		newPageData.splice(currentPage, 1, {
+			...pagesData[currentPage],
+			orientation: newOrientation,
+		});
+		setPagesData(newPageData);
+		orientationHandler(newOrientation, currentPage);
 	};
 
 	useEffect(() => {
@@ -166,8 +209,8 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 						updatedAddItem.id = addedItemId;
 						loadedItems.reportItems.push(updatedAddItem);
 					}
-					setReportData(loadedItems);
-					parseAndSetComponents(loadedItems.reportItems);
+					parseAndSetItems(loadedItems.reportPages);
+					setReportData({ id: reportId, reportName: loadedItems.reportName });
 					setReportLoading(false);
 					alert.info("Report loaded.");
 				})
@@ -177,25 +220,49 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 				});
 		} else {
 			setReportLoading(false);
+			setItems([[]]);
 		}
 	}, []);
 
 	const handlePageClick = (event) => {
 		setCurrentPage(event.selected);
+		selectItemHandler(null);
 	};
 
 	const addPageHandler = () => {
 		setNumberOfPages(numberOfPages + 1);
+		let newItems = items;
+		newItems.push([]);
+		let newPages = pagesData;
+		newPages.push({
+			id: null,
+			orientation: "VERTICAL",
+			pageTemplate: null,
+		});
+		setPagesData(newPages);
+		setItems(newItems);
 	};
 
 	const removePageHandler = () => {
 		const newNumberOfPages = numberOfPages - 1;
 		if (numberOfPages > 1) {
 			setNumberOfPages(newNumberOfPages);
+			let newItems = items;
+			newItems.splice(currentPage, 1);
+			let newPages = pagesData;
+			newPages.splice(currentPage, 1);
+			setPagesData(newPages);
+			setItems(newItems);
 			if (currentPage >= newNumberOfPages) {
 				setCurrentPage(newNumberOfPages - 1);
 			}
 		}
+	};
+
+	const reportNameHandler = (name) => {
+		setReportData((prev) => {
+			return { ...prev, reportName: name };
+		});
 	};
 
 	return (
@@ -208,7 +275,11 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 				<div className='flex bg-gray-200'>
 					{/*Left sidebar */}
 					<ReportMenu
-						data={reportData}
+						id={reportData.id}
+						name={reportData.reportName}
+						onSetName={reportNameHandler}
+						orientation={pagesData[currentPage].orientation}
+						page={currentPage}
 						onOrientationChange={orientationChangeHandler}
 						onSave={saveReportHandler}
 						onAddComponent={addItemHandler}
@@ -294,8 +365,9 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 									</div>
 									{/*Canvas */}
 									<Canvas
-										items={items}
-										orientation={reportData?.orientation}
+										items={items[currentPage]}
+										page={currentPage}
+										orientation={pagesData[currentPage].orientation}
 										selectedItem={selectedItem}
 										onMove={moveItemHandler}
 										onSelect={selectItemHandler}

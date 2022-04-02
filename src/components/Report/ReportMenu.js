@@ -16,7 +16,12 @@ import CapabilityTableBox from "../../ui/ItemMenuBox/CapabilityTableBox";
 import SimpleTableBox from "../../ui/ItemMenuBox/SimpleTableBox";
 
 const ReportMenu = ({
-	data,
+	id,
+	templateId,
+	name,
+	onSetName,
+	page,
+	orientation,
 	onSave,
 	onOrientationChange,
 	onAddComponent,
@@ -48,14 +53,10 @@ const ReportMenu = ({
 						<Formik
 							enableReinitialize={true}
 							initialValues={{
-								id: data ? data.id : "",
-								reportName: data ? data.reportName : "",
-								orientation: data?.orientation ? data.orientation : "VERTICAL",
-								templateId: data
-									? data.reportTemplate
-										? data.reportTemplate.id
-										: ""
-									: "",
+								id: id,
+								reportName: name,
+								orientation: orientation,
+								templateId: templateId,
 							}}
 							validationSchema={Yup.object({
 								reportName: Yup.string().required("Required"),
@@ -73,6 +74,7 @@ const ReportMenu = ({
 										name='reportName'
 										type='text'
 										placeholder='Report name...'
+										onChange={(e) => onSetName(e.target.value)}
 									/>
 									<label className='mt-2' htmlFor='template'>
 										Orientation
@@ -113,7 +115,7 @@ const ReportMenu = ({
 														"Applying template will reset canvas layout. Do you really want to reset this report?"
 													)
 												) {
-													onTemplateChange(values.templateId);
+													onTemplateChange(values.templateId, page);
 												}
 											}
 										}}
@@ -166,7 +168,7 @@ const ReportMenu = ({
 							<SimpleTextBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.TEXT);
+									onAddComponent(typeEnum.TEXT, page);
 								}}
 							></SimpleTextBox>
 						</div>
@@ -176,13 +178,13 @@ const ReportMenu = ({
 							<LevelBarGraphBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.LEVEL_BAR_GRAPH);
+									onAddComponent(typeEnum.LEVEL_BAR_GRAPH, page);
 								}}
 							></LevelBarGraphBox>
 							<LevelPieGraphBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.LEVEL_PIE_GRAPH);
+									onAddComponent(typeEnum.LEVEL_PIE_GRAPH, page);
 								}}
 							></LevelPieGraphBox>
 						</div>
@@ -192,13 +194,13 @@ const ReportMenu = ({
 							<SimpleTableBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.SIMPLE_TABLE);
+									onAddComponent(typeEnum.SIMPLE_TABLE, page);
 								}}
 							></SimpleTableBox>
 							<CapabilityTableBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.CAPABILITY_TABLE);
+									onAddComponent(typeEnum.CAPABILITY_TABLE, page);
 								}}
 							></CapabilityTableBox>
 						</div>

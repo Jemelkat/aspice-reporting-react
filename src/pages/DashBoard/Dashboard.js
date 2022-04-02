@@ -1,13 +1,13 @@
 import "../../../node_modules/react-grid-layout/css/styles.css";
 import "../../..//node_modules/react-resizable/css/styles.css";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import ItemSettingsMenu from "../../components/ComponentSettings/ItemSettingsMenu";
 import DashBoardMenu from "../../components/Dashboard/DashboardMenu";
 import useCanvas from "../../hooks/useCanvas";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 import Loader from "../../ui/Loader/Loader";
 import DashboardCanvas from "../../components/Dashboard/DashboardCanvas";
-import {createItemFromExisting} from "../../helpers/ClassHelper";
+import { createItemFromExisting } from "../../helpers/ClassHelper";
 import ExportItemDialog from "../../components/Dashboard/ExportItemDialog";
 import DashboardService from "../../services/DashboardService";
 
@@ -39,13 +39,14 @@ const DashBoard = () => {
 	//Changes selected item ID based on ID provided on save
 	const updateIdsOnSaveHandler = (updatedItems, selectedIdIndex = -1) => {
 		let newItems = [];
-		if (items) {
+		if (items[0]) {
 			//Update ids of items - items are in same order as in DB
-			items.forEach((item, index) => {
+			items[0].forEach((item, index) => {
 				const newItem = { ...item, id: updatedItems[index].id };
 				newItems.push(createItemFromExisting(newItem));
 			});
-			setItems(newItems);
+			let finalItems = items;
+			setItems(finalItems.splice(0, 1, newItems));
 			if (selectedIdIndex !== -1) {
 				setSelectedItem(newItems[selectedIdIndex]);
 				return newItems[selectedIdIndex];
@@ -58,18 +59,22 @@ const DashBoard = () => {
 
 	//Saves dashboard to DB
 	const saveDashboardHandler = async (selectedId = null) => {
+		debugger;
 		//save
 		try {
 			//Find index on which the current selected ID is
 			let index = -1;
 			if (selectedId !== null) {
-				index = items.findIndex((item) => item.id === selectedId);
+				index = items[0].findIndex((item) => item.id === selectedId);
 				if (index === -1) {
 					alert.error("Dashboard data integrity error.");
 					throw new Error("Dashboard data integrity error.");
 				}
 			}
-			const response = await DashboardService.saveDashboard(dashboardId, items);
+			const response = await DashboardService.saveDashboard(
+				dashboardId,
+				items[0]
+			);
 			alert.info("Dashboard saved");
 			return updateIdsOnSaveHandler(response.data.dashboardItems, index);
 		} catch (e) {
@@ -79,6 +84,7 @@ const DashBoard = () => {
 	};
 
 	useEffect(() => {
+		debugger;
 		setDashboardLoading(true);
 		DashboardService.getDashboard()
 			.then((response) => {
@@ -110,7 +116,7 @@ const DashBoard = () => {
 						></DashBoardMenu>
 
 						<DashboardCanvas
-							items={items}
+							items={items[0]}
 							onSelectItem={selectItemHandler}
 							onDeleteItem={deleteItemHandler}
 							onMove={moveItemHandler}

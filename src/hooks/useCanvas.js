@@ -12,7 +12,7 @@ import {
 
 const useCanvas = () => {
 	const alert = useAlert();
-	const [items, setItems] = useState([]);
+	const [items, setItems] = useState([[]]);
 	const [pieX, setPieX] = useState(0);
 	const [barX, setBarX] = useState(0);
 	const [selectedItem, setSelectedItem] = useState(null);
@@ -142,6 +142,7 @@ const useCanvas = () => {
 
 	//Add new item to list for dashboard
 	const addItemDashboardHandler = (type, currentColumns) => {
+		let newItems = items[0];
 		let item;
 		switch (type) {
 			case typeEnum.LEVEL_BAR_GRAPH: {
@@ -175,8 +176,10 @@ const useCanvas = () => {
 			default:
 				break;
 		}
-		const itemsArray = [...items, item];
-		setItems(itemsArray);
+		newItems.push(item);
+		let newItemsCombined = [...items];
+		newItemsCombined.splice(0, 1, newItems);
+		setItems(newItemsCombined);
 	};
 
 	//Change order of items in list - will be rendered on top or bottom off canvas
@@ -213,12 +216,14 @@ const useCanvas = () => {
 		setSelectedItem(newSelected);
 	};
 
-	const parseLoadedItems = (items) => {
+	const parseLoadedItems = (loadedItems, page = 0) => {
 		let newItems = [];
-		setItems([]);
-		if (items) {
-			newItems = items.map((i) => createItemFromExisting(i));
-			setItems(newItems);
+		setItems([[]]);
+		if (loadedItems) {
+			newItems = loadedItems.map((i) => createItemFromExisting(i));
+			let newItemsCombined = [...items];
+			newItemsCombined.splice(page, 1, newItems);
+			setItems(newItemsCombined);
 			selectItemHandler(null);
 		}
 	};

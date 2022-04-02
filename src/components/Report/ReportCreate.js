@@ -77,7 +77,6 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	//Saves report to DB
 	const saveReportHandler = async (formValues) => {
 		setProcessing(true);
-		debugger;
 		try {
 			let report = {
 				id: formValues.id,
@@ -87,7 +86,6 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 				}),
 			};
 			const response = await ReportService.saveReport(report);
-			debugger;
 			parseAndSetItems(response.data.reportPages);
 			setReportData({
 				id: response.data.id,

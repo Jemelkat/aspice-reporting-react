@@ -1,17 +1,21 @@
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import FormInput from "../../ui/Form/FormInput";
 import CustomSelect from "../../ui/Form/FormSelect";
 import * as Yup from "yup";
 import FormHidden from "../../ui/Form/FormHidden";
-import {useEffect} from "react/cjs/react.development";
-import {useState} from "react";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useEffect } from "react/cjs/react.development";
+import { useState } from "react";
+import { useAxios } from "../../helpers/AxiosHelper";
 import Button from "../../ui/Button";
+import { useAlert } from "react-alert";
 
 const AdminGroupForm = (props) => {
 	const [usersDataSelect, setUsersDataSelect] = useState([]);
 	//Get select users values
-	const [{ usersData, usersLoading, usersError }, refetchUsers] = useAxios(
+	const [
+		{ data: usersData, loading: usersLoading, error: usersError },
+		refetchUsers,
+	] = useAxios(
 		{
 			url: "/admin/allUsersSimple",
 			method: "GET",
@@ -33,6 +37,7 @@ const AdminGroupForm = (props) => {
 		},
 		{ manual: true }
 	);
+	const alert = useAlert();
 
 	//Send data to server
 	function updateData(data) {
@@ -55,8 +60,8 @@ const AdminGroupForm = (props) => {
 				props.onCancel();
 				props.onSuccess();
 			})
-			.error((error) => {
-				console.log(error);
+			.catch((e) => {
+				alert.error("Error editing group.");
 			});
 	}
 
@@ -72,9 +77,13 @@ const AdminGroupForm = (props) => {
 
 	//Get users and format them for select
 	useEffect(() => {
-		refetchUsers().then((data) => {
-			setUsersDataSelect(parseUsersSelect(data.data));
-		});
+		refetchUsers()
+			.then((data) => {
+				setUsersDataSelect(parseUsersSelect(data.data));
+			})
+			.catch((e) => {
+				alert.error("Error getting data.");
+			});
 	}, []);
 
 	return (
@@ -106,7 +115,7 @@ const AdminGroupForm = (props) => {
 						name='users'
 						options={usersDataSelect}
 						component={CustomSelect}
-						placeholder='Select multi languages...'
+						placeholder='Select users...'
 						isMulti={true}
 					/>
 					<div className='flex justify-center mt-4 space-x-2 space'>

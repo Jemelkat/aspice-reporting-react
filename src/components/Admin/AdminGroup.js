@@ -1,11 +1,12 @@
-import {useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from "react";
 import Table from "../../ui/Table/Table";
 import TableMenuButton from "../../ui/Table/TableMenuButton";
 import TableMenuItem from "../../ui/Table/TableMenuItem";
 import MyDialog from "../../ui/Dialog/MyDialog";
 import AdminGroupForm from "./AdminGroupForm";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useAxios } from "../../helpers/AxiosHelper";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
+import { useAlert } from "react-alert";
 
 const API_URL = "http://localhost:8080";
 
@@ -29,11 +30,15 @@ const AdminGroup = () => {
 	const [{ data, loading, error }, refetch] = useAxios(
 		API_URL + "/admin/allGroups",
 		{
+			manual: true,
 			useCache: false,
 		}
 	);
 	//Delete
-	const [{ deleteData, deleteLoading, deleteError }, executeDelete] = useAxios(
+	const [
+		{ data: deleteData, loading: deleteLoading, error: deleteError },
+		executeDelete,
+	] = useAxios(
 		{
 			url: API_URL + "/group/delete",
 			method: "DELETE",
@@ -44,6 +49,7 @@ const AdminGroup = () => {
 	const [action, setAction] = useState(ACTIONS.NONE);
 	const [showForm, setShowForm] = useState(false);
 	const [selectedGroup, setSelectedGroup] = useState({});
+	const alert = useAlert();
 
 	//Create columns
 	const columns = useMemo(
@@ -133,7 +139,7 @@ const AdminGroup = () => {
 						<AdminGroupForm
 							data={selectedGroup}
 							onCancel={formCancelHandler}
-							onSuccess={refetch}
+							onSuccess={refetchHandler}
 						></AdminGroupForm>
 					</MyDialog>
 				);
@@ -163,11 +169,25 @@ const AdminGroup = () => {
 			params: {
 				id: selectedGroup.id,
 			},
-		}).then(() => {
-			refetch();
-			setShowForm(false);
+		})
+			.then(() => {
+				refetch();
+				setShowForm(false);
+			})
+			.catch((e) => {
+				alert.error("Error deleting group.");
+			});
+	};
+
+	const refetchHandler = () => {
+		refetch().catch((e) => {
+			alert.error("Error getting data.");
 		});
 	};
+
+	useEffect(() => {
+		refetchHandler();
+	}, []);
 
 	return (
 		<div className='flex items-start flex-grow px-10 py-10 min-w-min'>

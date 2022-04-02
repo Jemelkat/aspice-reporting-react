@@ -1,14 +1,14 @@
-import {Menu, Transition} from "@headlessui/react";
-import {Fragment, useContext} from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { Fragment, useContext } from "react";
 import NavProfileItem from "./NavProfileItem";
-import Avatar, {genConfig} from "react-nice-avatar";
-import {useHistory} from "react-router";
-import {AuthContext} from "../../context/AuthContext";
+import Avatar, { genConfig } from "react-nice-avatar";
+import { useHistory } from "react-router";
+import { AuthContext } from "../../context/AuthContext";
 import AuthService from "../../services/AuthService";
 
 function NavProfile() {
 	let history = useHistory();
-	const { removeLoggedUser } = useContext(AuthContext);
+	const { loggedUser, removeLoggedUser } = useContext(AuthContext);
 	const config = {
 		sex: "man",
 		faceColor: "#AC6651",
@@ -35,8 +35,8 @@ function NavProfile() {
 	};
 
 	return (
-		<Menu as='div' className='ml-3 relative'>
-			<Menu.Button className='bg-gray-800 flex text-sm rounded-full mr-2 md:mr-0'>
+		<Menu as='div' className='relative ml-3'>
+			<Menu.Button className='flex mr-2 text-sm bg-gray-800 rounded-full md:mr-0'>
 				<span className='sr-only'>Open user menu</span>
 				<Avatar className='w-10 h-10' {...myConfig} />
 			</Menu.Button>
@@ -50,8 +50,10 @@ function NavProfile() {
 				leaveFrom='transform opacity-100 scale-200'
 				leaveTo='transform opacity-0 scale-95'
 			>
-				<Menu.Items className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-xl py-1 bg-white z-10'>
-					<NavProfileItem link='/admin/users' text='Admin'></NavProfileItem>
+				<Menu.Items className='absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-xl'>
+					{loggedUser.isAdmin && (
+						<NavProfileItem link='/admin/users' text='Admin'></NavProfileItem>
+					)}
 					<NavProfileItem
 						link='#'
 						text='Sign out'

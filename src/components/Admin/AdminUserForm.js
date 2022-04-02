@@ -1,9 +1,11 @@
-import {Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import FormInput from "../../ui/Form/FormInput";
 import * as Yup from "yup";
 import FormHidden from "../../ui/Form/FormHidden";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useAxios } from "../../helpers/AxiosHelper";
 import Button from "../../ui/Button";
+import FormSelect from "../../ui/Form/FormSelect";
+import { useAlert } from "react-alert";
 
 const AdminUserForm = (props) => {
 	const [
@@ -16,6 +18,7 @@ const AdminUserForm = (props) => {
 		},
 		{ manual: true }
 	);
+	const alert = useAlert();
 
 	function updateData(data) {
 		executePost({
@@ -23,15 +26,19 @@ const AdminUserForm = (props) => {
 				id: data.id,
 				username: data.username,
 				email: data.email,
-				roles: [],
+				roles: data.roles.map((role) => {
+					return {
+						name: role,
+					};
+				}),
 			},
 		})
 			.then(() => {
 				props.onCancel();
 				props.onSuccess();
 			})
-			.error((error) => {
-				console.log(error);
+			.catch((e) => {
+				alert.error("Error editing user.");
 			});
 	}
 
@@ -41,6 +48,7 @@ const AdminUserForm = (props) => {
 				id: props.data.id,
 				username: props.data.username,
 				email: props.data.email,
+				roles: props.data.roles.split(", ").map((u) => u),
 			}}
 			validationSchema={Yup.object({
 				username: Yup.string().required("Required"),
@@ -65,7 +73,14 @@ const AdminUserForm = (props) => {
 					type='text'
 					placeholder='Email...'
 				/>
-				<span>Current roles: {props.data.roles}</span>
+				<label>Roles</label>
+				<Field
+					name='roles'
+					options={[{ value: "ROLE_ADMIN", label: "Admin" }]}
+					component={FormSelect}
+					placeholder='Select roles...'
+					isMulti={true}
+				/>
 				<div className='flex justify-center mt-6 space-x-2 space'>
 					<Button type='submit' className='mt-2' dark={true}>
 						Save

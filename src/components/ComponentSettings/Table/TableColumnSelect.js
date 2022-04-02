@@ -1,8 +1,9 @@
-import {Field} from "formik";
+import { Field } from "formik";
 import FormSelect from "../../../ui/Form/FormSelect";
 
 const TableColumnSelect = ({
 	name,
+	page = 0,
 	selectedItem,
 	index,
 	onItemUpdate,
@@ -27,7 +28,7 @@ const TableColumnSelect = ({
 					} else {
 						updatedSelected.tableColumns[index].sourceColumn = null;
 					}
-					onItemUpdate(selectedItem);
+					onItemUpdate(selectedItem, page);
 				} else {
 					return;
 				}

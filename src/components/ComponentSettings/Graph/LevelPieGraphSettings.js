@@ -41,7 +41,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 			updatedSelected.scoreColumn = null;
 			updatedSelected.assessorFilter = [];
 			setColumnsData([]);
-			onItemUpdate(updatedSelected);
+			onItemUpdate(updatedSelected, page);
 			setAssessorFilter({
 				data: [],
 				loading: false,
@@ -86,7 +86,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 			);
 			let updatedSelected = selectedItem;
 			selectedItem.assessorFilter = newFilters;
-			onItemUpdate(updatedSelected);
+			onItemUpdate(updatedSelected, page);
 			setAssessorFilter({
 				data: newData,
 				loading: false,
@@ -164,7 +164,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 												updatedSelected.assessorFilter = [];
 											}
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -204,7 +204,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 										}
 
 										updatedSelected.assessorFilter = [];
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -232,7 +232,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 									updatedSelected.assessorFilter = e.map(
 										(filter) => filter.value
 									);
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={true}
 								isLoading={columnsLoading}
@@ -263,7 +263,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 										} else {
 											updatedSelected.processColumn = null;
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -295,7 +295,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 										} else {
 											updatedSelected.attributeColumn = null;
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -358,7 +358,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 										} else {
 											updatedSelected.scoreColumn = null;
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -386,7 +386,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									updatedSelected.aggregateScoresFunction = e.value;
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 							/>
@@ -406,7 +406,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 												updatedSelected.aggregateScoresFunction = "MAX";
 											}
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}}
 								/>
 								<div className='flex items-center justify-center'>

@@ -191,7 +191,7 @@ const ItemSettingsMenu = ({
 									dark
 									className='mt-2 bg-gray-300 hover:bg-gray-400'
 									onClick={() => {
-										props.onDeleteItem(selectedItem.id);
+										props.onDeleteItem(selectedItem.id, page);
 									}}
 								>
 									Remove item

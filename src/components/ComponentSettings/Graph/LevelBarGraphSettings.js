@@ -41,7 +41,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 			updatedSelected.scoreColumnName = null;
 			setColumnsData([]);
 			setAssessorFilter({ data: [], loading: false, error: false });
-			onItemUpdate(updatedSelected);
+			onItemUpdate(updatedSelected, page);
 		} else {
 			//Load new columns for source
 			try {
@@ -95,7 +95,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 		}
 
 		if (changed) {
-			onItemUpdate(newSelected);
+			onItemUpdate(newSelected, page);
 		}
 	};
 
@@ -116,7 +116,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 			);
 			let updatedSelected = selectedItem;
 			selectedItem.assessorFilter = newFilters;
-			onItemUpdate(updatedSelected);
+			onItemUpdate(updatedSelected, page);
 			setAssessorFilter((prevState) => ({
 				...prevState,
 				data: newData,
@@ -169,7 +169,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									updatedSelected.orientation = e.value;
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 							/>
@@ -198,7 +198,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 												id: selected.value,
 											};
 										});
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={true}
@@ -237,7 +237,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 										});
 									}
 
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -264,7 +264,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 									updatedSelected.assessorFilter = e.map(
 										(filter) => filter.value
 									);
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={true}
 								isLoading={assessorFilter.loading}
@@ -291,7 +291,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 									} else {
 										updatedSelected.processColumnName = null;
 									}
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -310,7 +310,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 									updatedSelected.processFilter = e.map(
 										(filter) => filter.value
 									);
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={true}
 							/>
@@ -336,7 +336,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 									} else {
 										updatedSelected.attributeColumnName = null;
 									}
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -389,7 +389,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 									} else {
 										updatedSelected.scoreColumnName = null;
 									}
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -410,7 +410,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									updatedSelected.aggregateScoresFunction = e.value;
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 							/>
@@ -430,7 +430,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 												updatedSelected.aggregateScoresFunction = "MIN";
 											}
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}}
 								/>
 								<div className='flex items-center justify-center'>
@@ -455,7 +455,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 										onSelect={(e) => {
 											let updatedSelected = selectedItem;
 											updatedSelected.aggregateSourcesFunction = e.value;
-											onItemUpdate(updatedSelected);
+											onItemUpdate(updatedSelected, page);
 										}}
 										isMulti={false}
 									/>

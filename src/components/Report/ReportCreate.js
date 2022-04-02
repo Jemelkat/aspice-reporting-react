@@ -197,17 +197,17 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 					//Add new item if report was redirected from dashboard
 					if (addItem) {
 						let addedItemId = 0;
-						if (loadedItems.length > 0) {
+						if (loadedItems.reportPages[0].length > 0) {
 							addedItemId =
 								Math.max.apply(
 									null,
-									loadedItems.reportItems.map((item) => item.id)
+									loadedItems.reportPages[0].reportItems.map((item) => item.id)
 								) + 1;
 						}
 						//Set new ID to added item as max + 1 or 0 if template is empty
 						let updatedAddItem = addItem;
 						updatedAddItem.id = addedItemId;
-						loadedItems.reportItems.push(updatedAddItem);
+						loadedItems.reportPages[0].reportItems.push(updatedAddItem);
 					}
 					parseAndSetItems(loadedItems.reportPages);
 					setReportData({ id: reportId, reportName: loadedItems.reportName });

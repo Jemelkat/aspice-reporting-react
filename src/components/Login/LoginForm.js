@@ -90,8 +90,26 @@ function LoginForm(props) {
 			if (validateInput(username, email, password, true)) {
 				AuthService.register(username, email, password)
 					.then((response) => {
-						setIsLoading(false);
-						history.push("/home");
+						AuthService.login(username, password)
+							.then((response) => {
+								setLoggedUser(AuthService.getLoggedUser());
+								setIsLoading(false);
+								history.push("/home");
+							})
+							.catch((error) => {
+								setIsLoading(false);
+								if (error.response?.data?.message) {
+									setError({
+										error: true,
+										errorMessage: error.response.data.message,
+									});
+								} else {
+									setError({
+										error: true,
+										errorMessage: "Error logging in",
+									});
+								}
+							});
 					})
 					.catch((error) => {
 						setIsLoading(false);

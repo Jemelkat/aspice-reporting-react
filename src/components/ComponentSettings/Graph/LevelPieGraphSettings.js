@@ -37,6 +37,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			updatedSelected.assessorColumn = null;
 			updatedSelected.levelColumn = null;
 			updatedSelected.attributeColumn = null;
+			updatedSelected.criterionColumn = null;
 			updatedSelected.scoreColumn = null;
 			updatedSelected.assessorFilter = [];
 			setColumnsData([]);
@@ -158,6 +159,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 												updatedSelected.assessorColumn = null;
 												updatedSelected.levelColumn = null;
 												updatedSelected.attributeColumn = null;
+												updatedSelected.criterionColumn = null;
 												updatedSelected.scoreColumn = null;
 												updatedSelected.assessorFilter = [];
 											}

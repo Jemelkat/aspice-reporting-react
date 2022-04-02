@@ -105,8 +105,8 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 				responseData = JSON.parse(await e.response?.data.text());
 			}
 			setProcessing(false);
-			if (e.response?.data && e.response.data?.message) {
-				alert.error(e.response.data.message);
+			if (responseData && responseData?.message) {
+				alert.error(responseData.message);
 			} else {
 				alert.error("Error generating report.");
 			}

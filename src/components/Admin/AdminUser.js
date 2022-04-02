@@ -1,12 +1,13 @@
-import {useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Table from "../../ui/Table/Table";
 import TableMenuButton from "../../ui/Table/TableMenuButton";
 import TableMenuItem from "../../ui/Table/TableMenuItem";
 import AdminUserForm from "./AdminUserForm";
 import MyDialog from "../../ui/Dialog/MyDialog";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useAxios } from "../../helpers/AxiosHelper";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
+import { useAlert } from "react-alert";
 
 class User {
 	constructor(userData) {
@@ -28,12 +29,19 @@ const ACTIONS = {
 };
 
 const AdminUser = () => {
-	const [{ data, loading, error }, refetch] = useAxios("/admin/allUsers", {
-		useCache: false,
-	});
+	const [{ data: data, loading: loading, error: error }, refetch] = useAxios(
+		"/admin/allUsers",
+		{
+			manual: true,
+			useCache: false,
+		}
+	);
 
 	//Delete
-	const [{ deleteData, deleteLoading, deleteError }, executeDelete] = useAxios(
+	const [
+		{ data: deleteData, loading: deleteLoading, error: deleteError },
+		executeDelete,
+	] = useAxios(
 		{
 			url: "/user/delete",
 			method: "POST",
@@ -44,6 +52,7 @@ const AdminUser = () => {
 	const [action, setAction] = useState(ACTIONS.NONE);
 	const [showForm, setShowForm] = useState(false);
 	const [selectedUser, setSelectedUser] = useState(null);
+	const alert = useAlert();
 
 	const columns = useMemo(
 		() => [
@@ -134,7 +143,7 @@ const AdminUser = () => {
 						<AdminUserForm
 							data={selectedUser}
 							onCancel={formCancelHandler}
-							onSuccess={refetch}
+							onSuccess={refetchHandler}
 						></AdminUserForm>
 					</MyDialog>
 				);
@@ -152,7 +161,7 @@ const AdminUser = () => {
 					></ConfirmDialog>
 				);
 			default:
-				return <>NIC</>;
+				return <></>;
 		}
 	};
 
@@ -160,17 +169,30 @@ const AdminUser = () => {
 		setShowForm(false);
 	};
 
+	const refetchHandler = () => {
+		refetch().catch((e) => {
+			alert.error("Error getting data.");
+		});
+	};
+
 	const userDeleteHandler = () => {
 		executeDelete({
 			params: {
 				id: selectedUser.id,
 			},
-		}).then((e) => {
-			console.log(e);
-			setShowForm(false);
-			refetch();
-		});
+		})
+			.then((e) => {
+				setShowForm(false);
+				refetchHandler();
+			})
+			.catch((e) => {
+				alert.error("Error deleting user.");
+			});
 	};
+
+	useEffect(() => {
+		refetchHandler();
+	}, []);
 
 	return (
 		<div className='flex items-start flex-grow px-10 py-10 min-w-min'>

@@ -5,6 +5,7 @@ import FormHidden from "../../ui/Form/FormHidden";
 import { useAxios } from "../../helpers/AxiosHelper";
 import Button from "../../ui/Button";
 import FormSelect from "../../ui/Form/FormSelect";
+import { useAlert } from "react-alert";
 
 const AdminUserForm = (props) => {
 	const [
@@ -17,6 +18,7 @@ const AdminUserForm = (props) => {
 		},
 		{ manual: true }
 	);
+	const alert = useAlert();
 
 	function updateData(data) {
 		executePost({
@@ -35,8 +37,8 @@ const AdminUserForm = (props) => {
 				props.onCancel();
 				props.onSuccess();
 			})
-			.error((error) => {
-				console.log(error);
+			.catch((e) => {
+				alert.error("Error editing user.");
 			});
 	}
 
@@ -76,7 +78,7 @@ const AdminUserForm = (props) => {
 					name='roles'
 					options={[{ value: "ROLE_ADMIN", label: "Admin" }]}
 					component={FormSelect}
-					placeholder='Select multi languages...'
+					placeholder='Select roles...'
 					isMulti={true}
 				/>
 				<div className='flex justify-center mt-6 space-x-2 space'>

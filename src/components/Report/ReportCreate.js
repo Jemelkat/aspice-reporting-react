@@ -387,6 +387,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 					{/*Right sidebar */}
 					<ItemSettingsMenu
 						show={showSelected}
+						page={currentPage}
 						onClose={() => selectItemHandler(null)}
 						selectedItem={selectedItem}
 						onDeleteItem={deleteItemHandler}

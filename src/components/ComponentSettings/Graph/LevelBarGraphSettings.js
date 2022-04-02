@@ -10,7 +10,7 @@ import DataService from "../../../services/DataService";
 import FormInput from "../../../ui/Form/FormInput";
 import { allProcesses } from "../../../helpers/ProcessHelper";
 
-const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
+const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);
@@ -25,6 +25,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 
 	//Load columns if source is defined on load
 	useEffect(() => {
+		debugger;
 		getColumnsHandler(selectedItem.sources.map((s) => s.id));
 	}, [selectedItem.sources]);
 

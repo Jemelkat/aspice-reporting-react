@@ -1,11 +1,11 @@
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import SidebarDisclosure from "../../../ui/Sidebar/SidebarDisclosure";
 import FormInput from "../../../ui/Form/FormInput";
 import * as Yup from "yup";
-import {ChromePicker} from "react-color";
-import {useEffect, useState} from "react";
+import { ChromePicker } from "react-color";
+import { useEffect, useState } from "react";
 
-const TextSettings = ({ selectedItem, onItemUpdate }) => {
+const TextSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [color, setColor] = useState(selectedItem.textStyle.color);
 
 	const colorChangeHandler = (newColor) => {
@@ -16,7 +16,7 @@ const TextSettings = ({ selectedItem, onItemUpdate }) => {
 				color: newColor.hex,
 			},
 		};
-		onItemUpdate(newSelected);
+		onItemUpdate(newSelected, page);
 		setColor(newColor.hex);
 	};
 
@@ -70,7 +70,7 @@ const TextSettings = ({ selectedItem, onItemUpdate }) => {
 													fontSize: e.target.value,
 												},
 											};
-											onItemUpdate(newSelected);
+											onItemUpdate(newSelected, page);
 										}
 									}}
 								/>
@@ -87,7 +87,7 @@ const TextSettings = ({ selectedItem, onItemUpdate }) => {
 												bold: e.target.checked,
 											},
 										};
-										onItemUpdate(newSelected);
+										onItemUpdate(newSelected, page);
 									}}
 								/>
 								<FormInput
@@ -103,7 +103,7 @@ const TextSettings = ({ selectedItem, onItemUpdate }) => {
 												italic: e.target.checked,
 											},
 										};
-										onItemUpdate(newSelected);
+										onItemUpdate(newSelected, page);
 									}}
 								/>
 								<FormInput
@@ -119,7 +119,7 @@ const TextSettings = ({ selectedItem, onItemUpdate }) => {
 												underline: e.target.checked,
 											},
 										};
-										onItemUpdate(newSelected);
+										onItemUpdate(newSelected, page);
 									}}
 								/>
 								<div className='flex flex-col col-span-full'>
@@ -147,7 +147,7 @@ const TextSettings = ({ selectedItem, onItemUpdate }) => {
 										...selectedItem,
 										textArea: e.target.value,
 									};
-									onItemUpdate(newSelected);
+									onItemUpdate(newSelected, page);
 								}}
 							/>
 						</div>

@@ -9,7 +9,7 @@ import { useAlert } from "react-alert";
 import FormInput from "../../../ui/Form/FormInput";
 import DataService from "../../../services/DataService";
 
-const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
+const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);

@@ -10,7 +10,7 @@ import TableColumnSelect from "./TableColumnSelect";
 import DataService from "../../../services/DataService";
 import { useAlert } from "react-alert";
 
-const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
+const SimpleTableSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);

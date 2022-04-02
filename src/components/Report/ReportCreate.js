@@ -157,12 +157,12 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 				let newPage = {
 					id: null,
 					orientation: response.data.orientation,
-					pageTemplate: templateId,
+					pageTemplate: { id: templateId },
 				};
 
 				let newItemsCombined = [...items];
 				newItemsCombined.splice(page, 1, newItems);
-				let newPagesCombined = [...items];
+				let newPagesCombined = [...pagesData];
 				newPagesCombined.splice(page, 1, newPage);
 				setItems(newItemsCombined);
 				setPagesData(newPagesCombined);
@@ -207,6 +207,14 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 						updatedAddItem.id = addedItemId;
 						loadedItems.reportPages[0].reportItems.push(updatedAddItem);
 					}
+					let newPages = loadedItems.reportPages.map((page) => {
+						return {
+							id: page.id,
+							orienation: page.orientation,
+							pageTemplate: { id: page.pageTemplate },
+						};
+					});
+					setPagesData(newPages);
 					parseAndSetItems(loadedItems.reportPages);
 					setReportData({ id: reportId, reportName: loadedItems.reportName });
 					setReportLoading(false);
@@ -274,6 +282,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 					{/*Left sidebar */}
 					<ReportMenu
 						id={reportData.id}
+						templateId={pagesData[currentPage].pageTemplate?.id}
 						name={reportData.reportName}
 						onSetName={reportNameHandler}
 						orientation={pagesData[currentPage].orientation}

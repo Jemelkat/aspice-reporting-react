@@ -29,6 +29,8 @@ const ReportMenu = ({
 	onReportGenerate,
 	onDownloadReport,
 	isProcessing,
+	onAddPage,
+	onRemovePage,
 }) => {
 	//Get all templates for select form input
 	const [{ data: selectData, loading: selectLoading, error: selectError }] =
@@ -152,6 +154,22 @@ const ReportMenu = ({
 										dark={true}
 									>
 										{"Download"}
+									</Button>
+									<Button
+										type='button'
+										onClick={onAddPage}
+										className='mt-4'
+										dark={false}
+									>
+										{"Add page"}
+									</Button>
+									<Button
+										type='button'
+										onClick={onRemovePage}
+										className='mt-0.5'
+										dark={false}
+									>
+										{"Remove page"}
 									</Button>
 								</Form>
 							)}

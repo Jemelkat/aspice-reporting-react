@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import {useEffect, useState} from "react";
+import {useHistory} from "react-router";
 import Loader from "../../ui/Loader/Loader";
 import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
 import TemplateMenu from "./TemplateMenu";
-import { useAlert } from "react-alert";
+import {useAlert} from "react-alert";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
 import TemplateService from "../../services/TemplateService";
@@ -38,7 +38,6 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	const saveTemplateHandler = async (formValues) => {
 		setProcessing(true);
 		try {
-			debugger;
 			let template = {
 				id: formValues.id,
 				templateName: formValues.templateName,

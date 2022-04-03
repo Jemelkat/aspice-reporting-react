@@ -2,7 +2,7 @@ import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import SidebarLinkItem from "../../ui/Sidebar/SidebarLinkItem";
 import AdminUser from "../../components/Admin/AdminUser";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import {Route, Switch, useRouteMatch} from "react-router-dom";
 import AdminGroup from "../../components/Admin/AdminGroup";
 
 const AdminPanel = () => {

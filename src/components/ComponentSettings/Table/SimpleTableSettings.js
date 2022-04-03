@@ -1,6 +1,6 @@
-import { Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
-import { useAxios } from "../../../helpers/AxiosHelper";
+import {Field, Form, Formik} from "formik";
+import {useEffect, useState} from "react";
+import {useAxios} from "../../../helpers/AxiosHelper";
 import SourceColumnService from "../../../services/SourceColumnService";
 import Button from "../../../ui/Button";
 import SidebarDisclosure from "../../../ui/Sidebar/SidebarDisclosure";
@@ -8,7 +8,7 @@ import FormInput from "../../../ui/Form/FormInput";
 import FormSelect from "../../../ui/Form/FormSelect";
 import TableColumnSelect from "./TableColumnSelect";
 import DataService from "../../../services/DataService";
-import { useAlert } from "react-alert";
+import {useAlert} from "react-alert";
 
 const SimpleTableSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =

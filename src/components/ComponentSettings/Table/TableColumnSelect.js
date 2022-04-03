@@ -1,4 +1,4 @@
-import { Field } from "formik";
+import {Field} from "formik";
 import FormSelect from "../../../ui/Form/FormSelect";
 
 const TableColumnSelect = ({

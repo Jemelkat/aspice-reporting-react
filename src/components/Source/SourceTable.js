@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { useAlert } from "react-alert";
+import {useMemo, useState} from "react";
+import {useAlert} from "react-alert";
 import Button from "../../ui/Button";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
 import Table from "../../ui/Table/Table";
@@ -8,7 +8,7 @@ import TableMenuItem from "../../ui/Table/TableMenuItem";
 import PageTitle from "../../ui/PageTitle";
 import ShareDialog from "../../ui/Dialog/ShareDialog";
 import SourceService from "../../services/SourceService";
-import { saveAs } from "file-saver";
+import {saveAs} from "file-saver";
 
 class SourceObject {
 	constructor(data) {

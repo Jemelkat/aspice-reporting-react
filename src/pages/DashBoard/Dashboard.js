@@ -1,13 +1,13 @@
 import "../../../node_modules/react-grid-layout/css/styles.css";
 import "../../..//node_modules/react-resizable/css/styles.css";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import ItemSettingsMenu from "../../components/ComponentSettings/ItemSettingsMenu";
 import DashBoardMenu from "../../components/Dashboard/DashboardMenu";
 import useCanvas from "../../hooks/useCanvas";
-import { useAlert } from "react-alert";
+import {useAlert} from "react-alert";
 import Loader from "../../ui/Loader/Loader";
 import DashboardCanvas from "../../components/Dashboard/DashboardCanvas";
-import { createItemFromExisting } from "../../helpers/ClassHelper";
+import {createItemFromExisting} from "../../helpers/ClassHelper";
 import ExportItemDialog from "../../components/Dashboard/ExportItemDialog";
 import DashboardService from "../../services/DashboardService";
 

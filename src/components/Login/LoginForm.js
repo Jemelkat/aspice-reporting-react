@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router";
-import { AuthContext } from "../../context/AuthContext";
+import {useContext, useEffect, useState} from "react";
+import {useHistory} from "react-router";
+import {AuthContext} from "../../context/AuthContext";
 import AuthService from "../../services/AuthService";
 import Loader from "../../ui/Loader/Loader";
 

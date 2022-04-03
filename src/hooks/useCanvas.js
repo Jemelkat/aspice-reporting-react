@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { useAlert } from "react-alert";
+import {useState} from "react";
+import {useAlert} from "react-alert";
 import {
 	CapabilityTable,
 	createItemFromExisting,
+	LevelBarGraph,
 	LevelPieGraph,
 	SimpleTable,
-	LevelBarGraph,
 	Text,
 	typeEnum,
 } from "../helpers/ClassHelper";

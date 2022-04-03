@@ -1,15 +1,15 @@
-import { Field, Form, Formik } from "formik";
-import { useAxios } from "../../../helpers/AxiosHelper";
+import {Field, Form, Formik} from "formik";
+import {useAxios} from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import SourceColumnService from "../../../services/SourceColumnService";
-import { InformationCircleIcon } from "@heroicons/react/outline";
+import {InformationCircleIcon} from "@heroicons/react/outline";
 import HorizontalLine from "../../../ui/HorizontalLine";
-import { useAlert } from "react-alert";
+import {useAlert} from "react-alert";
 import FormInput from "../../../ui/Form/FormInput";
 import DataService from "../../../services/DataService";
 
-const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
+const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);
@@ -41,7 +41,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			updatedSelected.scoreColumn = null;
 			updatedSelected.assessorFilter = [];
 			setColumnsData([]);
-			onItemUpdate(updatedSelected);
+			onItemUpdate(updatedSelected, page);
 			setAssessorFilter({
 				data: [],
 				loading: false,
@@ -86,7 +86,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			);
 			let updatedSelected = selectedItem;
 			selectedItem.assessorFilter = newFilters;
-			onItemUpdate(updatedSelected);
+			onItemUpdate(updatedSelected, page);
 			setAssessorFilter({
 				data: newData,
 				loading: false,
@@ -164,7 +164,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 												updatedSelected.assessorFilter = [];
 											}
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -204,7 +204,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										}
 
 										updatedSelected.assessorFilter = [];
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -232,7 +232,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									updatedSelected.assessorFilter = e.map(
 										(filter) => filter.value
 									);
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={true}
 								isLoading={columnsLoading}
@@ -263,7 +263,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										} else {
 											updatedSelected.processColumn = null;
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -295,7 +295,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										} else {
 											updatedSelected.attributeColumn = null;
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -358,7 +358,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										} else {
 											updatedSelected.scoreColumn = null;
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -386,7 +386,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									updatedSelected.aggregateScoresFunction = e.value;
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 							/>
@@ -406,7 +406,7 @@ const LevelPieGraphSettings = ({ selectedItem, onItemUpdate }) => {
 												updatedSelected.aggregateScoresFunction = "MAX";
 											}
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}}
 								/>
 								<div className='flex items-center justify-center'>

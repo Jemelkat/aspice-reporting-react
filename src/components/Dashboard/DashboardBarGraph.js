@@ -1,15 +1,5 @@
-import { useEffect, useState } from "react";
-import {
-	Bar,
-	BarChart,
-	CartesianGrid,
-	Label,
-	Legend,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-	YAxis,
-} from "recharts";
+import {useEffect, useState} from "react";
+import {Bar, BarChart, CartesianGrid, Label, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis,} from "recharts";
 import colors from "../../helpers/ColorsHelper";
 
 const maxWordLength = 10;

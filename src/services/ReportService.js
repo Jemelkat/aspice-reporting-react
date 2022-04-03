@@ -3,18 +3,9 @@ import {axiosInstance} from "../helpers/AxiosHelper";
 import AuthService from "./AuthService";
 
 export default class ReportService {
-	static saveReport = async (formValues, items) => {
+	static saveReport = async (report) => {
 		return axiosInstance.post("reports/save", {
-			id: formValues.id,
-			reportName: formValues.reportName,
-			orientation: formValues.orientation,
-			reportItems: items.map((i) => ({ ...i })),
-			reportTemplate:
-				formValues.templateId !== ""
-					? {
-							id: formValues.templateId,
-					  }
-					: null,
+			...report,
 		});
 	};
 

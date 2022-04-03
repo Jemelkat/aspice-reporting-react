@@ -2,12 +2,17 @@ import {Rnd} from "react-rnd";
 import {typeEnum} from "../../helpers/ClassHelper";
 import {ReactComponent as SVGSourceBarHorizontal} from "../../assets/barchart-horizontal-sources.svg";
 import {ReactComponent as SVGSourceBarVertical} from "../../assets/barchart-vertical-sources.svg";
-import {ReactComponent as SVGBarHorizontal} from "../../assets/barchart-horizontal.svg";
-import {ReactComponent as SVGBarVertical} from "../../assets/barchart-vertical.svg";
 import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
 import {useEffect, useRef} from "react";
 
-const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
+const CanvasItem = ({
+	item,
+	page = 0,
+	onResize,
+	onMove,
+	onSelect,
+	isSelected,
+}) => {
 	const itemRef = useRef(null);
 	const renderContent = () => {
 		switch (item.type) {
@@ -146,17 +151,18 @@ const CanvasItem = ({ item, onResize, onMove, onSelect, isSelected }) => {
 			onResize={(e, direction, ref, delta, position) => {
 				const x = position.x < 0 ? 0 : position.x;
 				const y = position.y < 0 ? 0 : position.y;
-				onResize(item.id, x, y, ref.offsetHeight, ref.offsetWidth);
+				onResize(item.id, x, y, ref.offsetHeight, ref.offsetWidth, page);
 			}}
 			onDrag={(event, data) => {
 				//Prevent -x and -y
 				const x = data.x < 0 ? 0 : data.x;
 				const y = data.y < 0 ? 0 : data.y;
-				onMove(item.id, x, y);
+				onMove(item.id, x, y, page);
 			}}
 			onClick={(e) => {
 				e.stopPropagation();
-				onSelect(item.id);
+				debugger;
+				onSelect(item.id, page);
 			}}
 		>
 			<div

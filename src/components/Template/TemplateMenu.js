@@ -15,7 +15,10 @@ import SimpleTableBox from "../../ui/ItemMenuBox/SimpleTableBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 
 const TemplateMenu = ({
-	data,
+	id,
+	name,
+	onSetName,
+	orientation,
 	onOrientationChange,
 	onSave,
 	onAddComponent,
@@ -29,9 +32,9 @@ const TemplateMenu = ({
 						<Formik
 							enableReinitialize={true}
 							initialValues={{
-								id: data ? data.id : null,
-								orientation: data?.orientation ? data.orientation : "VERTICAL",
-								templateName: data ? data.templateName : "",
+								id: id,
+								orientation: orientation,
+								templateName: name,
 							}}
 							validationSchema={Yup.object({
 								templateName: Yup.string().required("Required"),
@@ -49,6 +52,7 @@ const TemplateMenu = ({
 										name='templateName'
 										type='text'
 										placeholder='Template name...'
+										onChange={(e) => onSetName(e.target.value)}
 									/>
 									<label className='mt-2' htmlFor='template'>
 										Orientation

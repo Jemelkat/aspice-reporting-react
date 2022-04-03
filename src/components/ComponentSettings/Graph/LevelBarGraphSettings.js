@@ -1,16 +1,16 @@
-import { Field, Form, Formik } from "formik";
-import { useAxios } from "../../../helpers/AxiosHelper";
+import {Field, Form, Formik} from "formik";
+import {useAxios} from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import { useEffect, useState } from "react";
-import { InformationCircleIcon } from "@heroicons/react/outline";
-import { useAlert } from "react-alert";
+import {useEffect, useState} from "react";
+import {InformationCircleIcon} from "@heroicons/react/outline";
+import {useAlert} from "react-alert";
 import HorizontalLine from "../../../ui/HorizontalLine";
 import SourceColumnService from "../../../services/SourceColumnService";
 import DataService from "../../../services/DataService";
 import FormInput from "../../../ui/Form/FormInput";
-import { allProcesses } from "../../../helpers/ProcessHelper";
+import {allProcesses} from "../../../helpers/ProcessHelper";
 
-const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
+const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);
@@ -25,6 +25,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 
 	//Load columns if source is defined on load
 	useEffect(() => {
+		debugger;
 		getColumnsHandler(selectedItem.sources.map((s) => s.id));
 	}, [selectedItem.sources]);
 
@@ -40,7 +41,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			updatedSelected.scoreColumnName = null;
 			setColumnsData([]);
 			setAssessorFilter({ data: [], loading: false, error: false });
-			onItemUpdate(updatedSelected);
+			onItemUpdate(updatedSelected, page);
 		} else {
 			//Load new columns for source
 			try {
@@ -94,7 +95,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 		}
 
 		if (changed) {
-			onItemUpdate(newSelected);
+			onItemUpdate(newSelected, page);
 		}
 	};
 
@@ -115,7 +116,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 			);
 			let updatedSelected = selectedItem;
 			selectedItem.assessorFilter = newFilters;
-			onItemUpdate(updatedSelected);
+			onItemUpdate(updatedSelected, page);
 			setAssessorFilter((prevState) => ({
 				...prevState,
 				data: newData,
@@ -168,7 +169,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									updatedSelected.orientation = e.value;
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 							/>
@@ -197,7 +198,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 												id: selected.value,
 											};
 										});
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={true}
@@ -236,7 +237,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										});
 									}
 
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -263,7 +264,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									updatedSelected.assessorFilter = e.map(
 										(filter) => filter.value
 									);
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={true}
 								isLoading={assessorFilter.loading}
@@ -290,7 +291,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									} else {
 										updatedSelected.processColumnName = null;
 									}
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -309,7 +310,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									updatedSelected.processFilter = e.map(
 										(filter) => filter.value
 									);
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={true}
 							/>
@@ -335,7 +336,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									} else {
 										updatedSelected.attributeColumnName = null;
 									}
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -388,7 +389,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 									} else {
 										updatedSelected.scoreColumnName = null;
 									}
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -409,7 +410,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
 									updatedSelected.aggregateScoresFunction = e.value;
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 							/>
@@ -429,7 +430,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 												updatedSelected.aggregateScoresFunction = "MIN";
 											}
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}}
 								/>
 								<div className='flex items-center justify-center'>
@@ -454,7 +455,7 @@ const LevelBarGraphSettings = ({ selectedItem, onItemUpdate }) => {
 										onSelect={(e) => {
 											let updatedSelected = selectedItem;
 											updatedSelected.aggregateSourcesFunction = e.value;
-											onItemUpdate(updatedSelected);
+											onItemUpdate(updatedSelected, page);
 										}}
 										isMulti={false}
 									/>

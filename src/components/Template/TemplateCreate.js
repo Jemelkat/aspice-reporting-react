@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import {useEffect, useState} from "react";
+import {useHistory} from "react-router";
 import Loader from "../../ui/Loader/Loader";
 import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
 import TemplateMenu from "./TemplateMenu";
-import { useAlert } from "react-alert";
+import {useAlert} from "react-alert";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
 import TemplateService from "../../services/TemplateService";
-import { createItemFromExisting } from "../../helpers/ClassHelper";
 
 const TemplateCreate = ({ mode, templateId, addItem = null }) => {
-	const [templateData, setTemplateData] = useState(null);
 	const [templateLoading, setTemplateLoading] = useState(true);
 	const [isProcessing, setProcessing] = useState(false);
-
+	const [templateData, setTemplateData] = useState({
+		id: null,
+		orientation: "VERTICAL",
+		templateName: "",
+	});
 	const history = useHistory();
 	const alert = useAlert();
 	const {
@@ -29,19 +31,26 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		layerItemHandler,
 		updateItemHandler,
 		orientationHandler,
+		parseLoadedItems,
 	} = useCanvas();
 
 	//Saves template to DB
 	const saveTemplateHandler = async (formValues) => {
 		setProcessing(true);
 		try {
-			const response = await TemplateService.saveTemplate(
-				formValues,
-				items,
-				mode
-			);
-			parseAndSetComponents(response.data.templateItems);
-			setTemplateData(response.data);
+			let template = {
+				id: formValues.id,
+				templateName: formValues.templateName,
+				orientation: formValues.orientation,
+				templateItems: items[0],
+			};
+			const response = await TemplateService.saveTemplate(template);
+			parseLoadedItems(response.data.templateItems);
+			setTemplateData({
+				id: response.data.id,
+				orientation: response.data.orientation,
+				templateName: response.data.templateName,
+			});
 			setProcessing(false);
 			alert.info("Template saved");
 		} catch (e) {
@@ -54,16 +63,8 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		}
 	};
 
-	//Parses components of template to Item array
-	const parseAndSetComponents = (components) => {
-		let newComponents = [];
-		if (components) {
-			newComponents = components.map((i) => createItemFromExisting(i));
-		}
-		setItems(newComponents);
-	};
-
 	useEffect(() => {
+		debugger;
 		//EDIT - load template for reseting
 		if (mode === "edit") {
 			setTemplateLoading(true);
@@ -73,11 +74,11 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 					//Add new item if template was redirected from dashboard
 					if (addItem) {
 						let addedItemId = 0;
-						if (loadedItems.length > 0) {
+						if (loadedItems.reportPages[0].length > 0) {
 							addedItemId =
 								Math.max.apply(
 									null,
-									loadedItems.templateItems.map((item) => item.id)
+									loadedItems.reportPages[0].reportItems.map((item) => item.id)
 								) + 1;
 						}
 						//Set new ID to added item as max + 1 or 0 if template is empty
@@ -85,8 +86,13 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 						updatedAddItem.id = addedItemId;
 						loadedItems.templateItems.push(updatedAddItem);
 					}
-					setTemplateData(loadedItems);
-					parseAndSetComponents(loadedItems.templateItems);
+					debugger;
+					setTemplateData({
+						id: templateId,
+						orientation: loadedItems.orientation,
+						templateName: loadedItems.templateName,
+					});
+					parseLoadedItems(loadedItems.templateItems);
 					setTemplateLoading(false);
 					alert.info("Template loaded.");
 				})
@@ -99,12 +105,17 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 		}
 	}, []);
 
-	const orientationChangeHandler = (orientation) => {
-		setTemplateData((prevState) => ({
-			...prevState,
-			orientation: orientation,
-		}));
-		orientationHandler(orientation);
+	const orientationChangeHandler = (newOrientation) => {
+		setTemplateData((prev) => {
+			return { ...prev, orientation: newOrientation };
+		});
+		orientationHandler(newOrientation);
+	};
+
+	const templateNameHandler = (name) => {
+		setTemplateData((prev) => {
+			return { ...prev, templateName: name };
+		});
 	};
 
 	return (
@@ -118,7 +129,10 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 				<div className='flex bg-gray-200'>
 					{/*Left sidebar*/}
 					<TemplateMenu
-						data={templateData}
+						id={templateData.id}
+						orientation={templateData.orientation}
+						name={templateData.templateName}
+						onSetName={templateNameHandler}
 						onOrientationChange={orientationChangeHandler}
 						onSave={saveTemplateHandler}
 						onAddComponent={addItemHandler}
@@ -126,7 +140,7 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 					></TemplateMenu>
 					{/*Canvas*/}
 					<Canvas
-						items={items}
+						items={items[0]}
 						onMove={moveItemHandler}
 						orientation={templateData?.orientation}
 						onSelect={selectItemHandler}

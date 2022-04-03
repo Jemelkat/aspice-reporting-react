@@ -15,6 +15,7 @@ import LevelBarGraphSettings from "./Graph/LevelBarGraphSettings";
 
 const ItemSettingsMenu = ({
 	simple = false,
+	page = 0,
 	selectedItem,
 	show,
 	onItemUpdate,
@@ -26,10 +27,12 @@ const ItemSettingsMenu = ({
 	const formRef = useRef();
 
 	const renderTypeInputs = () => {
+		debugger;
 		switch (selectedItem.type) {
 			case typeEnum.TEXT:
 				return (
 					<TextSettings
+						page={page}
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
 					></TextSettings>
@@ -37,6 +40,7 @@ const ItemSettingsMenu = ({
 			case typeEnum.LEVEL_BAR_GRAPH:
 				return (
 					<LevelBarGraphSettings
+						page={page}
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
 					></LevelBarGraphSettings>
@@ -44,6 +48,7 @@ const ItemSettingsMenu = ({
 			case typeEnum.LEVEL_PIE_GRAPH:
 				return (
 					<LevelPieGraphSettings
+						page={page}
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
 					></LevelPieGraphSettings>
@@ -51,6 +56,7 @@ const ItemSettingsMenu = ({
 			case typeEnum.SIMPLE_TABLE:
 				return (
 					<SimpleTableSettings
+						page={page}
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
 					></SimpleTableSettings>
@@ -58,6 +64,7 @@ const ItemSettingsMenu = ({
 			case typeEnum.CAPABILITY_TABLE:
 				return (
 					<CapabilityTableSettigs
+						page={page}
 						selectedItem={selectedItem}
 						onItemUpdate={onItemUpdate}
 					></CapabilityTableSettigs>
@@ -184,7 +191,7 @@ const ItemSettingsMenu = ({
 									dark
 									className='mt-2 bg-gray-300 hover:bg-gray-400'
 									onClick={() => {
-										props.onDeleteItem(selectedItem.id);
+										props.onDeleteItem(selectedItem.id, page);
 									}}
 								>
 									Remove item

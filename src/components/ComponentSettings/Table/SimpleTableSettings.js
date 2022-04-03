@@ -1,6 +1,6 @@
-import { Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
-import { useAxios } from "../../../helpers/AxiosHelper";
+import {Field, Form, Formik} from "formik";
+import {useEffect, useState} from "react";
+import {useAxios} from "../../../helpers/AxiosHelper";
 import SourceColumnService from "../../../services/SourceColumnService";
 import Button from "../../../ui/Button";
 import SidebarDisclosure from "../../../ui/Sidebar/SidebarDisclosure";
@@ -8,9 +8,9 @@ import FormInput from "../../../ui/Form/FormInput";
 import FormSelect from "../../../ui/Form/FormSelect";
 import TableColumnSelect from "./TableColumnSelect";
 import DataService from "../../../services/DataService";
-import { useAlert } from "react-alert";
+import {useAlert} from "react-alert";
 
-const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
+const SimpleTableSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);
@@ -64,14 +64,14 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 		});
 		let newSelected = selectedItem;
 		selectedItem.tableColumns = [...columns];
-		onItemUpdate(newSelected);
+		onItemUpdate(newSelected, page);
 	};
 
 	//Removes existing column from table
 	const removeColumnHandler = (id) => {
 		let newSelected = selectedItem;
 		newSelected.tableColumns.splice(id, 1);
-		onItemUpdate(newSelected);
+		onItemUpdate(newSelected, page);
 	};
 
 	return (
@@ -108,8 +108,6 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 										updatedSelected.tableColumns.map((column) => {
 											column.sourceColumn = null;
 										});
-										//Reset filters
-										onItemUpdate(updatedSelected);
 
 										if (e.value === null) {
 											if (e.value !== updatedSelected.source) {
@@ -129,6 +127,8 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 												getColumnsHandler(e.value);
 											}
 										}
+										//Reset filters
+										onItemUpdate(updatedSelected, page);
 									}}
 									isMulti={false}
 									isLoading={sourcesLoading}
@@ -153,6 +153,7 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 												<div key={index}>
 													<label className='mt-2'>Column:</label>
 													<TableColumnSelect
+														page={page}
 														name={"columns"}
 														selectedItem={selectedItem}
 														index={index}
@@ -171,7 +172,7 @@ const SimpleTableSettings = ({ selectedItem, onItemUpdate }) => {
 																let newSelected = selectedItem;
 																newSelected.tableColumns[index].width =
 																	e.target.value;
-																onItemUpdate(newSelected);
+																onItemUpdate(newSelected, page);
 															}
 														}}
 													/>

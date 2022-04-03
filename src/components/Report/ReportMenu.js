@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from "formik";
+import {Field, Form, Formik} from "formik";
 import Button from "../../ui/Button";
 import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import FormHidden from "../../ui/Form/FormHidden";
@@ -7,8 +7,8 @@ import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import * as Yup from "yup";
 import FormSelect from "../../ui/Form/FormSelect";
-import { useAxios } from "../../helpers/AxiosHelper";
-import { typeEnum } from "../../helpers/ClassHelper";
+import {useAxios} from "../../helpers/AxiosHelper";
+import {typeEnum} from "../../helpers/ClassHelper";
 import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 import SimpleTextBox from "../../ui/ItemMenuBox/SimpleTextBox";
@@ -16,7 +16,12 @@ import CapabilityTableBox from "../../ui/ItemMenuBox/CapabilityTableBox";
 import SimpleTableBox from "../../ui/ItemMenuBox/SimpleTableBox";
 
 const ReportMenu = ({
-	data,
+	id,
+	templateId,
+	name,
+	onSetName,
+	page,
+	orientation,
 	onSave,
 	onOrientationChange,
 	onAddComponent,
@@ -24,6 +29,8 @@ const ReportMenu = ({
 	onReportGenerate,
 	onDownloadReport,
 	isProcessing,
+	onAddPage,
+	onRemovePage,
 }) => {
 	//Get all templates for select form input
 	const [{ data: selectData, loading: selectLoading, error: selectError }] =
@@ -48,14 +55,10 @@ const ReportMenu = ({
 						<Formik
 							enableReinitialize={true}
 							initialValues={{
-								id: data ? data.id : "",
-								reportName: data ? data.reportName : "",
-								orientation: data?.orientation ? data.orientation : "VERTICAL",
-								templateId: data
-									? data.reportTemplate
-										? data.reportTemplate.id
-										: ""
-									: "",
+								id: id,
+								reportName: name,
+								orientation: orientation,
+								templateId: templateId,
 							}}
 							validationSchema={Yup.object({
 								reportName: Yup.string().required("Required"),
@@ -73,6 +76,7 @@ const ReportMenu = ({
 										name='reportName'
 										type='text'
 										placeholder='Report name...'
+										onChange={(e) => onSetName(e.target.value)}
 									/>
 									<label className='mt-2' htmlFor='template'>
 										Orientation
@@ -113,7 +117,7 @@ const ReportMenu = ({
 														"Applying template will reset canvas layout. Do you really want to reset this report?"
 													)
 												) {
-													onTemplateChange(values.templateId);
+													onTemplateChange(values.templateId, page);
 												}
 											}
 										}}
@@ -151,6 +155,22 @@ const ReportMenu = ({
 									>
 										{"Download"}
 									</Button>
+									<Button
+										type='button'
+										onClick={onAddPage}
+										className='mt-4'
+										dark={false}
+									>
+										{"Add page"}
+									</Button>
+									<Button
+										type='button'
+										onClick={onRemovePage}
+										className='mt-0.5'
+										dark={false}
+									>
+										{"Remove page"}
+									</Button>
 								</Form>
 							)}
 						</Formik>
@@ -166,7 +186,7 @@ const ReportMenu = ({
 							<SimpleTextBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.TEXT);
+									onAddComponent(typeEnum.TEXT, page);
 								}}
 							></SimpleTextBox>
 						</div>
@@ -176,13 +196,13 @@ const ReportMenu = ({
 							<LevelBarGraphBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.LEVEL_BAR_GRAPH);
+									onAddComponent(typeEnum.LEVEL_BAR_GRAPH, page);
 								}}
 							></LevelBarGraphBox>
 							<LevelPieGraphBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.LEVEL_PIE_GRAPH);
+									onAddComponent(typeEnum.LEVEL_PIE_GRAPH, page);
 								}}
 							></LevelPieGraphBox>
 						</div>
@@ -192,13 +212,13 @@ const ReportMenu = ({
 							<SimpleTableBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.SIMPLE_TABLE);
+									onAddComponent(typeEnum.SIMPLE_TABLE, page);
 								}}
 							></SimpleTableBox>
 							<CapabilityTableBox
 								mini
 								onClick={() => {
-									onAddComponent(typeEnum.CAPABILITY_TABLE);
+									onAddComponent(typeEnum.CAPABILITY_TABLE, page);
 								}}
 							></CapabilityTableBox>
 						</div>

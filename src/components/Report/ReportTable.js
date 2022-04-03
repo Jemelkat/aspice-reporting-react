@@ -16,9 +16,6 @@ class ReportObject {
 		this.reportName = data.reportName;
 		this.reportCreated = data.reportCreated;
 		this.reportUpdated = data.reportLastUpdated;
-		this.reportTemplateName = data.reportTemplate
-			? data.reportTemplate.templateName
-			: "";
 		this.shared = data.shared ? "Yes" : "";
 		this.sharedBy = data.sharedBy;
 	}
@@ -44,10 +41,6 @@ const ReportTable = (props) => {
 			{
 				Header: "Report name",
 				accessor: "reportName",
-			},
-			{
-				Header: "Based on template",
-				accessor: "reportTemplateName",
 			},
 			{
 				Header: "Created at",

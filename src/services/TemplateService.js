@@ -5,12 +5,9 @@ export default class TemplateService {
 		return axiosInstance.get("/templates/allSimple");
 	};
 
-	static saveTemplate = async (formValues, items) => {
+	static saveTemplate = async (template) => {
 		return axiosInstance.post("/templates/save", {
-			id: formValues.id,
-			templateName: formValues.templateName,
-			orientation: formValues.orientation,
-			templateItems: items.map((i) => ({ ...i })),
+			...template,
 		});
 	};
 

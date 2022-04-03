@@ -1,15 +1,15 @@
-import { InformationCircleIcon } from "@heroicons/react/outline";
-import { Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
-import { useAlert } from "react-alert";
-import { useAxios } from "../../../helpers/AxiosHelper";
-import { allProcesses } from "../../../helpers/ProcessHelper";
+import {InformationCircleIcon} from "@heroicons/react/outline";
+import {Field, Form, Formik} from "formik";
+import {useEffect, useState} from "react";
+import {useAlert} from "react-alert";
+import {useAxios} from "../../../helpers/AxiosHelper";
+import {allProcesses} from "../../../helpers/ProcessHelper";
 import DataService from "../../../services/DataService";
 import SourceColumnService from "../../../services/SourceColumnService";
 import FormInput from "../../../ui/Form/FormInput";
 import FormSelect from "../../../ui/Form/FormSelect";
 
-const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
+const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
 		useAxios("/source/allSimple", { useCache: false });
 	const [columnsData, setColumnsData] = useState([]);
@@ -40,7 +40,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 			updatedSelected.scoreColumn = null;
 			updatedSelected.assessorFilter = [];
 			setColumnsData([]);
-			onItemUpdate(updatedSelected);
+			onItemUpdate(updatedSelected, page);
 			setAssessorFilter({
 				data: [],
 				loading: false,
@@ -159,7 +159,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 												updatedSelected.scoreColumn = null;
 												updatedSelected.assessorFilter = [];
 											}
-											onItemUpdate(updatedSelected);
+											onItemUpdate(updatedSelected, page);
 										}
 									}
 								}}
@@ -199,7 +199,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 										}
 
 										updatedSelected.assessorFilter = [];
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -227,7 +227,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 									updatedSelected.assessorFilter = e.map(
 										(filter) => filter.value
 									);
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isLoading={columnsLoading}
 								isMulti={true}
@@ -241,7 +241,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 									if (e.target.value > 0) {
 										let newSelected = selectedItem;
 										newSelected.fontSize = e.target.value;
-										onItemUpdate(newSelected);
+										onItemUpdate(newSelected, page);
 									}
 								}}
 							/>
@@ -271,7 +271,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 										} else {
 											updatedSelected.processColumn = null;
 										}
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -291,7 +291,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 									updatedSelected.processFilter = e.map(
 										(filter) => filter.value
 									);
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={true}
 							/>
@@ -304,7 +304,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 									if (e.target.value > 0) {
 										let newSelected = selectedItem;
 										newSelected.processWidth = e.target.value;
-										onItemUpdate(newSelected);
+										onItemUpdate(newSelected, page);
 									}
 								}}
 							/>
@@ -333,7 +333,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 									} else {
 										updatedSelected.levelColumn = null;
 									}
-									onItemUpdate(updatedSelected);
+									onItemUpdate(updatedSelected, page);
 								}}
 								isMulti={false}
 								isLoading={columnsLoading}
@@ -353,7 +353,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 									if (e.value !== selectedItem.levelLimit) {
 										let updatedSelected = selectedItem;
 										updatedSelected.levelLimit = e.value;
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -376,7 +376,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 									if (e.value !== selectedItem.specificLevel) {
 										let updatedSelected = selectedItem;
 										updatedSelected.specificLevel = e.value;
-										onItemUpdate(updatedSelected);
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -407,6 +407,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 										} else {
 											updatedSelected.criterionColumn = null;
 										}
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -421,7 +422,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 									if (e.target.value > 0) {
 										let newSelected = selectedItem;
 										newSelected.criterionWidth = e.target.value;
-										onItemUpdate(newSelected);
+										onItemUpdate(newSelected, page);
 									}
 								}}
 							/>
@@ -451,6 +452,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 										} else {
 											updatedSelected.scoreColumn = null;
 										}
+										onItemUpdate(updatedSelected, page);
 									}
 								}}
 								isMulti={false}
@@ -473,7 +475,7 @@ const CapabilityTableSettigs = ({ selectedItem, onItemUpdate }) => {
 										onSelect={(e) => {
 											let updatedSelected = selectedItem;
 											updatedSelected.aggregateScoresFunction = e.value;
-											onItemUpdate(updatedSelected);
+											onItemUpdate(updatedSelected, page);
 										}}
 										isMulti={false}
 									/>

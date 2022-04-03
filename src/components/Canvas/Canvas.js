@@ -3,6 +3,7 @@ import CanvasItem from "./CanvasItem";
 const Canvas = ({
 	items,
 	orientation = "VERTICAL",
+	page = 0,
 	onMove,
 	onResize,
 	onSelect,
@@ -27,6 +28,7 @@ const Canvas = ({
 						<CanvasItem
 							key={i.id}
 							item={i}
+							page={page}
 							onMove={onMove}
 							onResize={onResize}
 							onSelect={onSelect}

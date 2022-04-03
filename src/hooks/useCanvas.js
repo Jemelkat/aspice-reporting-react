@@ -1,26 +1,26 @@
-import { useState } from "react";
-import { useAlert } from "react-alert";
+import {useState} from "react";
+import {useAlert} from "react-alert";
 import {
 	CapabilityTable,
 	createItemFromExisting,
+	LevelBarGraph,
 	LevelPieGraph,
 	SimpleTable,
-	LevelBarGraph,
 	Text,
 	typeEnum,
 } from "../helpers/ClassHelper";
 
 const useCanvas = () => {
 	const alert = useAlert();
-	const [items, setItems] = useState([]);
+	const [items, setItems] = useState([[]]);
 	const [pieX, setPieX] = useState(0);
 	const [barX, setBarX] = useState(0);
 	const [selectedItem, setSelectedItem] = useState(null);
 	const [showSelected, setShowSelected] = useState(false);
 
 	//Get next id for new component
-	const nextItemId = () => {
-		const itemArray = items;
+	const nextItemId = (page = 0) => {
+		const itemArray = items[page];
 		if (itemArray.length === 0) {
 			return 0;
 		} else {
@@ -34,57 +34,66 @@ const useCanvas = () => {
 	};
 
 	//Change state list item x, y on each item move
-	const moveItemHandler = (id, x, y) => {
-		let updatedItem = items.find((i) => i.id === id);
+	const moveItemHandler = (id, x, y, page = 0) => {
+		let updatedItem = items[page].find((i) => i.id === id);
 		updatedItem.x = x;
 		updatedItem.y = y;
-		const newItems = items.map((i) => (i.id === id ? updatedItem : i));
+		const newItems = items[page].map((i) => (i.id === id ? updatedItem : i));
+		const newItemsCombined = [...items];
+		newItemsCombined.splice(page, 1, newItems);
 		// setSelectedItem(updatedItem);
 		// setShowSelected(true);
-		setItems(newItems);
+		setItems(newItemsCombined);
 	};
 
 	//Change height, width state of item on resize
-	const resizeItemHandler = (id, x, y, height, width) => {
-		let updatedItem = items.find((i) => i.id === id);
+	const resizeItemHandler = (id, x, y, height, width, page = 0) => {
+		let updatedItem = items[page].find((i) => i.id === id);
 		updatedItem.x = x;
 		updatedItem.y = y;
 		updatedItem.height = height;
 		updatedItem.width = width;
-		const newItems = items.map((i) => (i.id === id ? updatedItem : i));
+		const newItems = items[page].map((i) => (i.id === id ? updatedItem : i));
+		const newItemsCombined = [...items];
+		newItemsCombined.splice(page, 1, newItems);
 		// setSelectedItem(updatedItem);
 		// setShowSelected(true);
-		setItems(newItems);
+		setItems(newItemsCombined);
 	};
 
 	//Select item from items list by id
-	const selectItemHandler = (id) => {
+	const selectItemHandler = (id, page = 0) => {
 		if (id === null) {
 			setShowSelected(false);
 			setSelectedItem(null);
 		} else {
-			setSelectedItem(items.find((i) => i.id === id));
+			const foundItem = items[page].find((i) => i.id === id);
+			setSelectedItem(foundItem);
 			setShowSelected(true);
 		}
 	};
 
 	//Delete item from items list by id
-	const deleteItemHandler = (id) => {
+	const deleteItemHandler = (id, page = 0) => {
 		setShowSelected(false);
 		setSelectedItem(null);
-		setItems(items.filter((c) => c.id !== id));
+		const itemsRemoved = items[page].filter((c) => c.id !== id);
+		let newItemsCombined = [...items];
+		newItemsCombined.splice(page, 1, itemsRemoved);
+		setItems(newItemsCombined);
 	};
 
 	//Add new item to list for report and template canvas
-	const addItemHandler = (type) => {
+	const addItemHandler = (type, page = 0) => {
+		let newItems = items[page];
 		let item;
 		switch (type) {
 			case typeEnum.TEXT:
-				item = new Text(nextItemId(), 0, 0, 150, 50, typeEnum.TEXT);
+				item = new Text(nextItemId(page), 0, 0, 150, 50, typeEnum.TEXT);
 				break;
 			case typeEnum.LEVEL_BAR_GRAPH:
 				item = new LevelBarGraph(
-					nextItemId(),
+					nextItemId(page),
 					0,
 					0,
 					200,
@@ -94,7 +103,7 @@ const useCanvas = () => {
 				break;
 			case typeEnum.SIMPLE_TABLE:
 				item = new SimpleTable(
-					nextItemId(),
+					nextItemId(page),
 					0,
 					0,
 					350,
@@ -104,7 +113,7 @@ const useCanvas = () => {
 				break;
 			case typeEnum.CAPABILITY_TABLE:
 				item = new CapabilityTable(
-					nextItemId(),
+					nextItemId(page),
 					0,
 					0,
 					350,
@@ -114,7 +123,7 @@ const useCanvas = () => {
 				break;
 			case typeEnum.LEVEL_PIE_GRAPH:
 				item = new LevelPieGraph(
-					nextItemId(),
+					nextItemId(page),
 					0,
 					0,
 					200,
@@ -125,12 +134,15 @@ const useCanvas = () => {
 			default:
 				break;
 		}
-		const itemsArray = [...items, item];
-		setItems(itemsArray);
+		newItems.push(item);
+		let newItemsCombined = [...items];
+		newItemsCombined.splice(page, 1, newItems);
+		setItems(newItemsCombined);
 	};
 
 	//Add new item to list for dashboard
 	const addItemDashboardHandler = (type, currentColumns) => {
+		let newItems = items[0];
 		let item;
 		switch (type) {
 			case typeEnum.LEVEL_BAR_GRAPH: {
@@ -164,54 +176,66 @@ const useCanvas = () => {
 			default:
 				break;
 		}
-		const itemsArray = [...items, item];
-		setItems(itemsArray);
+		newItems.push(item);
+		let newItemsCombined = [...items];
+		newItemsCombined.splice(0, 1, newItems);
+		setItems(newItemsCombined);
 	};
 
 	//Change order of items in list - will be rendered on top or bottom off canvas
-	const layerItemHandler = (id, to) => {
-		const nextFirst = items.filter((item) => item.id === id);
-		const nextItems = items.filter((item) => item.id !== id);
+	const layerItemHandler = (id, to, page = 0) => {
+		const nextFirst = items[page].filter((item) => item.id === id);
+		const nextItems = items[page].filter((item) => item.id !== id);
 		//Check if item exists
 		if (nextFirst.length !== 1) {
 			alert.error("Canvas error - found multiple items with id " + id);
 			return;
 		}
+		let newItems = [];
 		if (to === "top") {
-			setItems([...nextItems, nextFirst[0]]);
+			newItems = [...nextItems, nextFirst[0]];
 		}
 		if (to === "bottom") {
-			setItems([nextFirst[0], ...nextItems]);
+			newItems = [nextFirst[0], ...nextItems];
 		}
+		const newItemsCombined = [...items];
+		newItemsCombined.splice(page, 1, newItems);
+		// setSelectedItem(updatedItem);
+		// setShowSelected(true);
+		setItems(newItemsCombined);
 	};
 
 	//Update exosting item in items list
-	const updateItemHandler = (item) => {
+	const updateItemHandler = (item, page = 0) => {
 		//Find the item and replace
-		const newItems = items.map((i) => (i.id === item.id ? item : i));
+		const newItems = items[page].map((i) => (i.id === item.id ? item : i));
 		const newSelected = newItems.find((i) => i.id === item.id);
-		setItems(newItems);
+		const newItemsCombined = [...items];
+		newItemsCombined.splice(page, 1, newItems);
+		setItems(newItemsCombined);
 		setSelectedItem(newSelected);
 	};
 
-	const parseLoadedItems = (items) => {
+	const parseLoadedItems = (loadedItems, page = 0) => {
 		let newItems = [];
-		setItems([]);
-		if (items) {
-			newItems = items.map((i) => createItemFromExisting(i));
-			setItems(newItems);
+		setItems([[]]);
+		if (loadedItems) {
+			newItems = loadedItems.map((i) => createItemFromExisting(i));
+			let newItemsCombined = [...items];
+			newItemsCombined.splice(page, 1, newItems);
+			setItems(newItemsCombined);
 			selectItemHandler(null);
 		}
 	};
 
 	//Fixes items position when orientation changes - items wont be outside of canvas
-	const orientationHandler = (orientation) => {
+	const orientationHandler = (orientation, page = 0) => {
 		const DPI = window.devicePixelRatio * 96;
 		const upscale = (297 * DPI) / 25.4 / ((210 * DPI) / 25.4);
 		const downscale = (210 * DPI) / 25.4 / ((297 * DPI) / 25.4);
 		let newItems = [];
 		if (orientation === "VERTICAL") {
-			items.map((i) => {
+			items[page].map((i) => {
 				i.width = parseInt(i.width * downscale);
 				i.height = parseInt(i.height * upscale);
 				i.x = parseInt(i.x * downscale);
@@ -219,7 +243,7 @@ const useCanvas = () => {
 				newItems.push(i);
 			});
 		} else {
-			items.map((i) => {
+			items[page].map((i) => {
 				i.width = parseInt(i.width * upscale);
 				i.height = parseInt(i.height * downscale);
 				i.x = parseInt(i.x * upscale);
@@ -227,7 +251,9 @@ const useCanvas = () => {
 				newItems.push(i);
 			});
 		}
-		setItems(newItems);
+		let newItemsCombined = [...items];
+		newItemsCombined.splice(page, 1, newItems);
+		setItems(newItemsCombined);
 	};
 
 	return {

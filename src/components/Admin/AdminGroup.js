@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import Table from "../../ui/Table/Table";
 import TableMenuButton from "../../ui/Table/TableMenuButton";
 import TableMenuItem from "../../ui/Table/TableMenuItem";
 import MyDialog from "../../ui/Dialog/MyDialog";
 import AdminGroupForm from "./AdminGroupForm";
-import { useAxios } from "../../helpers/AxiosHelper";
+import {useAxios} from "../../helpers/AxiosHelper";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
-import { useAlert } from "react-alert";
+import {useAlert} from "react-alert";
 
 const API_URL = "http://localhost:8080";
 

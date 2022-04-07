@@ -1,14 +1,14 @@
-import {Field, Form, Formik} from "formik";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import {useEffect, useState} from "react";
-import {InformationCircleIcon} from "@heroicons/react/outline";
-import {useAlert} from "react-alert";
+import { useEffect, useState } from "react";
+import { InformationCircleIcon } from "@heroicons/react/outline";
+import { useAlert } from "react-alert";
 import HorizontalLine from "../../../ui/HorizontalLine";
 import SourceColumnService from "../../../services/SourceColumnService";
 import DataService from "../../../services/DataService";
 import FormInput from "../../../ui/Form/FormInput";
-import {allProcesses} from "../../../helpers/ProcessHelper";
+import { allProcesses } from "../../../helpers/ProcessHelper";
 
 const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -30,9 +30,9 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	}, [selectedItem.sources]);
 
 	//Load new columns data on source change
-	const getColumnsHandler = async (sourceId) => {
+	const getColumnsHandler = async (sources) => {
 		setColumnsError(false);
-		if (sourceId.length === 0) {
+		if (sources.length === 0) {
 			let updatedSelected = selectedItem;
 			updatedSelected.assessorColumnName = null;
 			updatedSelected.processColumnName = null;
@@ -47,7 +47,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 			try {
 				setColumnsLoading(true);
 				const response = await SourceColumnService.getColumnsForSources(
-					sourceId
+					sources
 				);
 				//Reset selected columns when changed
 				updateSelectedColumns(response.data);
@@ -62,7 +62,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 
 			//Get filter values for assessors
 			if (selectedItem.assessorColumnName != null) {
-				getAssessorFilterData(sourceId, selectedItem.assessorColumnName);
+				getAssessorFilterData(sources, selectedItem.assessorColumnName);
 			}
 		}
 	};
@@ -100,11 +100,11 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	};
 
 	//Gets distinct values from assessor column
-	const getAssessorFilterData = async (sourceId, columnName) => {
+	const getAssessorFilterData = async (sources, columnName) => {
 		setAssessorFilter({ data: [], loading: true, error: false });
 		try {
 			const response = await SourceColumnService.getValuesForSourcesAndColumn(
-				sourceId,
+				sources,
 				columnName
 			);
 			const newData = response.data.map((filter) => ({

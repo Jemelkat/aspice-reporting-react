@@ -1,9 +1,9 @@
-import {Rnd} from "react-rnd";
-import {typeEnum} from "../../helpers/ClassHelper";
-import {ReactComponent as SVGSourceBarHorizontal} from "../../assets/barchart-horizontal-sources.svg";
-import {ReactComponent as SVGSourceBarVertical} from "../../assets/barchart-vertical-sources.svg";
-import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
-import {useEffect, useRef} from "react";
+import { Rnd } from "react-rnd";
+import { typeEnum } from "../../helpers/ClassHelper";
+import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
+import { ReactComponent as SVGSourceBarVertical } from "../../assets/barchart-vertical-sources.svg";
+import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
+import { useEffect, useRef } from "react";
 
 const CanvasItem = ({
 	item,
@@ -161,14 +161,13 @@ const CanvasItem = ({
 			}}
 			onClick={(e) => {
 				e.stopPropagation();
-				debugger;
 				onSelect(item.id, page);
 			}}
 		>
 			<div
 				className={`${
-					isSelected ? "border-gray-400" : "border-gray-300 "
-				}  w-full h-full border-2 border-gray-200 rounded-sm shadow-lg bg-gray-50 `}
+					isSelected ? "border-gray-800" : "border-gray-300 "
+				}  w-full h-full border-2 rounded-sm shadow-lg bg-gray-50 `}
 			>
 				{renderContent()}
 			</div>

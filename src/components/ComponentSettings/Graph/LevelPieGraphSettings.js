@@ -140,7 +140,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 									onItemUpdate(newSelected, page);
 								}}
 							/>
-							<label className='font-medium'>Source:</label>
+							<label className='font-medium'>Source</label>
 							<Field
 								name='sourceFormId'
 								options={DataService.parseSourcesSelectData(sourcesData)}
@@ -348,7 +348,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'>Score/Value:</label>
+							<label className='font-medium'>Score/Value</label>
 							<Field
 								name='scoreColumn'
 								options={columnsData}

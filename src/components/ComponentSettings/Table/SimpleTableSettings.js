@@ -1,6 +1,6 @@
-import {Field, Form, Formik} from "formik";
-import {useEffect, useState} from "react";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import SourceColumnService from "../../../services/SourceColumnService";
 import Button from "../../../ui/Button";
 import SidebarDisclosure from "../../../ui/Sidebar/SidebarDisclosure";
@@ -8,7 +8,7 @@ import FormInput from "../../../ui/Form/FormInput";
 import FormSelect from "../../../ui/Form/FormSelect";
 import TableColumnSelect from "./TableColumnSelect";
 import DataService from "../../../services/DataService";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 
 const SimpleTableSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -87,7 +87,7 @@ const SimpleTableSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 					<Form className='flex flex-col'>
 						<div className='flex flex-col justify-center mb-4'>
 							<div className='flex flex-col justify-center pl-4 pr-4'>
-								<label className='font-medium'>Source:</label>
+								<label className='mt-2 font-medium'>Source</label>
 								<Field
 									name='sourceFormId'
 									options={DataService.parseSourcesSelectData(sourcesData)}
@@ -150,8 +150,8 @@ const SimpleTableSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 									>
 										<div className='flex flex-col justify-center pl-4 pr-4'>
 											{selectedItem.source && (
-												<div key={index}>
-													<label className='mt-2'>Column:</label>
+												<div className='pt-2' key={index}>
+													<label>Column</label>
 													<TableColumnSelect
 														page={page}
 														name={"columns"}
@@ -179,7 +179,7 @@ const SimpleTableSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 												</div>
 											)}
 											<Button
-												className='mt-2'
+												className='mt-2 mb-2'
 												onClick={() => {
 													removeColumnHandler(index);
 												}}

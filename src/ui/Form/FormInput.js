@@ -8,7 +8,7 @@ const FormInput = ({ label, ...props }) => {
 		<>
 			{label && <label htmlFor={props.id || props.name}>{label}</label>}
 			<input
-				className='px-3 py-1 border border-gray-400 rounded'
+				className='px-3 border border-gray-400 rounded spy-1'
 				{...field}
 				{...props}
 			/>

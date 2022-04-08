@@ -222,7 +222,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								ordering={true}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'> Assessor column</label>
+							<label className='font-medium'>Assessor</label>
 							<Field
 								name='assessorColumnName'
 								options={columnsData}
@@ -286,7 +286,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								isLoading={assessorFilter.loading}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'>Process column:</label>
+							<label className='font-medium'>Process</label>
 							<Field
 								name='processColumnName'
 								options={columnsData}

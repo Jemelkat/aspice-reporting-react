@@ -1,13 +1,14 @@
-import {InformationCircleIcon} from "@heroicons/react/outline";
-import {Field, Form, Formik} from "formik";
-import {useEffect, useState} from "react";
-import {useAlert} from "react-alert";
-import {useAxios} from "../../../helpers/AxiosHelper";
-import {allProcesses} from "../../../helpers/ProcessHelper";
+import { InformationCircleIcon } from "@heroicons/react/outline";
+import { Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import { useAlert } from "react-alert";
+import { useAxios } from "../../../helpers/AxiosHelper";
+import { allProcesses } from "../../../helpers/ProcessHelper";
 import DataService from "../../../services/DataService";
 import SourceColumnService from "../../../services/SourceColumnService";
 import FormInput from "../../../ui/Form/FormInput";
 import FormSelect from "../../../ui/Form/FormSelect";
+import HorizontalLine from "../../../ui/HorizontalLine";
 
 const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -122,7 +123,7 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4'>
-							<label className='font-medium'>Source:</label>
+							<label className='mt-2 font-medium'>Source</label>
 							<Field
 								name='sourceFormId'
 								options={DataService.parseSourcesSelectData(sourcesData)}
@@ -166,6 +167,7 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={sourcesLoading}
 							/>
+							<HorizontalLine />
 							<label className='font-medium'>Assessor</label>
 							<Field
 								name='assessorColumn'
@@ -245,8 +247,8 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 									}
 								}}
 							/>
-							<div className='mt-2 mb-2 border border-black border-opacity-50'></div>
-							<label className='font-medium'>Process name:</label>
+							<HorizontalLine />
+							<label className='font-medium'>Process</label>
 							<Field
 								name='processColumn'
 								options={columnsData}
@@ -308,8 +310,8 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 									}
 								}}
 							/>
-							<div className='mt-2 mb-2 border border-black border-opacity-50'></div>
-							<label className='font-medium'>Capability level:</label>
+							<HorizontalLine />
+							<label className='font-medium'>Capability level</label>
 							<Field
 								name='levelColumn'
 								options={columnsData}
@@ -338,7 +340,7 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 								isMulti={false}
 								isLoading={columnsLoading}
 							/>
-							<label>Max level:</label>
+							<label>Max level</label>
 							<Field
 								name='levelLimit'
 								options={[
@@ -358,8 +360,7 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 								}}
 								isMulti={false}
 							/>
-
-							<label>Specific level:</label>
+							<label>Specific level</label>
 							<Field
 								name='specificLevel'
 								options={[
@@ -382,7 +383,7 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 								isMulti={false}
 							/>
 							<div className='mt-2 mb-2 border border-black border-opacity-50'></div>
-							<label className='font-medium'>Performance criterion:</label>
+							<label className='font-medium'>Performance criterion</label>
 							<Field
 								name='criterionColumn'
 								options={columnsData}
@@ -426,8 +427,8 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 									}
 								}}
 							/>
-							<div className='mt-2 mb-2 border border-black border-opacity-50'></div>
-							<label className='font-medium'>Score/Value:</label>
+							<HorizontalLine />
+							<label className='font-medium'>Score/Value</label>
 							<Field
 								name='scoreColumn'
 								options={columnsData}

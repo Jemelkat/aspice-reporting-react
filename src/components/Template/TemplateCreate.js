@@ -20,7 +20,6 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	const alert = useAlert();
 	const {
 		items,
-		setItems,
 		showSelected,
 		selectedItem,
 		moveItemHandler,

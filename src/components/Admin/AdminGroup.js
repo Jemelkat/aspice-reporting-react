@@ -1,12 +1,13 @@
-import {useEffect, useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from "react";
 import Table from "../../ui/Table/Table";
 import TableMenuButton from "../../ui/Table/TableMenuButton";
 import TableMenuItem from "../../ui/Table/TableMenuItem";
 import MyDialog from "../../ui/Dialog/MyDialog";
 import AdminGroupForm from "./AdminGroupForm";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useAxios } from "../../helpers/AxiosHelper";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
+import Button from "../../ui/Button";
 
 const API_URL = "http://localhost:8080";
 
@@ -20,6 +21,7 @@ class Group {
 }
 
 const ACTIONS = {
+	CREATE: "create",
 	EDIT: "edit",
 	REMOVE: "delete",
 	NONE: "none",
@@ -111,9 +113,6 @@ const AdminGroup = () => {
 	const handleActions = (e) => {
 		e.preventDefault();
 		switch (e.target.id) {
-			case "addUserToGroupButton":
-				setAction(ACTIONS.ADD);
-				break;
 			case "userDeleteButton":
 				setAction(ACTIONS.REMOVE);
 				break;
@@ -128,7 +127,23 @@ const AdminGroup = () => {
 
 	//Render form based on action
 	const renderForms = (action) => {
+		debugger;
 		switch (action) {
+			case ACTIONS.CREATE:
+				return (
+					<MyDialog
+						title='Create group'
+						isOpen={showForm}
+						onClose={() => setShowForm(false)}
+					>
+						<AdminGroupForm
+							create={true}
+							data={selectedGroup}
+							onCancel={formCancelHandler}
+							onSuccess={refetchHandler}
+						></AdminGroupForm>
+					</MyDialog>
+				);
 			case ACTIONS.EDIT:
 				return (
 					<MyDialog
@@ -190,16 +205,35 @@ const AdminGroup = () => {
 	}, []);
 
 	return (
-		<div className='flex items-start flex-grow px-10 py-10 min-w-min'>
-			<Table
-				columns={columns}
-				data={parseGroupData(data)}
-				isLoading={loading}
-				initSortColumn={"id"}
-			/>
-			{/*Render forms if they need to be shown */}
-			{showForm && renderForms(action)}
-		</div>
+		<>
+			<div className='w-full px-10'>
+				<div className='flex justify-end px-2 py-4 space-x-1'>
+					<Button
+						onClick={() => {
+							setSelectedGroup({});
+							setAction(ACTIONS.CREATE);
+							setShowForm(true);
+						}}
+						dark={true}
+					>
+						Create group
+					</Button>
+					<Button onClick={refetch} dark={true}>
+						Refresh data
+					</Button>
+				</div>
+				<div className='flex items-start flex-grow pb-10 min-w-min'>
+					<Table
+						columns={columns}
+						data={parseGroupData(data)}
+						isLoading={loading}
+						initSortColumn={"id"}
+					/>
+					{/*Render forms if they need to be shown */}
+					{showForm && renderForms(action)}
+				</div>
+			</div>
+		</>
 	);
 };
 

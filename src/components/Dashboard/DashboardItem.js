@@ -1,7 +1,7 @@
-import {PencilIcon, RefreshIcon, UploadIcon} from "@heroicons/react/solid";
-import {useEffect, useRef, useState} from "react";
-import {useAlert} from "react-alert";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { PencilIcon, RefreshIcon, UploadIcon } from "@heroicons/react/solid";
+import { useEffect, useRef, useState } from "react";
+import { useAlert } from "react-alert";
+import { typeEnum } from "../../helpers/ClassHelper";
 import Loader from "../../ui/Loader/Loader";
 import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";
@@ -149,7 +149,9 @@ const DashboardItem = ({
 	return (
 		<div className='flex flex-col h-full'>
 			<div className='w-full text-white bg-gray-800 h-7'>
-				<div className='pl-1 mr-10 overflow-hidden'>{item.type}</div>
+				<div className='pl-1 mr-10 overflow-hidden'>
+					{item.title ? item.title : item.type}
+				</div>
 				<div className='absolute top-0 right-0 h-6 bg-gray-800'>
 					<div className='flex pt-0.5'>
 						{isDefined && (

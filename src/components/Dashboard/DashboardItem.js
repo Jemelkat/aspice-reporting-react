@@ -78,7 +78,6 @@ const DashboardItem = ({
 								[data.assessor]: parseInt(data.level),
 							});
 						}
-						console.log(graphData);
 						break;
 					}
 					/*Pie graph needs data in format 
@@ -238,7 +237,9 @@ const DashboardItem = ({
 						}}
 						className='w-10 h-10 cursor-pointer'
 					></PencilIcon>
-					<span className='text-center'>Please define the graph sources</span>
+					<span className='text-center'>
+						Please define the graph source and columns
+					</span>
 				</div>
 			)}
 		</div>

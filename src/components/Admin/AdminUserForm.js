@@ -1,11 +1,11 @@
-import { Field, Form, Formik } from "formik";
+import {Field, Form, Formik} from "formik";
 import FormInput from "../../ui/Form/FormInput";
 import * as Yup from "yup";
 import FormHidden from "../../ui/Form/FormHidden";
-import { useAxios } from "../../helpers/AxiosHelper";
+import {useAxios} from "../../helpers/AxiosHelper";
 import Button from "../../ui/Button";
 import FormSelect from "../../ui/Form/FormSelect";
-import { useAlert } from "react-alert";
+import {useAlert} from "react-alert";
 
 const AdminUserForm = (props) => {
 	const [

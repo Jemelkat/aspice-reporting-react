@@ -1,12 +1,12 @@
-import { Field, Form, Formik } from "formik";
+import {Field, Form, Formik} from "formik";
 import FormInput from "../../ui/Form/FormInput";
 import CustomSelect from "../../ui/Form/FormSelect";
 import * as Yup from "yup";
 import FormHidden from "../../ui/Form/FormHidden";
-import { useEffect, useState } from "react";
-import { useAxios } from "../../helpers/AxiosHelper";
+import {useEffect, useState} from "react";
+import {useAxios} from "../../helpers/AxiosHelper";
 import Button from "../../ui/Button";
-import { useAlert } from "react-alert";
+import {useAlert} from "react-alert";
 
 const AdminGroupForm = ({ create = false, ...props }) => {
 	const [usersDataSelect, setUsersDataSelect] = useState([]);

@@ -1,9 +1,9 @@
-import { InformationCircleIcon } from "@heroicons/react/outline";
-import { Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
-import { useAlert } from "react-alert";
-import { useAxios } from "../../../helpers/AxiosHelper";
-import { allProcesses } from "../../../helpers/ProcessHelper";
+import {InformationCircleIcon} from "@heroicons/react/outline";
+import {Field, Form, Formik} from "formik";
+import {useEffect, useState} from "react";
+import {useAlert} from "react-alert";
+import {useAxios} from "../../../helpers/AxiosHelper";
+import {allProcesses} from "../../../helpers/ProcessHelper";
 import DataService from "../../../services/DataService";
 import SourceColumnService from "../../../services/SourceColumnService";
 import FormInput from "../../../ui/Form/FormInput";

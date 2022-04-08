@@ -1,5 +1,5 @@
-import { Disclosure, Transition } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/solid";
+import {Disclosure, Transition} from "@headlessui/react";
+import {ChevronUpIcon} from "@heroicons/react/solid";
 
 const SidebarDisclosure = ({ dark = false, ...props }) => {
 	return (

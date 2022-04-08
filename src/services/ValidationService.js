@@ -1,4 +1,5 @@
-import { typeEnum } from "../helpers/ClassHelper";
+import {typeEnum} from "../helpers/ClassHelper";
+
 export default class ValidationService {
 	static validateItemsFilled = (items) => {
 		for (let i = 0; i < items.length; i++) {

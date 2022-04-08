@@ -1,5 +1,5 @@
-import { Menu } from "@headlessui/react";
-import { Link } from "react-router-dom";
+import {Menu} from "@headlessui/react";
+import {Link} from "react-router-dom";
 
 function NavProfileItem(props) {
 	return (

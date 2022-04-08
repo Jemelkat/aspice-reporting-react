@@ -1,4 +1,4 @@
-import { useField } from "formik";
+import {useField} from "formik";
 
 const FormInput = ({ label, ...props }) => {
 	// useField() returns [formik.getFieldProps(), formik.getFieldMeta()]

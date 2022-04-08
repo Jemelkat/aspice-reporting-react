@@ -1,13 +1,13 @@
 import {useState} from "react";
 import {useAlert} from "react-alert";
 import {
-	CapabilityTable,
-	createItemFromExisting,
-	LevelBarGraph,
-	LevelPieGraph,
-	SimpleTable,
-	Text,
-	typeEnum,
+    CapabilityTable,
+    createItemFromExisting,
+    LevelBarGraph,
+    LevelPieGraph,
+    SimpleTable,
+    Text,
+    typeEnum,
 } from "../helpers/ClassHelper";
 
 const useCanvas = () => {

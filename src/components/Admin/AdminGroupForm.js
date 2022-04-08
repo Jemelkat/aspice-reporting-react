@@ -64,7 +64,11 @@ const AdminGroupForm = ({ create = false, ...props }) => {
 					props.onSuccess();
 				})
 				.catch((e) => {
-					alert.error("Error editing group.");
+					if (e.response?.data && e.response?.data.message) {
+						alert.error(e.response.data.message);
+					} else {
+						alert.error("Error creating group.");
+					}
 				});
 		} else {
 			//Post data
@@ -80,7 +84,11 @@ const AdminGroupForm = ({ create = false, ...props }) => {
 					props.onSuccess();
 				})
 				.catch((e) => {
-					alert.error("Error editing group.");
+					if (e.response?.data && e.response?.data.message) {
+						alert.error(e.response.data.message);
+					} else {
+						alert.error("Error editing group.");
+					}
 				});
 		}
 	}

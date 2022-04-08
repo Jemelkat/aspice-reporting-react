@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 
 const CanvasItem = ({
 	item,
+	error,
 	page = 0,
 	onResize,
 	onMove,
@@ -48,6 +49,17 @@ const CanvasItem = ({
 						>
 							LEVEL BAR GRAPH
 						</div>
+						{error && error.id === item.id && (
+							<div
+								className={`${
+									isSelected
+										? "border-t-2 border-r-2 border-l-2 border-b border-gray-800"
+										: "border-t-2 border-r-2 border-l-2 border-b border-gray-300"
+								} absolute top-0 left-0 w-full text-sm text-center text-red-500 bg-white`}
+							>
+								{error.error}
+							</div>
+						)}
 					</div>
 				);
 			case typeEnum.CAPABILITY_TABLE:
@@ -63,6 +75,17 @@ const CanvasItem = ({
 						<div className='absolute w-32 -ml-16 text-xl text-center bg-white border border-black -mt-7 top-1/2 left-1/2'>
 							CAPABILITY TABLE
 						</div>
+						{error && error.id === item.id && (
+							<div
+								className={`${
+									isSelected
+										? "border-t-2 border-r-2 border-l-2 border-b border-gray-800"
+										: "border-t-2 border-r-2 border-l-2 border-b border-gray-300"
+								} absolute top-0 left-0 w-full text-sm text-center text-red-500 bg-white`}
+							>
+								{error.error}
+							</div>
+						)}
 					</div>
 				);
 			case typeEnum.SIMPLE_TABLE:
@@ -71,6 +94,17 @@ const CanvasItem = ({
 						<div className='absolute w-32 -mt-5 -ml-16 text-2xl text-center bg-white border border-black top-1/2 left-1/2'>
 							TABLE
 						</div>
+						{error && error.id === item.id && (
+							<div
+								className={`${
+									isSelected
+										? "border-t-2 border-r-2 border-l-2 border-b border-gray-800"
+										: "border-t-2 border-r-2 border-l-2 border-b border-gray-300"
+								} absolute top-0 left-0 w-full text-sm text-center text-red-500 bg-white`}
+							>
+								{error.error}
+							</div>
+						)}
 						{item.tableColumns && item.tableColumns.length > 0 ? (
 							<div className='flex'>
 								{item.tableColumns.map((column) => (
@@ -119,6 +153,17 @@ const CanvasItem = ({
 						>
 							LEVEL PIE GRAPH
 						</div>
+						{error && error.id === item.id && (
+							<div
+								className={`${
+									isSelected
+										? "border-t-2 border-r-2 border-l-2 border-b border-gray-800"
+										: "border-t-2 border-r-2 border-l-2 border-b border-gray-300"
+								} absolute top-0 left-0 w-full text-sm text-center text-red-500 bg-white`}
+							>
+								{error.error}
+							</div>
+						)}
 					</div>
 				);
 
@@ -134,7 +179,7 @@ const CanvasItem = ({
 	useEffect(() => {
 		itemRef.current.updateSize({ width: item.width, height: item.height });
 	}, [item.height, item.width]);
-
+	useEffect(() => {}, [error]);
 	return (
 		<Rnd
 			ref={itemRef}

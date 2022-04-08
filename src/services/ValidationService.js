@@ -1,4 +1,4 @@
-import {typeEnum} from "../helpers/ClassHelper";
+import { typeEnum } from "../helpers/ClassHelper";
 
 export default class ValidationService {
 	static validateItemsFilled = (items) => {
@@ -78,7 +78,7 @@ export default class ValidationService {
 						}
 						break;
 					case typeEnum.LEVEL_BAR_GRAPH:
-						if (item.sources.length == 0) {
+						if (item.sources.length === 0) {
 							return {
 								id: item.id,
 								page: i,
@@ -166,6 +166,8 @@ export default class ValidationService {
 							};
 						}
 						break;
+					default:
+						return { id: null, page: 0, error: "Unknown item type on canvas." };
 				}
 			}
 		}

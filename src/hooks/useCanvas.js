@@ -1,13 +1,13 @@
-import {useState} from "react";
-import {useAlert} from "react-alert";
+import { useState } from "react";
+import { useAlert } from "react-alert";
 import {
-    CapabilityTable,
-    createItemFromExisting,
-    LevelBarGraph,
-    LevelPieGraph,
-    SimpleTable,
-    Text,
-    typeEnum,
+	CapabilityTable,
+	createItemFromExisting,
+	LevelBarGraph,
+	LevelPieGraph,
+	SimpleTable,
+	Text,
+	typeEnum,
 } from "../helpers/ClassHelper";
 
 const useCanvas = () => {
@@ -235,7 +235,7 @@ const useCanvas = () => {
 		const downscale = (210 * DPI) / 25.4 / ((297 * DPI) / 25.4);
 		let newItems = [];
 		if (orientation === "VERTICAL") {
-			items[page].map((i) => {
+			items[page].forEach((i) => {
 				i.width = parseInt(i.width * downscale);
 				i.height = parseInt(i.height * upscale);
 				i.x = parseInt(i.x * downscale);
@@ -243,7 +243,7 @@ const useCanvas = () => {
 				newItems.push(i);
 			});
 		} else {
-			items[page].map((i) => {
+			items[page].forEach((i) => {
 				i.width = parseInt(i.width * upscale);
 				i.height = parseInt(i.height * downscale);
 				i.x = parseInt(i.x * upscale);

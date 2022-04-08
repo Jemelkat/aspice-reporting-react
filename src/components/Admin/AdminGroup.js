@@ -1,12 +1,12 @@
-import {useEffect, useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from "react";
 import Table from "../../ui/Table/Table";
 import TableMenuButton from "../../ui/Table/TableMenuButton";
 import TableMenuItem from "../../ui/Table/TableMenuItem";
 import MyDialog from "../../ui/Dialog/MyDialog";
 import AdminGroupForm from "./AdminGroupForm";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useAxios } from "../../helpers/AxiosHelper";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 import Button from "../../ui/Button";
 
 const API_URL = "http://localhost:8080";
@@ -29,18 +29,12 @@ const ACTIONS = {
 
 const AdminGroup = () => {
 	//Fetch group data
-	const [{ data, loading, error }, refetch] = useAxios(
-		API_URL + "/admin/allGroups",
-		{
-			manual: true,
-			useCache: false,
-		}
-	);
+	const [{ data, loading }, refetch] = useAxios(API_URL + "/admin/allGroups", {
+		manual: true,
+		useCache: false,
+	});
 	//Delete
-	const [
-		{ data: deleteData, loading: deleteLoading, error: deleteError },
-		executeDelete,
-	] = useAxios(
+	const [, executeDelete] = useAxios(
 		{
 			url: API_URL + "/group/delete",
 			method: "DELETE",

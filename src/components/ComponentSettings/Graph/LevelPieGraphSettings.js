@@ -1,11 +1,11 @@
-import {Field, Form, Formik} from "formik";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import SourceColumnService from "../../../services/SourceColumnService";
-import {InformationCircleIcon} from "@heroicons/react/outline";
+import { InformationCircleIcon } from "@heroicons/react/outline";
 import HorizontalLine from "../../../ui/HorizontalLine";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 import FormInput from "../../../ui/Form/FormInput";
 import DataService from "../../../services/DataService";
 
@@ -110,6 +110,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 		<Formik
 			enableReinitialize={true}
 			initialValues={{
+				title: selectedItem.title,
 				sourceFormId: selectedItem.source?.id,
 				assessorColumn: selectedItem.assessorColumn?.id,
 				assessorFilter: selectedItem.assessorFilter,
@@ -125,6 +126,20 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
+							<label className='mt-2 font-medium'>Title:</label>
+							<Field
+								style={{ minHeight: "2rem" }}
+								as='textarea'
+								name='title'
+								className='border-2 border-gray-300'
+								onChange={(e) => {
+									const newSelected = {
+										...selectedItem,
+										title: e.target.value,
+									};
+									onItemUpdate(newSelected, page);
+								}}
+							/>
 							<label className='font-medium'>Source:</label>
 							<Field
 								name='sourceFormId'

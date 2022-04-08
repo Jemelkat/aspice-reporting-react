@@ -140,6 +140,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 		<Formik
 			enableReinitialize={true}
 			initialValues={{
+				title: selectedItem.title,
 				orientation: selectedItem.orientation,
 				sources: selectedItem?.sources.map((i) => i.id),
 				assessorColumnName: selectedItem.assessorColumnName,
@@ -158,6 +159,21 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
+							<label className='mt-2 font-medium'>Title:</label>
+							<Field
+								style={{ minHeight: "2rem" }}
+								as='textarea'
+								name='title'
+								className='border-2 border-gray-300'
+								onChange={(e) => {
+									handleChange(e);
+									const newSelected = {
+										...selectedItem,
+										title: e.target.value,
+									};
+									onItemUpdate(newSelected, page);
+								}}
+							/>
 							<label className='font-medium'>Graph orientation</label>
 							<Field
 								name='orientation'

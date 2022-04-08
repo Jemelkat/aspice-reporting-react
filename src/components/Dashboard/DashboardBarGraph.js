@@ -1,5 +1,15 @@
-import {useEffect, useState} from "react";
-import {Bar, BarChart, CartesianGrid, Label, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis,} from "recharts";
+import { useEffect, useState } from "react";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Label,
+	Legend,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
 import colors from "../../helpers/ColorsHelper";
 
 const maxWordLength = 10;
@@ -7,7 +17,6 @@ const maxWordLength = 10;
 const DashboardBarGraph = ({ data, isHorizontal }) => {
 	const [processNamesSize, setProcessNamesSize] = useState(0);
 	useEffect(() => {
-		debugger;
 		const longestName = Math.max(...data.map((it) => it["process"].length));
 		if (longestName > maxWordLength) {
 			setProcessNamesSize(0);

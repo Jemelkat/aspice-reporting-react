@@ -78,7 +78,6 @@ const DashboardItem = ({
 								[data.assessor]: parseInt(data.level),
 							});
 						}
-						console.log(graphData);
 						break;
 					}
 					/*Pie graph needs data in format 
@@ -149,7 +148,9 @@ const DashboardItem = ({
 	return (
 		<div className='flex flex-col h-full'>
 			<div className='w-full text-white bg-gray-800 h-7'>
-				<div className='pl-1 mr-10 overflow-hidden'>{item.type}</div>
+				<div className='pl-1 mr-10 overflow-hidden'>
+					{item.title ? item.title : item.type}
+				</div>
 				<div className='absolute top-0 right-0 h-6 bg-gray-800'>
 					<div className='flex pt-0.5'>
 						{isDefined && (
@@ -236,7 +237,9 @@ const DashboardItem = ({
 						}}
 						className='w-10 h-10 cursor-pointer'
 					></PencilIcon>
-					<span className='text-center'>Please define the graph sources</span>
+					<span className='text-center'>
+						Please define the graph source and columns
+					</span>
 				</div>
 			)}
 		</div>

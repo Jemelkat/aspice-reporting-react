@@ -11,7 +11,7 @@ const SidebarDisclosure = ({ dark = false, ...props }) => {
 							dark
 								? "text-white bg-gray-800 hover:bg-gray-700"
 								: "text-gray-800 bg-gray-200 hover:bg-gray-300"
-						} flex justify-between w-full px-4 py-2 font-medium text-left  shadow-sm  drop-shadow-2xl`}
+						} flex justify-between w-full px-4 py-2 font-medium text-left  shadow-sm border-b border-gray-800`}
 					>
 						<span>{props.name}</span>
 						<ChevronUpIcon
@@ -28,7 +28,7 @@ const SidebarDisclosure = ({ dark = false, ...props }) => {
 						leaveFrom='transform scale-100 opacity-100'
 						leaveTo='transform scale-95 opacity-0'
 					>
-						<Disclosure.Panel className='pb-1 text-gray-800'>
+						<Disclosure.Panel className='pb-1 text-gray-800 border-b border-gray-400'>
 							{props.children}
 						</Disclosure.Panel>
 					</Transition>

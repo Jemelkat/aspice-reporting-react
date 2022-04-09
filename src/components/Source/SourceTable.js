@@ -92,7 +92,7 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 						</TableMenuItem>
 						<TableMenuItem
 							key='3'
-							addClasses='text-red-800'
+							addClasses='text-red-600'
 							onClickAction={() => {
 								if (
 									row.original.shared === "" ||

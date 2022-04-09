@@ -30,9 +30,9 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	}, [selectedItem.sources]);
 
 	//Load new columns data on source change
-	const getColumnsHandler = async (sourceId) => {
+	const getColumnsHandler = async (sources) => {
 		setColumnsError(false);
-		if (sourceId.length === 0) {
+		if (sources.length === 0) {
 			let updatedSelected = selectedItem;
 			updatedSelected.assessorColumnName = null;
 			updatedSelected.processColumnName = null;
@@ -47,7 +47,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 			try {
 				setColumnsLoading(true);
 				const response = await SourceColumnService.getColumnsForSources(
-					sourceId
+					sources
 				);
 				//Reset selected columns when changed
 				updateSelectedColumns(response.data);
@@ -62,7 +62,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 
 			//Get filter values for assessors
 			if (selectedItem.assessorColumnName != null) {
-				getAssessorFilterData(sourceId, selectedItem.assessorColumnName);
+				getAssessorFilterData(sources, selectedItem.assessorColumnName);
 			}
 		}
 	};
@@ -100,11 +100,11 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	};
 
 	//Gets distinct values from assessor column
-	const getAssessorFilterData = async (sourceId, columnName) => {
+	const getAssessorFilterData = async (sources, columnName) => {
 		setAssessorFilter({ data: [], loading: true, error: false });
 		try {
 			const response = await SourceColumnService.getValuesForSourcesAndColumn(
-				sourceId,
+				sources,
 				columnName
 			);
 			const newData = response.data.map((filter) => ({
@@ -140,6 +140,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 		<Formik
 			enableReinitialize={true}
 			initialValues={{
+				title: selectedItem.title,
 				orientation: selectedItem.orientation,
 				sources: selectedItem?.sources.map((i) => i.id),
 				assessorColumnName: selectedItem.assessorColumnName,
@@ -158,6 +159,21 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
+							<label className='mt-2 font-medium'>Title:</label>
+							<Field
+								style={{ minHeight: "2rem" }}
+								as='textarea'
+								name='title'
+								className='border-2 border-gray-300'
+								onChange={(e) => {
+									handleChange(e);
+									const newSelected = {
+										...selectedItem,
+										title: e.target.value,
+									};
+									onItemUpdate(newSelected, page);
+								}}
+							/>
 							<label className='font-medium'>Graph orientation</label>
 							<Field
 								name='orientation'
@@ -206,7 +222,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								ordering={true}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'> Assessor column</label>
+							<label className='font-medium'>Assessor</label>
 							<Field
 								name='assessorColumnName'
 								options={columnsData}
@@ -270,7 +286,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								isLoading={assessorFilter.loading}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'>Process column:</label>
+							<label className='font-medium'>Process</label>
 							<Field
 								name='processColumnName'
 								options={columnsData}

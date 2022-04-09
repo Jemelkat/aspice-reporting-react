@@ -58,7 +58,7 @@ function NavProfile() {
 						link='#'
 						text='Sign out'
 						onClick={logoutHandler}
-						addClasses='text-red-700 font-semibold'
+						addClasses='text-red-500 font-semibold'
 					></NavProfileItem>
 				</Menu.Items>
 			</Transition>

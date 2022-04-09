@@ -54,6 +54,7 @@ export const createItemFromExisting = (item) => {
 				item.width,
 				item.height,
 				item.type,
+				item.title ? item.title : "",
 				item.orientation ? item.orientation : "HORIZONTAL",
 				item.sources ? item.sources : [],
 				item.assessorColumnName ? item.assessorColumnName : null,
@@ -64,7 +65,7 @@ export const createItemFromExisting = (item) => {
 				item.criterionColumnName ? item.criterionColumnName : null,
 				item.scoreColumnName ? item.scoreColumnName : null,
 				item.aggregateScoresFunction ? item.aggregateScoresFunction : "NONE",
-				item.aggregateLevels != null && item.aggregateLevels != undefined
+				item.aggregateLevels != null && typeof item.aggregateLevels != undefined
 					? item.aggregateLevels
 					: false,
 				item.aggregateSourcesFunction ? item.aggregateSourcesFunction : "NONE"
@@ -77,6 +78,7 @@ export const createItemFromExisting = (item) => {
 				item.width,
 				item.height,
 				item.type,
+				item.title ? item.title : "",
 				item.source ? item.source : null,
 				item.assessorColumn ? item.assessorColumn : null,
 				item.assessorFilter ? item.assessorFilter : [],
@@ -203,6 +205,7 @@ export class LevelBarGraph extends Item {
 		width,
 		height,
 		type,
+		title = "",
 		orientation = "HORIZONTAL",
 		sources = [],
 		assessorColumnName = null,
@@ -217,6 +220,7 @@ export class LevelBarGraph extends Item {
 		aggregateSourcesFunction = "NONE"
 	) {
 		super(id, x, y, width, height, type);
+		this.title = title;
 		this.orientation = orientation;
 		this.sources = sources;
 		this.assessorColumnName = assessorColumnName;
@@ -240,6 +244,7 @@ export class LevelPieGraph extends Item {
 		width,
 		height,
 		type,
+		title = "",
 		source = null,
 		assessorColumn = null,
 		assessorFilter = [],
@@ -251,6 +256,7 @@ export class LevelPieGraph extends Item {
 		aggregateLevels = false
 	) {
 		super(id, x, y, width, height, type);
+		this.title = title;
 		this.source = source;
 		this.assessorColumn = assessorColumn;
 		this.assessorFilter = assessorFilter;

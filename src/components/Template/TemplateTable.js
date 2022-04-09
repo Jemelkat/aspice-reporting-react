@@ -66,7 +66,7 @@ const TemplateTable = (props) => {
 						</Link>
 						<TableMenuItem
 							key='3'
-							addClasses='text-red-800'
+							addClasses='text-red-600'
 							onClickAction={(e) => {
 								setSelectedRow(row.original);
 								setShowDeleteDialog(true);

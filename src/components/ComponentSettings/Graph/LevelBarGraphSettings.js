@@ -1,14 +1,14 @@
-import {Field, Form, Formik} from "formik";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import {useEffect, useState} from "react";
-import {InformationCircleIcon} from "@heroicons/react/outline";
-import {useAlert} from "react-alert";
+import { useEffect, useState } from "react";
+import { InformationCircleIcon } from "@heroicons/react/outline";
+import { useAlert } from "react-alert";
 import HorizontalLine from "../../../ui/HorizontalLine";
 import SourceColumnService from "../../../services/SourceColumnService";
 import DataService from "../../../services/DataService";
 import FormInput from "../../../ui/Form/FormInput";
-import {allProcesses} from "../../../helpers/ProcessHelper";
+import { allProcesses } from "../../../helpers/ProcessHelper";
 
 const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -25,7 +25,6 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 
 	//Load columns if source is defined on load
 	useEffect(() => {
-		debugger;
 		getColumnsHandler(selectedItem.sources.map((s) => s.id));
 	}, [selectedItem.sources]);
 
@@ -416,12 +415,19 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 							</label>
 							<Field
 								name='aggregateScoresFunction'
-								options={[
-									{ value: "MIN", label: "MIN" },
-									{ value: "MAX", label: "MAX" },
-									{ value: "AVG", label: "AVG" },
-									{ value: "NONE", label: "NONE" },
-								]}
+								options={
+									selectedItem.aggregateLevels
+										? [
+												{ value: "MIN", label: "MIN" },
+												{ value: "MAX", label: "MAX" },
+										  ]
+										: [
+												{ value: "MIN", label: "MIN" },
+												{ value: "MAX", label: "MAX" },
+												{ value: "AVG", label: "AVG" },
+												{ value: "NONE", label: "NONE" },
+										  ]
+								}
 								component={FormSelect}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;

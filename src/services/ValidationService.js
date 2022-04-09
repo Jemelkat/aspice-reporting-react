@@ -166,6 +166,8 @@ export default class ValidationService {
 							};
 						}
 						break;
+					case typeEnum.TEXT:
+						return null;
 					default:
 						return { id: null, page: 0, error: "Unknown item type on canvas." };
 				}

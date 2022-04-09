@@ -1,14 +1,15 @@
-import {InformationCircleIcon} from "@heroicons/react/outline";
-import {Field, Form, Formik} from "formik";
-import {useEffect, useState} from "react";
-import {useAlert} from "react-alert";
-import {useAxios} from "../../../helpers/AxiosHelper";
-import {allProcesses} from "../../../helpers/ProcessHelper";
+import { InformationCircleIcon } from "@heroicons/react/outline";
+import { Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import { useAlert } from "react-alert";
+import { useAxios } from "../../../helpers/AxiosHelper";
+import { allProcesses } from "../../../helpers/ProcessHelper";
 import DataService from "../../../services/DataService";
 import SourceColumnService from "../../../services/SourceColumnService";
 import FormInput from "../../../ui/Form/FormInput";
 import FormSelect from "../../../ui/Form/FormSelect";
 import HorizontalLine from "../../../ui/HorizontalLine";
+import * as Yup from "yup";
 
 const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 	const [{ data: sourcesData, loading: sourcesLoading, error: sourcesError }] =
@@ -118,6 +119,17 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 				scoreColumn: selectedItem.scoreColumn?.id,
 				aggregateScoresFunction: selectedItem.aggregateScoresFunction,
 			}}
+			validationSchema={Yup.object().shape({
+				fontSize: Yup.number("Please enter valid number.")
+					.moreThan(0, "Please enter number > 0.")
+					.integer("Please enter valid number."),
+				processWidth: Yup.number("Please enter valid number.")
+					.moreThan(0, "Please enter number > 0.")
+					.integer("Please enter valid number."),
+				criterionWidth: Yup.number("Please enter valid number.")
+					.moreThan(0, "Please enter number > 0.")
+					.integer("Please enter valid number."),
+			})}
 		>
 			{({ values, handleChange }) => (
 				<Form className='flex flex-col'>

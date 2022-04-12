@@ -1,7 +1,7 @@
 import Button from "../../ui/Button";
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { typeEnum } from "../../helpers/ClassHelper";
 import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 
@@ -11,7 +11,8 @@ const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
 			<div className='sticky top-0 flex justify-start h-screen'>
 				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
 					<SidebarLink sidebarName='Dashboard'>
-						<div className='flex flex-col p-4'>
+						<div className='flex flex-col p-4 text-center'>
+							Save dashboard to store changes.
 							<Button dark className='mt-4' onClick={() => onSave()}>
 								Save
 							</Button>

@@ -1,20 +1,18 @@
 import "../../../node_modules/react-grid-layout/css/styles.css";
 import "../../..//node_modules/react-resizable/css/styles.css";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import ItemSettingsMenu from "../../components/ComponentSettings/ItemSettingsMenu";
 import DashBoardMenu from "../../components/Dashboard/DashboardMenu";
 import useCanvas from "../../hooks/useCanvas";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 import Loader from "../../ui/Loader/Loader";
 import DashboardCanvas from "../../components/Dashboard/DashboardCanvas";
-import {createItemFromExisting} from "../../helpers/ClassHelper";
 import ExportItemDialog from "../../components/Dashboard/ExportItemDialog";
 import DashboardService from "../../services/DashboardService";
 
 const DashBoard = () => {
 	const {
 		items,
-		setItems,
 		selectedItem,
 		setSelectedItem,
 		showSelected,
@@ -38,23 +36,32 @@ const DashBoard = () => {
 
 	//Changes selected item ID based on ID provided on save
 	const updateIdsOnSaveHandler = (updatedItems, selectedIdIndex = -1) => {
-		let newItems = [];
-		if (items[0]) {
-			//Update ids of items - items are in same order as in DB
-			items[0].forEach((item, index) => {
-				const newItem = { ...item, id: updatedItems[index].id };
-				newItems.push(createItemFromExisting(newItem));
-			});
-			let finalItems = items;
-			setItems(finalItems.splice(0, 1, newItems));
+		debugger;
+		if (updatedItems.length > 0) {
+			parseLoadedItems(updatedItems);
+			let selectedItem = null;
 			if (selectedIdIndex !== -1) {
-				setSelectedItem(newItems[selectedIdIndex]);
-				return newItems[selectedIdIndex];
-			} else {
-				selectItemHandler(null);
-				return null;
+				selectedItem = updatedItems[selectedIdIndex];
 			}
+			setSelectedItem(selectedItem);
 		}
+
+		// if (items[0]) {
+		// 	//Update ids of items - items are in same order as in DB
+		// 	items[0].forEach((item, index) => {
+		// 		const newItem = { ...item, id: updatedItems[index].id };
+		// 		newItems.push(createItemFromExisting(newItem));
+		// 	});
+		// 	let finalItems = items;
+		// 	setItems(finalItems.splice(0, 1, newItems));
+		// 	if (selectedIdIndex !== -1) {
+		// 		setSelectedItem(newItems[selectedIdIndex]);
+		// 		return newItems[selectedIdIndex];
+		// 	} else {
+		// 		selectItemHandler(null);
+		// 		return null;
+		// 	}
+		// }
 	};
 
 	//Saves dashboard to DB

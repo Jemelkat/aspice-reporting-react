@@ -85,7 +85,7 @@ const ItemSettingsMenu = ({
 					show={show}
 				>
 					<span
-						class='font-extrabold border-1 drop-shadow-l absolute top-1 left-1 cursor-pointer'
+						className='absolute font-extrabold cursor-pointer border-1 drop-shadow-l top-1 left-1'
 						onClick={() => onClose()}
 					>
 						<svg

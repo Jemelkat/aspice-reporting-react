@@ -119,17 +119,18 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	//Saves and generates report as response
 	const generateReportHandler = async (formValues) => {
 		let saveResponse;
-		setProcessing(true);
 		try {
 			saveResponse = await saveReportHandler(formValues);
 		} catch (e) {
 			setProcessing(false);
 			return;
 		}
+		setProcessing(true);
 		//Validate if all items are filled in
 		const errors = ValidationService.validateItemsFilled(saveResponse.newItems);
 		if (errors !== null) {
 			setItemErrors(errors);
+			setProcessing(false);
 			return;
 		}
 		try {

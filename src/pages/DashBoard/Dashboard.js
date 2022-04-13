@@ -13,8 +13,8 @@ import DashboardService from "../../services/DashboardService";
 const DashBoard = () => {
 	const {
 		items,
+		setItems,
 		selectedItem,
-		setSelectedItem,
 		showSelected,
 		addItemDashboardHandler,
 		deleteItemHandler,
@@ -35,55 +35,35 @@ const DashBoard = () => {
 	};
 
 	//Changes selected item ID based on ID provided on save
-	const updateIdsOnSaveHandler = (updatedItems, selectedIdIndex = -1) => {
+	const updateIdsOnSaveHandler = (updatedItems) => {
 		debugger;
 		if (updatedItems.length > 0) {
-			parseLoadedItems(updatedItems);
-			let selectedItem = null;
-			if (selectedIdIndex !== -1) {
-				selectedItem = updatedItems[selectedIdIndex];
+			let newItems = items[0];
+			newItems = newItems.slice(0, updatedItems.length);
+			for (let i = 0; i < newItems.length; i++) {
+				//Clean object but keep reference - needed for useEffect hook
+				for (var variableKey in newItems[i]) {
+					if (newItems[i].hasOwnProperty(variableKey)) {
+						delete newItems[i][variableKey];
+					}
+				}
+				newItems[i] = Object.assign(newItems[i], updatedItems[i]);
 			}
-			setSelectedItem(selectedItem);
+			setItems([newItems]);
+			return selectedItem;
 		}
-
-		// if (items[0]) {
-		// 	//Update ids of items - items are in same order as in DB
-		// 	items[0].forEach((item, index) => {
-		// 		const newItem = { ...item, id: updatedItems[index].id };
-		// 		newItems.push(createItemFromExisting(newItem));
-		// 	});
-		// 	let finalItems = items;
-		// 	setItems(finalItems.splice(0, 1, newItems));
-		// 	if (selectedIdIndex !== -1) {
-		// 		setSelectedItem(newItems[selectedIdIndex]);
-		// 		return newItems[selectedIdIndex];
-		// 	} else {
-		// 		selectItemHandler(null);
-		// 		return null;
-		// 	}
-		// }
 	};
 
 	//Saves dashboard to DB
 	const saveDashboardHandler = async (selectedId = null) => {
-		debugger;
 		//save
 		try {
-			//Find index on which the current selected ID is
-			let index = -1;
-			if (selectedId !== null) {
-				index = items[0].findIndex((item) => item.id === selectedId);
-				if (index === -1) {
-					alert.error("Dashboard data integrity error.");
-					throw new Error("Dashboard data integrity error.");
-				}
-			}
 			const response = await DashboardService.saveDashboard(
 				dashboardId,
 				items[0]
 			);
 			alert.info("Dashboard saved");
-			return updateIdsOnSaveHandler(response.data.dashboardItems, index);
+			return updateIdsOnSaveHandler(response.data.dashboardItems);
 		} catch (e) {
 			alert.error("Error saving dashboard.");
 			throw e;
@@ -91,7 +71,6 @@ const DashBoard = () => {
 	};
 
 	useEffect(() => {
-		debugger;
 		setDashboardLoading(true);
 		DashboardService.getDashboard()
 			.then((response) => {

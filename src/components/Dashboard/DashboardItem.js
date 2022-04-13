@@ -1,7 +1,7 @@
-import {PencilIcon, RefreshIcon, UploadIcon} from "@heroicons/react/solid";
-import {useEffect, useRef, useState} from "react";
-import {useAlert} from "react-alert";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { PencilIcon, RefreshIcon, UploadIcon } from "@heroicons/react/solid";
+import { useEffect, useRef, useState } from "react";
+import { useAlert } from "react-alert";
+import { typeEnum } from "../../helpers/ClassHelper";
 import Loader from "../../ui/Loader/Loader";
 import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";
@@ -103,8 +103,10 @@ const DashboardItem = ({
 	//Load data on first render if item is fully defined
 	const firstUpdate = useRef(true);
 	useEffect(() => {
-		setData(null);
 		const defined = isItemDefined(item);
+		if (!defined) {
+			setData(null);
+		}
 		setIsDefined(defined);
 		if (firstUpdate.current) {
 			firstUpdate.current = false;

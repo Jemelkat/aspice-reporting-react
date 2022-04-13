@@ -4,15 +4,27 @@ import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import { typeEnum } from "../../helpers/ClassHelper";
 import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
+import Loader from "../../ui/Loader/Loader";
 
-const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
+const DashboardMenu = ({
+	onSave,
+	onAddComponent,
+	currentColumns,
+	isProcessing,
+}) => {
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
 			<div className='sticky top-0 flex justify-start h-screen'>
 				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
 					<SidebarLink sidebarName='Dashboard'>
-						<div className='flex flex-col p-4 text-center'>
-							Save dashboard to store changes.
+						<div className='flex flex-col w-full p-4 text-center'>
+							{isProcessing ? (
+								<div className='w-full mt-4'>
+									<Loader size='small'>Processing...</Loader>
+								</div>
+							) : (
+								"Save dashboard to store changes."
+							)}
 							<Button dark className='mt-4' onClick={() => onSave()}>
 								Save
 							</Button>

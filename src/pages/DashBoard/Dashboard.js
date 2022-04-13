@@ -35,7 +35,7 @@ const DashBoard = () => {
 	};
 
 	//Changes selected item ID based on ID provided on save
-	const updateIdsOnSaveHandler = (updatedItems) => {
+	const updateIdsOnSaveHandler = (updatedItems, selectedIdIndex = -1) => {
 		debugger;
 		if (updatedItems.length > 0) {
 			let newItems = items[0];
@@ -49,6 +49,10 @@ const DashBoard = () => {
 				}
 				newItems[i] = Object.assign(newItems[i], updatedItems[i]);
 			}
+			let selectedItem = null;
+			if (selectedIdIndex !== -1) {
+				selectedItem = updatedItems[selectedIdIndex];
+			}
 			setItems([newItems]);
 			return selectedItem;
 		}
@@ -58,12 +62,21 @@ const DashBoard = () => {
 	const saveDashboardHandler = async (selectedId = null) => {
 		//save
 		try {
+			//Find index on which the requested item ID is
+			let index = -1;
+			if (selectedId !== null) {
+				index = items[0].findIndex((item) => item.id === selectedId);
+				if (index === -1) {
+					alert.error("Dashboard data integrity error.");
+					throw new Error("Dashboard data integrity error.");
+				}
+			}
 			const response = await DashboardService.saveDashboard(
 				dashboardId,
 				items[0]
 			);
 			alert.info("Dashboard saved");
-			return updateIdsOnSaveHandler(response.data.dashboardItems);
+			return updateIdsOnSaveHandler(response.data.dashboardItems, index);
 		} catch (e) {
 			alert.error("Error saving dashboard.");
 			throw e;

@@ -1,5 +1,5 @@
-import {useMemo, useState} from "react";
-import {useAlert} from "react-alert";
+import { useMemo, useState } from "react";
+import { useAlert } from "react-alert";
 import Button from "../../ui/Button";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
 import Table from "../../ui/Table/Table";
@@ -8,14 +8,13 @@ import TableMenuItem from "../../ui/Table/TableMenuItem";
 import PageTitle from "../../ui/PageTitle";
 import ShareDialog from "../../ui/Dialog/ShareDialog";
 import SourceService from "../../services/SourceService";
-import {saveAs} from "file-saver";
+import { saveAs } from "file-saver";
 
 class SourceObject {
 	constructor(data) {
 		this.id = data.id;
 		this.sourceName = data.sourceName;
 		this.sourceCreated = data.sourceCreated;
-		this.sourceLastUpdated = data.sourceLastUpdated;
 		this.shared = data.shared ? "Yes" : "";
 		this.sharedBy = data.sharedBy;
 	}
@@ -44,10 +43,6 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 				accessor: "sourceCreated",
 			},
 			{
-				Header: "Last updated",
-				accessor: "sourceLastUpdated",
-			},
-			{
 				Header: "Shared",
 				accessor: "shared",
 			},
@@ -60,7 +55,7 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 				Cell: ({ row }) => (
 					<TableMenuButton buttonText='Actions'>
 						<TableMenuItem
-							key='1'
+							key={row.original.id + "share"}
 							onClickAction={() => {
 								if (
 									row.original.shared === "" ||
@@ -76,7 +71,7 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 							Share
 						</TableMenuItem>
 						<TableMenuItem
-							key='2'
+							key={row.original.id + "download"}
 							onClickAction={() => {
 								SourceService.download(row.original.id).then(
 									(generateResponse) => {
@@ -91,7 +86,7 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 							Download CSV
 						</TableMenuItem>
 						<TableMenuItem
-							key='3'
+							key={row.original.id + "delete"}
 							addClasses='text-red-600'
 							onClickAction={() => {
 								if (

@@ -9,6 +9,7 @@ import DashboardService from "../../services/DashboardService";
 
 const DashboardItem = ({
 	item,
+	isSelected = false,
 	onSelectItem,
 	onDeleteItem,
 	onSave,
@@ -148,7 +149,12 @@ const DashboardItem = ({
 	};
 
 	return (
-		<div className='flex flex-col h-full'>
+		<div
+			className={`flex flex-col h-full ${
+				isSelected && "border-2 border-gray-800"
+			}`}
+			key={item.id}
+		>
 			<div className='w-full text-white bg-gray-800 h-7'>
 				<div className='pl-1 mr-10 overflow-hidden'>
 					{item.title ? item.title : item.type}

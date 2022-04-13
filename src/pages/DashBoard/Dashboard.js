@@ -110,6 +110,7 @@ const DashBoard = () => {
 							onResize={resizeItemHandler}
 							onBreakpointChange={breakPointChangeHandler}
 							onExport={() => setShowExportDialog(true)}
+							selectedItem={selectedItem}
 						></DashboardCanvas>
 
 						<ItemSettingsMenu

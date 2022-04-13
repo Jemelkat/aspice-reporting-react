@@ -1,6 +1,6 @@
-import {useState} from "react";
-import {Responsive} from "react-grid-layout";
-import {SizeMe} from "react-sizeme";
+import { useState } from "react";
+import { Responsive } from "react-grid-layout";
+import { SizeMe } from "react-sizeme";
 import DashboardItem from "./DashboardItem";
 import LocalStorageService from "../../services/LocalStorageService";
 
@@ -13,6 +13,7 @@ const DashboardCanvas = ({
 	onSelectItem,
 	onDeleteItem,
 	onExport,
+	selectedItem,
 }) => {
 	const getLayouts = (key) => {
 		let LSLayouts = LocalStorageService.getFromLS(key);
@@ -51,6 +52,7 @@ const DashboardCanvas = ({
 				<DashboardItem
 					key={el.id}
 					item={el}
+					isSelected={selectedItem && selectedItem.id === el.id}
 					onSelectItem={onSelectItem}
 					onDeleteItem={onDeleteItem}
 					onSave={onSave}

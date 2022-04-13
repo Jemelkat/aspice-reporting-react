@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { parseDate } from "../../helpers/DateHelper";
 import { axiosInstance, useAxios } from "../../helpers/AxiosHelper";
 import Button from "../../ui/Button";
 import Table from "../../ui/Table/Table";
@@ -14,8 +15,8 @@ class ReportObject {
 	constructor(data) {
 		this.id = data.id;
 		this.reportName = data.reportName;
-		this.reportCreated = data.reportCreated;
-		this.reportUpdated = data.reportLastUpdated;
+		this.reportCreated = parseDate(data.reportCreated);
+		this.reportUpdated = parseDate(data.reportLastUpdated);
 		this.shared = data.shared ? "Yes" : "";
 		this.sharedBy = data.sharedBy;
 	}

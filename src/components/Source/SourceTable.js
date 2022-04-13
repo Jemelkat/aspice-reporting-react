@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useAlert } from "react-alert";
 import Button from "../../ui/Button";
+import { parseDate } from "../../helpers/DateHelper";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
 import Table from "../../ui/Table/Table";
 import TableMenuButton from "../../ui/Table/TableMenuButton";
@@ -14,7 +15,7 @@ class SourceObject {
 	constructor(data) {
 		this.id = data.id;
 		this.sourceName = data.sourceName;
-		this.sourceCreated = data.sourceCreated;
+		this.sourceCreated = parseDate(data.sourceCreated);
 		this.shared = data.shared ? "Yes" : "";
 		this.sharedBy = data.sharedBy;
 	}

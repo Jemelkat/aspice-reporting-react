@@ -1,5 +1,5 @@
-import {Transition} from "@headlessui/react";
-import {useEffect} from "react";
+import { Transition } from "@headlessui/react";
+import { useEffect } from "react";
 
 const Loader = ({ fullscreen, dark, size = "normal", ...props }) => {
 	useEffect(() => {}, []);
@@ -13,7 +13,7 @@ const Loader = ({ fullscreen, dark, size = "normal", ...props }) => {
 			<Transition
 				appear={true}
 				show={true}
-				enter='transform transition ease-in-out duration-1000'
+				enter='transform transition ease-in-out'
 				enterFrom='opacity-0 scale-50'
 				enterTo='opacity-100 scale-100'
 			>

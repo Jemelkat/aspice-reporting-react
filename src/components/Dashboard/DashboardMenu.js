@@ -18,15 +18,19 @@ const DashboardMenu = ({
 				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
 					<SidebarLink sidebarName='Dashboard'>
 						<div className='flex flex-col w-full p-4 text-center'>
-							{isProcessing ? (
-								<div className='w-full mt-4'>
-									<Loader size='small'>Processing...</Loader>
-								</div>
-							) : (
-								"Save dashboard to store changes."
-							)}
-							<Button dark className='mt-4' onClick={() => onSave()}>
-								Save
+							Save dashboard to store changes.
+							<Button
+								dark
+								className={`mt-4 ${isProcessing && "hover:bg-gray-800"}`}
+								onClick={() => onSave()}
+							>
+								{isProcessing ? (
+									<div className='mt-1.5 mb-0.5'>
+										<Loader size='small' dark={true} />
+									</div>
+								) : (
+									"Save"
+								)}
 							</Button>
 						</div>
 					</SidebarLink>

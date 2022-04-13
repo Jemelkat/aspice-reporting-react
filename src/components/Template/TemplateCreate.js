@@ -63,7 +63,6 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	};
 
 	useEffect(() => {
-		debugger;
 		//EDIT - load template for reseting
 		if (mode === "edit") {
 			setTemplateLoading(true);
@@ -120,7 +119,6 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 	return (
 		<>
 			{templateLoading && mode === "edit" ? (
-				/**TODO ADJUST TO MIDDLE */
 				<div className='flex flex-col items-center justify-center h-screen-header'>
 					<Loader>Loading template data...</Loader>
 				</div>

@@ -1,9 +1,10 @@
-import {Rnd} from "react-rnd";
-import {typeEnum} from "../../helpers/ClassHelper";
-import {ReactComponent as SVGSourceBarHorizontal} from "../../assets/barchart-horizontal-sources.svg";
-import {ReactComponent as SVGSourceBarVertical} from "../../assets/barchart-vertical-sources.svg";
-import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
-import {useEffect, useRef} from "react";
+import { Rnd } from "react-rnd";
+import { typeEnum } from "../../helpers/ClassHelper";
+import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
+import { ReactComponent as SVGSourceBarVertical } from "../../assets/barchart-vertical-sources.svg";
+import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
+import { ReactComponent as CapabilityTable } from "../../assets/capability-table.svg";
+import { useEffect, useRef } from "react";
 
 const CanvasItem = ({
 	item,
@@ -64,28 +65,31 @@ const CanvasItem = ({
 				);
 			case typeEnum.CAPABILITY_TABLE:
 				return (
-					<div
-						style={{
-							fontFamily: "DejaVu",
-							whiteSpace: "pre-line",
-							fontSize: "11px",
-							lineHeight: "1.2",
-						}}
-					>
-						<div className='absolute w-32 -ml-16 text-xl text-center bg-white border border-black -mt-7 top-1/2 left-1/2'>
-							CAPABILITY TABLE
-						</div>
-						{error && error.id === item.id && (
-							<div
-								className={`${
-									isSelected
-										? "border-t-2 border-r-2 border-l-2 border-b border-gray-800"
-										: "border-t-2 border-r-2 border-l-2 border-b border-gray-300"
-								} absolute top-0 left-0 w-full text-sm text-center text-red-500 bg-white`}
-							>
-								{error.error}
+					<div className='w-full h-full'>
+						<CapabilityTable></CapabilityTable>
+						<div
+							style={{
+								fontFamily: "DejaVu",
+								whiteSpace: "pre-line",
+								fontSize: "11px",
+								lineHeight: "1.2",
+							}}
+						>
+							<div className='absolute w-32 -ml-16 text-xl text-center bg-white border border-black -mt-7 top-1/2 left-1/2'>
+								CAPABILITY TABLE
 							</div>
-						)}
+							{error && error.id === item.id && (
+								<div
+									className={`${
+										isSelected
+											? "border-t-2 border-r-2 border-l-2 border-b border-gray-800"
+											: "border-t-2 border-r-2 border-l-2 border-b border-gray-300"
+									} absolute top-0 left-0 w-full text-sm text-center text-red-500 bg-white`}
+								>
+									{error.error}
+								</div>
+							)}
+						</div>
 					</div>
 				);
 			case typeEnum.SIMPLE_TABLE:

@@ -1,6 +1,6 @@
-import {useContext, useEffect, useState} from "react";
-import {useHistory} from "react-router";
-import {AuthContext} from "../../context/AuthContext";
+import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import { AuthContext } from "../../context/AuthContext";
 import AuthService from "../../services/AuthService";
 import Loader from "../../ui/Loader/Loader";
 
@@ -67,7 +67,7 @@ function LoginForm(props) {
 					.then((response) => {
 						setLoggedUser(AuthService.getLoggedUser());
 						setIsLoading(false);
-						history.push("/home");
+						history.push("/");
 					})
 					.catch((error) => {
 						setIsLoading(false);
@@ -94,7 +94,7 @@ function LoginForm(props) {
 							.then((response) => {
 								setLoggedUser(AuthService.getLoggedUser());
 								setIsLoading(false);
-								history.push("/home");
+								history.push("/");
 							})
 							.catch((error) => {
 								setIsLoading(false);

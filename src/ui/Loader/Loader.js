@@ -1,13 +1,13 @@
 import { Transition } from "@headlessui/react";
 import { useEffect } from "react";
 
-const Loader = ({ fullscreen, dark, size = "normal", ...props }) => {
+const Loader = ({ fullscreen, dark, size = "normal", bg = "", ...props }) => {
 	useEffect(() => {}, []);
 
 	return (
 		<div
 			className={`flex flex-col justify-center text-center ${
-				dark ? "bg-gray-800" : "bg-white"
+				bg ? bg : dark ? "bg-gray-800" : "bg-white"
 			} ${fullscreen ? "min-h-screen min-w-screen" : "h-full"} `}
 		>
 			<Transition

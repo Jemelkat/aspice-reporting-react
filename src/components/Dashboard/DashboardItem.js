@@ -215,7 +215,9 @@ const DashboardItem = ({
 			</div>
 			{isLoading ? (
 				<div className='h-full'>
-					<Loader size='small'>Loading graph data...</Loader>
+					<Loader size='small' bg='bg-gray-100'>
+						Loading graph data...
+					</Loader>
 				</div>
 			) : isDefined ? (
 				data !== null ? (

@@ -10,7 +10,7 @@ function Home() {
 		<>
 			<div className='grid grid-cols-1 pt-16 pl-4 pr-4 md:pl-10 md:pr-10 md:grid-cols-2'>
 				<div>
-					<div className='font-bold text-8xl lg:text-8xl md:text-6xl'>
+					<div className='text-6xl font-bold lg:text-8xl md:text-6xl'>
 						ASPICE <br />
 						reporting <br />
 						tool

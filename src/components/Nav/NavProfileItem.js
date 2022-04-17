@@ -6,7 +6,7 @@ function NavProfileItem(props) {
 		<Menu.Item>
 			<Link
 				to={props.link}
-				className={`${props.addClasses} bg-white block px-4 py-2 text-sm text-gray-800`}
+				className={`${props.addClasses} bg-white block px-4 py-2 text-sm `}
 				onClick={props.onClick}
 			>
 				{props.text}

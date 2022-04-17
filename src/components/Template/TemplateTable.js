@@ -1,21 +1,22 @@
-import {useMemo, useState} from "react";
-import {Link} from "react-router-dom";
-import {axiosInstance, useAxios} from "../../helpers/AxiosHelper";
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { axiosInstance, useAxios } from "../../helpers/AxiosHelper";
+import { parseDate } from "../../helpers/DateHelper";
 import Button from "../../ui/Button";
 import Table from "../../ui/Table/Table";
 import PageTitle from "../../ui/PageTitle";
-import {useRouteMatch} from "react-router";
+import { useRouteMatch } from "react-router";
 import TableMenuItem from "../../ui/Table/TableMenuItem";
 import TableMenuButton from "../../ui/Table/TableMenuButton";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 
 class TemplateObject {
 	constructor(data) {
 		this.id = data.id;
 		this.templateName = data.templateName;
-		this.templateCreated = data.templateCreated;
-		this.templateLastUpdated = data.templateLastUpdated;
+		this.templateCreated = parseDate(data.templateCreated);
+		this.templateLastUpdated = parseDate(data.templateLastUpdated);
 		this.shared = data.shared ? "Yes" : "";
 		this.sharedBy = data.sharedBy;
 	}
@@ -66,7 +67,7 @@ const TemplateTable = (props) => {
 						</Link>
 						<TableMenuItem
 							key='3'
-							addClasses='text-red-800'
+							addClasses='text-red-600'
 							onClickAction={(e) => {
 								setSelectedRow(row.original);
 								setShowDeleteDialog(true);

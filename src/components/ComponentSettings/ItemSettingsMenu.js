@@ -1,11 +1,11 @@
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
-import {Form, Formik} from "formik";
+import { Form, Formik } from "formik";
 import FormHidden from "../../ui/Form/FormHidden";
 import FormInput from "../../ui/Form/FormInput";
 import Button from "../../ui/Button";
-import {useEffect, useRef} from "react";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { useEffect, useRef } from "react";
+import { typeEnum } from "../../helpers/ClassHelper";
 import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import TextSettings from "./Text/TextSettings";
 import LevelPieGraphSettings from "./Graph/LevelPieGraphSettings";
@@ -27,7 +27,6 @@ const ItemSettingsMenu = ({
 	const formRef = useRef();
 
 	const renderTypeInputs = () => {
-		debugger;
 		switch (selectedItem.type) {
 			case typeEnum.TEXT:
 				return (
@@ -86,7 +85,7 @@ const ItemSettingsMenu = ({
 					show={show}
 				>
 					<span
-						class='font-extrabold border-1 drop-shadow-l absolute top-1 left-1 cursor-pointer'
+						className='absolute font-extrabold cursor-pointer border-1 drop-shadow-l top-1 left-1'
 						onClick={() => onClose()}
 					>
 						<svg
@@ -189,7 +188,7 @@ const ItemSettingsMenu = ({
 								<Button
 									type='button'
 									dark
-									className='mt-2 bg-gray-300 hover:bg-gray-400'
+									className='mt-2 hover:bg-gray-400'
 									onClick={() => {
 										props.onDeleteItem(selectedItem.id, page);
 									}}

@@ -1,4 +1,4 @@
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import Button from "../../ui/Button";
 import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import FormHidden from "../../ui/Form/FormHidden";
@@ -7,13 +7,14 @@ import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import * as Yup from "yup";
 import FormSelect from "../../ui/Form/FormSelect";
-import {useAxios} from "../../helpers/AxiosHelper";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { useAxios } from "../../helpers/AxiosHelper";
+import { typeEnum } from "../../helpers/ClassHelper";
 import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
 import SimpleTextBox from "../../ui/ItemMenuBox/SimpleTextBox";
 import CapabilityTableBox from "../../ui/ItemMenuBox/CapabilityTableBox";
 import SimpleTableBox from "../../ui/ItemMenuBox/SimpleTableBox";
+import Loader from "../../ui/Loader/Loader";
 
 const ReportMenu = ({
 	id,
@@ -50,7 +51,7 @@ const ReportMenu = ({
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
 			<div className='sticky top-0 flex justify-start h-screen'>
-				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
+				<Sidebar className='overflow-x-hidden overflow-y-auto bg-white shadow-xl'>
 					<SidebarLink sidebarName='Report'>
 						<Formik
 							enableReinitialize={true}
@@ -69,7 +70,16 @@ const ReportMenu = ({
 							}}
 						>
 							{({ values, validateForm }) => (
-								<Form className='flex flex-col p-4'>
+								<Form
+									className={`flex flex-col ${
+										isProcessing ? "pt-1" : "pt-10"
+									} pl-4 pr-4`}
+								>
+									{isProcessing && (
+										<div className='w-full -mb-1'>
+											<Loader size='small'>Processing...</Loader>
+										</div>
+									)}
 									<FormHidden name='id'></FormHidden>
 									<FormInput
 										label='Report name'

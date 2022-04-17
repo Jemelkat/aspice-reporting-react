@@ -110,6 +110,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 		<Formik
 			enableReinitialize={true}
 			initialValues={{
+				title: selectedItem.title,
 				sourceFormId: selectedItem.source?.id,
 				assessorColumn: selectedItem.assessorColumn?.id,
 				assessorFilter: selectedItem.assessorFilter,
@@ -125,7 +126,21 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 				<Form className='flex flex-col'>
 					<div className='flex flex-col justify-center'>
 						<div className='flex flex-col justify-center pl-4 pr-4 mt-2'>
-							<label className='font-medium'>Source:</label>
+							<label className='mt-2 font-medium'>Title:</label>
+							<Field
+								style={{ minHeight: "2rem" }}
+								as='textarea'
+								name='title'
+								className='border-2 border-gray-300'
+								onChange={(e) => {
+									const newSelected = {
+										...selectedItem,
+										title: e.target.value,
+									};
+									onItemUpdate(newSelected, page);
+								}}
+							/>
+							<label className='font-medium'>Source</label>
 							<Field
 								name='sourceFormId'
 								options={DataService.parseSourcesSelectData(sourcesData)}
@@ -333,7 +348,7 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								isLoading={columnsLoading}
 							/>
 							<HorizontalLine />
-							<label className='font-medium'>Score/Value:</label>
+							<label className='font-medium'>Score/Value</label>
 							<Field
 								name='scoreColumn'
 								options={columnsData}

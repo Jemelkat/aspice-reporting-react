@@ -1,4 +1,4 @@
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import Button from "../../ui/Button";
 import SidebarDisclosure from "../../ui/Sidebar/SidebarDisclosure";
 import FormHidden from "../../ui/Form/FormHidden";
@@ -6,13 +6,14 @@ import FormInput from "../../ui/Form/FormInput";
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
 import * as Yup from "yup";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { typeEnum } from "../../helpers/ClassHelper";
 import FormSelect from "../../ui/Form/FormSelect";
 import CapabilityTableBox from "../../ui/ItemMenuBox/CapabilityTableBox";
 import SimpleTextBox from "../../ui/ItemMenuBox/SimpleTextBox";
 import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
 import SimpleTableBox from "../../ui/ItemMenuBox/SimpleTableBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
+import Loader from "../../ui/Loader/Loader";
 
 const TemplateMenu = ({
 	id,
@@ -74,9 +75,15 @@ const TemplateMenu = ({
 									<Button
 										dark={true}
 										type={!isProcessing && "submit"}
-										className='mt-4'
+										className={`mt-4 ${isProcessing && "hover:bg-gray-800"}`}
 									>
-										Save
+										{isProcessing ? (
+											<div className='mt-1.5 mb-0.5'>
+												<Loader size='small' dark={true} />
+											</div>
+										) : (
+											"Save"
+										)}
 									</Button>
 								</Form>
 							)}

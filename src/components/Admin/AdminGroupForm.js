@@ -1,21 +1,17 @@
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 import FormInput from "../../ui/Form/FormInput";
 import CustomSelect from "../../ui/Form/FormSelect";
 import * as Yup from "yup";
 import FormHidden from "../../ui/Form/FormHidden";
-import {useEffect} from "react/cjs/react.development";
-import {useState} from "react";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useEffect, useState } from "react";
+import { useAxios } from "../../helpers/AxiosHelper";
 import Button from "../../ui/Button";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 
-const AdminGroupForm = (props) => {
+const AdminGroupForm = ({ create = false, ...props }) => {
 	const [usersDataSelect, setUsersDataSelect] = useState([]);
 	//Get select users values
-	const [
-		{ data: usersData, loading: usersLoading, error: usersError },
-		refetchUsers,
-	] = useAxios(
+	const [, refetchUsers] = useAxios(
 		{
 			url: "/admin/allUsersSimple",
 			method: "GET",
@@ -27,20 +23,27 @@ const AdminGroupForm = (props) => {
 	);
 
 	//Post group data to server
-	const [
-		{ data: postData, loading: postLoading, error: postError },
-		executePost,
-	] = useAxios(
+	const [, executePost] = useAxios(
 		{
 			url: "/group/edit",
 			method: "POST",
 		},
 		{ manual: true }
 	);
+
+	//Create new group
+	const [, executeCreate] = useAxios(
+		{
+			url: "/group/create",
+			method: "POST",
+		},
+		{ manual: true }
+	);
+
 	const alert = useAlert();
 
 	//Send data to server
-	function updateData(data) {
+	function submitForm(data) {
 		let usersData = [];
 		//Use user IDs
 		if (data.users) {
@@ -48,21 +51,46 @@ const AdminGroupForm = (props) => {
 				usersData.push({ id: user });
 			});
 		}
-		//Post data
-		executePost({
-			data: {
-				id: data.id,
-				groupName: data.groupName,
-				users: usersData,
-			},
-		})
-			.then(() => {
-				props.onCancel();
-				props.onSuccess();
+		if (create) {
+			executeCreate({
+				data: {
+					id: null,
+					groupName: data.groupName,
+					users: usersData,
+				},
 			})
-			.catch((e) => {
-				alert.error("Error editing group.");
-			});
+				.then(() => {
+					props.onCancel();
+					props.onSuccess();
+				})
+				.catch((e) => {
+					if (e.response?.data && e.response?.data.message) {
+						alert.error(e.response.data.message);
+					} else {
+						alert.error("Error creating group.");
+					}
+				});
+		} else {
+			//Post data
+			executePost({
+				data: {
+					id: data.id,
+					groupName: data.groupName,
+					users: usersData,
+				},
+			})
+				.then(() => {
+					props.onCancel();
+					props.onSuccess();
+				})
+				.catch((e) => {
+					if (e.response?.data && e.response?.data.message) {
+						alert.error(e.response.data.message);
+					} else {
+						alert.error("Error editing group.");
+					}
+				});
+		}
 	}
 
 	//Parse users to value:"", label:""
@@ -90,15 +118,15 @@ const AdminGroupForm = (props) => {
 		<>
 			<Formik
 				initialValues={{
-					id: props.data.id,
-					groupName: props.data.name,
-					users: props.data.users.map((u) => u.id),
+					id: props.data?.id ? props.data.id : null,
+					groupName: props.data?.name ? props.data.name : "",
+					users: props.data?.users ? props.data?.users.map((u) => u.id) : [],
 				}}
 				validationSchema={Yup.object({
 					groupName: Yup.string().required("Required"),
 				})}
 				onSubmit={(values, { setSubmitting }) => {
-					updateData(values);
+					submitForm(values);
 					setSubmitting(false);
 				}}
 			>

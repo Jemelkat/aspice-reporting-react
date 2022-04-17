@@ -1,9 +1,9 @@
-import {Menu, Transition} from "@headlessui/react";
-import {Fragment, useContext} from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { Fragment, useContext } from "react";
 import NavProfileItem from "./NavProfileItem";
-import Avatar, {genConfig} from "react-nice-avatar";
-import {useHistory} from "react-router";
-import {AuthContext} from "../../context/AuthContext";
+import Avatar, { genConfig } from "react-nice-avatar";
+import { useHistory } from "react-router";
+import { AuthContext } from "../../context/AuthContext";
 import AuthService from "../../services/AuthService";
 
 function NavProfile() {
@@ -30,7 +30,7 @@ function NavProfile() {
 
 	const logoutHandler = () => {
 		AuthService.logout();
-		history.push();
+		history.push("/");
 		removeLoggedUser();
 	};
 
@@ -58,7 +58,7 @@ function NavProfile() {
 						link='#'
 						text='Sign out'
 						onClick={logoutHandler}
-						addClasses='text-red-700 font-semibold'
+						addClasses='text-red-500 font-semibold'
 					></NavProfileItem>
 				</Menu.Items>
 			</Transition>

@@ -1,12 +1,14 @@
-import {Rnd} from "react-rnd";
-import {typeEnum} from "../../helpers/ClassHelper";
-import {ReactComponent as SVGSourceBarHorizontal} from "../../assets/barchart-horizontal-sources.svg";
-import {ReactComponent as SVGSourceBarVertical} from "../../assets/barchart-vertical-sources.svg";
-import {ReactComponent as SVGPie} from "../../assets/piechart.svg";
-import {useEffect, useRef} from "react";
+import { Rnd } from "react-rnd";
+import { typeEnum } from "../../helpers/ClassHelper";
+import { ReactComponent as SVGSourceBarHorizontal } from "../../assets/barchart-horizontal-sources.svg";
+import { ReactComponent as SVGSourceBarVertical } from "../../assets/barchart-vertical-sources.svg";
+import { ReactComponent as SVGPie } from "../../assets/piechart.svg";
+import { ReactComponent as CapabilityTable } from "../../assets/capability-table.svg";
+import { useEffect, useRef } from "react";
 
 const CanvasItem = ({
 	item,
+	error,
 	page = 0,
 	onResize,
 	onMove,
@@ -48,20 +50,45 @@ const CanvasItem = ({
 						>
 							LEVEL BAR GRAPH
 						</div>
+						{error && error.id === item.id && (
+							<div
+								className={`${
+									isSelected
+										? "border-t-2 border-r-2 border-l-2 border-b border-gray-800"
+										: "border-t-2 border-r-2 border-l-2 border-b border-gray-300"
+								} absolute top-0 left-0 w-full text-sm text-center text-red-500 bg-white`}
+							>
+								{error.error}
+							</div>
+						)}
 					</div>
 				);
 			case typeEnum.CAPABILITY_TABLE:
 				return (
-					<div
-						style={{
-							fontFamily: "DejaVu",
-							whiteSpace: "pre-line",
-							fontSize: "11px",
-							lineHeight: "1.2",
-						}}
-					>
-						<div className='absolute w-32 -ml-16 text-xl text-center bg-white border border-black -mt-7 top-1/2 left-1/2'>
-							CAPABILITY TABLE
+					<div className='w-full h-full'>
+						<CapabilityTable></CapabilityTable>
+						<div
+							style={{
+								fontFamily: "DejaVu",
+								whiteSpace: "pre-line",
+								fontSize: "11px",
+								lineHeight: "1.2",
+							}}
+						>
+							<div className='absolute w-32 -ml-16 text-xl text-center bg-white border border-black -mt-7 top-1/2 left-1/2'>
+								CAPABILITY TABLE
+							</div>
+							{error && error.id === item.id && (
+								<div
+									className={`${
+										isSelected
+											? "border-t-2 border-r-2 border-l-2 border-b border-gray-800"
+											: "border-t-2 border-r-2 border-l-2 border-b border-gray-300"
+									} absolute top-0 left-0 w-full text-sm text-center text-red-500 bg-white`}
+								>
+									{error.error}
+								</div>
+							)}
 						</div>
 					</div>
 				);
@@ -71,6 +98,17 @@ const CanvasItem = ({
 						<div className='absolute w-32 -mt-5 -ml-16 text-2xl text-center bg-white border border-black top-1/2 left-1/2'>
 							TABLE
 						</div>
+						{error && error.id === item.id && (
+							<div
+								className={`${
+									isSelected
+										? "border-t-2 border-r-2 border-l-2 border-b border-gray-800"
+										: "border-t-2 border-r-2 border-l-2 border-b border-gray-300"
+								} absolute top-0 left-0 w-full text-sm text-center text-red-500 bg-white`}
+							>
+								{error.error}
+							</div>
+						)}
 						{item.tableColumns && item.tableColumns.length > 0 ? (
 							<div className='flex'>
 								{item.tableColumns.map((column) => (
@@ -119,6 +157,17 @@ const CanvasItem = ({
 						>
 							LEVEL PIE GRAPH
 						</div>
+						{error && error.id === item.id && (
+							<div
+								className={`${
+									isSelected
+										? "border-t-2 border-r-2 border-l-2 border-b border-gray-800"
+										: "border-t-2 border-r-2 border-l-2 border-b border-gray-300"
+								} absolute top-0 left-0 w-full text-sm text-center text-red-500 bg-white`}
+							>
+								{error.error}
+							</div>
+						)}
 					</div>
 				);
 
@@ -134,7 +183,7 @@ const CanvasItem = ({
 	useEffect(() => {
 		itemRef.current.updateSize({ width: item.width, height: item.height });
 	}, [item.height, item.width]);
-
+	useEffect(() => {}, [error]);
 	return (
 		<Rnd
 			ref={itemRef}
@@ -161,14 +210,13 @@ const CanvasItem = ({
 			}}
 			onClick={(e) => {
 				e.stopPropagation();
-				debugger;
 				onSelect(item.id, page);
 			}}
 		>
 			<div
 				className={`${
-					isSelected ? "border-gray-400" : "border-gray-300 "
-				}  w-full h-full border-2 border-gray-200 rounded-sm shadow-lg bg-gray-50 `}
+					isSelected ? "border-gray-800" : "border-gray-300 "
+				}  w-full h-full border-2 rounded-sm shadow-lg bg-gray-50 `}
 			>
 				{renderContent()}
 			</div>

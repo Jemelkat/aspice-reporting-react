@@ -1,19 +1,19 @@
-import {Transition} from "@headlessui/react";
-import {useEffect} from "react";
+import { Transition } from "@headlessui/react";
+import { useEffect } from "react";
 
-const Loader = ({ fullscreen, dark, size = "normal", ...props }) => {
+const Loader = ({ fullscreen, dark, size = "normal", bg = "", ...props }) => {
 	useEffect(() => {}, []);
 
 	return (
 		<div
 			className={`flex flex-col justify-center text-center ${
-				dark ? "bg-gray-800" : "bg-white"
+				bg ? bg : dark ? "bg-gray-800" : "bg-white"
 			} ${fullscreen ? "min-h-screen min-w-screen" : "h-full"} `}
 		>
 			<Transition
 				appear={true}
 				show={true}
-				enter='transform transition ease-in-out duration-1000'
+				enter='transform transition ease-in-out'
 				enterFrom='opacity-0 scale-50'
 				enterTo='opacity-100 scale-100'
 			>

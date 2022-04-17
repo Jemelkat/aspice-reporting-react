@@ -1,6 +1,6 @@
 export const allProcesses = [
 	{ value: "ACQ.3", label: "ACQ.3" },
-	{ value: "ACQ.4", label: "ACQ.3" },
+	{ value: "ACQ.4", label: "ACQ.4" },
 	{ value: "ACQ.11", label: "ACQ.11" },
 	{ value: "ACQ.12", label: "ACQ.12" },
 	{ value: "ACQ.13", label: "ACQ.13" },

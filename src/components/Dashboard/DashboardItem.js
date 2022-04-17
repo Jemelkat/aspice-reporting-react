@@ -1,7 +1,7 @@
-import {PencilIcon, RefreshIcon, UploadIcon} from "@heroicons/react/solid";
-import {useEffect, useRef, useState} from "react";
-import {useAlert} from "react-alert";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { PencilIcon, RefreshIcon, UploadIcon } from "@heroicons/react/solid";
+import { useEffect, useRef, useState } from "react";
+import { useAlert } from "react-alert";
+import { typeEnum } from "../../helpers/ClassHelper";
 import Loader from "../../ui/Loader/Loader";
 import DashboardBarGraph from "./DashboardBarGraph";
 import DashboardPieChart from "./DashboardPieChart";
@@ -9,6 +9,7 @@ import DashboardService from "../../services/DashboardService";
 
 const DashboardItem = ({
 	item,
+	isSelected = false,
 	onSelectItem,
 	onDeleteItem,
 	onSave,
@@ -78,7 +79,6 @@ const DashboardItem = ({
 								[data.assessor]: parseInt(data.level),
 							});
 						}
-						console.log(graphData);
 						break;
 					}
 					/*Pie graph needs data in format 
@@ -104,8 +104,10 @@ const DashboardItem = ({
 	//Load data on first render if item is fully defined
 	const firstUpdate = useRef(true);
 	useEffect(() => {
-		setData(null);
 		const defined = isItemDefined(item);
+		if (!defined) {
+			setData(null);
+		}
 		setIsDefined(defined);
 		if (firstUpdate.current) {
 			firstUpdate.current = false;
@@ -147,9 +149,16 @@ const DashboardItem = ({
 	};
 
 	return (
-		<div className='flex flex-col h-full'>
+		<div
+			className={`flex flex-col h-full ${
+				isSelected && "border-2 border-gray-800"
+			}`}
+			key={item.id}
+		>
 			<div className='w-full text-white bg-gray-800 h-7'>
-				<div className='pl-1 mr-10 overflow-hidden'>{item.type}</div>
+				<div className='pl-1 mr-10 overflow-hidden'>
+					{item.title ? item.title : item.type}
+				</div>
 				<div className='absolute top-0 right-0 h-6 bg-gray-800'>
 					<div className='flex pt-0.5'>
 						{isDefined && (
@@ -206,7 +215,9 @@ const DashboardItem = ({
 			</div>
 			{isLoading ? (
 				<div className='h-full'>
-					<Loader size='small'>Loading graph data...</Loader>
+					<Loader size='small' bg='bg-gray-100'>
+						Loading graph data...
+					</Loader>
 				</div>
 			) : isDefined ? (
 				data !== null ? (
@@ -236,7 +247,9 @@ const DashboardItem = ({
 						}}
 						className='w-10 h-10 cursor-pointer'
 					></PencilIcon>
-					<span className='text-center'>Please define the graph sources</span>
+					<span className='text-center'>
+						Please define the graph source and columns
+					</span>
 				</div>
 			)}
 		</div>

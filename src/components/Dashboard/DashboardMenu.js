@@ -1,19 +1,36 @@
 import Button from "../../ui/Button";
 import Sidebar from "../../ui/Sidebar/Sidebar";
 import SidebarLink from "../../ui/Sidebar/SidebarLink";
-import {typeEnum} from "../../helpers/ClassHelper";
+import { typeEnum } from "../../helpers/ClassHelper";
 import LevelBarGraphBox from "../../ui/ItemMenuBox/LevelBarGraphBox";
 import LevelPieGraphBox from "../../ui/ItemMenuBox/LevelPieGraphBox";
+import Loader from "../../ui/Loader/Loader";
 
-const DashboardMenu = ({ onSave, onAddComponent, currentColumns }) => {
+const DashboardMenu = ({
+	onSave,
+	onAddComponent,
+	currentColumns,
+	isProcessing,
+}) => {
 	return (
 		<div className='flex-1 mr-2 xl:mr-4'>
 			<div className='sticky top-0 flex justify-start h-screen'>
 				<Sidebar className='overflow-y-auto bg-white shadow-xl'>
 					<SidebarLink sidebarName='Dashboard'>
-						<div className='flex flex-col p-4'>
-							<Button dark className='mt-4' onClick={() => onSave()}>
-								Save
+						<div className='flex flex-col w-full p-4 text-center'>
+							Save dashboard to store changes.
+							<Button
+								dark
+								className={`mt-4 ${isProcessing && "hover:bg-gray-800"}`}
+								onClick={() => onSave()}
+							>
+								{isProcessing ? (
+									<div className='mt-1.5 mb-0.5'>
+										<Loader size='small' dark={true} />
+									</div>
+								) : (
+									"Save"
+								)}
 							</Button>
 						</div>
 					</SidebarLink>

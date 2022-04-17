@@ -1,18 +1,19 @@
-import {useEffect, useState} from "react";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useEffect, useState } from "react";
+import { useAxios } from "../../helpers/AxiosHelper";
 import Loader from "../../ui/Loader/Loader";
-import {useHistory} from "react-router";
+import { useHistory } from "react-router";
 import ItemSettingsMenu from "../ComponentSettings/ItemSettingsMenu";
 import ReportMenu from "./ReportMenu";
 import useCanvas from "../../hooks/useCanvas";
 import Canvas from "../Canvas/Canvas";
-import {useAlert} from "react-alert";
-import {Tab} from "@headlessui/react";
+import { useAlert } from "react-alert";
+import { Tab } from "@headlessui/react";
 import PDFPreview from "../Canvas/PDFPreview";
-import {saveAs} from "file-saver";
+import { saveAs } from "file-saver";
 import ReportService from "../../services/ReportService";
-import {createItemFromExisting} from "../../helpers/ClassHelper";
+import { createItemFromExisting } from "../../helpers/ClassHelper";
 import ReactPaginate from "react-paginate";
+import ValidationService from "../../services/ValidationService";
 
 const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	const [reportLoading, setReportLoading] = useState(true);
@@ -24,7 +25,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		{ id: null, orientation: "VERTICAL", pageTemplate: null },
 	]);
 	const [reportData, setReportData] = useState({ id: null, reportName: "" });
-
+	const [itemErrors, setItemErrors] = useState(null);
 	const alert = useAlert();
 	let history = useHistory();
 	const {
@@ -43,13 +44,22 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	} = useCanvas();
 
 	//Get current template - used for reseting of data
-	const [{}, getTemplate] = useAxios(
+	const [, getTemplate] = useAxios(
 		{
 			url: "/templates/get",
 			method: "GET",
 		},
 		{ manual: true, useCache: false }
 	);
+
+	useEffect(() => {
+		if (itemErrors) {
+			alert.error(itemErrors.error);
+			setCurrentPage(itemErrors.page);
+			selectItemHandler(itemErrors.id, itemErrors.page);
+		}
+	}, [itemErrors]);
+
 	const parseAndSetItems = (reportPages) => {
 		let newItems = [];
 		let newPages = [];
@@ -71,10 +81,12 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		setItems(newItems);
 		setPagesData(newPages);
 		selectItemHandler(null);
+		return newItems;
 	};
 
 	//Saves report to DB
 	const saveReportHandler = async (formValues) => {
+		setItemErrors(null);
 		setProcessing(true);
 		try {
 			let report = {
@@ -85,14 +97,14 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 				}),
 			};
 			const response = await ReportService.saveReport(report);
-			parseAndSetItems(response.data.reportPages);
+			const newItems = parseAndSetItems(response.data.reportPages);
 			setReportData({
 				id: response.data.id,
 				reportName: response.data.reportName,
 			});
 			setProcessing(false);
 			alert.info("Report saved");
-			return response;
+			return { response, newItems };
 		} catch (e) {
 			setProcessing(false);
 			if (e.response?.data && e.response?.data.message) {
@@ -107,15 +119,24 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	//Saves and generates report as response
 	const generateReportHandler = async (formValues) => {
 		let saveResponse;
-		setProcessing(true);
 		try {
 			saveResponse = await saveReportHandler(formValues);
 		} catch (e) {
 			setProcessing(false);
 			return;
 		}
+		setProcessing(true);
+		//Validate if all items are filled in
+		const errors = ValidationService.validateItemsFilled(saveResponse.newItems);
+		if (errors !== null) {
+			setItemErrors(errors);
+			setProcessing(false);
+			return;
+		}
 		try {
-			const response = await ReportService.generateReport(saveResponse.data.id);
+			const response = await ReportService.generateReport(
+				saveResponse.response.data.id
+			);
 			alert.info("Report generated");
 
 			const pdfFile = new Blob([response.data], {
@@ -147,7 +168,6 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 	};
 
 	const applyTemplateHandler = (templateId, page) => {
-		debugger;
 		if (templateId !== "")
 			getTemplate({ params: { templateId: templateId } }).then((response) => {
 				let newItems = response.data.templateItems.map((i) =>
@@ -358,12 +378,12 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 									<Canvas
 										items={items[currentPage]}
 										page={currentPage}
+										error={itemErrors}
 										orientation={pagesData[currentPage].orientation}
 										selectedItem={selectedItem}
 										onMove={moveItemHandler}
 										onSelect={selectItemHandler}
 										onResize={resizeItemHandler}
-										onDeleteItem={deleteItemHandler}
 									></Canvas>
 								</Tab.Panel>
 								<Tab.Panel>

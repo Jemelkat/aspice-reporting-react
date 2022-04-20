@@ -41,6 +41,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		layerItemHandler,
 		updateItemHandler,
 		orientationHandler,
+		moveItemPagesHandler,
 	} = useCanvas();
 
 	//Get current template - used for reseting of data
@@ -404,6 +405,7 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 						onDeleteItem={deleteItemHandler}
 						onLayerChange={layerItemHandler}
 						onItemUpdate={updateItemHandler}
+						onMoveItemPages={moveItemPagesHandler}
 					></ItemSettingsMenu>
 				</div>
 			)}

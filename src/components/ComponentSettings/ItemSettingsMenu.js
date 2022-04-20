@@ -12,6 +12,7 @@ import LevelPieGraphSettings from "./Graph/LevelPieGraphSettings";
 import CapabilityTableSettigs from "./Table/CapabilityTableSettings";
 import SimpleTableSettings from "./Table/SimpleTableSettings";
 import LevelBarGraphSettings from "./Graph/LevelBarGraphSettings";
+import HorizontalLine from "../../ui/HorizontalLine";
 
 const ItemSettingsMenu = ({
 	simple = false,
@@ -20,6 +21,7 @@ const ItemSettingsMenu = ({
 	show,
 	onItemUpdate,
 	onClose,
+	onMoveItemPages = false,
 	...props
 }) => {
 	//Id used in hook to rerender
@@ -185,10 +187,35 @@ const ItemSettingsMenu = ({
 							)}
 							{renderTypeInputs()}
 							<div className='flex flex-col justify-center pb-4 pl-4 pr-4 mt-4 border-t-2'>
+								{onMoveItemPages !== false && (
+									<>
+										<Button
+											type='button'
+											dark
+											className='mt-2 '
+											onClick={() => {
+												onMoveItemPages(selectedItem.id, +1, page);
+											}}
+										>
+											Next page
+										</Button>
+										<Button
+											type='button'
+											dark
+											className='mt-2 '
+											onClick={() => {
+												onMoveItemPages(selectedItem.id, -1, page);
+											}}
+										>
+											Previous page
+										</Button>
+									</>
+								)}
+								<HorizontalLine></HorizontalLine>
 								<Button
 									type='button'
 									dark
-									className='mt-2 hover:bg-gray-400'
+									className='mt-2 '
 									onClick={() => {
 										props.onDeleteItem(selectedItem.id, page);
 									}}

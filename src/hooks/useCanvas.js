@@ -256,6 +256,25 @@ const useCanvas = () => {
 		setItems(newItemsCombined);
 	};
 
+	const moveItemPagesHandler = (id, move, page) => {
+		const newPage = page + move;
+		if (newPage < 0 || newPage > items.length - 1) {
+			return;
+		}
+		const newId = nextItemId(newPage);
+		const movingItem = items[page].find((i) => i.id === id);
+		const newItemsOldPage = items[page].filter((i) => i.id !== id);
+		let newItemsNewPage = [...items[newPage]];
+		movingItem.id = newId;
+		newItemsNewPage.push(movingItem);
+		debugger;
+		const newItemsCombined = [...items];
+		newItemsCombined.splice(page, 1, newItemsOldPage);
+		newItemsCombined.splice(newPage, 1, newItemsNewPage);
+		setItems(newItemsCombined);
+		setSelectedItem(null);
+	};
+
 	return {
 		items,
 		setItems,
@@ -272,6 +291,7 @@ const useCanvas = () => {
 		updateItemHandler,
 		parseLoadedItems,
 		orientationHandler,
+		moveItemPagesHandler,
 	};
 };
 

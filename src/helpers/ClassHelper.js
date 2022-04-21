@@ -65,7 +65,7 @@ export const createItemFromExisting = (item) => {
 				item.criterionColumnName ? item.criterionColumnName : null,
 				item.scoreColumnName ? item.scoreColumnName : null,
 				item.aggregateScoresFunction ? item.aggregateScoresFunction : "NONE",
-				item.aggregateLevels != null && typeof item.aggregateLevels != undefined
+				item.aggregateLevels != null && item.aggregateLevels != undefined
 					? item.aggregateLevels
 					: false,
 				item.aggregateSourcesFunction ? item.aggregateSourcesFunction : "NONE"

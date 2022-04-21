@@ -46,7 +46,11 @@ function Home() {
 					</div>
 				</div>
 				<div className='flex flex-col items-center justify-center pt-2'>
-					<img src={landingPage} className='w-10/12 border-2 border-gray-800' />
+					<img
+						alt=''
+						src={landingPage}
+						className='w-10/12 border-2 border-gray-800'
+					/>
 				</div>
 			</div>
 		</>

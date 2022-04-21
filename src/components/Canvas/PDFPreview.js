@@ -6,7 +6,7 @@ const PDFPreview = ({ pdfData }) => {
 				style={{ width: "210mm", height: "297mm" }}
 			>
 				{pdfData ? (
-					<iframe className='flex-1' src={pdfData}></iframe>
+					<iframe title='preview' className='flex-1' src={pdfData}></iframe>
 				) : (
 					<div className='pt-4 text-center align-middle'>
 						Please generate the report first.

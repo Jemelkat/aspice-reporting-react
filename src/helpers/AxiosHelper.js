@@ -1,10 +1,10 @@
 import axios from "axios";
-import {makeUseAxios} from "axios-hooks";
+import { makeUseAxios } from "axios-hooks";
 import AuthService from "../services/AuthService";
 
 //All request should use this axios instance
 export const axiosInstance = axios.create({
-	baseURL: "http://localhost:8080",
+	baseURL: process.env.REACT_APP_SERVER_API,
 });
 
 //Use axios hook with this configuration

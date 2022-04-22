@@ -10,6 +10,7 @@ import PageTitle from "../../ui/PageTitle";
 import ShareDialog from "../../ui/Dialog/ShareDialog";
 import SourceService from "../../services/SourceService";
 import { saveAs } from "file-saver";
+import RatingDialog from "./RatingDialog";
 
 class SourceObject {
 	constructor(data) {
@@ -25,6 +26,7 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [showShareDialog, setShowShareDialog] = useState(false);
+	const [showRatingDialog, setShowRatingDialog] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 
 	const alert = useAlert();
@@ -70,6 +72,24 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 							}}
 						>
 							Share
+						</TableMenuItem>
+						<TableMenuItem
+							key={row.original.id + "range"}
+							onClickAction={() => {
+								if (
+									row.original.shared === "" ||
+									row.original.sharedBy === "You"
+								) {
+									setSelectedRow(row.original);
+									setShowRatingDialog(true);
+								} else {
+									alert.info(
+										"Only the owner of this source can modify score ranges."
+									);
+								}
+							}}
+						>
+							Score range
 						</TableMenuItem>
 						<TableMenuItem
 							key={row.original.id + "download"}
@@ -186,6 +206,15 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 					onClose={() => setShowShareDialog(false)}
 					onSuccess={() => onRefetch()}
 				></ShareDialog>
+			)}
+
+			{/*Rating dialog*/}
+			{showRatingDialog && selectedRow && (
+				<RatingDialog
+					showRatingDialog={showRatingDialog}
+					selectedRow={selectedRow}
+					onClose={() => setShowRatingDialog(false)}
+				></RatingDialog>
 			)}
 		</>
 	);

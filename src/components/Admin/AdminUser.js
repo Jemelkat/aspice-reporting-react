@@ -1,13 +1,13 @@
-import {useEffect, useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Table from "../../ui/Table/Table";
 import TableMenuButton from "../../ui/Table/TableMenuButton";
 import TableMenuItem from "../../ui/Table/TableMenuItem";
 import AdminUserForm from "./AdminUserForm";
 import MyDialog from "../../ui/Dialog/MyDialog";
-import {useAxios} from "../../helpers/AxiosHelper";
+import { useAxios } from "../../helpers/AxiosHelper";
 import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 
 class User {
 	constructor(userData) {
@@ -29,19 +29,13 @@ const ACTIONS = {
 };
 
 const AdminUser = () => {
-	const [{ data: data, loading: loading, error: error }, refetch] = useAxios(
-		"/admin/allUsers",
-		{
-			manual: true,
-			useCache: false,
-		}
-	);
+	const [{ data, loading }, refetch] = useAxios("/admin/allUsers", {
+		manual: true,
+		useCache: false,
+	});
 
 	//Delete
-	const [
-		{ data: deleteData, loading: deleteLoading, error: deleteError },
-		executeDelete,
-	] = useAxios(
+	const [, executeDelete] = useAxios(
 		{
 			url: "/user/delete",
 			method: "POST",

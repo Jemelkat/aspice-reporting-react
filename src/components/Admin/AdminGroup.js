@@ -9,7 +9,7 @@ import ConfirmDialog from "../../ui/Dialog/ConfirmDialog";
 import { useAlert } from "react-alert";
 import Button from "../../ui/Button";
 
-const API_URL = "http://localhost:8080";
+const API_URL = process.env.REACT_APP_SERVER_API;
 
 class Group {
 	constructor(groupData) {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {axiosInstance} from "../helpers/AxiosHelper";
+import { axiosInstance } from "../helpers/AxiosHelper";
 import AuthService from "./AuthService";
 
 export default class ReportService {
@@ -20,7 +20,7 @@ export default class ReportService {
 	};
 
 	static generateReport = async (reportId) => {
-		return axios.get("http://localhost:8080/reports/generate", {
+		return axios.get(process.env.REACT_APP_SERVER_API + "/reports/generate", {
 			headers: {
 				Authorization: AuthService.getAuthHeaderToken(),
 				//Accept: "application/pdf",

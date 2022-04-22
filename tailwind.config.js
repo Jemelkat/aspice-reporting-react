@@ -1,6 +1,5 @@
 module.exports = {
-	purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-	darkMode: false, // or 'media' or 'class'
+	content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
 	important: true,
 	theme: {
 		extend: {
@@ -11,9 +10,6 @@ module.exports = {
 				"screen-header": "calc(100vh - 4rem)",
 			},
 		},
-	},
-	variants: {
-		extend: {},
 	},
 	plugins: [],
 };

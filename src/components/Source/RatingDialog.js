@@ -40,9 +40,9 @@ const RatingDialog = ({ showRatingDialog, selectedRow, onClose, ...props }) => {
 
 	return (
 		<MyDialog
-			title={"Define " + selectedRow.sourceName + " ratings"}
+			title={"Define " + selectedRow.sourceName + " score ranges"}
 			description={
-				"Define custom ranges, which will be used to compute process levels."
+				"Define custom ranges in %, which will be used to compute process level and scores achieved."
 			}
 			isOpen={showRatingDialog}
 			onClose={onClose}

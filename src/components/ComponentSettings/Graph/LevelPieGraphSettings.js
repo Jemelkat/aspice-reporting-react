@@ -1,11 +1,10 @@
-import {Field, Form, Formik} from "formik";
-import {useAxios} from "../../../helpers/AxiosHelper";
+import { Field, Form, Formik } from "formik";
+import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import SourceColumnService from "../../../services/SourceColumnService";
-import {InformationCircleIcon} from "@heroicons/react/outline";
 import HorizontalLine from "../../../ui/HorizontalLine";
-import {useAlert} from "react-alert";
+import { useAlert } from "react-alert";
 import FormInput from "../../../ui/Form/FormInput";
 import DataService from "../../../services/DataService";
 
@@ -227,7 +226,6 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 							/>
 							<label className='flex items-center pt-1 text-sm'>
 								Optional filter by assessor
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
 								name='assessorFilter'
@@ -381,7 +379,6 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 							/>
 							<label className='flex items-center pt-1 text-sm'>
 								Aggregate scores
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
 								name='aggregateScoresFunction'
@@ -426,7 +423,6 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								/>
 								<div className='flex items-center justify-center'>
 									<label className='pl-1'>Aggregate by levels </label>
-									<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 								</div>
 							</div>
 						</div>

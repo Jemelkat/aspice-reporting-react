@@ -2,7 +2,6 @@ import { Field, Form, Formik } from "formik";
 import { useAxios } from "../../../helpers/AxiosHelper";
 import FormSelect from "../../../ui/Form/FormSelect";
 import { useEffect, useState } from "react";
-import { InformationCircleIcon } from "@heroicons/react/outline";
 import { useAlert } from "react-alert";
 import HorizontalLine from "../../../ui/HorizontalLine";
 import SourceColumnService from "../../../services/SourceColumnService";
@@ -259,7 +258,6 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 							/>
 							<label className='flex items-center pt-1 text-sm'>
 								Optional filter by assessor
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
 								name='assessorFilter'
@@ -313,7 +311,6 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 							/>
 							<label className='flex items-center pt-1 text-sm'>
 								Optional filter by process
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
 								name='processFilter'
@@ -411,7 +408,6 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 							/>
 							<label className='flex items-center pt-1 text-sm'>
 								Aggregate scores
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
 								name='aggregateScoresFunction'
@@ -457,14 +453,12 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								/>
 								<div className='flex items-center justify-center'>
 									<label className='pl-1'>Aggregate by levels </label>
-									<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 								</div>
 							</div>
 							{selectedItem.sources.length > 1 && (
 								<>
 									<label className='flex items-center pt-1 text-sm'>
 										Aggregate sources
-										<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 									</label>
 									<Field
 										name='aggregateSourcesFunction'

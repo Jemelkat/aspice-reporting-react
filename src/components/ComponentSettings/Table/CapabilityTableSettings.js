@@ -1,4 +1,3 @@
-import { InformationCircleIcon } from "@heroicons/react/outline";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useAlert } from "react-alert";
@@ -221,7 +220,6 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 							/>
 							<label className='flex items-center pt-1 text-sm'>
 								Optional filter by assessor
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
 								name='assessorFilter'
@@ -293,7 +291,6 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 							/>
 							<label className='flex items-center pt-1 text-sm'>
 								Optional filter by process
-								<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 							</label>
 							<Field
 								name='processFilter'
@@ -475,7 +472,6 @@ const CapabilityTableSettigs = ({ page = 0, selectedItem, onItemUpdate }) => {
 								<>
 									<label className='flex items-center pt-1 text-sm'>
 										Aggregate scores
-										<InformationCircleIcon className='w-4 h-4 ml-1 text-gray-600'></InformationCircleIcon>
 									</label>
 									<Field
 										name='aggregateScoresFunction'

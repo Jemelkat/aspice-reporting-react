@@ -191,7 +191,7 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 							<label className='font-medium'>Source</label>
 							<Field
 								name='sources'
-								options={DataService.parseSourcesSelectData(sourcesData)}
+								options={DataService.parseSourcesSelectData(sourcesData, false)}
 								component={FormSelect}
 								placeholder={
 									values.sources

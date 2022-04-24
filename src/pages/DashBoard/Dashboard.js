@@ -79,6 +79,7 @@ const DashBoard = () => {
 					items[0]
 				);
 				alert.info("Dashboard saved");
+				setIsProcessing(false);
 				return updateIdsOnSaveHandler(response.data.dashboardItems, index);
 			} catch (e) {
 				setIsProcessing(false);

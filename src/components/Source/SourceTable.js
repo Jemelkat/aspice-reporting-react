@@ -98,7 +98,10 @@ const SourceTable = ({ onAddSource, data, loading, onRefetch }) => {
 									(generateResponse) => {
 										saveAs(
 											generateResponse.data,
-											row.original.sourceName + ".csv"
+											row.original.sourceName.substring(
+												0,
+												row.original.sourceName.lastIndexOf(".")
+											) + ".csv"
 										);
 									}
 								);

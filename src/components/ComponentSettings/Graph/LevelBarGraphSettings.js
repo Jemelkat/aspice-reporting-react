@@ -205,7 +205,6 @@ const LevelBarGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 								}
 								onSelect={(e) => {
 									let updatedSelected = selectedItem;
-									debugger;
 									if (!updatedSelected.sources.includes(e.value)) {
 										updatedSelected.sources = e.map((selected) => {
 											return {

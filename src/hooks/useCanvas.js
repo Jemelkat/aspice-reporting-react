@@ -267,7 +267,6 @@ const useCanvas = () => {
 		let newItemsNewPage = [...items[newPage]];
 		movingItem.id = newId;
 		newItemsNewPage.push(movingItem);
-		debugger;
 		const newItemsCombined = [...items];
 		newItemsCombined.splice(page, 1, newItemsOldPage);
 		newItemsCombined.splice(newPage, 1, newItemsNewPage);

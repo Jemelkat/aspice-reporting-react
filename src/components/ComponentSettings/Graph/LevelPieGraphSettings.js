@@ -75,7 +75,6 @@ const LevelPieGraphSettings = ({ page = 0, selectedItem, onItemUpdate }) => {
 				sourceId,
 				columnId
 			);
-			debugger;
 			const newData = response.data.map((filter) => ({
 				value: filter,
 				label: filter,

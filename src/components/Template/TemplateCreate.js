@@ -84,7 +84,6 @@ const TemplateCreate = ({ mode, templateId, addItem = null }) => {
 						updatedAddItem.id = addedItemId;
 						loadedItems.templateItems.push(updatedAddItem);
 					}
-					debugger;
 					setTemplateData({
 						id: templateId,
 						orientation: loadedItems.orientation,

@@ -121,7 +121,6 @@ const AdminGroup = () => {
 
 	//Render form based on action
 	const renderForms = (action) => {
-		debugger;
 		switch (action) {
 			case ACTIONS.CREATE:
 				return (

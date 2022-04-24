@@ -18,13 +18,15 @@ export default class DataService {
 		return resultData;
 	}
 
-	static parseSourcesSelectData(sources) {
+	static parseSourcesSelectData(sources, none = true) {
 		let array = [];
 		if (sources)
 			sources.forEach((source) =>
 				array.push({ value: source.id, label: source.sourceName })
 			);
-		array.push({ value: null, label: "None" });
+		if (none) {
+			array.push({ value: null, label: "None" });
+		}
 		return array;
 	}
 }

@@ -195,6 +195,7 @@ const ItemSettingsMenu = ({
 											className='mt-2 '
 											onClick={() => {
 												onMoveItemPages(selectedItem.id, +1, page);
+												onClose();
 											}}
 										>
 											Next page
@@ -205,6 +206,7 @@ const ItemSettingsMenu = ({
 											className='mt-2 '
 											onClick={() => {
 												onMoveItemPages(selectedItem.id, -1, page);
+												onClose();
 											}}
 										>
 											Previous page

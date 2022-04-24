@@ -1,15 +1,15 @@
 import {
-    ChevronDoubleLeftIcon,
-    ChevronDoubleRightIcon,
-    ChevronLeftIcon,
-    ChevronRightIcon,
+	ChevronDoubleLeftIcon,
+	ChevronDoubleRightIcon,
+	ChevronLeftIcon,
+	ChevronRightIcon,
 } from "@heroicons/react/solid";
 import MyDialog from "./MyDialog";
 import DualListBox from "react-dual-listbox";
 import Button from "../Button";
-import {useEffect, useState} from "react";
-import {axiosInstance} from "../../helpers/AxiosHelper";
-import {useAlert} from "react-alert";
+import { useEffect, useState } from "react";
+import { axiosInstance } from "../../helpers/AxiosHelper";
+import { useAlert } from "react-alert";
 import Loader from "../Loader/Loader";
 
 const ShareDialog = ({
@@ -129,6 +129,10 @@ const ShareDialog = ({
 				</div>
 			) : (
 				<>
+					<div className='grid grid-cols-2'>
+						<div>Groups</div>
+						<div className='pl-7'>Shared with</div>
+					</div>
 					<DualListBox
 						canFilter
 						options={options}

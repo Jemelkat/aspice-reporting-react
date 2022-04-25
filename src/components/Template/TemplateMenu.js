@@ -46,7 +46,7 @@ const TemplateMenu = ({
 							}}
 						>
 							{({ values }) => (
-								<Form className='flex flex-col pb-4'>
+								<Form className='flex flex-col pb-4 w-48'>
 									<FormHidden name='id'></FormHidden>
 									<FormInput
 										label='Template name'

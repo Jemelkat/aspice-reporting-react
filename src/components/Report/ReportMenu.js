@@ -73,7 +73,7 @@ const ReportMenu = ({
 								<Form
 									className={`flex flex-col ${
 										isProcessing ? "pt-1" : "pt-10"
-									} pl-4 pr-4`}
+									} w-48`}
 								>
 									{isProcessing && (
 										<div className='w-full -mb-1'>

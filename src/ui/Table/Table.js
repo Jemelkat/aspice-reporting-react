@@ -1,5 +1,5 @@
-import {ChevronDoubleUpIcon} from "@heroicons/react/solid";
-import {useSortBy, useTable} from "react-table";
+import { ChevronDoubleUpIcon } from "@heroicons/react/solid";
+import { useSortBy, useTable } from "react-table";
 
 function Table({ columns, data, isLoading, initSortColumn }) {
 	// Use the state and functions returned from useTable to build your ui
@@ -62,7 +62,7 @@ function Table({ columns, data, isLoading, initSortColumn }) {
 								className='transition duration-1000 ease-in-out transform'
 							>
 								{headerGroups[0].headers.map((cell) => (
-									<td className='px-2 py-2'>
+									<td className='px-2 py-2' key={i + JSON.stringify(cell)}>
 										<span className='flex py-5 bg-gray-300 rounded-lg animate-pulse'></span>
 									</td>
 								))}

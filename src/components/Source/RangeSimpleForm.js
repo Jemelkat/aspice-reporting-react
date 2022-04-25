@@ -28,13 +28,13 @@ const RangeSimpleForm = ({ data, selectedRow, onClose, setLoading }) => {
 								"N must be bigger than " + values.nlower
 							),
 						p: Yup.number()
-							.lessThan(100, "P- must be less than 100")
+							.lessThan(100, "P must be less than 100")
 							.moreThan(
 								values.n < 100 ? values.n : 0,
 								"P must be bigger than " + values.n
 							),
 						l: Yup.number()
-							.lessThan(100, "P- must be less than 100")
+							.lessThan(100, "L must be less than 100")
 							.moreThan(
 								values.p < 100 ? values.p : 0,
 								"L must be bigger than " + values.p
@@ -65,7 +65,7 @@ const RangeSimpleForm = ({ data, selectedRow, onClose, setLoading }) => {
 						} else {
 							alert.error("There was error updating ranges!");
 						}
-						onClose();
+						setSubmitting(false);
 					});
 			}}
 		>

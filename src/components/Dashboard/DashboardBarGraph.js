@@ -1,5 +1,15 @@
-import {useEffect, useState} from "react";
-import {Bar, BarChart, CartesianGrid, Label, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis,} from "recharts";
+import { useEffect, useState } from "react";
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Label,
+	Legend,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
 import colors from "../../helpers/ColorsHelper";
 
 const maxWordLength = 10;
@@ -15,7 +25,6 @@ const DashboardBarGraph = ({ data, isHorizontal }) => {
 		}
 	}, [data]);
 
-	console.log(processNamesSize);
 	return (
 		<ResponsiveContainer width='100%' height='95%'>
 			<BarChart

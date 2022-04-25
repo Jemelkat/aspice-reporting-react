@@ -191,7 +191,15 @@ const ReportCreate = ({ mode, reportId, addItem = null }) => {
 		else {
 			let newItemsCombined = [...items];
 			newItemsCombined.splice(page, 1, []);
+			let newPage = {
+				id: null,
+				orientation: "VERTICAL",
+				pageTemplate: null,
+			};
+			let newPagesCombined = [...pagesData];
+			newPagesCombined.splice(page, 1, newPage);
 			setItems(newItemsCombined);
+			setPagesData(newPagesCombined);
 			selectItemHandler(null);
 		}
 	};

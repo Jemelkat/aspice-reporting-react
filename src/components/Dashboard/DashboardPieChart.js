@@ -1,4 +1,11 @@
-import {Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip,} from "recharts";
+import {
+	Cell,
+	Legend,
+	Pie,
+	PieChart,
+	ResponsiveContainer,
+	Tooltip,
+} from "recharts";
 
 const DashboardPieChart = ({ data }) => {
 	const COLORS = [
@@ -54,7 +61,6 @@ const DashboardPieChart = ({ data }) => {
 				>
 					{data.map((entry, index) => {
 						const colorIndex = index + (COLORS.length - data.length);
-						console.log(colorIndex);
 						return (
 							<Cell
 								key={`cell-${index}`}

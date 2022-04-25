@@ -1,11 +1,11 @@
-import {Transition} from "@headlessui/react";
-import {Fragment, useEffect, useState} from "react";
+import { Transition } from "@headlessui/react";
+import { Fragment, useEffect, useState } from "react";
 
 const Sidebar = ({ className, show = true, position = "left", children }) => {
 	const [isScrolled, setIsScrolled] = useState(false);
 
 	const listenToScroll = () => {
-		if (window.scrollY >= 0) {
+		if (window.scrollY >= 1) {
 			setIsScrolled(true);
 		} else {
 			setIsScrolled(false);

@@ -79,7 +79,7 @@ const RangeExtendedForm = ({ data, selectedRow, onClose, setLoading }) => {
 						} else {
 							alert.error("There was error updating ranges!");
 						}
-						onClose();
+						setSubmitting(false);
 					});
 			}}
 		>
